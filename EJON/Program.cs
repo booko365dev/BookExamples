@@ -10,7 +10,7 @@ namespace EJON
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("hooiiii");
+            Console.WriteLine("hooiiii. En nog een keer");
         }
     }
 }
