@@ -1,10 +1,16 @@
 using Microsoft.SharePoint.Client;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EJON
 {
@@ -12,47 +18,53 @@ namespace EJON
     {
         static void Main(string[] args)
         {
+            //==> CSOM
             ClientContext spCtx = LoginCsom();
             Web rootWeb = spCtx.Web;
             spCtx.Load(rootWeb);
             spCtx.ExecuteQuery();
             Console.WriteLine(rootWeb.Created.ToShortDateString());
 
+            //==> PnP Core
             ClientContext spPnpCtx = LoginPnPCore();
             Web rootWebPnp = spPnpCtx.Web;
             spPnpCtx.Load(rootWebPnp);
             spPnpCtx.ExecuteQuery();
             Console.WriteLine(rootWebPnp.Created.ToShortDateString());
 
+            //==> PnP Core direct login
             LoginPnPCoreDirectly();
 
-            string SiteBaseUrl    = string.Empty;
-            string BaseRestQuery  = string.Empty;
-            string PostRestQuery  = string.Empty;
-            string ResponseResult = string.Empty;
+            //==> REST
+            Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
+            string userName = ConfigurationManager.AppSettings["spUserName"];
+            string password = ConfigurationManager.AppSettings["spUserPw"];
 
-            SiteBaseUrl = ConfigurationManager.AppSettings["spUrl"];
-            BaseRestQuery = "/_api/web/created";
-            ResponseResult = ExecuteRestQuery(SiteBaseUrl, 
-                                              BaseRestQuery);
-            Console.WriteLine(ResponseResult);
+            // Simple GET request without body
+            using (var client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = null;
+                string endpointUrl = webUri + "/_api/web/created";
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Get, myPayload);
+                Console.WriteLine(data);
+            }
 
-            SiteBaseUrl = ConfigurationManager.AppSettings["spUrl"];
-            BaseRestQuery = "/_api/web/created";
-            ResponseResult = ExecuteRestQuery(SiteBaseUrl,
-                                              BaseRestQuery,
-                                              null,
-                                              TypeRequest.GET);
-            Console.WriteLine(ResponseResult);
-
-            //SiteBaseUrl = ConfigurationManager.AppSettings["spUrl"];  //==> To create a new List
-            //BaseRestQuery = "/_api/web/lists";
-            //PostRestQuery = "{ '__metadata': { 'type': 'SP.List' }, 'AllowContentTypes': true, 'BaseTemplate': 100, 'ContentTypesEnabled': true, 'Description': 'My gavd list description', 'Title': 'NewListRest' }";
-            //ResponseResult = ExecuteRestQuery(SiteBaseUrl, 
-            //                                  BaseRestQuery, 
-            //                                  PostRestQuery,
-            //                                  TypeRequest.POST);
-            //Console.WriteLine(ResponseResult);
+            //// Full POST query with data in the body
+            //using (var client = new SPHttpClient(webUri, userName, password))
+            //{
+            //    object myPayload = new
+            //    {
+            //        __metadata = new { type = "SP.List" },
+            //        Title = "NewTestListRest",
+            //        BaseTemplate = 100,
+            //        Description = "Test NewListRest",
+            //        AllowContentTypes = true,
+            //        ContentTypesEnabled = true
+            //    };
+            //    string endpointUrl = webUri + "/_api/web/lists";
+            //    var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, myPayload);
+            //    Console.WriteLine(data);
+            //}
 
             Console.ReadLine();
         }
@@ -103,151 +115,134 @@ namespace EJON
                 Console.WriteLine(rootWeb.Created.ToShortDateString());
             }
         }
+    }
 
-        /// <summary>
-        /// Executes a GET call to the REST method
-        /// </summary>
-        /// <param name="SiteBaseUrl">https://dominio.sharepoint.com/sites/namesite</param>
-        /// <param name="BaseRestQuery">/_api/web/created</param>
-        /// <returns></returns>
-        public static string ExecuteRestQuery(string SiteBaseUrl, 
-                                                 string BaseRestQuery)
+    class SPHttpClientHandler : HttpClientHandler
+    {
+        public SPHttpClientHandler(Uri webUri, string userName, string password)
         {
-            string SiteRestUrl = SiteBaseUrl + BaseRestQuery;
-
-            SharePointOnlineCredentials myCredentials = GetCredentials();
-
-            using (WebClient myWebClient = new WebClient())
-            {
-                myWebClient.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f");
-                myWebClient.Credentials = myCredentials;
-                myWebClient.Headers.Add(HttpRequestHeader.ContentType,
-                                        "application/json;odata=verbose");
-                myWebClient.Headers.Add(HttpRequestHeader.Accept,
-                                        "application/json;odata=verbose");
-
-                string myResult = myWebClient.DownloadString(SiteRestUrl);
-
-                JObject resultJson = JObject.Parse(myResult);
-                return resultJson["d"].ToString();
-            }
+            CookieContainer = GetAuthCookies(webUri, userName, password);
+            FormatType = FormatType.JsonVerbose;
         }
 
-        /// <summary>
-        /// Executes a GET, POST, MERGE or DELETE call to the REST method
-        /// </summary>
-        /// <param name="SiteBaseUrl">https://dominio.sharepoint.com/sites/namesite</param>
-        /// <param name="BaseRestQuery">/_api/web/lists</param>
-        /// <param name="PostRestQuery">{ '__metadata': { 'type': 'SP.List' }, ...</param>
-        /// <param name="RequestType">TypeRequest.POST / GET / MERGE / DELETE</param>
-        /// <returns></returns>
-        public static string ExecuteRestQuery(string SiteBaseUrl, 
-                                              string BaseRestQuery,
-                                              string PostRestQuery,
-                                              TypeRequest RequestType)
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+                                                CancellationToken cancellationToken)
         {
-            if (RequestType.Equals(TypeRequest.GET) == true)
-            { return ExecuteRestQuery(SiteBaseUrl, BaseRestQuery); }
-
-            string SiteRestUrl = SiteBaseUrl + BaseRestQuery;
-
-            CookieContainer myCookies = GetAuthCookies(new Uri(SiteBaseUrl));
-            string myFormDigest = GetFormDigest(SiteBaseUrl, myCookies);
-
-            HttpWebRequest myWebReq = GetRequest(SiteRestUrl, myCookies, 
-                                                PostRestQuery.Length);
-            myWebReq.Headers.Add("X-RequestDigest", myFormDigest);
-            switch (RequestType)
+            request.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f");
+            if (FormatType == FormatType.JsonVerbose)
             {
-                case TypeRequest.MERGE:
-                    myWebReq.Headers.Add("IF-MATCH", "*");
-                    myWebReq.Headers.Add("X-HTTP-Method", "MERGE");
+                request.Headers.Add("Accept", "application/json;odata=verbose");
+            }
+            return base.SendAsync(request, cancellationToken);
+        }
+
+        private static CookieContainer GetAuthCookies(Uri webUri,
+                                                string userName, string password)
+        {
+            var securePassword = new SecureString();
+            foreach (var c in password) { securePassword.AppendChar(c); }
+            var credentials = new SharePointOnlineCredentials(userName, securePassword);
+            var authCookie = credentials.GetAuthenticationCookie(webUri);
+            var cookieContainer = new CookieContainer();
+            cookieContainer.SetCookies(webUri, authCookie);
+            return cookieContainer;
+        }
+
+        public FormatType FormatType { get; set; }
+    }
+
+    public enum FormatType
+    {
+        JsonVerbose,
+        Xml
+    }
+
+    class SPHttpClient : HttpClient
+    {
+        public SPHttpClient(Uri webUri, string userName, string password) : base(
+                                new SPHttpClientHandler(webUri, userName, password))
+        {
+            BaseAddress = webUri;
+        }
+
+        public object ExecuteJson(string requestUri, HttpMethod method,
+                                    IDictionary<string, string> headers, object payload,
+                                    bool GetBinaryResponse = false)
+        {
+            HttpResponseMessage response;
+            switch (method.Method)
+            {
+                case "POST":
+                    DefaultRequestHeaders.Add("X-RequestDigest", RequestFormDigest());
+                    if (headers != null)
+                    {
+                        foreach (var header in headers)
+                        {
+                            DefaultRequestHeaders.Add(header.Key, header.Value);
+                        }
+                    }
+                    if ((payload != null) && (payload.GetType().Name == "FileStream"))
+                    {
+                        StreamContent requestContent = new StreamContent((Stream)payload);
+                        requestContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
+                                                    "application/json;odata=verbose");
+                        response = PostAsync(requestUri, requestContent).Result;
+                    }
+                    else
+                    {
+                        StringContent requestContent = new StringContent(
+                                                    JsonConvert.SerializeObject(payload));
+                        requestContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
+                                                    "application/json;odata=verbose");
+                        response = PostAsync(requestUri, requestContent).Result;
+                    }
                     break;
-                case TypeRequest.DELETE:
-                    myWebReq.Headers.Add("IF-MATCH", "*");
-                    myWebReq.Headers.Add("X-HTTP-Method", "DELETE");
+                case "GET":
+                    response = GetAsync(requestUri).Result;
                     break;
+                default:
+                    throw new NotSupportedException(string.Format(
+                                        "Method {0} is not supported", method.Method));
             }
 
-            StreamWriter myReqStream = new StreamWriter(myWebReq.GetRequestStream());
-            myReqStream.Write(PostRestQuery);
-            myReqStream.Flush();
+            response.EnsureSuccessStatusCode();
 
-            JObject resultJson = GetResult(myWebReq);
-            if (resultJson != null)
-            { return resultJson["d"].ToString(); }
-            else
-            { return string.Empty; }
-        }
-
-        private static CookieContainer GetAuthCookies(Uri SiteBaseUrl)
-        {
-            SharePointOnlineCredentials myCredentials = GetCredentials();
-
-            string authCookie = myCredentials.GetAuthenticationCookie(SiteBaseUrl);
-            CookieContainer myCookies = new CookieContainer();
-            myCookies.SetCookies(SiteBaseUrl, authCookie);
-
-            return myCookies;
-        }
-
-        private static SharePointOnlineCredentials GetCredentials()
-        {
-            SecureString securePw = new SecureString();
-            foreach (
-                char oneChar in ConfigurationManager.AppSettings["spUserPw"].ToCharArray())
+            if (GetBinaryResponse == true)
             {
-                securePw.AppendChar(oneChar);
-            }
-            SharePointOnlineCredentials myCredentials = new SharePointOnlineCredentials(
-                ConfigurationManager.AppSettings["spUserName"], securePw);
-
-            return myCredentials;
-        }
-
-        private static string GetFormDigest(string SiteBaseUrl, CookieContainer Cookies)
-        {
-            string resourceUrl = SiteBaseUrl + "/_api/contextinfo";
-            HttpWebRequest myWebReq = GetRequest(resourceUrl, Cookies, 0);
-
-            JObject resultJson = GetResult(myWebReq);
-            return resultJson["d"]["GetContextWebInformation"]["FormDigestValue"].ToString();
-        }
-
-        private static HttpWebRequest GetRequest(string ReqUrl, CookieContainer Cookies, 
-                        long ContentLenght)
-        {
-            HttpWebRequest myWebReq = (HttpWebRequest)HttpWebRequest.Create(ReqUrl);
-            myWebReq.CookieContainer = Cookies;
-            myWebReq.Method = "POST";
-            myWebReq.Accept = "application/json;odata=verbose";
-            myWebReq.ContentLength = ContentLenght;
-            myWebReq.ContentType = "application/json;odata=verbose";
-
-            return myWebReq;
-        }
-
-        private static JObject GetResult(HttpWebRequest WebRequest)
-        {
-            string myResult = string.Empty;
-            WebResponse myWebResp = WebRequest.GetResponse();
-            using (StreamReader myRespStream = new StreamReader
-                                                (myWebResp.GetResponseStream()))
-            { myResult = myRespStream.ReadToEnd(); }
-
-            if (string.IsNullOrEmpty(myResult) == false)
-            {
-                JObject resultJson = JObject.Parse(myResult);
-                return resultJson;
+                var responseContentStream = response.Content.ReadAsStreamAsync().Result;
+                return responseContentStream;
             }
             else
             {
-                JObject resultJson = null;
-                return resultJson;
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                return String.IsNullOrEmpty(responseContent) ? new JObject() :
+                                                        JObject.Parse(responseContent);
             }
         }
 
-        public enum TypeRequest { GET, POST, MERGE, DELETE }
+        public object ExecuteJson<T>(string requestUri, HttpMethod method, T payload,
+                                        bool GetBinaryResponse = false)
+        {
+            return ExecuteJson(requestUri, method, null, payload, GetBinaryResponse);
+        }
+
+        public object ExecuteJson(string requestUri, bool GetBinaryResponse = false)
+        {
+            return ExecuteJson(requestUri, HttpMethod.Get, null, default(string),
+                                                                    GetBinaryResponse);
+        }
+
+        public string RequestFormDigest()
+        {
+            var endpointUrl = string.Format("{0}/_api/contextinfo", BaseAddress);
+            var result = this.PostAsync(endpointUrl, new StringContent(
+                                                            string.Empty)).Result;
+            result.EnsureSuccessStatusCode();
+            var content = result.Content.ReadAsStringAsync().Result;
+            var contentJson = JObject.Parse(content);
+            return contentJson["d"]["GetContextWebInformation"][
+                                                        "FormDigestValue"].ToString();
+        }
     }
 }
 
