@@ -225,7 +225,7 @@ namespace BURF
             spCtx.Dispose();
         }
 
-        //----------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()
         {
             ClientContext rtnContext = new ClientContext(
