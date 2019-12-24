@@ -1,0 +1,26 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGXK", "OGXK.csproj", "{772DBBE2-1E6C-4CC0-9253-40A73127DD95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{772DBBE2-1E6C-4CC0-9253-40A73127DD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{772DBBE2-1E6C-4CC0-9253-40A73127DD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{772DBBE2-1E6C-4CC0-9253-40A73127DD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{772DBBE2-1E6C-4CC0-9253-40A73127DD95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D95536E-3FA9-419C-A134-D8315F01E9D5}
+	EndGlobalSection
+EndGlobal
+
