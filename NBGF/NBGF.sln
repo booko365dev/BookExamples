@@ -1,0 +1,34 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBGF", "NBGF.csproj", "{573915C0-2F06-448C-A88F-964568F7877A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBGFWeb", "NBGFWeb\NBGFWeb.csproj", "{9CBFFEEC-5364-46A0-A8D6-5CC9F281E710}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{573915C0-2F06-448C-A88F-964568F7877A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573915C0-2F06-448C-A88F-964568F7877A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573915C0-2F06-448C-A88F-964568F7877A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{573915C0-2F06-448C-A88F-964568F7877A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573915C0-2F06-448C-A88F-964568F7877A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{573915C0-2F06-448C-A88F-964568F7877A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9CBFFEEC-5364-46A0-A8D6-5CC9F281E710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CBFFEEC-5364-46A0-A8D6-5CC9F281E710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CBFFEEC-5364-46A0-A8D6-5CC9F281E710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CBFFEEC-5364-46A0-A8D6-5CC9F281E710}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2745EEEF-576E-4554-88E3-7A1A52EF7405}
+	EndGlobalSection
+EndGlobal
+
