@@ -1,0 +1,34 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LNTT", "LNTT.csproj", "{28D3B4D8-3E83-425A-B267-18DE9660F632}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LNTTWeb", "LNTTWeb\LNTTWeb.csproj", "{CF5AF363-F37A-4DCA-8F9C-5B4014096DEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28D3B4D8-3E83-425A-B267-18DE9660F632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28D3B4D8-3E83-425A-B267-18DE9660F632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28D3B4D8-3E83-425A-B267-18DE9660F632}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{28D3B4D8-3E83-425A-B267-18DE9660F632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28D3B4D8-3E83-425A-B267-18DE9660F632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28D3B4D8-3E83-425A-B267-18DE9660F632}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CF5AF363-F37A-4DCA-8F9C-5B4014096DEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF5AF363-F37A-4DCA-8F9C-5B4014096DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF5AF363-F37A-4DCA-8F9C-5B4014096DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF5AF363-F37A-4DCA-8F9C-5B4014096DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CEDC2AE9-D2D0-4B44-ADBC-CD4AD6E33408}
+	EndGlobalSection
+EndGlobal
+
