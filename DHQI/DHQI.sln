@@ -1,0 +1,28 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DHQI", "DHQI.csproj", "{A6CD1088-72F7-4C94-BED0-D31BFF42670A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6CD1088-72F7-4C94-BED0-D31BFF42670A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6CD1088-72F7-4C94-BED0-D31BFF42670A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6CD1088-72F7-4C94-BED0-D31BFF42670A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A6CD1088-72F7-4C94-BED0-D31BFF42670A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6CD1088-72F7-4C94-BED0-D31BFF42670A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6CD1088-72F7-4C94-BED0-D31BFF42670A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8711F44-0A8D-4C84-B05A-7561789E9D23}
+	EndGlobalSection
+EndGlobal
+
