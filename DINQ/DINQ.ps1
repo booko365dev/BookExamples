@@ -1,465 +1,383 @@
-
-Function ExecuteRestGetQuery($SiteBaseUrl, $BaseRestQuery)
-{
-    $SiteRestUrl = $SiteBaseUrl + $BaseRestQuery
-
-    $myCredentials = GetCredentials
-
-    $myWebClient = New-Object System.Net.WebClient
-    $myWebClient.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f")
-    $myWebClient.Credentials = $myCredentials
-    $myWebClient.Headers.Add("ContentType", "application/json;odata=verbose")
-    $myWebClient.Headers.Add("Accept", "application/json;odata=verbose")
-
-    $myResult = $myWebClient.DownloadString($SiteRestUrl)
-
-	$resultObject = $myResult | ConvertFrom-Json
-	$resultValue = ConvertTo-Json $resultObject.d
-
-	return $resultValue
-}
-
-Function ExecuteRestQuery($SiteBaseUrl, $BaseRestQuery, $PostRestQuery, $RequestType)
-{
-    if ($RequestType -eq [TypeRequest]::GET)
-    { return ExecuteRestGetQuery $SiteBaseUrl $BaseRestQuery }
-
-    $SiteRestUrl = $SiteBaseUrl + $BaseRestQuery;
-
-    $myCookies = GetAuthCookies $SiteBaseUrl
-    $myFormDigest = GetFormDigest $SiteBaseUrl $myCookies
-
-    $myWebReq = GetRequest $SiteRestUrl $myCookies $PostRestQuery.Length
-    $myWebReq.Headers.Add("X-RequestDigest", $myFormDigest)
-
-	if($RequestType -eq [TypeRequest]::MERGE) {
-		$myWebReq.Headers.Add("IF-MATCH", "*")
-		$myWebReq.Headers.Add("X-HTTP-Method", "MERGE")
-	}
-	elseif($RequestType -eq [TypeRequest]::DELETE) {
-		$myWebReq.Headers.Add("IF-MATCH", "*")
-		$myWebReq.Headers.Add("X-HTTP-Method", "DELETE")
-	}
-
-    $myReqStream = New-Object System.IO.StreamWriter($myWebReq.GetRequestStream())
-    $myReqStream.Write($PostRestQuery)
-    $myReqStream.Flush()
-
-    $resultJson = GetResult $myWebReq
-    if ($resultJson -ne $null) { 
-		$resultObject = $resultJson | ConvertFrom-Json
-		$resultValue = $resultObject.d
-		
-		return $resultValue
-	}
-    else
-		{ return string.Empty; }
-}
-
-Function GetAuthCookies($SiteBaseUrl)
-{
-    $myCredentials = GetCredentials
-
-    $authCookie = $myCredentials.GetAuthenticationCookie($SiteBaseUrl)
-    $myCookies = New-Object System.Net.CookieContainer
-    $myCookies.SetCookies($SiteBaseUrl, $authCookie)
-
-    return $myCookies
-}
-
-Function GetCredentials()
-{
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-		$configFile.appsettings.spUserPw -AsPlainText -Force
-
-	$myCredentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials `
-			($configFile.appsettings.spUserName, $securePW)
-
-    return $myCredentials
-}
-
-Function GetFormDigest($SiteBaseUrl, $Cookies)
-{
-    $resourceUrl = $SiteBaseUrl + "/_api/contextinfo"
-    $myWebReq = GetRequest $resourceUrl $Cookies 0
-
-    $resultJson = GetResult $myWebReq
-
-	$resultObject = $resultJson | ConvertFrom-Json
-	$formDigestValue = $resultObject.d.GetContextWebInformation.FormDigestValue
-
-    return $formDigestValue
-}
-
-Function GetRequest($ReqUrl, $Cookies, $ContentLenght)
-{
-    $myWebReq = [System.Net.WebRequest]::Create($ReqUrl)
-    $myWebReq.CookieContainer = $Cookies
-    $myWebReq.Method = "POST"
-    $myWebReq.Accept = "application/json;odata=verbose"
-    $myWebReq.ContentLength = $ContentLenght
-    $myWebReq.ContentType = "application/json;odata=verbose"
-
-    return $myWebReq
-}
-
-Function GetResult($WebRequest)
-{
-    $myResult = ""
-    $myWebResp = $WebRequest.GetResponse()
-
-	Using-Object ($myRespStream = `
-				New-Object System.IO.StreamReader($myWebResp.GetResponseStream())) {
-		$myResult = $myRespStream.ReadToEnd()
-		return $myResult
-	}
-}
-
-function Using-Object
-{
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [AllowEmptyString()]
-        [AllowEmptyCollection()]
-        [AllowNull()]
-        [Object]
-        $InputObject,
+Function Invoke-RestSPO() {
+	Param (
+		[Parameter(Mandatory=$True)]
+		[String]$Url,
  
-        [Parameter(Mandatory = $true)]
-        [scriptblock]
-        $ScriptBlock
-    )
+		[Parameter(Mandatory=$False)]
+		[Microsoft.PowerShell.Commands.WebRequestMethod]$Method = `
+								[Microsoft.PowerShell.Commands.WebRequestMethod]::Get,
  
-    try {
-        . $ScriptBlock
-    }
-    finally {
-        if ($null -ne $InputObject -and $InputObject -is [System.IDisposable]) {
-            $InputObject.Dispose()
-        }
+		[Parameter(Mandatory=$True)]
+		[String]$UserName,
+ 
+		[Parameter(Mandatory=$False)]
+		[String]$Password,
+ 
+		[Parameter(Mandatory=$False)]
+		[String]$Metadata,
+
+		[Parameter(Mandatory=$False)]
+		[System.Byte[]]$Body,
+ 
+		[Parameter(Mandatory=$False)]
+		[String]$RequestDigest,
+ 
+		[Parameter(Mandatory=$False)]
+		[String]$ETag,
+ 
+		[Parameter(Mandatory=$False)]
+		[String]$XHTTPMethod,
+
+		[Parameter(Mandatory=$False)]
+		[System.String]$Accept = "application/json;odata=verbose",
+
+		[Parameter(Mandatory=$False)]
+		[String]$ContentType = "application/json;odata=verbose",
+
+		[Parameter(Mandatory=$False)]
+		[Boolean]$BinaryStringResponseBody = $False
+	)
+ 
+	if([string]::IsNullOrEmpty($Password)) {
+		$SecurePassword = Read-Host -Prompt "Enter the password" -AsSecureString 
+	}
+	else {
+		$SecurePassword = $Password | ConvertTo-SecureString -AsPlainText -Force
+	}
+ 
+	$credentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials(`
+															$UserName, $SecurePassword)
+	$request = [System.Net.WebRequest]::Create($Url)
+	$request.Credentials = $credentials
+	$request.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f")
+	$request.ContentType = $ContentType
+	$request.Accept = $Accept
+	$request.Method=$Method
+ 
+	if($RequestDigest) { 
+		$request.Headers.Add("X-RequestDigest", $RequestDigest)
+	}
+	if($ETag) { 
+		$request.Headers.Add("If-Match", $ETag)
+	}
+	if($XHTTPMethod) { 
+		$request.Headers.Add("X-HTTP-Method", $XHTTPMethod)
+	}
+	if($Metadata -or $Body) {
+		if($Metadata) {     
+			$Body = [byte[]][char[]]$Metadata
+		}      
+		$request.ContentLength = $Body.Length 
+		$stream = $request.GetRequestStream()
+		$stream.Write($Body, 0, $Body.Length)
+	}
+	else {
+		$request.ContentLength = 0
+	}
+
+	$response = $request.GetResponse()
+	try {
+		if($BinaryStringResponseBody -eq $False) {    
+			$streamReader = New-Object System.IO.StreamReader $response.GetResponseStream()
+			try {
+				$data=$streamReader.ReadToEnd()
+				$results = $data | ConvertFrom-Json
+				$results.d 
+			}
+			finally {
+				$streamReader.Dispose()
+			}
+		}
+		else {
+			$dataStream = New-Object System.IO.MemoryStream
+			try {
+			Stream-CopyTo -Source $response.GetResponseStream() -Destination $dataStream
+			$dataStream.ToArray()
+			}
+			finally {
+				$dataStream.Dispose()
+			} 
+		}
+	}
+	finally {
+		$response.Dispose()
+	}
+}
+ 
+Function Get-SPOContextInfo(){
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$WebUrl,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$UserName,
+ 
+		[Parameter(Mandatory=$False)]
+		[String]$Password
+	)
+   
+	$Url = $WebUrl + "/_api/contextinfo"
+	Invoke-RestSPO $Url Post $UserName $Password
+}
+
+Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) {
+    $buffer = New-Object Byte[] 8192 
+    $bytesRead = 0
+    while (($bytesRead = $Source.Read($buffer, 0, $buffer.Length)) -gt 0) {
+         $Destination.Write($buffer, 0, $bytesRead)
     }
 }
 
-enum TypeRequest { GET 
-				   POST 
-				   MERGE 
-				   DELETE }
-
-#-----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 
 Function SpPsRestCreateOneList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-	$BaseRestQuery = "/_api/web/lists"
-	$PostRestQuery = "{ '__metadata': { 'type': 'SP.List' }, " +
-                            "'Title': 'NewListPowerShellRest', " +
-                            "'BaseTemplate': 100, " +
-                            "'Description': 'New List created using PowerShell REST' }"
-	$TypeRequest = [TypeRequest]::POST
+	$endpointUrl = $WebUrl + "/_api/web/lists"
+	$myPayload = @{ 
+				__metadata = @{ 'type' = 'SP.List' }; 
+				Title = 'NewListRestPs'; 
+				BaseTemplate = 100; 
+				Description = 'Test NewListRest'; 
+				AllowContentTypes = $true;
+				ContentTypesEnabled = $true
+			   } | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
-Function SpPsRestReadeAllLists()
+Function SpPsRestReadAllLists()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists?$select=Title,Id";
-	$PostRestQuery = ""
-	$TypeRequest = [TypeRequest]::GET
+	$endpointUrl = $WebUrl + "/_api/lists?$select=Title,Id"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
-Function SpPsRestReadeOneList()
+Function SpPsRestReadOneList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')"
-	$PostRestQuery = ""
-	$TypeRequest = [TypeRequest]::GET
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestUpdateOneList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')"
-    $PostRestQuery = "{ '__metadata': { 'type': 'SP.List' }, " +
-                            "'Description': 'New List Description' }"
-	$TypeRequest = [TypeRequest]::MERGE
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
+	$myPayload = @{ 
+				__metadata = @{ 'type' = 'SP.List' }; 
+				Description = 'New List Description' 
+			   } | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue `
+						-ETag "*" -XHTTPMethod "MERGE"
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestDeleteOneList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')"
-    $PostRestQuery = $null
-	$TypeRequest = [TypeRequest]::DELETE
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue `
+						-ETag "*" -XHTTPMethod "DELETE"
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestAddOneFieldToList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')/fields"
-    $PostRestQuery = "{ '__metadata': { 'type': 'SP.Field' }, " +
-                            "'Title': 'MyMultilineField', " +
-                            "'FieldTypeKind': 3 }"
-	$TypeRequest = [TypeRequest]::POST
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
+	$myPayload = @{ 
+				__metadata = @{ 'type' = 'SP.Field' }; 
+				Title = 'MyMultilineField'; 
+				FieldTypeKind = 3 
+			   } | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestReadAllFieldsFromList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')/fields"
-    $PostRestQuery = $null
-	$TypeRequest = [TypeRequest]::GET
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestReadOneFieldFromList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')/fields/" +
-                                "getbytitle('MyMultilineField')"
-    $PostRestQuery = $null
-	$TypeRequest = [TypeRequest]::GET
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
+					                                "getbytitle('MyMultilineField')"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestUpdateOneFieldInList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')/fields/" +
-        "                               getbytitle('MyMultilineField')"
-    $PostRestQuery = "{ '__metadata': { 'type': 'SP.Field' }, " +
-                            "'Description': 'New Field Description' }"
-	$TypeRequest = [TypeRequest]::MERGE
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
+													"getbytitle('MyMultilineField')"
+	$myPayload = @{ 
+				__metadata = @{ 'type' = 'SP.Field' }; 
+				Description = 'New Field Description' 
+			   } | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue `
+						-ETag "*" -XHTTPMethod "MERGE"
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestDeleteOneFieldFromList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')/fields/" +
-										"getbytitle('MyMultilineField')"
-    $PostRestQuery = $null
-	$TypeRequest = [TypeRequest]::DELETE
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
+													"getbytitle('MyMultilineField')"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue `
+						-ETag "*" -XHTTPMethod "DELETE"
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
-Function SppsRestBreakSecurityInheritanceList()
+Function SpPsRestBreakSecurityInheritanceList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')/" +
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
 				"breakroleinheritance(copyRoleAssignments=false, clearSubscopes=true)"
-    $PostRestQuery = $null
-	$TypeRequest = [TypeRequest]::POST
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue `
+						-ETag "*" -XHTTPMethod "MERGE"
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestResetSecurityInheritanceList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $BaseRestQuery = "/_api/lists/getbytitle('NewListPowerShellRest')/" +
-        "resetroleinheritance"
-    $PostRestQuery = $null
-	$TypeRequest = [TypeRequest]::POST
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
+				"resetroleinheritance"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue
 
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestAddUserToSecurityRoleInList()
 {
 	# Inheritance MUST be broken
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $PostRestQuery = $null
-    $BaseRestQuery = $null
-    $ResponseResult = $null
-	$TypeRequest = $null
-    $resultJson = $null
-
     # Find the User
-    $BaseRestQuery = "/_api/web/siteusers?$select=Id&" +
-                                "$filter=startswith(Title,'MOD')"
-	$TypeRequest = [TypeRequest]::GET
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-	$resultObject = $ResponseResult | ConvertFrom-Json
-    $userId = $resultObject.results[0].Id
+	$endpointUrl = $WebUrl + "/_api/web/siteusers?$select=Id&" +
+	                                "$filter=startswith(Title,'MOD')"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
+    $userId = $data.results[0].Id
+	$data | ConvertTo-Json
 
     # Find the RoleDefinitions
-    $BaseRestQuery = "/_api/web/roledefinitions?$select=Id&" +
-                                "$filter=startswith(Name,'Full Control')";
-	$TypeRequest = [TypeRequest]::GET
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-	$resultObject = $ResponseResult | ConvertFrom-Json
-    $roleId = $resultObject.results[0].Id
+	$endpointUrl = $WebUrl + "/_api/web/roledefinitions?$select=Id&" +
+	                                "$filter=startswith(Name,'Full Control')"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
+    $roleId = $data.results[0].Id
+	$data | ConvertTo-Json
 
     # Add the User in the RoleDefinion to the List
-    $BaseRestQuery = "/_api/web/lists/getbytitle('NewListPowerShellRest')/roleassignments/" +
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/roleassignments/" +
         "addroleassignment(principalid=" + $userId + ",roledefid=" + $roleId + ")"
-	$TypeRequest = [TypeRequest]::POST
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+							-Password $password -RequestDigest `
+							$contextInfo.GetContextWebInformation.FormDigestValue `
+							-ETag "*" -XHTTPMethod "MERGE"
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestUpdateUserSecurityRoleInList()
 {
 	# Inheritance MUST be broken
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $PostRestQuery = $null
-    $BaseRestQuery = $null
-    $ResponseResult = $null
-	$TypeRequest = $null
-    $resultJson = $null
-
     # Find the User
-    $BaseRestQuery = "/_api/web/siteusers?$select=Id&" +
-                                "$filter=startswith(Title,'MOD')"
-	$TypeRequest = [TypeRequest]::GET
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-	$resultObject = $ResponseResult | ConvertFrom-Json
-    $userId = $resultObject.results[0].Id
+	$endpointUrl = $WebUrl + "/_api/web/siteusers?$select=Id&" +
+	                                "$filter=startswith(Title,'MOD')"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
+    $userId = $data.results[0].Id
+	$data | ConvertTo-Json
 
     # Find the RoleDefinitions
-    $BaseRestQuery = "/_api/web/roledefinitions/getbyname('Edit')/id"
-	$TypeRequest = [TypeRequest]::GET
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-	$resultObject = $ResponseResult | ConvertFrom-Json
-    $roleId = $resultObject.Id
+	$endpointUrl = $WebUrl + "/_api/web/roledefinitions?$select=Id&" +
+	                                "$filter=startswith(Name,'Full Control')"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
+    $roleId = $data.results[0].Id
+	$data | ConvertTo-Json
 
     # Add the User in the RoleDefinion to the List
-    $BaseRestQuery = "/_api/web/lists/getbytitle('NewListPowerShellRest')/roleassignments/" +
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/roleassignments/" +
         "addroleassignment(principalid=" + $userId + ",roledefid=" + $roleId + ")"
-	$TypeRequest = [TypeRequest]::MERGE
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue `
+						-ETag "*" -XHTTPMethod "MERGE"
+	$data | ConvertTo-Json
 }
 
 Function SpPsRestDeleteUserFromSecurityRoleInList()
 {
-	$SiteBaseUrl = $configFile.appsettings.spUrl
-    $PostRestQuery = $null
-    $BaseRestQuery = $null
-    $ResponseResult = $null
-	$TypeRequest = $null
-    $resultJson = $null
-
     # Find the User
-    $BaseRestQuery = "/_api/web/siteusers?$select=Id&" +
-                                "$filter=startswith(Title,'MOD')"
-	$TypeRequest = [TypeRequest]::GET
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-	$resultObject = $ResponseResult | ConvertFrom-Json
-    $userId = $resultObject.results[0].Id
+	$endpointUrl = $WebUrl + "/_api/web/siteusers?$select=Id&" +
+	                                "$filter=startswith(Title,'MOD')"
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
+																-Password $password
+    $userId = $data.results[0].Id
+	$data | ConvertTo-Json
 
     # Remove the User from the List
-    $BaseRestQuery = "/_api/web/lists/GetByTitle('NewListPowerShellRest')/roleassignments/" +
-        "getbyprincipalid(principalid=" + $userId + ")";
-	$TypeRequest = [TypeRequest]::DELETE
-	$ResponseResult = ExecuteRestQuery $SiteBaseUrl `
-                                         $BaseRestQuery `
-                                         $PostRestQuery `
-                                         $TypeRequest
-
-	Write-Host $ResponseResult
+	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/roleassignments/" +
+					        "getbyprincipalid(principalid=" + $userId + ")";
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName `
+						-Password $password -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue `
+						-ETag "*" -XHTTPMethod "DELETE"
+	$data | ConvertTo-Json
 }
 
-#-----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 
 ## Running the Functions
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
@@ -467,9 +385,13 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 
 [xml]$configFile = get-content "C:\Projects\spPs.values.config"
 
+$webUrl = $configFile.appsettings.spUrl
+$userName = $configFile.appsettings.spUserName
+$password = $configFile.appsettings.spUserPw
+
 #SpPsRestCreateOneList
-#SpPsRestReadeAllLists
-#SpPsRestReadeOneList
+#SpPsRestReadAllLists
+#SpPsRestReadOneList
 #SpPsRestUpdateOneList
 #SpPsRestDeleteOneList
 #SpPsRestAddOneFieldToList
