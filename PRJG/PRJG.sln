@@ -1,0 +1,34 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRJG", "PRJG.csproj", "{6710094C-FA54-4D96-899A-591709B16C95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRJGWeb", "PRJGWeb\PRJGWeb.csproj", "{43F61479-AEDB-4A1F-AD2A-B65D2C256413}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6710094C-FA54-4D96-899A-591709B16C95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6710094C-FA54-4D96-899A-591709B16C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6710094C-FA54-4D96-899A-591709B16C95}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6710094C-FA54-4D96-899A-591709B16C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6710094C-FA54-4D96-899A-591709B16C95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6710094C-FA54-4D96-899A-591709B16C95}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{43F61479-AEDB-4A1F-AD2A-B65D2C256413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43F61479-AEDB-4A1F-AD2A-B65D2C256413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43F61479-AEDB-4A1F-AD2A-B65D2C256413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43F61479-AEDB-4A1F-AD2A-B65D2C256413}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D5F1DB2-CA1F-4341-80A6-EBCCEF0FD00A}
+	EndGlobalSection
+EndGlobal
+
