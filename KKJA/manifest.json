@@ -1,0 +1,44 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.5",
+    "version": "1.0.0",
+    "id": "48cb3b67-6afb-49e2-be45-d3bdc34aef10",
+    "packageName": "generateGuidPackage",
+    "developer": {
+        "name": "GuidGenerator",
+        "websiteUrl": "https://43b609a6.ngrok.io/generateguid.aspx",
+        "privacyUrl": "https://43b609a6.ngrok.io/privacy.aspx",
+        "termsOfUseUrl": "https://43b609a6.ngrok.io/terms.aspx"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "GenerateGUID",
+        "full": "Generate a new GUID"
+    },
+    "description": {
+        "short": "GUID Generator",
+        "full": "This app generate GUIDs"
+    },
+    "accentColor": "#FFFFFF",
+    "staticTabs": [
+        {
+            "entityId": "guidGenerator01",
+            "name": "GuidGenerator",
+            "contentUrl": "https://43b609a6.ngrok.io/generateguid.aspx",
+            "websiteUrl": "https://43b609a6.ngrok.io/generateguid.aspx",
+            "scopes": [
+                "personal"
+            ]
+        }
+    ],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": [
+        "43b609a6.ngrok.io"
+    ]
+}
