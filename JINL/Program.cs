@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,13 +21,16 @@ namespace JINL
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsPnpcoreCreatePropertyBag(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
 
             myList.SetPropertyBagValue("myKey", "myValueString");
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void SpCsPnpcoreReadPropertyBag(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -35,7 +38,9 @@ namespace JINL
             string myKeyValue = myList.GetPropertyBagValueString("myKey", "");
             Console.WriteLine(myKeyValue);
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsPnpcorePropertyBagExists(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -43,7 +48,9 @@ namespace JINL
             bool myKeyExists = myList.PropertyBagContainsKey("myKey");
             Console.WriteLine(myKeyExists.ToString());
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsPnpcorePropertyBagIndex(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -57,13 +64,16 @@ namespace JINL
                 Console.WriteLine(oneKey);
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsPnpcoreDeletePropertyBag(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
 
             myList.RemovePropertyBagValue("myKey");
         }
+        //gavdcodeend 05
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginPnPCore()
@@ -80,4 +90,3 @@ namespace JINL
         }
     }
 }
-
