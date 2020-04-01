@@ -1,4 +1,4 @@
-using Microsoft.Exchange.WebServices.Data;
+﻿using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Identity.Client;
 using System;
 using System.Configuration;
@@ -8,6 +8,7 @@ namespace JCIW
     class Program
     {
         // Note: Remove one of the two Main routines to run the program
+        //gavdcodebegin 02
         static void Main(string[] args)
         {
             ExchangeService myExService = ConnectBA(
@@ -16,7 +17,9 @@ namespace JCIW
 
             CallEWSTest(myExService);
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 04
         static void Main(string[] args)
         {
             ExchangeService myExService = ConnectOA(
@@ -26,7 +29,9 @@ namespace JCIW
 
             CallEWSTest(myExService);
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 01
         static ExchangeService ConnectBA(string userEmail, string userPW)
         {
             ExchangeService exService = new ExchangeService
@@ -55,7 +60,9 @@ namespace JCIW
 
             return validationResult;
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 03
         static async System.Threading.Tasks.Task<ExchangeService> ConnectOA(
                                                             string AppId, string TenId)
         {
@@ -81,6 +88,7 @@ namespace JCIW
 
             return await System.Threading.Tasks.Task.FromResult(exService);
         }
+        //gavdcodeend 03
 
         static void CallEWSTest(ExchangeService ExchService)
         {
@@ -93,4 +101,3 @@ namespace JCIW
         }
     }
 }
-

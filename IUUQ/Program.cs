@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using System;
 using System.Configuration;
 using System.IO;
@@ -39,6 +39,7 @@ namespace IUUQ
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsCsomCreateOneItem(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -51,7 +52,9 @@ namespace IUUQ
             newListItem.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 12
         static void SpCsCsomCreateMultipleItem(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -67,7 +70,9 @@ namespace IUUQ
 
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 02
         static void SpCsCsomUploadOneDocument(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -88,7 +93,9 @@ namespace IUUQ
                                 SaveBinaryDirect(spCtx, fileUrl, myFileStream, true);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 22
         static void SpCsCsomUploadOneDocumentFileCrInfo(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -115,7 +122,9 @@ namespace IUUQ
                 spCtx.ExecuteQuery();
             }
         }
+        //gavdcodeend 22
 
+        //gavdcodebegin 13
         static void SpCsCsomUploadMultipleDocs(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -140,7 +149,9 @@ namespace IUUQ
                 }
             }
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 03
         static void SpCsCsomDownloadOneDoc(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -162,7 +173,9 @@ namespace IUUQ
                 myFileInfo.Stream.CopyTo(myFileStream);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 14
         static void SpCsCsomDownloadMultipleDocs(ClientContext spCtx)
         {
             string filePath = @"C:\Temporary\";
@@ -184,7 +197,9 @@ namespace IUUQ
                 }
             }
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 04
         static void SpCsCsomReadAllListItems(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -198,7 +213,9 @@ namespace IUUQ
                 Console.WriteLine(oneItem["Title"] + " - " + oneItem.Id);
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 08
         static void SpCsCsomReadAllLibraryDocs(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -212,7 +229,9 @@ namespace IUUQ
                 Console.WriteLine(oneItem["FileLeafRef"] + " - " + oneItem.Id);
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 05
         static void SpCsCsomReadOneListItem(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -244,7 +263,9 @@ namespace IUUQ
 
             Console.WriteLine("Item Title - " + allItems[0]["Title"]);
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 09
         static void SpCsCsomReadOneLibraryDoc(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -276,7 +297,9 @@ namespace IUUQ
 
             Console.WriteLine("Item Title - " + allItems[0]["FileLeafRef"]);
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 06
         static void SpCsCsomUpdateOneListItem(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -289,7 +312,9 @@ namespace IUUQ
 
             Console.WriteLine("Item Title - " + myListItem["Title"]);
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 10
         static void SpCsCsomUpdateOneLibraryDoc(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -302,7 +327,9 @@ namespace IUUQ
 
             Console.WriteLine("Item Title - " + myListItem["FileLeafRef"]);
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 07
         static void SpCsCsomDeleteOneListItem(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -310,7 +337,9 @@ namespace IUUQ
             myListItem.DeleteObject();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 15
         static void SpCsCsomDeleteAllListItems(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -327,7 +356,9 @@ namespace IUUQ
 
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 11
         static void SpCsCsomDeleteOneLibraryDoc(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -335,7 +366,9 @@ namespace IUUQ
             myListItem.DeleteObject();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 16
         static void SpCsCsomDeleteAllLibraryDocs(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -352,7 +385,9 @@ namespace IUUQ
 
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 16
 
+        //gavdcodebegin 17
         static void SpCsCsomBreakSecurityInheritanceListItem(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -367,7 +402,9 @@ namespace IUUQ
             myListItem.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 17
 
+        //gavdcodebegin 18
         static void SpCsCsomResetSecurityInheritanceListItem(ClientContext spCtx)
         {
             List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -382,7 +419,9 @@ namespace IUUQ
             myListItem.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 18
 
+        //gavdcodebegin 19
         static void SpCsCsomAddUserToSecurityRoleInListItem(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -397,7 +436,9 @@ namespace IUUQ
 
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 19
 
+        //gavdcodebegin 20
         static void SpCsCsomUpdateUserSecurityRoleInListItem(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -416,7 +457,9 @@ namespace IUUQ
             myRoleAssignment.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 20
 
+        //gavdcodebegin 21
         static void SpCsCsomDeleteUserFromSecurityRoleInListItem(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -429,6 +472,7 @@ namespace IUUQ
             spCtx.ExecuteQuery();
             spCtx.Dispose();
         }
+        //gavdcodeend 21
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()
@@ -449,4 +493,3 @@ namespace IUUQ
         }
     }
 }
-

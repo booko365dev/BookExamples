@@ -1,4 +1,4 @@
-Function LoginAdminCsom()
+﻿Function LoginAdminCsom()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.spUserPw -AsPlainText -Force
@@ -158,6 +158,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsCsomGetPropertiesTenant($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -167,7 +168,9 @@ Function SpPsCsomGetPropertiesTenant($spAdminCtx)
         Write-Host($oneProperty.Name)
     }
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function SpPsCsomGetValuePropertyTenant($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -179,7 +182,9 @@ Function SpPsCsomGetValuePropertyTenant($spAdminCtx)
     $myAccessDevices = $myTenant.BlockAccessOnUnmanagedDevices
     Write-Host($myAccessDevices)
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsCsomUpdateValuePropertyTenant($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -189,7 +194,9 @@ Function SpPsCsomUpdateValuePropertyTenant($spAdminCtx)
     $myTenant.Update()
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpPsRestFindAppCatalog()
 {
     $endpointUrl = $webBaseUrl + "/_api/SP_TenantSettings_Current"
@@ -199,7 +206,9 @@ Function SpPsRestFindAppCatalog()
 		  $password -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpPsRestFindTenantProps()
 {
     $catalogUrl = $webBaseUrl + "/sites/appcatalog"
@@ -210,55 +219,73 @@ Function SpPsRestFindTenantProps()
 		  $password -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpPsSpoGetTenant()
 {
 	Get-SPOTenant
 	Disconnect-SPOService
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function SpPsSpoModifyTenantProperties()
 {
 	Set-SPOTenant -NoAccessRedirectUrl $configFile.appsettings.spBaseUrl
 	Disconnect-SPOService
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function SpPsSpoGetTenantLogs()
 {
 	Get-SPOTenantLogEntry
 	Disconnect-SPOService
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpPsSpoGetTenantLogsLastEntryTime()
 {
 	Get-SPOTenantLogLastAvailableTimeInUtc
 	Disconnect-SPOService
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function SpPsSpoGetCdnEnabled()
 {
 	Get-SPOTenantCdnEnabled -CdnType Public
 	Disconnect-SPOService
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpPsSpoGetCdnOrigins()
 {
 	Get-SPOTenantCdnOrigins -CdnType Public
 	Disconnect-SPOService
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpPsSpoGetCdnPolicies()
 {
 	Get-SPOTenantCdnPolicies -CdnType Public
 	Disconnect-SPOService
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function SpPsSpoEnableCdn()
 {
 	Set-SPOTenantCdnEnabled -CdnType public -Enable $false
 	Disconnect-SPOService
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function SpPsSpoCdnPolicy()
 {
 	Set-SPOTenantCdnPolicy -CdnType Public `
@@ -266,21 +293,27 @@ Function SpPsSpoCdnPolicy()
 						   -PolicyValue "Confidential,Restricted"
 	Disconnect-SPOService
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpPsSpoAddCdn()
 {
 	Add-SPOTenantCdnOrigin -CdnType Public `
 						   -OriginUrl "/sites/[sitename]/[library]"
 	Disconnect-SPOService
 }
+#gavdcodeend 15
 
+#gavdcodebegin 16
 Function SpPsSpoRemoveCdn()
 {
 	Remove-SPOTenantCdnOrigin -CdnType Public `
 							  -OriginUrl "/sites/[sitename]/[library]"
 	Disconnect-SPOService
 }
+#gavdcodeend 16
 
+#gavdcodebegin 17
 Function SpPsSpoSetKey()
 {
 	$appCatUrl = $configFile.appsettings.spBaseUrl + "/sites/appcatalog"
@@ -289,20 +322,25 @@ Function SpPsSpoSetKey()
 						 -Comments "Comments for my key"
 	Disconnect-SPOService
 }
+#gavdcodeend 17
 
+#gavdcodebegin 18
 Function SpPsSpoGetKey()
 {
 	$appCatUrl = $configFile.appsettings.spBaseUrl + "/sites/appcatalog"
 	Get-SPOStorageEntity -Site $appCatUrl -Key "MyPropertyKey"
 	Disconnect-SPOService
 }
+#gavdcodeend 18
 
+#gavdcodebegin 19
 Function SpPsSpoDeleteKey()
 {
 	$appCatUrl = $configFile.appsettings.spBaseUrl + "/sites/appcatalog"
 	Remove-SPOStorageEntity -Site $appCatUrl -Key "MyPropertyKey"
 	Disconnect-SPOService
 }
+#gavdcodeend 19
 
 #-----------------------------------------------------------------------------------------
 

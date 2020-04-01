@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="5304d035-2018-4360-87c4-4497b41fd75e" 
+        solutionId="5304d035-2018-4360-87c4-4497b41fd75e" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="IVCR"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="913c2483-0cd3-4124-9f1e-6ce365faffc5" />
+  </features>
+</package>
