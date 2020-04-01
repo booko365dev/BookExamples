@@ -203,7 +203,8 @@ Function SpPsCsomAddUserToSecurityRoleInList($spCtx)
 	$myUser = $myWeb.EnsureUser($configFile.appsettings.spUserName)
 	$roleDefinition = 
 		New-Object Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
-	$roleDefinition.Add($myWeb.RoleDefinitions.GetByType([Microsoft.SharePoint.Client.RoleType]::Reader))
+	$roleDefinition.Add($myWeb.RoleDefinitions.GetByType(`
+										[Microsoft.SharePoint.Client.RoleType]::Reader))
 	$myRoleAssignment = $myList.RoleAssignments.Add($myUser, $roleDefinition)
 
 	$spCtx.ExecuteQuery()
@@ -217,7 +218,8 @@ Function SpPsCsomUpdateUserSecurityRoleInList($spCtx)
 	$myUser = $myWeb.EnsureUser($configFile.appsettings.spUserName)
 	$roleDefinition =
 		New-Object Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
-	$roleDefinition.Add($myWeb.RoleDefinitions.GetByType([Microsoft.SharePoint.Client.RoleType]::Administrator))
+	$roleDefinition.Add($myWeb.RoleDefinitions.GetByType(`
+								[Microsoft.SharePoint.Client.RoleType]::Administrator))
 
 	$myRoleAssignment = $myList.RoleAssignments.GetByPrincipal($myUser)
 	$myRoleAssignment.ImportRoleDefinitionBindings($roleDefinition)
