@@ -1,4 +1,4 @@
-Function LoginPsCsom()
+﻿Function LoginPsCsom()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.spUserPw -AsPlainText -Force
@@ -41,6 +41,7 @@ Function LoginAdminCsom()
 
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsCsomCreateOneSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -60,7 +61,9 @@ Function SpPsCsomCreateOneSiteCollection($spAdminCtx)
     $spAdminCtx.Load($myOps)
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function SpPsCsomFindWebTemplates($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -75,7 +78,9 @@ Function SpPsCsomFindWebTemplates($spAdminCtx)
         Write-Host ($oneTemplate.Name + " - " + $oneTemplate.Title)
     }
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsCsomReadAllSiteCollections($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -90,7 +95,9 @@ Function SpPsCsomReadAllSiteCollections($spAdminCtx)
         Write-Host ($oneSiteColl.Title + " - " + $oneSiteColl.Url)
     }
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpPsCsomRemoveSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -100,7 +107,9 @@ Function SpPsCsomRemoveSiteCollection($spAdminCtx)
     
 	$spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpPsCsomRestoreSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -110,7 +119,9 @@ Function SpPsCsomRestoreSiteCollection($spAdminCtx)
     
 	$spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpPsCsomRemoveDeletedSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -120,7 +131,9 @@ Function SpPsCsomRemoveDeletedSiteCollection($spAdminCtx)
     
 	$spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function SpPsCsomCreateGroupForSite($spAdminCtx)
 {
     $myOwners = @( "user@domain.onmicrosoft.com" )
@@ -138,7 +151,9 @@ Function SpPsCsomCreateGroupForSite($spAdminCtx)
 
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function SpPsCsomSetAdministratorSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -150,7 +165,9 @@ Function SpPsCsomSetAdministratorSiteCollection($spAdminCtx)
 
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpPsCsomRegisterAsHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -160,7 +177,9 @@ Function SpPsCsomRegisterAsHubSiteCollection($spAdminCtx)
 
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function SpPsCsomUnregisterAsHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -170,7 +189,9 @@ Function SpPsCsomUnregisterAsHubSiteCollection($spAdminCtx)
 
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpPsCsomGetHubSiteCollectionProperties($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -183,7 +204,9 @@ Function SpPsCsomGetHubSiteCollectionProperties($spAdminCtx)
 
     Write-Host($myProps.Title)
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpPsCsomUpdateHubSiteCollectionProperties($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -202,7 +225,9 @@ Function SpPsCsomUpdateHubSiteCollectionProperties($spAdminCtx)
 
     Write-Host($myProps.Title)
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function SpPsCsomAddSiteToHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -213,7 +238,9 @@ Function SpPsCsomAddSiteToHubSiteCollection($spAdminCtx)
 
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function SpPsCsomremoveSiteFromHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
@@ -223,7 +250,9 @@ Function SpPsCsomremoveSiteFromHubSiteCollection($spAdminCtx)
 
     $spAdminCtx.ExecuteQuery()
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpPsCsomCreateOneWebInSiteCollection($spCtx)
 {
     $mySite = $spCtx.Site
@@ -239,7 +268,9 @@ Function SpPsCsomCreateOneWebInSiteCollection($spCtx)
     $myWeb = $mySite.RootWeb.Webs.Add($myWebCreationInfo)
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 15
 
+#gavdcodebegin 16
 Function SpPsCsomGetWebsInSiteCollection($spCtx)
 {
     $mySite = $spCtx.Site
@@ -253,7 +284,9 @@ Function SpPsCsomGetWebsInSiteCollection($spCtx)
         Write-Host($oneWeb.Title + " - " + $oneWeb.Url + " - " + $oneWeb.Id)
     }
 }
+#gavdcodeend 16
 
+#gavdcodebegin 17
 Function SpPsCsomGetOneWebInSiteCollection()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -265,7 +298,9 @@ Function SpPsCsomGetOneWebInSiteCollection()
 
     Write-Host($myWeb.Title + " - " + $myWeb.Url + " - " + $myWeb.Id)
 }
+#gavdcodeend 17
 
+#gavdcodebegin 18
 Function SpPsCsomUpdateOneWebInSiteCollection()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -276,7 +311,9 @@ Function SpPsCsomUpdateOneWebInSiteCollection()
     $myWeb.Update()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 18
 
+#gavdcodebegin 19
 Function SpPsCsomDeleteOneWebInSiteCollection()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -286,7 +323,9 @@ Function SpPsCsomDeleteOneWebInSiteCollection()
     $myWeb.DeleteObject()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 19
 
+#gavdcodebegin 20
 Function SpPsCsomBreakSecurityInheritanceWeb()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -300,7 +339,9 @@ Function SpPsCsomBreakSecurityInheritanceWeb()
     $myWeb.Update()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 20
 
+#gavdcodebegin 21
 Function SpPsCsomResetSecurityInheritanceWeb()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -314,7 +355,9 @@ Function SpPsCsomResetSecurityInheritanceWeb()
     $myWeb.Update()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 21
 
+#gavdcodebegin 22
 Function SpPsCsomAddUserToSecurityRoleInWeb()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -331,7 +374,9 @@ Function SpPsCsomAddUserToSecurityRoleInWeb()
 
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 22
 
+#gavdcodebegin 23
 Function SpPsCsomUpdateUserSecurityRoleInWeb()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -351,7 +396,9 @@ Function SpPsCsomUpdateUserSecurityRoleInWeb()
     $myRoleAssignment.Update()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 23
 
+#gavdcodebegin 24
 Function SpPsCsomDeleteUserFromSecurityRoleInWeb()
 {
     $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
@@ -364,6 +411,7 @@ Function SpPsCsomDeleteUserFromSecurityRoleInWeb()
 
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 24
 
 #-----------------------------------------------------------------------------------------
 
@@ -402,4 +450,3 @@ $spAdminCtx = LoginAdminCsom
 #SpPsCsomDeleteUserFromSecurityRoleInWeb
 
 Write-Host "Done"
-
