@@ -1,4 +1,4 @@
-Function LoginPsPnP()
+﻿Function LoginPsPnP()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.spUserPw -AsPlainText -Force
@@ -9,17 +9,22 @@ Function LoginPsPnP()
 }
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsPnpCreateOneListItem()
 {
 	Add-PnPListItem -List "TestList" -Values @{"Title" = "NewListItemPsPnp"}
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function SpPsPnpUploadOneDocument()
 {
 	$fileFullPath = "C:\Temporary\TestDocument01.docx"
 	Add-PnPFile -Path $fileFullPath -Folder "TestLibrary"
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsPnpUploadSeveralDocuments()
 {
 	$filesPath = "C:\Temporary\"
@@ -30,7 +35,9 @@ Function SpPsPnpUploadSeveralDocuments()
 											-Values @{"Title" = $($oneFile.Name)}
 	}
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpPsPnpDownloadOneDocument()
 {
 	Get-PnPFile -Url  "/TestLibrary/TestDocument01.docx" `
@@ -38,28 +45,38 @@ Function SpPsPnpDownloadOneDocument()
 				-FileName "TestDocument01_Dnld.docx" `
 				-AsFile
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpPsPnpReadAllListItems()
 {
 	Get-PnPListItem -List "TestList"
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpPsPnpReadOneListItem()
 {
 	Get-PnPListItem -List "TestList" -Id 44
 }
+#gavdcodeend 06
 
+#gavdcodebegin 10
 Function SpPsPnpFindOneLibraryDocument()
 {
 	Find-PnPFile -List "TestLibrary" -Match *.docx
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpPsPnpCopyOneLibraryDocument()
 {
 	Copy-PnPFile -SourceUrl "TestLibrary/TestDocument01.docx" `
 						-TargetUrl "OtherTestLibrary/TestDocument01.docx"
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpPsPnpMoveOneLibraryDocument()
 {
 	$webUrl = $configFile.appsettings.spUrl
@@ -69,13 +86,17 @@ Function SpPsPnpMoveOneLibraryDocument()
 	Move-PnPFile -ServerRelativeUrl ($WebUrlRel + "/TestLibrary/TestDocument01.docx") `
 				-TargetUrl ($WebUrlRel + "/OtherTestLibrary/TestDocument01.docx")
 }
+#gavdcodeend 12
 
+#gavdcodebegin 07
 Function SpPsPnpUpdateOneListItem()
 {
 	Set-PnPListItem -List "TestList" -Identity 44 `
 			-Values @{"Title" = "NewListItemPsPnpUpdated"}
 }
+#gavdcodeend 07
 
+#gavdcodebegin 13
 Function SpPsPnpRenameOneLibraryDocument()
 {
 	$webUrl = $configFile.appsettings.spUrl
@@ -85,17 +106,23 @@ Function SpPsPnpRenameOneLibraryDocument()
 	Rename-PnPFile -ServerRelativeUrl ($WebUrlRel + "/TestLibrary/TestDocument01.docx") `
 				-TargetFileName "TestDocument01_Renamed.docx"
 }
+#gavdcodeend 13
 
+#gavdcodebegin 08
 Function SpPsPnpDeleteOneListItem()
 {
 	Remove-PnPListItem -List "TestList" -Identity "44" -Force -Recycle
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpPsPnpDeleteToRecycleOneListItem()
 {
 	Move-PnPListItemToRecycleBin -List "TestList" -Identity "45" -Force
 }
+#gavdcodeend 09
 
+#gavdcodebegin 14
 Function SpPsPnpDeleteOneLibraryDoc()
 {
 	$webUrl = $configFile.appsettings.spUrl
@@ -105,7 +132,9 @@ Function SpPsPnpDeleteOneLibraryDoc()
 	Remove-PnPFile -ServerRelativeUrl `
 							($WebUrlRel + "/TestLibrary/TestDocument01.docx") -Recycle
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpPsPnpResetVersionOneLibraryDoc()
 {
 	$webUrl = $configFile.appsettings.spUrl
@@ -115,7 +144,9 @@ Function SpPsPnpResetVersionOneLibraryDoc()
 	Reset-PnPFileVersion -ServerRelativeUrl `
 							($WebUrlRel + "/TestLibrary/TestDocument01.docx")
 }
+#gavdcodeend 15
 
+#gavdcodebegin 16
 Function SpPsPnpCheckOutOneLibraryDoc()
 {
 	$webUrl = $configFile.appsettings.spUrl
@@ -124,7 +155,9 @@ Function SpPsPnpCheckOutOneLibraryDoc()
 	
 	Set-PnPFileCheckedOut -Url ($WebUrlRel + "/TestLibrary/TestDocument01.docx")
 }
+#gavdcodeend 16
 
+#gavdcodebegin 17
 Function SpPsPnpCheckInOneLibraryDoc()
 {
 	$webUrl = $configFile.appsettings.spUrl
@@ -134,23 +167,30 @@ Function SpPsPnpCheckInOneLibraryDoc()
 	Set-PnPFileCheckedIn -Url ($WebUrlRel + "/TestLibrary/TestDocument01.docx") `
 			-CheckinType MinorCheckin -Comment "Changed by PowerShell"
 }
+#gavdcodeend 17
 
+#gavdcodebegin 18
 Function SpPsPnpAddUserToSecurityRole()
 {
 	Set-PnPListItemPermission -List 'TestLibrary' -Identity 35 `
 				-User $configFile.appsettings.spUserName -AddRole 'Read'
 }
+#gavdcodeend 18
 
+#gavdcodebegin 19
 Function SpPsPnpRemoveUserFromSecurityRole()
 {
 	Set-PnPListItemPermission -List 'TestLibrary' -Identity 35 `
 				-User $configFile.appsettings.spUserName -RemoveRole 'Read'
 }
+#gavdcodeend 19
 
+#gavdcodebegin 20
 Function SpPsPnpResetSecurityInheritance()
 {
 	Set-PnPListItemPermission -List 'TestLibrary' -Identity 35 -InheritPermissions
 }
+#gavdcodeend 20
 
 #----------------------------------------------------------------------------------------
 

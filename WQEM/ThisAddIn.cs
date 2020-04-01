@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace WQEM
 {
     public partial class ThisAddIn
     {
+        //gavdcodebegin 01
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             Outlook.Application myApplication = this.Application;
@@ -38,6 +39,7 @@ namespace WQEM
                 }
             }
         }
+        //gavdcodeend 01
 
         #region VSTO generated code
 
@@ -54,4 +56,3 @@ namespace WQEM
         #endregion
     }
 }
-

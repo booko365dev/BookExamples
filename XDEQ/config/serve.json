@@ -1,0 +1,33 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://domain.sharepoint.com/sites/Test_TeamSiteModern/Lists/List01/AllItems.aspx",
+      "customActions": {
+        "f28d770c-b64b-47c1-98ae-13b28f7e4c0a": {
+          "location": "ClientSideExtension.ListViewCommandSet.ContextMenu",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible.",
+            "sampleTextThree": "Input some text"
+          }
+        }
+      }
+    },
+    "listViewExt": {
+      "pageUrl": "https://domain.sharepoint.com/sites/Test_TeamSiteModern/Lists/List01/AllItems.aspx",
+      "customActions": {
+        "f28d770c-b64b-47c1-98ae-13b28f7e4c0a": {
+          "location": "ClientSideExtension.ListViewCommandSet.ContextMenu",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible.",
+            "sampleTextThree": "Input some text"
+          }
+        }
+      }
+    }
+  }
+}

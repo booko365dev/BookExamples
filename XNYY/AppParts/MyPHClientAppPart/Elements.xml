@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ClientWebPart Name="MyPHClientAppPart" Title="MyPHClientAppPart Title" Description="MyPHClientAppPart Description" DefaultWidth="300" DefaultHeight="200">
+
+    <!-- Content element identifies the location of the page that will render inside the client web part
+         Properties are referenced on the query string using the pattern _propertyName_
+         Example: Src="~appWebUrl/Pages/ClientWebPart1.aspx?Property1=_property1_" -->
+    <Content Type="html" Src="~remoteAppUrl/Pages/MyPHClientAppPart.aspx?{StandardTokens}&amp;property1=_strProperty_" />
+
+    <!-- Define properties in the Properties element.
+         Remember to put Property Name on the Src attribute of the Content element above. -->
+<!--gavdcodebegin 02-->
+    <Properties>
+      <Property Name="strProperty" 
+                Type="string" 
+                RequiresDesignerPermission="true" 
+                DefaultValue="My default value" 
+                WebDisplayName="My string property" 
+                WebCategory="Basic add-in part category" />
+    </Properties>
+<!--gavdcodeend 02-->
+
+  </ClientWebPart>
+</Elements>
