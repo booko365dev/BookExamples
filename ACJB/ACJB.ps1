@@ -1,4 +1,5 @@
-
+﻿
+#gavdcodebegin 01
 Function LoginPsCsom()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -12,7 +13,9 @@ Function LoginPsCsom()
 
 	return $rtnContext
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function LoginPsPSO()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -22,7 +25,9 @@ Function LoginPsPSO()
 			-argumentlist $configFile.appsettings.spUserName, $securePW
 	Connect-SPOService -Url $configFile.appsettings.spAdminUrl -Credential $myCredentials
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function LoginPsPnP()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -32,7 +37,9 @@ Function LoginPsPnP()
 			-argumentlist $configFile.appsettings.spUserName, $securePW
 	Connect-PnPOnline -Url $configFile.appsettings.spUrl -Credentials $myCredentials
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function Invoke-RestSPO() {
 	Param (
 		[Parameter(Mandatory=$True)]
@@ -138,7 +145,9 @@ Function Invoke-RestSPO() {
 		$response.Dispose()
 	}
 }
+#gavdcodeend 04
  
+#gavdcodebegin 05
 Function Get-SPOContextInfo(){
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -162,6 +171,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
          $Destination.Write($buffer, 0, $bytesRead)
     }
 }
+#gavdcodeend 05
 
 #-----------------------------------------------------------------------------------------
 
@@ -215,5 +225,4 @@ $password = $configFile.appsettings.spUserPw
 #Invoke-RestSPO -Url $endpointUrl -Method Post -UserName $userName -Password $password -Metadata $myPayload -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue 
 
 Write-Host ""  
-
 

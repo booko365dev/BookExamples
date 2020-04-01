@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -14,6 +14,7 @@ namespace BRMM
 {
     public partial class ThisDocument
     {
+        //gavdcodebegin 01
         private void ThisDocument_Startup(object sender, System.EventArgs e)
         {
 			this.Paragraphs[1].Range.InsertParagraphAfter();
@@ -23,6 +24,7 @@ namespace BRMM
         private void ThisDocument_Shutdown(object sender, System.EventArgs e)
         {
         }
+        //gavdcodeend 01
 
         #region VSTO Designer generated code
 
@@ -39,4 +41,3 @@ namespace BRMM
         #endregion
     }
 }
-

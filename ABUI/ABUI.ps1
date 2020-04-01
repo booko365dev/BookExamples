@@ -1,4 +1,4 @@
-Function Invoke-RestSPO() {
+﻿Function Invoke-RestSPO() {
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -130,6 +130,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsRestCreateOneCommunicationSiteCollection()
 {
 	$endpointUrl = $webBaseUrl + "/_api/sitepages/communicationsite/create"
@@ -155,7 +156,9 @@ Function SpPsRestCreateOneCommunicationSiteCollection()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 01 
 
+#gavdcodebegin 02
 Function SpPsRestCreateOneSiteCollection()
 {
 	$endpointUrl = $webBaseUrl + "/_api/SPSiteManager/create"
@@ -181,7 +184,9 @@ Function SpPsRestCreateOneSiteCollection()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsRestCreateOneWebInSiteCollection()
 {
 	$endpointUrl = $webUrl + "/_api/web/webs/add"
@@ -201,7 +206,9 @@ Function SpPsRestCreateOneWebInSiteCollection()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpCsRestReadAllSiteCollections()
 {
     $endpointUrl = $webBaseUrl +
@@ -213,7 +220,9 @@ Function SpCsRestReadAllSiteCollections()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpCsRestReadAllWebsInSiteCollection()
 {
 	$endpointUrl = $webUrl + "/_api/web/webs"
@@ -221,7 +230,9 @@ Function SpCsRestReadAllWebsInSiteCollection()
 						$password -Metadata $myPayload 
     $data | ConvertTo-Json
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpCsRestUpdateOneWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -238,7 +249,9 @@ Function SpCsRestUpdateOneWeb()
 						-XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function SpCsRestDeleteOneWebFromSiteCollection()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -251,7 +264,9 @@ Function SpCsRestDeleteOneWebFromSiteCollection()
 						-XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function SpCsRestGetRoleDefinitionsWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -263,7 +278,9 @@ Function SpCsRestGetRoleDefinitionsWeb()
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpCsRestFindUserPermissionsWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -277,7 +294,9 @@ Function SpCsRestFindUserPermissionsWeb()
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function SpCsRestFindOtherUserPermissionsWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -291,7 +310,9 @@ Function SpCsRestFindOtherUserPermissionsWeb()
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpCsRestBreakSecurityInheritanceWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -306,7 +327,9 @@ Function SpCsRestBreakSecurityInheritanceWeb()
 						-XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpCsRestResetSecurityInheritanceWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -318,7 +341,9 @@ Function SpCsRestResetSecurityInheritanceWeb()
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function SpCsRestAddUserToSecurityRoleInWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -352,7 +377,9 @@ Function SpCsRestAddUserToSecurityRoleInWeb()
 							-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function SpCsRestUpdateUserSecurityRoleInWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -386,7 +413,9 @@ Function SpCsRestUpdateUserSecurityRoleInWeb()
 						-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpCsRestDeleteUserFromSecurityRoleInWeb()
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
@@ -410,6 +439,7 @@ Function SpCsRestDeleteUserFromSecurityRoleInWeb()
 						-ETag "*" -XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 15
 
 #----------------------------------------------------------------------------------------
 
@@ -441,4 +471,3 @@ $password = $configFile.appsettings.spUserPw
 #SpCsRestDeleteUserFromSecurityRoleInWeb
 
 Write-Host "Done" 
-

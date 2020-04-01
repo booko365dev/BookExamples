@@ -1,4 +1,4 @@
-Function LoginPsCsom()
+﻿Function LoginPsCsom()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.spUserPw -AsPlainText -Force
@@ -13,6 +13,7 @@ Function LoginPsCsom()
 }
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsCsomCreateOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -24,7 +25,9 @@ Function SpPsCsomCreateOneListItem($spCtx)
 	$newListItem.Update()
 	$spCtx.ExecuteQuery()
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function SpPsCsomCreateMultipleItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -39,7 +42,9 @@ Function SpPsCsomCreateMultipleItem($spCtx)
 
 	$spCtx.ExecuteQuery()
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsCsomUploadOneDocument($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -58,7 +63,9 @@ Function SpPsCsomUploadOneDocument($spCtx)
 	[Microsoft.SharePoint.Client.File]::SaveBinaryDirect($spCtx, $fileUrl, `
 																$myFileStream, $true)
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpPsCsomUploadOneDocumentFileCrInfo($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -82,7 +89,9 @@ Function SpPsCsomUploadOneDocumentFileCrInfo($spCtx)
 	$spCtx.Load($newFile)
 	$spCtx.ExecuteQuery()
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpPsCsomDownloadOneDocument($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -103,7 +112,9 @@ Function SpPsCsomDownloadOneDocument($spCtx)
 	$myFileInfo.Stream.CopyTo($myFileStream)
 	$myFileStream.Close()
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpPsCsomReadAllListItems($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -117,7 +128,9 @@ Function SpPsCsomReadAllListItems($spCtx)
         Write-Host ($oneItem["Title"] + " - " + $oneItem.Id)
     }
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function SpPsCsomReadAllLibraryDocs($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -131,7 +144,9 @@ Function SpPsCsomReadAllLibraryDocs($spCtx)
         Write-Host ($oneItem["FileLeafRef"] + " - " + $oneItem.Id)
     }
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function SpPsCsomReadOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -165,7 +180,9 @@ Function SpPsCsomReadOneListItem($spCtx)
         Write-Host ($oneItem["Title"] + " - " + $oneItem.Id)
     }
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpPsCsomReadOneLibraryDoc($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -197,7 +214,9 @@ Function SpPsCsomReadOneLibraryDoc($spCtx)
 
     Write-Host ($allItems[0]["FileLeafRef"] + " - " + $allItems[0].Id)
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function SpPsCsomUpdateOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -210,7 +229,9 @@ Function SpPsCsomUpdateOneListItem($spCtx)
 
     Write-Host ("Item Title - " + $myListItem["Title"])
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpPsCsomUpdateOneLibraryDoc($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -223,7 +244,9 @@ Function SpPsCsomUpdateOneLibraryDoc($spCtx)
 
     Write-Host ("Item Title - " + $myListItem["Title"])
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpPsCsomDeleteOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -232,7 +255,9 @@ Function SpPsCsomDeleteOneListItem($spCtx)
 	$myListItem.DeleteObject()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function SpPsCsomDeleteAllListItems($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -249,7 +274,9 @@ Function SpPsCsomDeleteAllListItems($spCtx)
 
 	$spCtx.ExecuteQuery()
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function SpPsCsomDeleteOneLibraryDoc($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -258,7 +285,9 @@ Function SpPsCsomDeleteOneLibraryDoc($spCtx)
 	$myListItem.DeleteObject()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpPsCsomDeleteAllLibraryDocs($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
@@ -275,7 +304,9 @@ Function SpPsCsomDeleteAllLibraryDocs($spCtx)
 
 	$spCtx.ExecuteQuery()
 }
+#gavdcodeend 15
 
+#gavdcodebegin 16
 Function SpPsCsomBreakSecurityInheritanceListItem($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -288,7 +319,9 @@ Function SpPsCsomBreakSecurityInheritanceListItem($spCtx)
     $myListItem.Update()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 16
 
+#gavdcodebegin 17
 Function SpPsCsomResetSecurityInheritanceListItem($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -301,7 +334,9 @@ Function SpPsCsomResetSecurityInheritanceListItem($spCtx)
     $myListItem.Update()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 17
 
+ #gavdcodebegin 18
 Function SpPsCsomAddUserToSecurityRoleInListItem($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -317,7 +352,9 @@ Function SpPsCsomAddUserToSecurityRoleInListItem($spCtx)
     $myListItem.RoleAssignments.Add($myUser, $roleDefinition)
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 18
 
+#gavdcodebegin 19
 Function SpPsCsomUpdateUserSecurityRoleInListItem($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -336,7 +373,9 @@ Function SpPsCsomUpdateUserSecurityRoleInListItem($spCtx)
     $myRoleAssignment.Update()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 19
 
+#gavdcodebegin 20
 Function SpPsCsomDeleteUserFromSecurityRoleInListItem($spCtx)
 {
     $myWeb = $spCtx.Web
@@ -348,6 +387,7 @@ Function SpPsCsomDeleteUserFromSecurityRoleInListItem($spCtx)
 
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 20
 
 #-----------------------------------------------------------------------------------------
 

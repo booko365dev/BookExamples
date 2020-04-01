@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace ARLC
 {
     public partial class ThisAddIn
     {
+        //gavdcodebegin 01
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.Application.DocumentBeforeSave +=
@@ -24,6 +25,7 @@ namespace ARLC
                     Environment.NewLine +
                     "To Whom It May Concern," + Environment.NewLine;
         }
+        //gavdcodeend 01
 
         #region VSTO generated code
 
@@ -40,4 +42,3 @@ namespace ARLC
         #endregion
     }
 }
-

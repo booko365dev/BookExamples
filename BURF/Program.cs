@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using System;
 using System.Configuration;
 using System.Security;
@@ -31,6 +31,7 @@ namespace BURF
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsCsomCreateOneList(ClientContext spCtx)
         {
             ListCreationInformation myListCreationInfo = new ListCreationInformation();
@@ -43,7 +44,9 @@ namespace BURF
             newList.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void SpCsCsomReadAllList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -57,7 +60,9 @@ namespace BURF
                 Console.WriteLine(oneList.Title + " - " + oneList.Id);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsCsomReadOneList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -67,7 +72,9 @@ namespace BURF
 
             Console.WriteLine("List description - " + myList.Description);
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsCsomUpdateOneList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -79,7 +86,9 @@ namespace BURF
 
             Console.WriteLine("List description - " + myList.Description);
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsCsomDeleteOneList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -87,7 +96,9 @@ namespace BURF
             myList.DeleteObject();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsCsomAddOneFieldToList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -98,7 +109,9 @@ namespace BURF
                                                        AddFieldOptions.DefaultValue);
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsCsomReadAllFieldsFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -113,7 +126,9 @@ namespace BURF
                 Console.WriteLine(oneField.Title + " - " + oneField.TypeAsString);
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void SpCsCsomReadOneFieldFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -124,7 +139,9 @@ namespace BURF
 
             Console.WriteLine(myField.Id + " - " + myField.TypeAsString);
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void SpCsCsomUpdateOneFieldInList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -142,7 +159,9 @@ namespace BURF
 
             Console.WriteLine(myField.Description);
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void SpCsCsomDeleteOneFieldFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -151,7 +170,9 @@ namespace BURF
             myField.DeleteObject();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void SpCsCsomBreakSecurityInheritanceList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -166,7 +187,9 @@ namespace BURF
             myList.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 15
         static void SpCsCsomResetSecurityInheritanceList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -181,7 +204,9 @@ namespace BURF
             myList.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 12
         static void SpCsCsomAddUserToSecurityRoleInList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -195,7 +220,9 @@ namespace BURF
 
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         static void SpCsCsomUpdateUserSecurityRoleInList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -212,7 +239,9 @@ namespace BURF
             myRoleAssignment.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         static void SpCsCsomDeleteUserFromSecurityRoleInList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -224,6 +253,7 @@ namespace BURF
             spCtx.ExecuteQuery();
             spCtx.Dispose();
         }
+        //gavdcodeend 14
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()
@@ -244,4 +274,3 @@ namespace BURF
         }
     }
 }
-

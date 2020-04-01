@@ -1,4 +1,4 @@
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
@@ -36,6 +36,7 @@ namespace BHAZ
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         public static void PowerPointOpenXmlCreatePresentation()
         {
             using (PresentationDocument myPowerPointDoc =
@@ -77,7 +78,9 @@ namespace BHAZ
                 PPCreateDefaultSlide(myPresentationPart);
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         private static void PPCreateDefaultSlide(PresentationPart PPPresentationPart)
         {
             SlidePart mySlidePart;
@@ -94,7 +97,9 @@ namespace BHAZ
             PPPresentationPart.AddPart(mySlideMasterPart, "rId1");
             PPPresentationPart.AddPart(myThemePart, "rId5");
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         private static SlidePart PPCreateSlidePart(PresentationPart PPPresentationPart)
         {
             SlidePart mySlidePart = PPPresentationPart.AddNewPart<SlidePart>("rId2");
@@ -136,7 +141,9 @@ namespace BHAZ
 
             return mySlidePart;
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         private static SlideLayoutPart PPCreateSlideLayoutPart(SlidePart PPSlidePart)
         {
             SlideLayoutPart mySlideLayoutPart =
@@ -174,7 +181,9 @@ namespace BHAZ
 
             return mySlideLayoutPart;
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         private static SlideMasterPart PPCreateSlideMasterPart(
                                                     SlideLayoutPart PPSlideLayoutPart)
         {
@@ -236,7 +245,9 @@ namespace BHAZ
 
             return mySlideMasterPart;
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         private static ThemePart PPCreateTheme(SlideMasterPart PPSlideMasterPart)
         {
             ThemePart myThemePart = PPSlideMasterPart.AddNewPart<ThemePart>("rId5");
@@ -420,7 +431,9 @@ namespace BHAZ
 
             return myThemePart;
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         public static void PowerPointOpenXmlFindTextInSlide()
         {
             using (PresentationDocument myPowerPointDoc = 
@@ -442,7 +455,9 @@ namespace BHAZ
                 }
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 10
         public static void PowerPointOpenXmlFindAllTextInOneSlide()
         {
             int toFindTextInSlidePositionIndex = 1;
@@ -489,7 +504,9 @@ namespace BHAZ
                 }
             }
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 08
         public static void PowerPointOpenXmlCopyTheme()
         {
             using (PresentationDocument sourceThemePowerPointDoc = 
@@ -551,7 +568,9 @@ namespace BHAZ
                 }
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         public static void PowerPointOpenXmlInsertNewSlide()
         {
             int newSlidePositionIndex = 1;
@@ -661,7 +680,9 @@ namespace BHAZ
                 presentationPart.Presentation.Save();
             }
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 11
         public static void PowerPointOpenXmlFindAllSlideTitles()
         {
             using (PresentationDocument myPowerPointDoc =
@@ -732,7 +753,9 @@ namespace BHAZ
 
             return false;
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         public static void PowerPointOpenXmlFindNumberOfSlides(bool includeHidden = true)
         {
             using (PresentationDocument myPowerPointDoc =
@@ -756,7 +779,9 @@ namespace BHAZ
                 }
             }
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         public static void PowerPointOpenXmlMoveSlide()
         {
             int slideIndexFrom = 1; 
@@ -796,7 +821,9 @@ namespace BHAZ
                 myPresentation.Save();
             }
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         public static void PowerPointOpenXmlDeleteOneSlide()
         {
             int slideIndex = 1;
@@ -847,7 +874,9 @@ namespace BHAZ
                 myPresentationPart.DeletePart(mySlidePart);
             }
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         public static void PowerPointOpenXmlAddCommentToSlide()
         {
             string myAuthorInitials = "GAVD";
@@ -957,7 +986,9 @@ namespace BHAZ
                 mySlideCommentsPart.CommentList.Save();
             }
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 16
         public static void PowerPointOpenXmlRemoveAllCommentsAuthor()
         {
             string myAuthorName = "Guitaca";
@@ -1006,7 +1037,9 @@ namespace BHAZ
                 }
             }
         }
+        //gavdcodeend 16
 
+        //gavdcodebegin 17
         public static void PowerPointOpenXmlAddNotesToSlide()
         {
             string myNoteText = "Note from Guitaca";
@@ -1083,7 +1116,9 @@ namespace BHAZ
                 myNotesSlidePart.NotesSlide = myNotesSlide;
             }
         }
+        //gavdcodeend 17
 
+        //gavdcodebegin 18
         public static void PowerPointOpenXmlFindTextInNotes()
         {
             using (PresentationDocument myPowerPointDoc =
@@ -1106,7 +1141,9 @@ namespace BHAZ
                 }
             }
         }
+        //gavdcodeend 18
 
+        //gavdcodebegin 19
         public static void PowerPointOpenXmlAddImageToSlide()
         {
             string myImage = @"C:\Temporary\MyPicture.jpg";
@@ -1180,7 +1217,9 @@ namespace BHAZ
                 myShapeTree.Append(myPicture);
             }
         }
+        //gavdcodeend 19
 
+        //gavdcodebegin 20
         public static void PowerPointOpenXmlAddShapeToSlide()
         {
             using (PresentationDocument myPowerPointDoc =
@@ -1220,6 +1259,6 @@ namespace BHAZ
                 myShapeTree.AppendChild(myShape);
             }
         }
+        //gavdcodeend 20
     }
 }
-
