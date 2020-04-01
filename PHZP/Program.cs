@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -28,12 +28,15 @@ namespace PHZP
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsPnpcoreSiteIsCommunication(ClientContext spCtx)
         {
             bool SiteIsCommnication = spCtx.Site.IsCommunicationSite();
             Console.WriteLine(SiteIsCommnication);
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void SpCsPnpcoreCreateOneCommunicationSiteCollection()
         {
             string myBaseUrl = ConfigurationManager.AppSettings["spBaseUrl"];
@@ -51,7 +54,9 @@ namespace PHZP
 
             ClientContext spCommCtx = spCtx.CreateSiteAsync(mySiteCreationProps).Result;
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsPnpcoreFindWebTemplates(ClientContext spCtx)
         {
             Site mySite = spCtx.Site;
@@ -64,7 +69,9 @@ namespace PHZP
                 Console.WriteLine(oneTemplate.Name + " - " + oneTemplate.Title);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsPnpcoreCreateOneWebInSiteCollection(ClientContext spCtx)
         {
             Site mySite = spCtx.Site;
@@ -74,7 +81,9 @@ namespace PHZP
                                                 "NewWebSiteModernCsPnP Description", 
                                                 "STS#3", 1033, true, true);
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsPnpcoreGetWebsInSiteCollection(ClientContext spCtx)
         {
             Site mySite = spCtx.Site;
@@ -86,7 +95,9 @@ namespace PHZP
                 Console.WriteLine(oneWeb);
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsPnpcoreWebExists(ClientContext spCtx)
         {
             Site mySite = spCtx.Site;
@@ -97,7 +108,9 @@ namespace PHZP
             bool webExists = spCtx.WebExistsFullUrl(webFullUrl);
             Console.WriteLine(webExists);
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsPnpcoreExportSearchSettings()
         {
             string fullWebUrl = ConfigurationManager.AppSettings["spBaseUrl"] +
@@ -107,6 +120,7 @@ namespace PHZP
             webCtx.ExportSearchSettings(@"C:\Temporary\search.xml", 
               Microsoft.SharePoint.Client.Search.Administration.SearchObjectLevel.SPWeb);
         }
+        //gavdcodeend 07
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginPnPCore()
@@ -136,4 +150,3 @@ namespace PHZP
         }
     }
 }
-
