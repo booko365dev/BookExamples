@@ -1,4 +1,4 @@
-namespace TJHZ
+﻿namespace TJHZ
 {
     partial class MyRibbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
@@ -239,4 +239,3 @@ namespace TJHZ
         }
     }
 }
-

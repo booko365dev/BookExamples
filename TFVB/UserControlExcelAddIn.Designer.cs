@@ -1,4 +1,4 @@
-namespace TFVB
+﻿namespace TFVB
 {
     partial class UserControlExcelAddIn
     {
@@ -83,4 +83,3 @@ namespace TFVB
         private System.Windows.Forms.Button btnGetTime;
     }
 }
-

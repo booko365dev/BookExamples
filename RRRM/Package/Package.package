@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="23646804-aa62-4996-84c2-769233689637" 
+        solutionId="23646804-aa62-4996-84c2-769233689637" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="RRRM"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="3c001505-c268-421b-9f4d-54a41547aeb9" />
+  </features>
+</package>

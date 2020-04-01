@@ -1,4 +1,4 @@
-using Microsoft.Office.Tools.Ribbon;
+﻿using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Windows.Forms;
 using Outlook = Microsoft.Office.Interop.Outlook;
@@ -13,6 +13,7 @@ namespace TJHZ
 
         }
 
+        //gavdcodebegin 01
         private void btnGetSelectedText_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -27,7 +28,9 @@ namespace TJHZ
                 MessageBox.Show(selectedText);
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         private void btnCreateEmail_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -40,7 +43,9 @@ namespace TJHZ
             myMailItem.Importance = Outlook.OlImportance.olImportanceLow;
             myMailItem.Display(false);
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         private void btnAddAttachment_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -66,7 +71,9 @@ namespace TJHZ
 
             ((Outlook._MailItem)myMailItem).Send();
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         private void btnGetEmails_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -77,7 +84,9 @@ namespace TJHZ
 
             MessageBox.Show("Unread items = " + myUnreadItems.Count.ToString());
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         private void btnSaveAttachments_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -94,7 +103,9 @@ namespace TJHZ
                 }
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         private void btnFindContact_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -115,7 +126,9 @@ namespace TJHZ
                 MessageBox.Show("Contact not found");
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         private void btnAddContact_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -132,7 +145,9 @@ namespace TJHZ
             newContact.Save();
             newContact.Display(true);
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         private void btnDeleteContact_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -149,7 +164,9 @@ namespace TJHZ
                 myContact.Delete();
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         private void btnCreateAppointment_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -175,7 +192,9 @@ namespace TJHZ
             newAppointment.Save();
             newAppointment.Display(true);
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         private void btnDeleteAppointment_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -191,7 +210,9 @@ namespace TJHZ
                 oneCalendarItem.Delete();
             }
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         private void btnCreateCalendar_Click(object sender, RibbonControlEventArgs e)
         {
             const string newCalendarName = "MyCalendar";
@@ -227,7 +248,9 @@ namespace TJHZ
                                                             Folders[newCalendarName]);
             myApplication.ActiveExplorer().CurrentFolder.Display();
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         private void btnCreateFolder_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -242,7 +265,9 @@ namespace TJHZ
                                             Outlook.OlDefaultFolders.olFolderInbox);
             myInBox.Folders[userName].Display();
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         private void btnSelectFolder_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -261,7 +286,9 @@ namespace TJHZ
                 MessageBox.Show("There is no folder " + folderToFind);
             }
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         private void btnDeleteFolder_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -277,6 +304,6 @@ namespace TJHZ
                 myFolder.Delete();
             }
         }
+        //gavdcodeend 14
     }
 }
-

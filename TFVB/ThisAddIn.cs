@@ -1,7 +1,8 @@
-namespace TFVB
+﻿namespace TFVB
 {
     public partial class ThisAddIn
     {
+        //gavdcodebegin 02
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             ShowPanel();
@@ -15,6 +16,7 @@ namespace TFVB
             customPanel.Width = panelObject.Width;
             customPanel.Visible = true;
         }
+        //gavdcodeend 02
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
@@ -35,4 +37,3 @@ namespace TFVB
         #endregion
     }
 }
-
