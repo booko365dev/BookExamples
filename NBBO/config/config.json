@@ -1,0 +1,26 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "app-cust-extension-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/appCustExtension/AppCustExtensionApplicationCustomizer.js",
+          "manifest": "./src/extensions/appCustExtension/AppCustExtensionApplicationCustomizer.manifest.json"
+        }
+      ]
+    },
+    "field-cust-extension-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/fieldCustExtension/FieldCustExtensionFieldCustomizer.js",
+          "manifest": "./src/extensions/fieldCustExtension/FieldCustExtensionFieldCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "AppCustExtensionApplicationCustomizerStrings": "lib/extensions/appCustExtension/loc/{locale}.js"
+  }
+}

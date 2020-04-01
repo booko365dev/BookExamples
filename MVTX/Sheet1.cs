@@ -1,7 +1,8 @@
-namespace MVTX
+﻿namespace MVTX
 {
     public partial class Sheet1
     {
+        //gavdcodebegin 01
         private void Sheet1_Startup(object sender, System.EventArgs e)
         {
             Microsoft.Office.Tools.Excel.NamedRange myNamedRange =
@@ -12,6 +13,7 @@ namespace MVTX
         private void Sheet1_Shutdown(object sender, System.EventArgs e)
         {
         }
+        //gavdcodeend 01
 
         #region VSTO Designer generated code
 
@@ -29,4 +31,3 @@ namespace MVTX
 
     }
 }
-

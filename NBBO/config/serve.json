@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://domain.sharepoint.com/sites/Test_TeamSiteModern/SitePages/Page01.aspx",
+      "customActions": {
+        "d27fc3c0-0e30-4674-b7a1-e1bc842817ff": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
+    },
+    "appCustExtension": {
+      "pageUrl": "https://domain.sharepoint.com/sites/Test_TeamSiteModern/SitePages/Page01.aspx",
+      "customActions": {
+        "d27fc3c0-0e30-4674-b7a1-e1bc842817ff": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
+    }
+  }
+}
