@@ -1,0 +1,51 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "hello-world-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/helloWorld/HelloWorldWebPart.js",
+          "manifest": "./src/webparts/helloWorld/HelloWorldWebPart.manifest.json"
+        }
+      ]
+    },
+    "list-item-crud-java-script-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/listItemCrudJavaScript/ListItemCrudJavaScriptWebPart.js",
+          "manifest": "./src/webparts/listItemCrudJavaScript/ListItemCrudJavaScriptWebPart.manifest.json"
+        }
+      ]
+    },
+    "external-libraries-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/externalLibraries/ExternalLibrariesWebPart.js",
+          "manifest": "./src/webparts/externalLibraries/ExternalLibrariesWebPart.manifest.json"
+        }
+      ]
+    },
+    "list-item-crud-pn-p-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/listItemCrudPnP/ListItemCrudPnPWebPart.js",
+          "manifest": "./src/webparts/listItemCrudPnP/ListItemCrudPnPWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {
+    "jquery": {
+      "path": "https://code.jquery.com/jquery-3.4.1.min.js",
+      "globalName": "jquery"
+    }
+  },
+  "localizedResources": {
+    "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
+    "ListItemCrudJavaScriptWebPartStrings": "lib/webparts/listItemCrudJavaScript/loc/{locale}.js",
+    "ExternalLibrariesWebPartStrings": "lib/webparts/externalLibraries/loc/{locale}.js",
+    "marked": "node_modules/marked/marked.min.js",
+    "ListItemCrudPnPWebPartStrings": "lib/webparts/listItemCrudPnP/loc/{locale}.js"
+  }
+}
