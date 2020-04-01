@@ -1,4 +1,4 @@
-using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using Newtonsoft.Json;
@@ -41,6 +41,7 @@ namespace ESSV
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsCsomGetPropertiesTenant(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -50,7 +51,9 @@ namespace ESSV
                 Console.WriteLine(oneProperty.Name);
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void SpCsCsomGetValuePropertyTenant(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -61,7 +64,9 @@ namespace ESSV
             bool myAccessDevices = myTenant.BlockAccessOnUnmanagedDevices;
             Console.WriteLine(myAccessDevices);
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsCsomUpdateValuePropertyTenant(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -70,7 +75,9 @@ namespace ESSV
             myTenant.Update();
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsRestFindAppCatalog(Uri webBaseUri, string userName,
                                                                     string password)
         {
@@ -83,7 +90,9 @@ namespace ESSV
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsRestFindTenantProps(Uri webBaseUri, string userName,
                                                                     string password)
         {
@@ -97,6 +106,7 @@ namespace ESSV
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 05
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()

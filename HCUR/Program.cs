@@ -1,4 +1,4 @@
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.CustomProperties;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Validation;
@@ -48,6 +48,7 @@ namespace HCUR
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         public static void WordOpenXmlCreateDocument()
         {
             using (WordprocessingDocument myWordDoc =
@@ -63,7 +64,9 @@ namespace HCUR
                 docRun.AppendChild(new Text("Text in the document"));
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         public static void WordOpenXmlCreateDocumentFromStream()
         {
             FileStream myStream = File.Create(@"C:\Temporary\WordDoc01.docx");
@@ -81,7 +84,9 @@ namespace HCUR
                 docRun.AppendChild(new Text("Text from stream document"));
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         public static void WordOpenXmlOpenDocument()
         {
             using (WordprocessingDocument myWordDoc =
@@ -92,7 +97,9 @@ namespace HCUR
                 Console.WriteLine(docBody.InnerText);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         public static void WordOpenXmlOpenAndAddTextToDocument()
         {
             using (WordprocessingDocument myWordDoc =
@@ -105,7 +112,9 @@ namespace HCUR
                 docRun.AppendChild(new Text("Text added in the document"));
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         public static void WordOpenXmlFindPropertiesDocument()
         {
             using (WordprocessingDocument myWordDoc =
@@ -128,7 +137,9 @@ namespace HCUR
                 }
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         public static void WordOpenXmlAddOneCustomPropertyDocument()
         {
             string propName = "myCustomProperty";
@@ -174,7 +185,9 @@ namespace HCUR
                 }
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         public static void WordOpenXmlJoinTwoDocuments()
         {
             using (WordprocessingDocument myWordDoc =
@@ -201,7 +214,9 @@ namespace HCUR
                 mainPart.Document.Save();
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         public static void WordOpenXmlFontForRun()
         {
             using (WordprocessingDocument myWordDoc =
@@ -219,7 +234,9 @@ namespace HCUR
                 myWordDoc.MainDocumentPart.Document.Save();
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         public static void WordOpenXmlFindStyles()
         {
             using (WordprocessingDocument myWordDoc =
@@ -237,7 +254,9 @@ namespace HCUR
                 }
             }
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         public static void WordOpenXmlCreateAndApplyStyleParagraph()
         {
             using (WordprocessingDocument myWordDoc =
@@ -275,7 +294,9 @@ namespace HCUR
                 docRun.AppendChild(new Text("This is the Heading with style"));
             }
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         public static void WordOpenXmlCreateHeader()
         {
             using (WordprocessingDocument myWordDoc =
@@ -364,7 +385,9 @@ namespace HCUR
             hFirst.Append(pFirst);
             firstPart.Header = hFirst;
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         public static void WordOpenXmlCreateFooter()
         {
             using (WordprocessingDocument myWordDoc =
@@ -454,7 +477,9 @@ namespace HCUR
             fDefault.Append(pDefault);
             defaultPart.Footer = fDefault;
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         public static void WordOpenXmlRemoveHeadersAndFooters()
         {
             using (WordprocessingDocument myWordDoc =
@@ -485,8 +510,11 @@ namespace HCUR
                     myDocument.Save();
                 }
             }
+            //gavdcodeend 13
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         public static void WordOpenXmlAddComment()
         {
             using (WordprocessingDocument myWordDoc =
@@ -541,7 +569,9 @@ namespace HCUR
                                         new CommentReference() { Id = id }), commentEnd);
             }
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         public static void WordOpenXmlFindCommentsinDocument()
         {
             using (WordprocessingDocument myWordDoc =
@@ -561,7 +591,9 @@ namespace HCUR
                 }
             }
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 16
         public static void WordOpenXmlDeleteComments()
         {
             using (WordprocessingDocument myWordDoc =
@@ -621,7 +653,9 @@ namespace HCUR
                 myDoc.Save();
             }
         }
+        //gavdcodeend 16
 
+        //gavdcodebegin 17
         public static void WordOpenXmlAddTableUsingData()
         {
             using (WordprocessingDocument myWordDoc =
@@ -666,7 +700,9 @@ namespace HCUR
                 myDocument.Save();
             }
         }
+        //gavdcodeend 17
 
+        //gavdcodebegin 18
         public static void WordOpenXmlAddTableUsingDirectData()
         {
             using (WordprocessingDocument myWordDoc =
@@ -711,7 +747,9 @@ namespace HCUR
                 myDocument.Save();
             }
         }
+        //gavdcodeend 18
 
+        //gavdcodebegin 19
         public static void WordOpenXmlModifyTextInCell()
         {
             using (WordprocessingDocument myWordDoc =
@@ -730,7 +768,9 @@ namespace HCUR
                 myText.Text = "New text abc";
             }
         }
+        //gavdcodeend 19
 
+        //gavdcodebegin 20
         public static void WordOpenXmlDeleteRow()
         {
             using (WordprocessingDocument myWordDoc =
@@ -743,7 +783,9 @@ namespace HCUR
                 tblRow.Remove();
             }
         }
+        //gavdcodeend 20
 
+        //gavdcodebegin 21
         public static void WordOpenXmlAddPictureInDocument()
         {
             using (WordprocessingDocument myWordDoc =
@@ -860,7 +902,9 @@ namespace HCUR
                                                     Paragraph(new Run(imageElement)));
             }
         }
+        //gavdcodeend 21
 
+        //gavdcodebegin 22
         public static void WordOpenXmlDeleteAllPicturesFromDocument()
         {
             using (WordprocessingDocument myWordDoc =
@@ -898,7 +942,9 @@ namespace HCUR
                 docMainPart.DeleteParts(listImageParts);
             }
         }
+        //gavdcodeend 22
 
+        //gavdcodebegin 23
         public static void WordOpenXmlAcceptAllChages()
         {
             using (WordprocessingDocument myWordDoc =
@@ -972,7 +1018,9 @@ namespace HCUR
                 }
             }
         }
+        //gavdcodeend 23
 
+        //gavdcodebegin 24
         public static void WordOpenXmlRemoveHiddenText()
         {
             using (WordprocessingDocument myWordDoc =
@@ -1004,7 +1052,9 @@ namespace HCUR
                                                     FileMode.Create, FileAccess.Write));
             }
         }
+        //gavdcodeend 24
 
+        //gavdcodebegin 25
         public static void WordOpenXmlValidator()
         {
             using (WordprocessingDocument myWordDoc =
@@ -1026,5 +1076,6 @@ namespace HCUR
                 myWordDoc.Close();
             }
         }
+        //gavdcodeend 25
     }
 }

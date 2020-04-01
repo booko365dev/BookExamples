@@ -1,4 +1,4 @@
-using Microsoft.Office.Tools.Ribbon;
+﻿using Microsoft.Office.Tools.Ribbon;
 using System.Windows.Forms;
 using Word = Microsoft.Office.Interop.Word;
 
@@ -11,6 +11,7 @@ namespace GONJ
 
         }
 
+        //gavdcodebegin 01
         private void BtnAddPicture_Click(object sender, RibbonControlEventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -23,7 +24,9 @@ namespace GONJ
                                                             fileDialog.FileName);
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         private void BtnAddTable_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.ActiveDocument.Tables.Add(
@@ -33,7 +36,9 @@ namespace GONJ
             Globals.ThisAddIn.Application.ActiveDocument.Tables[1].Range.Font.Size = 12;
             Globals.ThisAddIn.Application.ActiveDocument.Tables[1].Rows.Borders.Enable = 1;
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         private void BtnSaveAsPdf_Click(object sender, RibbonControlEventArgs e)
         {
             SaveFileDialog exportDialog = new SaveFileDialog();
@@ -47,13 +52,15 @@ namespace GONJ
                             OpenAfterExport: true);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         private void BtnGetTime_Click(object sender, RibbonControlEventArgs e)
         {
             FormTime newForm = new FormTime();
             newForm.Show();
         }
+        //gavdcodeend 04
 
     }
 }
-

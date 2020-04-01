@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -43,6 +43,7 @@ namespace FCJY
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsRestCreateOneCommunicationSiteCollection(Uri webBaseUri,
                                                 string userName, string password)
         {
@@ -68,7 +69,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 01 
 
+        //gavdcodebegin 02
         static void SpCsRestCreateOneSiteCollection(Uri webBaseUri, string userName,
                                                                     string password)
         {
@@ -94,7 +97,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsRestCreateOneWebInSiteCollection(Uri webUri, string userName,
                                                                     string password)
         {
@@ -114,7 +119,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsRestReadAllSiteCollections(Uri webBaseUri, string userName,
                                                                     string password)
         {
@@ -127,7 +134,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsRestReadAllWebsInSiteCollection(Uri webUri, string userName,
                                                                     string password)
         {
@@ -139,7 +148,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsRestUpdateOneWeb(Uri webUri, string userName,
                                                                     string password)
         {
@@ -160,7 +171,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsRestDeleteOneWebFromSiteCollection(Uri webUri, string userName,
                                                                     string password)
         {
@@ -177,7 +190,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void SpCsRestGetRoleDefinitionsWeb(Uri webUri, string userName,
                                                                     string password)
         {
@@ -190,7 +205,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void SpCsRestFindUserPermissionsWeb(Uri webUri, string userName,
                                                                     string password)
         {
@@ -205,7 +222,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void SpCsRestFindOtherUserPermissionsWeb(Uri webUri, string userName,
                                                                     string password)
         {
@@ -220,7 +239,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void SpCsRestBreakSecurityInheritanceWeb(Uri webUri, string userName,
                                                                     string password)
         {
@@ -239,7 +260,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         static void SpCsRestResetSecurityInheritanceWeb(Uri webUri, string userName,
                                                                     string password)
         {
@@ -252,7 +275,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         static void SpCsRestAddUserToSecurityRoleInWeb(Uri webUri, string userName,
                                                                     string password)
         {
@@ -299,7 +324,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         static void SpCsRestUpdateUserSecurityRoleInWeb(Uri webUri,
                                                     string userName, string password)
         {
@@ -346,7 +373,9 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         static void SpCsRestDeleteUserFromSecurityRoleInWeb(Uri webUri,
                                                     string userName, string password)
         {
@@ -380,6 +409,7 @@ namespace FCJY
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 15
     }
 
     //-----------------------------------------------------------------------------------

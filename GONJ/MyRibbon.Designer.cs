@@ -1,4 +1,4 @@
-namespace GONJ
+﻿namespace GONJ
 {
     partial class MyRibbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
@@ -116,4 +116,3 @@ namespace GONJ
         }
     }
 }
-

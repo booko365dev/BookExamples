@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -69,6 +69,7 @@ namespace EJON
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static ClientContext LoginCsom()
         {
             ClientContext rtnContext = new ClientContext(
@@ -85,7 +86,9 @@ namespace EJON
 
             return rtnContext;
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static ClientContext LoginPnPCore()
         {
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
@@ -98,7 +101,9 @@ namespace EJON
 
             return rtnContext;
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void LoginPnPCoreDirectly()
         {
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
@@ -115,8 +120,10 @@ namespace EJON
                 Console.WriteLine(rootWeb.Created.ToShortDateString());
             }
         }
+        //gavdcodeend 03
     }
 
+    //gavdcodebegin 04
     class SPHttpClientHandler : HttpClientHandler
     {
         public SPHttpClientHandler(Uri webUri, string userName, string password)
@@ -156,7 +163,9 @@ namespace EJON
         JsonVerbose,
         Xml
     }
+    //gavdcodeend 04
 
+    //gavdcodebegin 05
     class SPHttpClient : HttpClient
     {
         public SPHttpClient(Uri webUri, string userName, string password) : base(
@@ -244,5 +253,5 @@ namespace EJON
                                                         "FormDigestValue"].ToString();
         }
     }
+    //gavdcodeend 05
 }
-

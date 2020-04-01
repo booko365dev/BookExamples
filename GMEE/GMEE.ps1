@@ -1,4 +1,4 @@
-
+﻿
 Function ConnectPsOnlBA() 
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -12,6 +12,7 @@ Function ConnectPsOnlBA()
 }
 #-----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function ExPsEolGetPermissions()
 {
 	$myPerms = Get-ManagementRoleAssignment
@@ -20,12 +21,16 @@ Function ExPsEolGetPermissions()
 															$onePerm.RoleAssigneeName
 	}
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function ExPsEolEnablePsAccess()
 {
 	Set-User -Identity user@dominio.onmicrosoft.com -RemotePowerShellEnabled $true
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function ExPsEolEnablePsAccess()
 {
 	# For one user
@@ -35,7 +40,9 @@ Function ExPsEolEnablePsAccess()
 	Get-User -ResultSize unlimited | Format-Table -Auto `
 											Name,DisplayName,RemotePowerShellEnabled
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function ExPsEolCreateMailbox()
 {
 	New-Mailbox -Alias somebody -Name Some -FirstName Some -LastName Body `
@@ -43,17 +50,23 @@ Function ExPsEolCreateMailbox()
 				-MicrosoftOnlineServicesID somebody@domain.onmicrosoft.com `
 				-Password (ConvertTo-SecureString -String "SecPW56%&" -AsPlainText -Force) `
 				-ResetPasswordOnNextLogon $true}
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function ExPsEolDeleteMailbox()
 {
 	Remove-MsolUser -UserPrincipalName "Some Body" -RemoveFromRecycleBin true
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function ExPsEolCreateMailcontact()
 {
 	New-MailContact -Name "Some Body" -ExternalEmailAddress sbody@domain.com
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function ExPsEolCreateMailuser()
 {
 	New-MailUser -Name "Some Body" -Alias somebody `
@@ -62,11 +75,14 @@ Function ExPsEolCreateMailuser()
 				 -MicrosoftOnlineServicesID sobody@domain.onmicrosoft.com `
 				 -Password (ConvertTo-SecureString -String "SecPW56%&" -AsPlainText -Force)
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function ExPsEolBlockIP()
 {
 	Set-OrganizationConfig -IPListBlocked @{add="111.2222.333.444"}
 }
+#gavdcodeend 08
 
 
 #-----------------------------------------------------------------------------------------
@@ -87,4 +103,3 @@ $currentSession = Get-PSSession
 Remove-PSSession -Session $currentSession
 
 Write-Host "Done"  
-

@@ -1,16 +1,19 @@
-using RestSharp;
+﻿using RestSharp;
 using System;
 
 namespace ERUU
 {
     class Program
     {
+        //gavdcodebegin 01
         static void Main(string[] args)
         {
             string myCard = CreateCard();
             PostCard(myCard);
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static string CreateCard()
         {
             string picUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/" +
@@ -79,7 +82,9 @@ namespace ERUU
                     "] " +
                 "}";
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void PostCard(string theCard)
         {
             string WebhookUrl = "https://outlook.office.com/webhook/3a0c86a6-4bb9-" +
@@ -94,6 +99,6 @@ namespace ERUU
             RestClient myClient = new RestClient(WebhookUrl);
             myClient.Execute(myRequest);
         }
+        //gavdcodeend 03
     }
 }
-

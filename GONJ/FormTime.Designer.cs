@@ -1,4 +1,4 @@
-namespace GONJ
+﻿namespace GONJ
 {
     partial class FormTime
     {
