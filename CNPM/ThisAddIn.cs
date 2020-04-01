@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -6,6 +6,7 @@ namespace CNPM
 {
     public partial class ThisAddIn
     {
+        //gavdcodebegin 01
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.Application.WorkbookBeforeSave +=
@@ -38,6 +39,7 @@ namespace CNPM
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
+        //gavdcodeend 01
 
         #region VSTO generated code
 
@@ -54,4 +56,3 @@ namespace CNPM
         #endregion
     }
 }
-
