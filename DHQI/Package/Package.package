@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="e0579d70-c66f-4a90-9c1d-1c1043338b46" 
+        solutionId="e0579d70-c66f-4a90-9c1d-1c1043338b46" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="DHQI"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="7a309320-f52d-4ce5-9b06-772d3b6a3cf2" />
+  </features>
+</package>

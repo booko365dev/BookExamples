@@ -1,4 +1,4 @@
-using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using System;
@@ -45,6 +45,7 @@ namespace DWBW
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsCsomCreateOneSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -71,7 +72,9 @@ namespace DWBW
                 spAdminCtx.ExecuteQuery();
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void SpCsCsomFindWebTemplates(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -85,7 +88,9 @@ namespace DWBW
                 Console.WriteLine(oneTemplate.Name + " - " + oneTemplate.Title);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsCsomReadAllSiteCollections(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -100,7 +105,9 @@ namespace DWBW
                 Console.WriteLine(oneSiteColl.Title + " - " + oneSiteColl.Url);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsCsomRemoveSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -110,7 +117,9 @@ namespace DWBW
 
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsCsomRestoreSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -120,7 +129,9 @@ namespace DWBW
 
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsCsomRemoveDeletedSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -130,7 +141,9 @@ namespace DWBW
 
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsCsomCreateGroupForSite(ClientContext spAdminCtx)
         {
             string[] myOwners = new string[] { "user@domain.onmicrosoft.com" };
@@ -148,7 +161,9 @@ namespace DWBW
 
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void SpCsCsomSetAdministratorSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -160,7 +175,9 @@ namespace DWBW
 
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void SpCsCsomRegisterAsHubSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -170,7 +187,9 @@ namespace DWBW
 
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void SpCsCsomUnregisterAsHubSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -180,7 +199,9 @@ namespace DWBW
 
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void SpCsCsomGetHubSiteCollectionProperties(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -193,7 +214,9 @@ namespace DWBW
 
             Console.WriteLine(myProps.Title);
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         static void SpCsCsomUpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -212,7 +235,9 @@ namespace DWBW
 
             Console.WriteLine(myProps.Title);
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         static void SpCsCsomAddSiteToHubSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -223,7 +248,9 @@ namespace DWBW
                                              "/sites/NewHubSiteCollCsCsom");
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         static void SpCsCsomremoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
         {
             Tenant myTenant = new Tenant(spAdminCtx);
@@ -232,7 +259,9 @@ namespace DWBW
                                              "/sites/NewSiteForHub");
             spAdminCtx.ExecuteQuery();
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         static void SpCsCsomCreateOneWebInSiteCollection(ClientContext spCtx)
         {
             Site mySite = spCtx.Site;
@@ -250,7 +279,9 @@ namespace DWBW
             Web myWeb = mySite.RootWeb.Webs.Add(myWebCreationInfo);
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 16
         static void SpCsCsomGetWebsInSiteCollection(ClientContext spCtx)
         {
             Site mySite = spCtx.Site;
@@ -264,7 +295,9 @@ namespace DWBW
                 Console.WriteLine(oneWeb.Title + " - " + oneWeb.Url + " - " + oneWeb.Id);
             }
         }
+        //gavdcodeend 16
 
+        //gavdcodebegin 17
         static void SpCsCsomGetOneWebInSiteCollection()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -277,7 +310,9 @@ namespace DWBW
 
             Console.WriteLine(myWeb.Title + " - " + myWeb.Url + " - " + myWeb.Id);
         }
+        //gavdcodeend 17
 
+        //gavdcodebegin 18
         static void SpCsCsomUpdateOneWebInSiteCollection()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -289,7 +324,9 @@ namespace DWBW
             myWeb.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 18
 
+        //gavdcodebegin 19
         static void SpCsCsomDeleteOneWebInSiteCollection()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -300,7 +337,9 @@ namespace DWBW
             myWeb.DeleteObject();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 19
 
+        //gavdcodebegin 20
         static void SpCsCsomBreakSecurityInheritanceWeb()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -318,7 +357,9 @@ namespace DWBW
             myWeb.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 20
 
+        //gavdcodebegin 21
         static void SpCsCsomResetSecurityInheritanceWeb()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -336,7 +377,9 @@ namespace DWBW
             myWeb.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 21
 
+        //gavdcodebegin 22
         static void SpCsCsomAddUserToSecurityRoleInWeb()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -353,7 +396,9 @@ namespace DWBW
 
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 22
 
+        //gavdcodebegin 23
         static void SpCsCsomUpdateUserSecurityRoleInWeb()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -374,7 +419,9 @@ namespace DWBW
             myRoleAssignment.Update();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 23
 
+        //gavdcodebegin 24
         static void SpCsCsomDeleteUserFromSecurityRoleInWeb()
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
@@ -389,6 +436,7 @@ namespace DWBW
             spCtx.ExecuteQuery();
             spCtx.Dispose();
         }
+        //gavdcodeend 24
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()
@@ -442,4 +490,3 @@ namespace DWBW
         }
     }
 }
-

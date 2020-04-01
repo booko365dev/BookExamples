@@ -1,4 +1,4 @@
-Function Invoke-RestSPO() {
+﻿Function Invoke-RestSPO() {
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -130,6 +130,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsRestCreateOneList()
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists"
@@ -149,7 +150,9 @@ Function SpPsRestCreateOneList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 01 
 
+#gavdcodebegin 02
 Function SpPsRestReadAllLists()
 {
 	$endpointUrl = $WebUrl + "/_api/lists?$select=Title,Id"
@@ -158,7 +161,9 @@ Function SpPsRestReadAllLists()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsRestReadOneList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
@@ -167,7 +172,9 @@ Function SpPsRestReadOneList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpPsRestUpdateOneList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
@@ -184,7 +191,9 @@ Function SpPsRestUpdateOneList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpPsRestDeleteOneList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
@@ -197,7 +206,9 @@ Function SpPsRestDeleteOneList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpPsRestAddOneFieldToList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
@@ -214,7 +225,9 @@ Function SpPsRestAddOneFieldToList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function SpPsRestReadAllFieldsFromList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
@@ -223,7 +236,9 @@ Function SpPsRestReadAllFieldsFromList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function SpPsRestReadOneFieldFromList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
@@ -233,7 +248,9 @@ Function SpPsRestReadOneFieldFromList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpPsRestUpdateOneFieldInList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
@@ -251,7 +268,9 @@ Function SpPsRestUpdateOneFieldInList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function SpPsRestDeleteOneFieldFromList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
@@ -265,7 +284,9 @@ Function SpPsRestDeleteOneFieldFromList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpPsRestBreakSecurityInheritanceList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
@@ -279,7 +300,9 @@ Function SpPsRestBreakSecurityInheritanceList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpPsRestResetSecurityInheritanceList()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
@@ -292,7 +315,9 @@ Function SpPsRestResetSecurityInheritanceList()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function SpPsRestAddUserToSecurityRoleInList()
 {
 	# Inheritance MUST be broken
@@ -323,7 +348,9 @@ Function SpPsRestAddUserToSecurityRoleInList()
 							-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function SpPsRestUpdateUserSecurityRoleInList()
 {
 	# Inheritance MUST be broken
@@ -354,7 +381,9 @@ Function SpPsRestUpdateUserSecurityRoleInList()
 						-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpPsRestDeleteUserFromSecurityRoleInList()
 {
     # Find the User
@@ -376,6 +405,7 @@ Function SpPsRestDeleteUserFromSecurityRoleInList()
 						-ETag "*" -XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 15
 
 #----------------------------------------------------------------------------------------
 
@@ -406,4 +436,3 @@ $password = $configFile.appsettings.spUserPw
 #SpPsRestDeleteUserFromSecurityRoleInList
 
 Write-Host "Done" 
-

@@ -1,4 +1,4 @@
-Function Invoke-RestSPO() {
+﻿Function Invoke-RestSPO() {
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -130,6 +130,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsRestCreateOneListItem()
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestList')/items"
@@ -145,7 +146,9 @@ Function SpPsRestCreateOneListItem()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 01 
 
+#gavdcodebegin 02
 Function SpPsRestUploadOneDocument()
 {
 	$FileInfo = New-Object System.IO.FileInfo("C:\Temporary\TestDocument01.docx")
@@ -162,7 +165,9 @@ Function SpPsRestUploadOneDocument()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsRestDownloadOneDocument()
 {
 	$WebUri = [System.Uri]$WebUrl
@@ -176,7 +181,9 @@ Function SpPsRestDownloadOneDocument()
 	$downloadFilePath = [System.IO.Path]::Combine("C:\Temporary", $fileName)
 	[System.IO.File]::WriteAllBytes($downloadFilePath, $fileContent)
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpPsRestReadAllListItems()
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestList')/items?" + 
@@ -188,7 +195,9 @@ Function SpPsRestReadAllListItems()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpPsRestReadOneListItem()
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestList')/items(26)?" + 
@@ -200,7 +209,9 @@ Function SpPsRestReadOneListItem()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpPsRestReadAllLibraryDocs()
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestLibrary')/items?" + 
@@ -212,7 +223,9 @@ Function SpPsRestReadAllLibraryDocs()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function SpPsRestReadOneLibraryDoc()
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestLibrary')/items(25)?" + 
@@ -224,7 +237,9 @@ Function SpPsRestReadOneLibraryDoc()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function SpPsRestUpdateOneListItem()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/items(26)"
@@ -241,7 +256,9 @@ Function SpPsRestUpdateOneListItem()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpPsRestUpdateOneLibraryDoc()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestLibrary')/items(25)"
@@ -258,7 +275,9 @@ Function SpPsRestUpdateOneLibraryDoc()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function SpPsRestDeleteOneListItem()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/items(26)"
@@ -270,7 +289,9 @@ Function SpPsRestDeleteOneListItem()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpPsRestDeleteOneLibraryDoc()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestLibrary')/items(25)"
@@ -282,7 +303,9 @@ Function SpPsRestDeleteOneLibraryDoc()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpPsRestBreakSecurityInheritanceListItem()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/" +
@@ -296,7 +319,9 @@ Function SpPsRestBreakSecurityInheritanceListItem()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function SpPsRestResetSecurityInheritanceListItem()
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/" +
@@ -308,7 +333,9 @@ Function SpPsRestResetSecurityInheritanceListItem()
 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function SpPsRestAddUserToSecurityRoleInListItem()
 {
 	# Inheritance MUST be broken
@@ -340,7 +367,9 @@ Function SpPsRestAddUserToSecurityRoleInListItem()
 							-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpPsRestUpdateUserSecurityRoleInListItem()
 {
 	# Inheritance MUST be broken
@@ -372,7 +401,9 @@ Function SpPsRestUpdateUserSecurityRoleInListItem()
 						-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 15
 
+#gavdcodebegin 16
 Function SpPsRestDeleteUserFromSecurityRoleInListItem()
 {
     # Find the User
@@ -394,6 +425,7 @@ Function SpPsRestDeleteUserFromSecurityRoleInListItem()
 						-ETag "*" -XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
+#gavdcodeend 16
 
 #----------------------------------------------------------------------------------------
 
@@ -425,4 +457,3 @@ $password = $configFile.appsettings.spUserPw
 #SpPsRestDeleteUserFromSecurityRoleInListItem
 
 Write-Host "Done" 
-
