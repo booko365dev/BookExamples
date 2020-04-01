@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace RBYP
 {
@@ -8,10 +8,12 @@ namespace RBYP
         {
         }
 
+        //gavdcodebegin 04
         protected void btnGenerateRandomString_Click(object sender, EventArgs e)
         {
             lblRandomString.Text =
                         System.IO.Path.GetRandomFileName().Replace(".", string.Empty);
         }
+        //gavdcodeend 04
     }
 }

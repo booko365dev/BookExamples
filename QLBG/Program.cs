@@ -1,4 +1,4 @@
-using Microsoft.Exchange.WebServices.Data;
+﻿using Microsoft.Exchange.WebServices.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -32,6 +32,7 @@ namespace QLBG
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void CreateOneContact(ExchangeService ExService)
         {
             Contact newContact = new Contact(ExService)
@@ -77,7 +78,9 @@ namespace QLBG
 
             newContact.Save();
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void FindAllContacts(ExchangeService ExService)
         {
             ContactsFolder myContactsfolder = ContactsFolder.Bind(
@@ -100,7 +103,9 @@ namespace QLBG
                 }
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void FindOneContactByName(ExchangeService ExService)
         {
             FindItemsResults<Item> allFound =
@@ -117,7 +122,9 @@ namespace QLBG
                 }
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void UpdateOneContact(ExchangeService ExService)
         {
             FindItemsResults<Item> allFound =
@@ -155,7 +162,9 @@ namespace QLBG
 
             myContact.Update(ConflictResolutionMode.AlwaysOverwrite);
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void DeleteOneContact(ExchangeService ExService)
         {
             FindItemsResults<Item> allFound =
@@ -176,7 +185,9 @@ namespace QLBG
 
             myContact.Delete(DeleteMode.MoveToDeletedItems);
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void FindContactsByPartialName(ExchangeService ExService)
         {
             NameResolutionCollection resolvedNames = ExService.ResolveName("Mymiddle");
@@ -188,7 +199,9 @@ namespace QLBG
                 Console.WriteLine("Id: " + oneName.Mailbox.Id);
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void FindContactsByPartialNameFiltered(ExchangeService ExService)
         {
             NameResolutionCollection resolvedNames = ExService.ResolveName(
@@ -201,7 +214,9 @@ namespace QLBG
                 Console.WriteLine("Id: " + oneName.Mailbox.Id);
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void CreateOneContactWithPhoto(ExchangeService ExService)
         {
             Contact newContact = new Contact(ExService)
@@ -217,7 +232,9 @@ namespace QLBG
 
             newContact.Save();
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void GetPhotoOneContact(ExchangeService ExService)
         {
             FindItemsResults<Item> allFound =
@@ -253,7 +270,9 @@ namespace QLBG
                 contactPhoto.Load(myPhotoStream);
             }
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         private static void ExportContacts(ExchangeService ExService)
         {
             FindItemsResults<Item> findResults =
@@ -283,6 +302,7 @@ namespace QLBG
                                              contactToExport.MimeContent.Content.Length);
             }
         }
+        //gavdcodeend 10
 
         //-------------------------------------------------------------------------------
         static ExchangeService ConnectBA(string userEmail, string userPW)
@@ -314,4 +334,3 @@ namespace QLBG
         }
     }
 }
-

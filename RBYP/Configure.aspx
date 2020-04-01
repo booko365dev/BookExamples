@@ -1,4 +1,4 @@
-<!--gavdcodebegin 05-->
+﻿<!--gavdcodebegin 05-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Configure.aspx.cs" 
     Inherits="RBYP.Configure" %>
 
@@ -24,4 +24,3 @@
 </body>
 </html>
 <!--gavdcodeend 05-->
-

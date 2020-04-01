@@ -1,3 +1,4 @@
+﻿//gavdcodebegin 08
 (function () {
   'use strict';
 
@@ -47,5 +48,5 @@
         return window.location.protocol + '//' + window.location.host + '/' + selectedTab;
     }
 })();
-
+//gavdcodeend 08
 

@@ -1,10 +1,11 @@
-using Office = Microsoft.Office.Core;
+﻿using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace RLRC
 {
     public partial class ThisAddIn
     {
+        //gavdcodebegin 01
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.Application.PresentationSave +=
@@ -26,6 +27,7 @@ namespace RLRC
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
+        //gavdcodeend 01
 
         #region VSTO generated code
 
@@ -42,4 +44,3 @@ namespace RLRC
         #endregion
     }
 }
-

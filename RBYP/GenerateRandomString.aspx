@@ -1,4 +1,4 @@
-<!--gavdcodebegin 03-->
+﻿<!--gavdcodebegin 03-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GenerateRandomString.aspx.cs" 
     Inherits="RBYP.GenerateRandomString" %>
 
@@ -28,4 +28,3 @@
 </body>
 </html>
 <!--gavdcodeend 03-->
-

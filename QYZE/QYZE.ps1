@@ -1,4 +1,4 @@
-Function LoginPsCsom()
+﻿Function LoginPsCsom()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.spUserPw -AsPlainText -Force
@@ -158,6 +158,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 
 #----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function SpPsCsomFindTermStore($spCtx)
 {
     $myTaxSession = [Microsoft.SharePoint.Client.Taxonomy.TaxonomySession]::`
@@ -169,7 +170,9 @@ Function SpPsCsomFindTermStore($spCtx)
         Write-Host($oneTermStore.Name)
     }
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function SpPsCsomCreateTermGroup($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -182,7 +185,9 @@ Function SpPsCsomCreateTermGroup($spCtx)
     $myTermGroup = $myTermStore.CreateGroup("PsCsomTermGroup", $myNewGuid)
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function SpPsCsomFindTermGroups($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -197,7 +202,9 @@ Function SpPsCsomFindTermGroups($spCtx)
         Write-Host($oneGroup.Name)
     }
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function SpPsCsomCreateTermSet($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -211,7 +218,9 @@ Function SpPsCsomCreateTermSet($spCtx)
     $myTermSet = $myTermGroup.CreateTermSet("PsCsomTermSet", $myNewGuid, 1033)
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function SpPsCsomFindTermSets($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -228,7 +237,9 @@ Function SpPsCsomFindTermSets($spCtx)
         Write-Host($oneTermSet.Name)
     }
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function SpPsCsomCreateTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -243,7 +254,9 @@ Function SpPsCsomCreateTerm($spCtx)
     $myTerm = $myTermSet.CreateTerm("PsCsomTerm", 1033, $myNewGuid)
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function SpPsCsomFindTerms($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -261,7 +274,9 @@ Function SpPsCsomFindTerms($spCtx)
         Write-Host($oneTerm.Name)
     }
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function SpPsCsomFindOneTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -278,7 +293,9 @@ Function SpPsCsomFindOneTerm($spCtx)
 
     Write-Host($myTerm.Name)
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function SpPsCsomUpdateOneTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -293,7 +310,9 @@ Function SpPsCsomUpdateOneTerm($spCtx)
     $myTerm.Name = "PsCsomTerm_Updated"
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function SpPsCsomDeleteOneTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -308,7 +327,9 @@ Function SpPsCsomDeleteOneTerm($spCtx)
     $myTerm.DeleteObject()
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function SpPsCsomFindTermSetAndTermById($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -325,19 +346,25 @@ Function SpPsCsomFindTermSetAndTermById($spCtx)
 
     Write-Host($myTermSet.Name + " - " + $myTerm.Name)
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function SpPsPnpFindTermStore()
 {
 	$myTaxSession = Get-PnPTaxonomySession
 	Write-Host $myTaxSession.TermStores[0].Name
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function SpPsPnpCreateTermGroup()
 {
 	$myTermGroup = New-PnPTermGroup -Name "PsPnpTermGroup"
 	Write-Host $myTermGroup.Id
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function SpPsPnpFindTermGroup()
 {
 	$myTermGroups = Get-PnPTermGroup
@@ -345,14 +372,18 @@ Function SpPsPnpFindTermGroup()
 		Write-Host $oneGroup.Id
 	}
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function SpPsPnpCreateTermSet()
 {
 	$myTermSet = New-PnPTermSet -Name "PsPnpTermSet" `
 								-TermGroup "PsPnpTermGroup"
 	Write-Host $myTermSet.Id
 }
+#gavdcodeend 15
 
+#gavdcodebegin 16
 Function SpPsPnpFindTermSet()
 {
 	$myTermSets = Get-PnPTermSet -TermGroup "PsPnpTermGroup"
@@ -360,7 +391,9 @@ Function SpPsPnpFindTermSet()
 		Write-Host $oneSet.Id
 	}
 }
+#gavdcodeend 16
 
+#gavdcodebegin 17
 Function SpPsPnpCreateTerm()
 {
 	$myTerm = New-PnPTerm -Name "PsPnpTerm" `
@@ -368,7 +401,9 @@ Function SpPsPnpCreateTerm()
 						  -TermSet "PsPnpTermSet"
 	Write-Host $myTerm.Id
 }
+#gavdcodeend 17
 
+#gavdcodebegin 18
 Function SpPsPnpFindTerm()
 {
 	$myTerms = Get-PnPTerm -TermGroup "PsPnpTermGroup" `
@@ -377,33 +412,45 @@ Function SpPsPnpFindTerm()
 		Write-Host $oneTerm.Id
 	}
 }
+#gavdcodeend 18
 
+#gavdcodebegin 19
 Function SpPsPnpDeleteTermGroup()
 {
 	Remove-PnPTermGroup -GroupName "PsPnpTermGroup"
 }
+#gavdcodeend 19
 
+#gavdcodebegin 20
 Function SpPsPnpExportTaxonomy()
 {
 	Export-PnPTaxonomy -Path "C:\Temporary\tax.txt" `
 					   -TermSet "529c954a-0235-4202-a739-9b871055427c"
 }
+#gavdcodeend 20
 
+#gavdcodebegin 21
 Function SpPsPnpImportTaxonomy()
 {
 	Import-PnPTaxonomy -Path "C:\Temporary\tax.txt"
 }
+#gavdcodeend 21
 
+#gavdcodebegin 22
 Function SpPsPnpExportTermGroup()
 {
 	Export-PnPTermGroupToXml -Out "C:\Temporary\group.xml" -Identity "PsCsomTermGroup"
 }
+#gavdcodeend 22
 
+#gavdcodebegin 23
 Function SpPsPnpImportTermGroup()
 {
 	Import-PnPTermGroupToXml -Path "C:\Temporary\tax.txt"
 }
+#gavdcodeend 23
 
+#gavdcodebegin 24
 Function SpPsCsomGetResultsSearch($spCtx)
 {
 	$keywordQuery = 
@@ -419,7 +466,9 @@ Function SpPsCsomGetResultsSearch($spCtx)
                                 $resultRow["Path"] + " - " + $resultRow["Write"])
     }
 }
+#gavdcodeend 24
 
+#gavdcodebegin 25
 Function SpPsRestResultsSearchGET()
 {
     $endpointUrl = $webUrl + "/_api/search/query?querytext='team'"
@@ -430,7 +479,9 @@ Function SpPsRestResultsSearchGET()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
+#gavdcodeend 25
 
+#gavdcodebegin 26
 Function SpPsRestResultsSearchPOST()
 {
 	$endpointUrl = $webUrl + "/_api/search/query"
@@ -448,22 +499,30 @@ Function SpPsRestResultsSearchPOST()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
+#gavdcodeend 26
 
+#gavdcodebegin 27
 Function SpPsPnpSearch()
 {
 	Submit-PnPSearchQuery -Query "team"
 }
+#gavdcodeend 27
 
+#gavdcodebegin 28
 Function SpPsPnpSearchSiteColls()
 {
 	Get-PnPSiteSearchQueryResults
 }
+#gavdcodeend 28
 
+#gavdcodebegin 29
 Function SpPsPnpSearchCrawl()
 {
 	Get-PnPSearchCrawlLog
 }
+#gavdcodeend 29
 
+#gavdcodebegin 30
 Function SpPsCsomGetAllPropertiesUserProfile ($spCtx)
 {
     $myUser = "i:0#.f|membership|" + $configFile.appsettings.spUserName
@@ -478,7 +537,9 @@ Function SpPsCsomGetAllPropertiesUserProfile ($spCtx)
         Write-Host($oneKey + " - " + $myProfProp[$oneKey])
     }
 }
+#gavdcodeend 30
 
+#gavdcodebegin 31
 Function SpCsCsomGetAllMyPropertiesUserProfile($spCtx)
 {
     $myPeopleManager = New-Object `
@@ -492,7 +553,9 @@ Function SpCsCsomGetAllMyPropertiesUserProfile($spCtx)
         Write-Host($oneKey + " - " + $myProfProp[$oneKey])
     }
 }
+#gavdcodeend 31
 
+#gavdcodebegin 32
 Function SpPsCsomGetPropertiesUserProfile($spCtx)
 {
     $myUser = "i:0#.f|membership|" + $configFile.appsettings.spUserName
@@ -512,7 +575,9 @@ Function SpPsCsomGetPropertiesUserProfile($spCtx)
         Write-Host($oneValue)
     }
 }
+#gavdcodeend 32
 
+#gavdcodebegin 33
 Function SpPsCsomUpdateOnePropertyUserProfile($spCtx)
 {
     $myPeopleManager = New-Object `
@@ -526,7 +591,9 @@ Function SpPsCsomUpdateOnePropertyUserProfile($spCtx)
             $myUserProperties.AccountName, "AboutMe", $newValue)
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 33
 
+#gavdcodebegin 34
 Function SpPsCsomUpdateOneMultPropertyUserProfile($spCtx)
 {
     $myPeopleManager = New-Object `
@@ -542,19 +609,25 @@ Function SpPsCsomUpdateOneMultPropertyUserProfile($spCtx)
                             $myUserProperties.AccountName, "SPS-Skills", $mySkills)
     $spCtx.ExecuteQuery()
 }
+#gavdcodeend 34
 
+#gavdcodebegin 35
 Function SpPsPnpFindUserProfileProperties()
 {
 	Get-PnPUserProfileProperty -Account $configFile.appsettings.spUserName
 }
+#gavdcodeend 35
 
+#gavdcodebegin 36
 Function SpPsPnpUpdateUserProfileProperties()
 {
 	Set-PnPUserProfileProperty -Account $configFile.appsettings.spUserName `
 							   -Property "AboutMe" `
 							   -Value "I am not the administrator"
 }
+#gavdcodeend 36
 
+#gavdcodebegin 37
 Function SpPsRestGetAllPropertiesUserProfile()
 {
     $myUser = "i%3A0%23.f%7Cmembership%7C" + `
@@ -568,7 +641,9 @@ Function SpPsRestGetAllPropertiesUserProfile()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
+#gavdcodeend 37
 
+#gavdcodebegin 38
 Function SpPsRestGetAllMyPropertiesUserProfile()
 {
     $endpointUrl = $webUrl + "/_api/sp.userprofiles.peoplemanager/getmyproperties"
@@ -579,7 +654,9 @@ Function SpPsRestGetAllMyPropertiesUserProfile()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
+#gavdcodeend 38
 
+#gavdcodebegin 39
 Function SpPsRestGetPropertiesUserProfile()
 {
     $myUser = "i%3A0%23.f%7Cmembership%7C" + `
@@ -594,6 +671,7 @@ Function SpPsRestGetPropertiesUserProfile()
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
+#gavdcodeend 39
 
 #-----------------------------------------------------------------------------------------
 
@@ -673,4 +751,3 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 #SpPsRestGetPropertiesUserProfile
 
 Write-Host "Done"
-

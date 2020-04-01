@@ -1,4 +1,4 @@
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
@@ -30,6 +30,7 @@ namespace PUSO
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         public static void ExcelOpenXmlCreateDocument()
         {
             using (SpreadsheetDocument myExcelDoc =
@@ -55,7 +56,9 @@ namespace PUSO
                 myWorkbookPart.Workbook.Save();
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         public static void ExcelOpenXmlInsertTextInCell()
         {
             using (SpreadsheetDocument myExcelDoc =
@@ -84,7 +87,9 @@ namespace PUSO
                 newRow.Append(newCell);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         public static void ExcelOpenXmlInsertFormulaInCell()
         {
             using (SpreadsheetDocument myExcelDoc =
@@ -108,7 +113,9 @@ namespace PUSO
                 newRow.Append(newCell);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         public static void ExcelOpenXmlFindValueInOneCell()
         {
             string cellValue = null;
@@ -168,7 +175,9 @@ namespace PUSO
 
             Console.WriteLine("Value found - " + cellValue);
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         public static void ExcelOpenXmlFindAllValuesInCellsDataTable()
         {
             DataTable myDataTable = new DataTable();
@@ -254,7 +263,9 @@ namespace PUSO
                 return cellValue;
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         public static void ExcelOpenXmlFindAllValuesInCells()
         {
             using (SpreadsheetDocument myExcelDoc =
@@ -301,7 +312,9 @@ namespace PUSO
                 }
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         public static void ExcelOpenXmlUpdateCellValue()
         {
             using (SpreadsheetDocument myExcelDoc =
@@ -340,7 +353,9 @@ namespace PUSO
 
             return myFirstRow;
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         public static void ExcelOpenXmlFindAllWorksheets()
         {
             Sheets mySheets = null;
@@ -357,7 +372,9 @@ namespace PUSO
                 Console.WriteLine(oneSheet.Name);
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         public static void ExcelOpenXmlFindAllHiddenWorksheets()
         {
             IEnumerable<Sheet> myHiddenSheets = null;
@@ -379,7 +396,9 @@ namespace PUSO
                 Console.WriteLine(oneSheet.Name);
             }
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         public static void ExcelOpenXmlFindHiddenRowsAndCols()
         {
             List<uint> hiddenRows = new List<uint>();
@@ -429,7 +448,9 @@ namespace PUSO
                 }
             }
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         private static void ExcelOpenXmlInsertChart()
         {
             Dictionary<string, int> chartData = new Dictionary<string, int>();
@@ -682,6 +703,6 @@ namespace PUSO
                 myDrawingsPart.WorksheetDrawing.Save();
             }
         }
+        //gavdcodeend 11
     }
 }
-

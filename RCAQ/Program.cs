@@ -1,4 +1,4 @@
-using Microsoft.Exchange.WebServices.Data;
+﻿using Microsoft.Exchange.WebServices.Data;
 using System;
 using System.Configuration;
 
@@ -27,6 +27,7 @@ namespace RCAQ
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void GetFolders(ExchangeService ExService)
         {
             FolderView myView = new FolderView(100);
@@ -44,7 +45,9 @@ namespace RCAQ
                 Console.WriteLine(oneFolder.DisplayName + " - Hidden: " + strHidden);
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void GetOneRootFolder(ExchangeService ExService)
         {
             Folder myInboxFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
@@ -58,7 +61,9 @@ namespace RCAQ
                 Console.WriteLine("-- " + oneFolder.DisplayName + " - Id: " + oneFolder.Id);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 05
         static void FindOneFolder(ExchangeService ExService)
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
@@ -77,7 +82,9 @@ namespace RCAQ
                 myFolderId = oneFolder.Id;
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 03
         static void CreateOneFolder(ExchangeService ExService)
         {
             Folder newFolder = new Folder(ExService)
@@ -88,7 +95,9 @@ namespace RCAQ
 
             newFolder.Save(WellKnownFolderName.Inbox);
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void CopyOneFolder(ExchangeService ExService)
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
@@ -110,7 +119,9 @@ namespace RCAQ
             Folder folderToCopy = Folder.Bind(ExService, myFolderId);
             folderToCopy.Copy(WellKnownFolderName.JunkEmail);
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 06
         static void MoveOneFolder(ExchangeService ExService)
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
@@ -132,7 +143,9 @@ namespace RCAQ
             Folder folderToMove = Folder.Bind(ExService, myFolderId);
             folderToMove.Move(WellKnownFolderName.Drafts);
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void UpdateOneFolder(ExchangeService ExService)
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Drafts);
@@ -155,7 +168,9 @@ namespace RCAQ
             folderToUpdate.DisplayName = "New Folder Name";
             folderToUpdate.Update();
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void EmptyOneFolder(ExchangeService ExService)
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Drafts);
@@ -177,7 +192,9 @@ namespace RCAQ
             Folder folderToEmpty = Folder.Bind(ExService, myFolderId);
             folderToEmpty.Empty(DeleteMode.HardDelete, true);
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 10
         static void HideOneFolder(ExchangeService ExService)
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.JunkEmail);
@@ -204,7 +221,9 @@ namespace RCAQ
             folderToHide.SetExtendedProperty(isHiddenProp, true);
             folderToHide.Update();
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 09
         static void DeleteOneFolder(ExchangeService ExService)
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Drafts);
@@ -226,6 +245,7 @@ namespace RCAQ
             Folder folderToDelete = Folder.Bind(ExService, myFolderId);
             folderToDelete.Delete(DeleteMode.HardDelete);
         }
+        //gavdcodeend 09
 
         //-------------------------------------------------------------------------------
         static ExchangeService ConnectBA(string userEmail, string userPW)
@@ -257,4 +277,3 @@ namespace RCAQ
         }
     }
 }
-

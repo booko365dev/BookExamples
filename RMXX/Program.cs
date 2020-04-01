@@ -1,4 +1,4 @@
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Style;
@@ -25,6 +25,7 @@ namespace RMXX
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         public static void ExcelEpplusCreateDocument()
         {
             using (ExcelPackage excelPackage = new ExcelPackage())
@@ -49,7 +50,9 @@ namespace RMXX
                 excelPackage.SaveAs(myFileInfo);
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         public static void ExcelEpplusReadSpreedshet()
         {
             FileInfo myFileInfo = new FileInfo(@"C:\Temporary\ExcelEPPlus01.xlsx");
@@ -74,7 +77,9 @@ namespace RMXX
                 Console.WriteLine(valA1 + " - " + valB1);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         public static void ExcelEpplusUpdateCellValue()
         {
             FileInfo myFileInfo = new FileInfo(@"C:\Temporary\ExcelEPPlus01.xlsx");
@@ -86,7 +91,9 @@ namespace RMXX
                 excelPackage.SaveAs(myFileInfo);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         public static void ExcelEpplusInsertLineChart()
         {
             FileInfo myFileInfo = new FileInfo(@"C:\Temporary\ExcelEPPlus01.xlsx");
@@ -130,7 +137,9 @@ namespace RMXX
                 excelPackage.SaveAs(myFileInfo);
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         public static void ExcelEpplusInsertPieChart()
         {
             FileInfo myFileInfo = new FileInfo(@"C:\Temporary\ExcelEPPlus01.xlsx");
@@ -164,7 +173,9 @@ namespace RMXX
                 excelPackage.SaveAs(myFileInfo);
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         public static void ExcelEpplusStyleSheet()
         {
             FileInfo myFileInfo = new FileInfo(@"C:\Temporary\ExcelEPPlus01.xlsx");
@@ -238,7 +249,9 @@ namespace RMXX
                 excelPackage.SaveAs(myFileInfo);
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         public static void ExcelEpplusAddFormules()
         {
             FileInfo myFileInfo = new FileInfo(@"C:\Temporary\ExcelEPPlus01.xlsx");
@@ -280,6 +293,6 @@ namespace RMXX
                 excelPackage.SaveAs(myFileInfo);
             }
         }
+        //gavdcodeend 07
     }
 }
-
