@@ -1,4 +1,4 @@
-
+﻿
 Function ConnectPsEwsBA()
 {
 	$ExService = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService
@@ -13,6 +13,7 @@ Function ConnectPsEwsBA()
 }
 #-----------------------------------------------------------------------------------------
 
+#gavdcodebegin 01
 Function ExPsEwsCreateOneFolder($ExService)
 {
     $newFolder = New-Object Microsoft.Exchange.WebServices.Data.Folder($ExService)
@@ -20,7 +21,9 @@ Function ExPsEwsCreateOneFolder($ExService)
 
     $newFolder.Save([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Inbox)
 }
+#gavdcodeend 01
 
+#gavdcodebegin 02
 Function ExPsEwsGetAllFolders($ExService) {
     $myView = [Microsoft.Exchange.WebServices.Data.FolderView]100
     $isHidden = `
@@ -41,7 +44,9 @@ Function ExPsEwsGetAllFolders($ExService) {
         Write-Host $oneFolder.DisplayName " - Hidden: " $strHidden
     }
 }
+#gavdcodeend 02
 
+#gavdcodebegin 03
 Function ExPsEwsFindOneFolder($ExService)
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
@@ -63,7 +68,9 @@ Function ExPsEwsFindOneFolder($ExService)
 		Write-Host $myFolderId
     }
 }
+#gavdcodeend 03
 
+#gavdcodebegin 04
 Function ExPsEwsUpdateOneFolder($ExService)
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
@@ -89,7 +96,9 @@ Function ExPsEwsUpdateOneFolder($ExService)
     $folderToUpdate.DisplayName = "New Folder Name"
     $folderToUpdate.Update()
 }
+#gavdcodeend 04
 
+#gavdcodebegin 05
 Function ExPsEwsDeleteOneFolder($ExService)
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
@@ -115,7 +124,9 @@ Function ExPsEwsDeleteOneFolder($ExService)
     $folderToDelete.Delete(`
 			[Microsoft.Exchange.WebServices.Data.DeleteMode]::HardDelete);
 }
+#gavdcodeend 05
 
+#gavdcodebegin 06
 Function ExPsEwsCreateAndSendEmail($ExService)
 {
     $newEmail = New-Object Microsoft.Exchange.WebServices.Data.EmailMessage($ExService)
@@ -130,7 +141,9 @@ Function ExPsEwsCreateAndSendEmail($ExService)
     $newEmail.SendAndSaveCopy();
     #$newEmail.Send();
 }
+#gavdcodeend 06
 
+#gavdcodebegin 07
 Function ExPsEwsGetUnreadEmails($ExService)
 {
 	$mySearchFilter = New-Object `
@@ -148,7 +161,9 @@ Function ExPsEwsGetUnreadEmails($ExService)
 
     Write-Host $findResults.TotalCount
 }
+#gavdcodeend 07
 
+#gavdcodebegin 08
 Function ExPsEwsReplyToEmail($ExService)
 {
 	$mySearchFilter = New-Object `
@@ -175,7 +190,9 @@ Function ExPsEwsReplyToEmail($ExService)
     $myReply = "Reply body"
     $emailToReply.Reply($myReply, $true);
 }
+#gavdcodeend 08
 
+#gavdcodebegin 09
 Function ExPsEwsDeleteOneEmail($ExService)
 {
 	$mySearchFilter = New-Object `
@@ -205,7 +222,9 @@ Function ExPsEwsDeleteOneEmail($ExService)
 
     $emailToDelete.Delete([Microsoft.Exchange.WebServices.Data.DeleteMode]::SoftDelete)
 }
+#gavdcodeend 09
 
+#gavdcodebegin 10
 Function ExPsEwsCreateOneContact($ExService)
 {
     $newContact = New-Object Microsoft.Exchange.WebServices.Data.Contact($ExService)
@@ -257,7 +276,9 @@ Function ExPsEwsCreateOneContact($ExService)
 
     $newContact.Save()
 }
+#gavdcodeend 10
 
+#gavdcodebegin 11
 Function ExPsEwsFindAllContacts($ExService)
 {
     $myContactsfolder = [Microsoft.Exchange.WebServices.Data.ContactsFolder]::Bind(`
@@ -274,7 +295,9 @@ Function ExPsEwsFindAllContacts($ExService)
         Write-Host $oneContact.DisplayName
     }
 }
+#gavdcodeend 11
 
+#gavdcodebegin 12
 Function ExPsEwsFindOneContactByName($ExService)
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
@@ -290,7 +313,9 @@ Function ExPsEwsFindOneContactByName($ExService)
         Write-Host $oneFound.CompleteName.FullName + " - " + $onefound.CompanyName
     }
 }
+#gavdcodeend 12
 
+#gavdcodebegin 13
 Function ExPsEwsUpdateOneContact($ExService)
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
@@ -335,7 +360,9 @@ Function ExPsEwsUpdateOneContact($ExService)
     $myContact.Update(`
 		[Microsoft.Exchange.WebServices.Data.ConflictResolutionMode]::AlwaysOverwrite)
 }
+#gavdcodeend 13
 
+#gavdcodebegin 14
 Function ExPsEwsDeleteOneContact($ExService)
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
@@ -357,7 +384,9 @@ Function ExPsEwsDeleteOneContact($ExService)
 
     $myContact.Delete([Microsoft.Exchange.WebServices.Data.DeleteMode]::MoveToDeletedItems);
 }
+#gavdcodeend 14
 
+#gavdcodebegin 15
 Function ExPsEwsCreateAppointment($ExService)
 {
     $myDt = (Get-Date).AddDays(+1)
@@ -375,7 +404,9 @@ Function ExPsEwsCreateAppointment($ExService)
     $newAppointment.Save(`
 		[Microsoft.Exchange.WebServices.Data.SendInvitationsMode]::SendToNone)
 }
+#gavdcodeend 15
 
+#gavdcodebegin 16
 Function ExPsEwsFindAppointmentsByDate($ExService)
 {
 	$myView = New-Object `
@@ -390,7 +421,9 @@ Function ExPsEwsFindAppointmentsByDate($ExService)
         Write-Host "Duration: " $oneAppointment.Duration
     }
 }
+#gavdcodeend 16
 
+#gavdcodebegin 17
 Function ExPsEwsUpdateOneAppointment($ExService)
 {
 	$mySearchFilter = New-Object `
@@ -426,7 +459,9 @@ Function ExPsEwsUpdateOneAppointment($ExService)
 		[Microsoft.Exchange.WebServices.Data.SendInvitationsOrCancellationsMode]::`
 				SendToAllAndSaveCopy)
 }
+#gavdcodeend 17
 
+#gavdcodebegin 18
 Function ExPsEwsDeleteOneAppointment($ExService)
 {
 	$mySearchFilter = New-Object `
@@ -471,6 +506,7 @@ Function ExPsEwsDeleteOneAppointment($ExService)
     $cancelMessage.IsReadReceiptRequested = $true
     $cancelMessage.SendAndSaveCopy()
 }
+#gavdcodeend 18
 
 #-----------------------------------------------------------------------------------------
 
@@ -500,5 +536,4 @@ $ExService = ConnectPsEwsBA
 #ExPsEwsDeleteOneAppointment $ExService
 
 Write-Host "Done"  
-
 
