@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -32,6 +32,7 @@ namespace ZJLE
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsPnpcoreCreateOneList(ClientContext spCtx)
         {
             ListTemplateType myTemplate = ListTemplateType.GenericList;
@@ -39,7 +40,9 @@ namespace ZJLE
             bool enableVersioning = false;
             List newList = spCtx.Web.CreateList(myTemplate, listName, enableVersioning);
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void SpCsPnpcoreReadOneList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -47,7 +50,9 @@ namespace ZJLE
 
             Console.WriteLine("List title - " + myList.Title);
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsPnpcoreListExists(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -55,7 +60,9 @@ namespace ZJLE
 
             Console.WriteLine("List exists - " + blnListExists);
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsPnpcoreAddUserToSecurityRoleInList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -63,7 +70,9 @@ namespace ZJLE
 
             myList.SetListPermission(BuiltInIdentity.Everyone, RoleType.Editor);
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsPnpcoreAddOneFieldToList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -83,7 +92,9 @@ namespace ZJLE
                 "Type='Note' Required='FALSE' Name='NewFieldPnPCoreXml' />";
             myList.CreateField(fieldXml);
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsPnpcoreReadFilteredFieldsFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -98,7 +109,9 @@ namespace ZJLE
                 Console.WriteLine(oneField.Title + " - " + oneField.TypeAsString);
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsPnpcoreReadOneFieldFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -109,7 +122,9 @@ namespace ZJLE
 
             Console.WriteLine(myField.InternalName + " - " + myField.TypeAsString);
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void SpCsPnpcoreGetContentTypeList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -118,21 +133,27 @@ namespace ZJLE
 
             Console.WriteLine(myContentType.Description);
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void SpCsPnpcoreAddContentTypeToList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
             myList.AddContentTypeToListByName("Comment");
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void SpCsPnpcoreRemoveContentTypeFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
             myList.RemoveContentTypeByName("Comment");
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void SpCsPnpcoreGetViewList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
@@ -141,13 +162,16 @@ namespace ZJLE
 
             Console.WriteLine(myView.ListViewXml);
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         static void SpCsPnpcoreAddViewToList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
             myList.CreateView("NewView", ViewType.Html, null, 30, false);
         }
+        //gavdcodeend 12
 
         //----------------------------------------------------------------------------------------
         static ClientContext LoginPnPCore()
@@ -164,4 +188,3 @@ namespace ZJLE
         }
     }
 }
-

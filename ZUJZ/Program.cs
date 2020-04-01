@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -42,6 +42,7 @@ namespace ZUJZ
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsRestCreateOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -60,7 +61,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 01 
 
+        //gavdcodebegin 02
         static void SpCsRestReadeAllLists(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -71,7 +74,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsRestReadeOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -82,7 +87,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsRestUpdateOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -101,7 +108,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsRestDeleteOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -116,7 +125,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsRestAddOneFieldToList(Uri webUri, string userName,
                                                                 string password)
         {
@@ -134,7 +145,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsRestReadAllFieldsFromList(Uri webUri, string userName,
                                                                     string password)
         {
@@ -147,7 +160,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void SpCsRestReadOneFieldFromList(Uri webUri, string userName,
                                                                     string password)
         {
@@ -160,7 +175,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void SpCsRestUpdateOneFieldInList(Uri webUri, string userName,
                                                                 string password)
         {
@@ -181,7 +198,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void SpCsRestDeleteOneFieldFromList(Uri webUri, string userName,
                                                                     string password)
         {
@@ -198,7 +217,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void SpCsRestBreakSecurityInheritanceList(Uri webUri, string userName,
                                                                     string password)
         {
@@ -215,7 +236,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         static void SpCsRestResetSecurityInheritanceList(Uri webUri, string userName,
                                                                     string password)
         {
@@ -228,7 +251,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         static void SpCsRestAddUserToSecurityRoleInList(Uri webUri, string userName,
                                                                     string password)
         {
@@ -273,7 +298,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         static void SpCsRestUpdateUserSecurityRoleInList(Uri webUri,
                                                     string userName, string password)
         {
@@ -318,7 +345,9 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         static void SpCsRestDeleteUserFromSecurityRoleInList(Uri webUri,
                                                     string userName, string password)
         {
@@ -350,6 +379,7 @@ namespace ZUJZ
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 15
     }
 
     //-----------------------------------------------------------------------------------
@@ -481,4 +511,3 @@ namespace ZUJZ
         }
     }
 }
-

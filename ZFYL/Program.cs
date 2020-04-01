@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Search.Query;
 using Microsoft.SharePoint.Client.Taxonomy;
 using Microsoft.SharePoint.Client.UserProfiles;
@@ -78,6 +78,7 @@ namespace ZFYL
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsCsomFindTermStore(ClientContext spCtx)
         {
             TaxonomySession myTaxSession = TaxonomySession.GetTaxonomySession(spCtx);
@@ -89,7 +90,9 @@ namespace ZFYL
                 Console.WriteLine(oneTermStore.Name);
             }
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void SpCsCsomCreateTermGroup(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -101,7 +104,9 @@ namespace ZFYL
                                                     "CsCsomTermGroup", Guid.NewGuid());
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SpCsCsomFindTermGroups(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -116,7 +121,9 @@ namespace ZFYL
                 Console.WriteLine(oneGroup.Name);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SpCsCsomCreateTermSet(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -129,7 +136,9 @@ namespace ZFYL
                                                 "CsCsomTermSet", Guid.NewGuid(), 1033);
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsCsomFindTermSets(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -146,7 +155,9 @@ namespace ZFYL
                 Console.WriteLine(oneTermSet.Name);
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsCsomCreateTerm(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -159,7 +170,9 @@ namespace ZFYL
             Term myTerm = myTermSet.CreateTerm("CsCsomTerm", 1033, Guid.NewGuid());
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsCsomFindTerms(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -177,7 +190,9 @@ namespace ZFYL
                 Console.WriteLine(oneTerm.Name);
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void SpCsCsomFindOneTerm(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -193,7 +208,9 @@ namespace ZFYL
 
             Console.WriteLine(myTerm.Name);
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void SpCsCsomUpdateOneTerm(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -207,7 +224,9 @@ namespace ZFYL
             myTerm.Name = "CsCsomTerm_Updated";
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void SpCsCsomDeleteOneTerm(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -221,7 +240,9 @@ namespace ZFYL
             myTerm.DeleteObject();
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void SpCsCsomFindTermSetAndTermById(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -239,7 +260,9 @@ namespace ZFYL
 
             Console.WriteLine(myTermSet.Name + " - " + myTerm.Name);
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         static void SpCsPnpcoreCreateTermGroup(ClientContext spCtx)
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
@@ -249,33 +272,43 @@ namespace ZFYL
 
             TermGroup myTermGroup = myTermStore.CreateTermGroup("CsPnpcoreTermGroup");
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         static void SpCsPnpcoreCreateTermGroupEnsure(ClientContext spCtx)
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             Console.WriteLine(myTermGroup.Id);
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 16
         static void SpCsPnpcoreFindTermGroup(ClientContext spCtx)
         {
             TermGroup myTermGroup = spCtx.Site.GetTermGroupByName("CsPnpcoreTermGroupEns");
             Console.WriteLine(myTermGroup.Id);
         }
+        //gavdcodeend 16
 
+        //gavdcodebegin 14
         static void SpCsPnpcoreCreateTermSetEnsure(ClientContext spCtx)
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             TermSet myTermSet = myTermGroup.EnsureTermSet("CsPnpcoreTermSetEns");
             Console.WriteLine(myTermSet.Id);
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 17
         static void SpCsPnpcoreFindTermSet(ClientContext spCtx)
         {
             TermSetCollection myTermSet = spCtx.Site.GetTermSetsByName(
                                                                 "CsPnpcoreTermSetEns");
             Console.WriteLine(myTermSet[0].Id);
         }
+        //gavdcodeend 17
 
+        //gavdcodebegin 15
         static void SpCsPnpcoreCreateTerm(ClientContext spCtx)
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
@@ -283,7 +316,9 @@ namespace ZFYL
             Term myTerm = spCtx.Site.AddTermToTermset(myTermSet.Id, "CsPnpcoreTerm");
             Console.WriteLine(myTerm.Id);
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 18
         static void SpCsPnpcoreFindTerm(ClientContext spCtx)
         {
             TermSetCollection myTermSet = spCtx.Site.GetTermSetsByName(
@@ -291,7 +326,9 @@ namespace ZFYL
             Term myTerm = spCtx.Site.GetTermByName(myTermSet[0].Id, "CsPnpcoreTerm");
             Console.WriteLine(myTerm.Id);
         }
+        //gavdcodeend 18
 
+        //gavdcodebegin 19
         static void SpCsPnpcoreExportTermStore(ClientContext spCtx)
         {
             List<string> myTermStoreExport = spCtx.Site.ExportAllTerms(true);
@@ -300,7 +337,9 @@ namespace ZFYL
                 Console.WriteLine(oneTerm);
             }
         }
+        //gavdcodeend 19
 
+        //gavdcodebegin 20
         static void SpCsPnpcoreImportTermStore(ClientContext spCtx)
         {
             string[] myTerms = { "TermGroup01|TermSet01|Term01",
@@ -308,7 +347,9 @@ namespace ZFYL
 
             spCtx.Site.ImportTerms(myTerms, 1033);
         }
+        //gavdcodeend 20
 
+        //gavdcodebegin 21
         static void SpCsCsomGetResultsSearch(ClientContext spCtx)
         {
             KeywordQuery keywordQuery = new KeywordQuery(spCtx);
@@ -324,7 +365,9 @@ namespace ZFYL
                                         resultRow["Path"] + " - " + resultRow["Write"]);
             }
         }
+        //gavdcodeend 21
 
+        //gavdcodebegin 22
         static void SpCsRestResultsSearchGET(Uri webUri, string userName,
                                                                     string password)
         {
@@ -337,7 +380,9 @@ namespace ZFYL
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 22
 
+        //gavdcodebegin 23
         static void SpCsRestResultsSearchPOST(Uri webUri, string userName,
                                                                     string password)
         {
@@ -356,7 +401,9 @@ namespace ZFYL
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 23
 
+        //gavdcodebegin 24
         static void SpCsCsomGetAllPropertiesUserProfile (ClientContext spCtx)
         {
             string myUser = "i:0#.f|membership|" + 
@@ -373,7 +420,9 @@ namespace ZFYL
                                                         oneProperty.Value.ToString());
             }
         }
+        //gavdcodeend 24
 
+        //gavdcodebegin 25
         static void SpCsCsomGetAllMyPropertiesUserProfile(ClientContext spCtx)
         {
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
@@ -388,7 +437,9 @@ namespace ZFYL
                                                         oneProperty.Value.ToString());
             }
         }
+        //gavdcodeend 25
 
+        //gavdcodebegin 26
         static void SpCsCsomGetPropertiesUserProfile(ClientContext spCtx)
         {
             string myUser = "i:0#.f|membership|" +
@@ -409,7 +460,9 @@ namespace ZFYL
                 Console.WriteLine(oneValue);
             }
         }
+        //gavdcodeend 26
 
+        //gavdcodebegin 27
         static void SpCsCsomUpdateOnePropertyUserProfile(ClientContext spCtx)
         {
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
@@ -422,7 +475,9 @@ namespace ZFYL
                     myUserProperties.AccountName, "AboutMe", newValue);
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 27
 
+        //gavdcodebegin 28
         static void SpCsCsomUpdateOneMultPropertyUserProfile(ClientContext spCtx)
         {
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
@@ -437,7 +492,9 @@ namespace ZFYL
                                     myUserProperties.AccountName, "SPS-Skills", mySkills);
             spCtx.ExecuteQuery();
         }
+        //gavdcodeend 28
 
+        //gavdcodebegin 29
         static void SpCsRestGetAllPropertiesUserProfile(Uri webUri, string userName,
                                                                     string password)
         {
@@ -453,7 +510,9 @@ namespace ZFYL
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 29
 
+        //gavdcodebegin 30
         static void SpCsRestGetAllMyPropertiesUserProfile(Uri webUri, string userName,
                                                                     string password)
         {
@@ -466,7 +525,9 @@ namespace ZFYL
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 30
 
+        //gavdcodebegin 31
         static void SpCsRestGetPropertiesUserProfile(Uri webUri, string userName,
                                                                     string password)
         {
@@ -482,6 +543,7 @@ namespace ZFYL
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 31
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()

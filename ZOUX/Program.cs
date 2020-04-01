@@ -1,4 +1,4 @@
-using Microsoft.Exchange.WebServices.Data;
+﻿using Microsoft.Exchange.WebServices.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -34,6 +34,7 @@ namespace ZOUX
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void CreateAppointment(ExchangeService ExService)
         {
             DateTime myDt = DateTime.Now.AddDays(1);
@@ -51,7 +52,9 @@ namespace ZOUX
 
             newAppointment.Save(SendInvitationsMode.SendToNone);
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void CreateRecurrentAppointment(ExchangeService ExService)
         {
             // Fixed date recurrent appointment
@@ -98,7 +101,9 @@ namespace ZOUX
 
             newRelAppointment.Save(SendInvitationsMode.SendToNone);
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void FindAppointmentsByDate(ExchangeService ExService)
         {
             FindItemsResults<Appointment> allAppointments =
@@ -112,7 +117,9 @@ namespace ZOUX
                 Console.WriteLine("Duration: " + oneAppointment.Duration);
             }
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         private static void FindAppointmentsByUser(ExchangeService ExService)
         {
             List<AttendeeInfo> accountsToScan = new List<AttendeeInfo>
@@ -148,7 +155,9 @@ namespace ZOUX
                 }
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void FindRecurrentAppointmentsByDate(ExchangeService ExService)
         {
             SearchFilter.SearchFilterCollection myFilter = 
@@ -181,7 +190,9 @@ namespace ZOUX
                 }
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void FindAppointmentsBySubject(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -206,7 +217,9 @@ namespace ZOUX
 
             Console.WriteLine(myAppointment.Subject + " - " + myAppointment.Location);
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void UpdateOneAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -235,7 +248,9 @@ namespace ZOUX
             myAppointment.Update(ConflictResolutionMode.AlwaysOverwrite, 
                                 SendInvitationsOrCancellationsMode.SendToAllAndSaveCopy);
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void UpdateOneRecurrentAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -274,7 +289,9 @@ namespace ZOUX
             myAppointment.Update(ConflictResolutionMode.AlwaysOverwrite,
                                 SendInvitationsOrCancellationsMode.SendToNone);
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void AcceptDeclineOneAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -307,7 +324,9 @@ namespace ZOUX
             responseMessage.Sensitivity = Sensitivity.Private;
             responseMessage.Send();
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void ForwardOneAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -342,7 +361,9 @@ namespace ZOUX
             fwdMessage.IsDeliveryReceiptRequested = true;
             fwdMessage.SendAndSaveCopy();
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void TrackResponsesOneAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -383,7 +404,9 @@ namespace ZOUX
                     myAppointment.Resources[i].ResponseType.Value.ToString());
             }
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         static void DeleteOneAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -420,7 +443,9 @@ namespace ZOUX
             cancelMessage.IsReadReceiptRequested = true;
             cancelMessage.SendAndSaveCopy();
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         static void DeleteOneRecurrentAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -467,7 +492,9 @@ namespace ZOUX
             cancelMessage.IsReadReceiptRequested = true;
             cancelMessage.SendAndSaveCopy();
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         private static void ExportOneAppointment(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -498,7 +525,9 @@ namespace ZOUX
                                         appointmentToExport.MimeContent.Content.Length);
             }
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         private static void ImportOneAppointment(ExchangeService ExService)
         {
             Appointment appointmentToImport = new Appointment(ExService);
@@ -523,6 +552,7 @@ namespace ZOUX
 
             appointmentToImport.Save(WellKnownFolderName.Calendar);
         }
+        //gavdcodeend 15
 
         //-------------------------------------------------------------------------------
         static ExchangeService ConnectBA(string userEmail, string userPW)
@@ -554,4 +584,3 @@ namespace ZOUX
         }
     }
 }
-

@@ -525,4 +525,3 @@ function Unprotect-String
 	}
 }
 $Script:Token = $null
-

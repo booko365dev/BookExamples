@@ -1,4 +1,5 @@
-
+﻿
+#gavdcodebegin 01
 Function ConnectPsEwsBA()
 {
 	$ExService = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService
@@ -11,7 +12,9 @@ Function ConnectPsEwsBA()
 
 	return $ExService
 }
+#gavdcodeend 01
 
+#gavdcodebegin 03
 Function ConnectPsOnlBA() 
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -23,6 +26,7 @@ Function ConnectPsOnlBA()
 				-AllowRedirection -Credential $myCredentials
 	Import-PSSession $mySession -AllowClobber
 }
+#gavdcodeend 03
 #-----------------------------------------------------------------------------------------
 
 Function CallEWSTest($ExService) {
@@ -39,12 +43,15 @@ Function CallEWSTest($ExService) {
 
 [xml]$configFile = get-content "C:\Projects\exPs.values.config"
 
+#gavdcodebegin 04
 ##==> EWS Basic Authorization
 Add-Type -Path "C:\Program Files\Microsoft\Exchange\Web Services\2.2\Microsoft.Exchange.WebServices.dll"
 $ExService = ConnectPsEwsBA
 
 CallEWSTest $ExService  #Calling any function
+#gavdcodeend 04
 
+#gavdcodebegin 02
 ##==> EWS oAuth Authorization
 Import-Module .\GenericOauthEWS.ps1 -Force
 #Test-EWSConnection -MailboxName $configFile.appsettings.exUserName
@@ -52,7 +59,9 @@ $ExService = Connect-Exchange `
 				$configFile.appsettings.exUserName "" $configFile.appsettings.exAppId
 
 CallEWSTest $ExService  #Calling any function
+#gavdcodeend 02
 
+#gavdcodebegin 05
 ##==> Exchange Online PowerShell Basic Authorization
 ConnectPsOnlBA
 
@@ -60,7 +69,7 @@ Get-Mailbox  #Calling any cmdlet
 
 $currentSession = Get-PSSession
 Remove-PSSession -Session $currentSession
+#gavdcodeend 05
 
 Write-Host "Done"  
-
 
