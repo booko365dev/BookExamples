@@ -1,3 +1,4 @@
+﻿//gavdcodebegin 05
 (function () {
     'use strict';
 
@@ -21,4 +22,4 @@
         }
     }
 })();
-
+//gavdcodeend 05

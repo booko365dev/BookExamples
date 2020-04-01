@@ -1,4 +1,4 @@
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -43,6 +43,7 @@ namespace LGHE
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void SpCsRestCreateOneListItem(Uri webUri, string userName,
                                                                     string password)
         {
@@ -59,7 +60,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 01 
 
+        //gavdcodebegin 02
         static void SpCsRestUploadOneDocument(Uri webUri, string userName,
                                                                     string password)
         {
@@ -77,7 +80,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 02 
 
+        //gavdcodebegin 03
         static void SpCsRestDownloadOneDocument(Uri webUri, string userName,
                                                                     string password)
         {
@@ -106,7 +111,9 @@ namespace LGHE
                 outputStream.Close();
             }
         }
+        //gavdcodeend 03 
 
+        //gavdcodebegin 04
         static void SpCsRestReadAllListsItems(Uri webUri, string userName,
                                                                     string password)
         {
@@ -119,7 +126,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void SpCsRestReadOneListsItem(Uri webUri, string userName,
                                                                     string password)
         {
@@ -132,7 +141,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void SpCsRestReadAllLibraryDocs(Uri webUri, string userName,
                                                                     string password)
         {
@@ -145,7 +156,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void SpCsRestReadOneLibraryDoc(Uri webUri, string userName,
                                                                     string password)
         {
@@ -158,7 +171,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void SpCsRestUpdateOneListItem(Uri webUri, string userName,
                                                                     string password)
         {
@@ -179,7 +194,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void SpCsRestUpdateOneLibraryDoc(Uri webUri, string userName,
                                                                     string password)
         {
@@ -200,7 +217,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void SpCsRestDeleteOneListItem(Uri webUri, string userName,
                                                                     string password)
         {
@@ -217,7 +236,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void SpCsRestDeleteOneLibraryDoc(Uri webUri, string userName,
                                                                     string password)
         {
@@ -234,7 +255,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         static void SpCsRestBreakSecurityInheritanceListItem(Uri webUri, string userName,
                                                                     string password)
         {
@@ -252,7 +275,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         static void SpCsRestResetSecurityInheritanceListItem(Uri webUri, string userName,
                                                                     string password)
         {
@@ -265,7 +290,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         static void SpCsRestAddUserToSecurityRoleInListItem(Uri webUri, string userName,
                                                                     string password)
         {
@@ -310,7 +337,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         static void SpCsRestUpdateUserSecurityRoleInListItem(Uri webUri,
                                                     string userName, string password)
         {
@@ -355,7 +384,9 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 16
         static void SpCsRestDeleteUserFromSecurityRoleInListItem(Uri webUri,
                                                     string userName, string password)
         {
@@ -387,6 +418,7 @@ namespace LGHE
                 Console.WriteLine(data);
             }
         }
+        //gavdcodeend 16
     }
 
     //-----------------------------------------------------------------------------------
@@ -518,4 +550,3 @@ namespace LGHE
         }
     }
 }
-

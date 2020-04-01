@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace KKJA
 {
@@ -8,9 +8,11 @@ namespace KKJA
         {
         }
 
+        //gavdcodebegin 02
         protected void btnGenerateGuid_Click(object sender, EventArgs e)
         {
             lblNewGuid.Text = Guid.NewGuid().ToString();
         }
+        //gavdcodeend 02
     }
 }

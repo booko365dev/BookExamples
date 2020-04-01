@@ -1,4 +1,4 @@
-using Microsoft.Exchange.WebServices.Data;
+﻿using Microsoft.Exchange.WebServices.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,6 +42,7 @@ namespace LNCC
             Console.ReadLine();
         }
 
+        //gavdcodebegin 01
         static void CreateAndSendEmail(ExchangeService ExService)
         {
             EmailMessage newEmail = new EmailMessage(ExService)
@@ -59,7 +60,9 @@ namespace LNCC
             newEmail.SendAndSaveCopy();
             //newEmail.Send();
         }
+        //gavdcodeend 01
 
+        //gavdcodebegin 02
         static void CreateDraftEmail(ExchangeService ExService)
         {
             EmailMessage newEmail = new EmailMessage(ExService)
@@ -71,7 +74,9 @@ namespace LNCC
 
             newEmail.Save(WellKnownFolderName.Drafts);
         }
+        //gavdcodeend 02
 
+        //gavdcodebegin 03
         static void SendDraftEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -95,7 +100,9 @@ namespace LNCC
 
             newEmail.SendAndSaveCopy();
         }
+        //gavdcodeend 03
 
+        //gavdcodebegin 04
         static void SendDelayedEmail(ExchangeService ExService)
         {
             EmailMessage newEmail = new EmailMessage(ExService);
@@ -114,7 +121,9 @@ namespace LNCC
                            " - Sent at " + sendTime;
             newEmail.SendAndSaveCopy();
         }
+        //gavdcodeend 04
 
+        //gavdcodebegin 05
         static void ReplyToEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -137,7 +146,9 @@ namespace LNCC
             string myReply = "Reply body";
             emailToReply.Reply(myReply, true);
         }
+        //gavdcodeend 05
 
+        //gavdcodebegin 06
         static void ForwardEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -162,7 +173,9 @@ namespace LNCC
             string myForward = "Forward body";
             emailToReply.Forward(myForward, forwardAddresses);
         }
+        //gavdcodeend 06
 
+        //gavdcodebegin 07
         static void GetUnreadEmails(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -174,7 +187,9 @@ namespace LNCC
 
             Console.WriteLine(findResults.TotalCount.ToString());
         }
+        //gavdcodeend 07
 
+        //gavdcodebegin 08
         static void MoveOneEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -198,7 +213,9 @@ namespace LNCC
 
             emailToMove.Move(WellKnownFolderName.JunkEmail);
         }
+        //gavdcodeend 08
 
+        //gavdcodebegin 09
         static void CopyOneEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -222,7 +239,9 @@ namespace LNCC
 
             emailToCopy.Copy(WellKnownFolderName.Drafts);
         }
+        //gavdcodeend 09
 
+        //gavdcodebegin 10
         static void DeleteOneEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -246,7 +265,9 @@ namespace LNCC
 
             emailToDelete.Delete(DeleteMode.SoftDelete);
         }
+        //gavdcodeend 10
 
+        //gavdcodebegin 11
         static void EntityExtractionFromEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -305,7 +326,9 @@ namespace LNCC
                 }
             }
         }
+        //gavdcodeend 11
 
+        //gavdcodebegin 12
         private static void ExportEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -344,7 +367,9 @@ namespace LNCC
                                         emailToExport.MimeContent.Content.Length);
             }
         }
+        //gavdcodeend 12
 
+        //gavdcodebegin 13
         private static void ImportEmail(ExchangeService ExService)
         {
             EmailMessage emailToImport = new EmailMessage(ExService);
@@ -373,7 +398,9 @@ namespace LNCC
 
             emailToImport.Save(WellKnownFolderName.Inbox);
         }
+        //gavdcodeend 13
 
+        //gavdcodebegin 14
         static void GetOutOfOfficeConfig(ExchangeService ExService)
         {
             OofSettings myOOFConfig = ExService.GetUserOofSettings("user@domain.com");
@@ -400,7 +427,9 @@ namespace LNCC
             OofState myOofState = myOOFConfig.State;
             Console.WriteLine(myOofState.ToString());
         }
+        //gavdcodeend 14
 
+        //gavdcodebegin 15
         static void SetOutOfOfficeConfig(ExchangeService ExService)
         {
             OofSettings myOOFConfig = new OofSettings
@@ -416,7 +445,9 @@ namespace LNCC
 
             ExService.SetUserOofSettings("user@domain.com", myOOFConfig);
         }
+        //gavdcodeend 15
 
+        //gavdcodebegin 16
         static void CreateAndSendEmailWithAttachment(ExchangeService ExService)
         {
             EmailMessage newEmail = new EmailMessage(ExService)
@@ -442,7 +473,9 @@ namespace LNCC
 
             newEmail.SendAndSaveCopy();
         }
+        //gavdcodeend 16
 
+        //gavdcodebegin 17
         static void GetAttachments(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -485,7 +518,9 @@ namespace LNCC
                 }
             }
         }
+        //gavdcodeend 17
 
+        //gavdcodebegin 18
         static void RemoveAttachmentsFromEmail(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -529,7 +564,9 @@ namespace LNCC
 
             emailWithAttachments.Update(ConflictResolutionMode.AlwaysOverwrite);
         }
+        //gavdcodeend 18
 
+        //gavdcodebegin 19
         private static void SetEmailAsJunk(ExchangeService ExService)
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
@@ -551,7 +588,9 @@ namespace LNCC
             junkItemIds.Add(myEmailId);
             ExService.MarkAsJunk(junkItemIds, true, true);
         }
+        //gavdcodeend 19
 
+        //gavdcodebegin 20
         static void CreateInboxRule(ExchangeService ExService)
         {
             Rule newRule = new Rule
@@ -566,7 +605,9 @@ namespace LNCC
             CreateRuleOperation myOperation = new CreateRuleOperation(newRule);
             ExService.UpdateInboxRules(new RuleOperation[] { myOperation }, true);
         }
+        //gavdcodeend 20
 
+        //gavdcodebegin 21
         static void GetInboxRules(ExchangeService ExService)
         {
             RuleCollection allRules = ExService.GetInboxRules("user@domain.com");
@@ -576,7 +617,9 @@ namespace LNCC
                 Console.WriteLine(oneRule.DisplayName + " - " + oneRule.Id);
             }
         }
+        //gavdcodeend 21
 
+        //gavdcodebegin 22
         static void UpdateInboxRule(ExchangeService ExService)
         {
             RuleCollection allRules = ExService.GetInboxRules("user@domain.com");
@@ -593,7 +636,9 @@ namespace LNCC
                 }
             }
         }
+        //gavdcodeend 22
 
+        //gavdcodebegin 23
         static void DeleteInboxRule(ExchangeService ExService)
         {
             RuleCollection allRules = ExService.GetInboxRules("user@domain.com");
@@ -610,6 +655,7 @@ namespace LNCC
                 }
             }
         }
+        //gavdcodeend 23
 
         //-------------------------------------------------------------------------------
         static ExchangeService ConnectBA(string userEmail, string userPW)
@@ -641,4 +687,3 @@ namespace LNCC
         }
     }
 }
-

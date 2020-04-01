@@ -1,4 +1,4 @@
-<!--gavdcodebegin 01-->
+﻿<!--gavdcodebegin 01-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GenerateGuid.aspx.cs" 
     Inherits="KKJA.GenerateGuid" %>
 

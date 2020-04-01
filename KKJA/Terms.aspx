@@ -1,4 +1,4 @@
-<!--gavdcodebegin 04-->
+﻿<!--gavdcodebegin 04-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Terms.aspx.cs" Inherits="KKJA.Terms" %>
 
 <!DOCTYPE html>
@@ -20,4 +20,3 @@
 </body>
 </html>
 <!--gavdcodeend 04-->
-
