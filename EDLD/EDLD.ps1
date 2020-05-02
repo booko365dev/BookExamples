@@ -427,6 +427,82 @@ Function SpPsRestDeleteUserFromSecurityRoleInListItem()
 }
 #gavdcodeend 16
 
+#gavdcodebegin 17
+Function SpPsRestCreateOneFolder()
+{
+    $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
+
+    $endpointUrl = $webUrl + "/_api/web/Folders"
+    $myPayload = @{
+				__metadata = @{ 'type' = 'SP.Folder' };
+				ServerRelativeUrl = $myServerRelativeUrl
+			} | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+    $data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue
+    
+	$data | ConvertTo-Json
+}
+#gavdcodeend 17 
+
+#gavdcodebegin 18
+Function SpPsRestReadAllFolders()
+{
+    $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
+
+    $endpointUrl = $webUrl + "/_api/web/GetFolderByServerRelativeUrl('" + 
+                            $myServerRelativeUrl + "')/ListItemAllFields"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName -Password `
+		  $password -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue 
+
+	$data | ConvertTo-Json
+}
+#gavdcodeend 18
+
+#gavdcodebegin 19
+Function SpPsRestRenameOneFolder()
+{
+    $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
+
+    $endpointUrl = $webUrl + "/_api/web/GetFolderByServerRelativeUrl('" + 
+                            $myServerRelativeUrl + "')/ListItemAllFields"
+    $myPayload = @{
+        __metadata = @{ 'type' = 'SP.Data.TestDocumentsItem' };
+        Title = 'RestFolderPSRenamed';
+        FileLeafRef = 'RestFolderPSRenamend'
+    } | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue -ETag "*" `
+						-XHTTPMethod "MERGE"
+
+	$data | ConvertTo-Json
+}
+#gavdcodeend 19 
+
+#gavdcodebegin 20
+Function SpPsRestDeleteOneFolder()
+{
+    $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
+
+    $endpointUrl = $webUrl + "/_api/web/GetFolderByServerRelativeUrl('" + 
+                                                $myServerRelativeUrl + "')"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+		$password -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue `
+		-ETag "*" -XHTTPMethod "DELETE"
+
+	$data | ConvertTo-Json
+}
+#gavdcodeend 20 
+
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
@@ -455,5 +531,9 @@ $password = $configFile.appsettings.spUserPw
 #SpPsRestAddUserToSecurityRoleInListItem
 #SpPsRestUpdateUserSecurityRoleInListItem
 #SpPsRestDeleteUserFromSecurityRoleInListItem
+#SpPsRestCreateOneFolder
+#SpPsRestReadAllFolders
+#SpPsRestRenameOneFolder
+#SpPsRestDeleteOneFolder
 
 Write-Host "Done" 

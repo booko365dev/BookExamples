@@ -389,6 +389,125 @@ Function SpPsCsomDeleteUserFromSecurityRoleInListItem($spCtx)
 }
 #gavdcodeend 20
 
+#gavdcodebegin 21
+Function SpPsCsomCreateFolderInLibrary($spCtx)
+{
+    $myWeb = $spCtx.Web
+    $myList = $myWeb.Lists.GetByTitle("TestDocuments")
+
+    $myFolder01 = $myList.RootFolder.Folders.Add("FirstLevelFolderPS")
+    $myFolder01.Update()
+    $mySubFolder = $myFolder01.Folders.Add("SecondLevelFolderPS")
+    $mySubFolder.Update()
+
+    $spCtx.ExecuteQuery()
+}
+#gavdcodeend 21
+
+#gavdcodebegin 22
+Function SpPsCsomCreateFolderWithInfo($spCtx)
+{
+    $myWeb = $spCtx.Web
+    $myList = $myWeb.Lists.GetByTitle("TestList")
+
+    $infoFolder = New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
+    $infoFolder.UnderlyingObjectType = `
+                            [Microsoft.SharePoint.Client.FileSystemObjectType]::Folder
+    $infoFolder.LeafName = "FolderWithInfoPS"
+    $newItem = $myList.AddItem($infoFolder)
+    $newItem["Title"] = "FolderWithInfoPS"
+    $newItem.Update()
+
+    $spCtx.ExecuteQuery()
+}
+#gavdcodeend 22
+
+#gavdcodebegin 23
+Function SpPsCsomAddItemInFolder($spCtx)
+{
+    $myWeb = $spCtx.Web
+    $myList = $myWeb.Lists.GetByTitle("TestList")
+
+    $myListItemCreationInfo =
+                    New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
+    $myListItemCreationInfo.FolderUrl = $spCtx.Url + "/lists/TestList/FolderWithInfoPS"
+    $newListItem = $myList.AddItem($myListItemCreationInfo)
+    $newListItem["Title"] = "NewListItemInFolderPsCsom"
+    $newListItem.Update()
+
+    $spCtx.ExecuteQuery()
+}
+#gavdcodeend 23
+
+#gavdcodebegin 24
+Function SpPsCsomUploadOneDocumentInFolder($spCtx)
+{
+    $myList = $spCtx.Web.Lists.GetByTitle("TestDocuments")
+
+    $filePath = "C:\Temporary\"
+    $fileName = "TestDocument01.docx"
+	$fileFullPath = $filePath + $fileName
+    
+    $spCtx.Load($myList.RootFolder)
+    $spCtx.ExecuteQuery()
+    
+	$fileMode = [System.IO.FileMode]::Open
+	$myFileStream = New-Object System.IO.FileStream $fileFullPath, $fileMode
+
+	$myFileCreationInfo = New-Object Microsoft.SharePoint.Client.FileCreationInformation
+	$myFileCreationInfo.Overwrite = $true
+	$myFileCreationInfo.ContentStream = $myFileStream
+	$myFileCreationInfo.Url = $spCtx.Url + "/TestDocuments/FirstLevelFolderPS/" + $fileName
+
+	$newFile = $myList.RootFolder.Files.Add($myFileCreationInfo)
+    $spCtx.Load($newFile)
+    $spCtx.ExecuteQuery()
+}
+#gavdcodeend 24
+
+#gavdcodebegin 25
+Function SpPsCsomReadAllFolders($spCtx)
+{
+    $myList = $spCtx.Web.Lists.GetByTitle("TestList")
+
+    $allFolders = $myList.GetItems(`
+                        [Microsoft.SharePoint.Client.CamlQuery]::CreateAllFoldersQuery())
+    $spCtx.Load($allFolders)
+    $spCtx.ExecuteQuery()
+
+    foreach ($oneFolder in $allFolders) {
+        Write-Host($oneFolder["FileLeafRef"] + " - " + $oneFolder["ServerUrl"])
+    }
+}
+#gavdcodeend 25
+
+#gavdcodebegin 26
+Function SpPsCsomReadAllItemsInFolder($spCtx)
+{
+    $myList = $spCtx.Web.Lists.GetByTitle("TestList")
+    $myQuery = [Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery()
+    $myQuery.FolderServerRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfoPS"
+    $allItems = $myList.GetItems($myQuery)
+    $spCtx.Load($allItems)
+    $spCtx.ExecuteQuery()
+
+    foreach ($oneItem in $allItems) {
+        Write-Host($oneItem["Title"] + " - " + $oneItem.Id);
+    }
+}
+#gavdcodeend 26
+
+#gavdcodebegin 27
+Function SpCsCsomDeleteOneFolder($spCtx)
+{
+    $folderRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfoPS"
+    $myFolder = $spCtx.Web.GetFolderByServerRelativeUrl($folderRelativeUrl)
+
+    $myFolder.DeleteObject()
+    $spCtx.ExecuteQuery()
+}
+#gavdcodeend 27
+
 #-----------------------------------------------------------------------------------------
 
 
@@ -419,5 +538,12 @@ $spCtx = LoginPsCsom
 #SpPsCsomAddUserToSecurityRoleInListItem $spCtx
 #SpPsCsomUpdateUserSecurityRoleInListItem $spCtx
 #SpPsCsomDeleteUserFromSecurityRoleInListItem $spCtx
+#SpPsCsomCreateFolderInLibrary $spCtx
+#SpPsCsomCreateFolderWithInfo $spCtx
+#SpPsCsomAddItemInFolder $spCtx
+#SpPsCsomUploadOneDocumentInFolder $spCtx
+#SpPsCsomReadAllFolders $spCtx
+#SpPsCsomReadAllItemsInFolder $spCtx
+#SpCsCsomDeleteOneFolder $spCtx
 
 Write-Host "Done"

@@ -1,7 +1,9 @@
 ﻿using Microsoft.SharePoint.Client;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Security;
 
 namespace IUUQ
@@ -34,6 +36,13 @@ namespace IUUQ
             //SpCsCsomAddUserToSecurityRoleInListItem(spCtx);
             //SpCsCsomUpdateUserSecurityRoleInListItem(spCtx);
             //SpCsCsomDeleteUserFromSecurityRoleInListItem(spCtx);
+            //SpCsCsomCreateFolderInLibrary(spCtx);
+            //SpCsCsomCreateFolderWithInfo(spCtx);
+            //SpCsCsomAddItemInFolder(spCtx);
+            //SpCsCsomUploadOneDocumentInFolder(spCtx);
+            //SpCsCsomReadAllFolders(spCtx);
+            //SpCsCsomReadAllItemsInFolder(spCtx);
+            //SpCsCsomDeleteOneFolder(spCtx);
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -116,9 +125,9 @@ namespace IUUQ
                     Url = fileName
                 };
 
-                Microsoft.SharePoint.Client.File newFile = 
+                Microsoft.SharePoint.Client.File newFile =
                                         myList.RootFolder.Files.Add(myFileCreationInfo);
-	            spCtx.Load(newFile);
+                spCtx.Load(newFile);
                 spCtx.ExecuteQuery();
             }
         }
@@ -473,6 +482,138 @@ namespace IUUQ
             spCtx.Dispose();
         }
         //gavdcodeend 21
+
+        //gavdcodebegin 23
+        static void SpCsCsomCreateFolderInLibrary(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+            List myList = myWeb.Lists.GetByTitle("TestDocuments");
+
+            Folder myFolder01 = myList.RootFolder.Folders.Add("FirstLevelFolder");
+            myFolder01.Update();
+            Folder mySubFolder = myFolder01.Folders.Add("SecondLevelFolder");
+            mySubFolder.Update();
+
+            spCtx.ExecuteQuery();
+            spCtx.Dispose();
+        }
+        //gavdcodeend 23
+
+        //gavdcodebegin 24
+        static void SpCsCsomCreateFolderWithInfo(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+            List myList = myWeb.Lists.GetByTitle("TestList");
+
+            ListItemCreationInformation infoFolder = new ListItemCreationInformation();
+            infoFolder.UnderlyingObjectType = FileSystemObjectType.Folder;
+            infoFolder.LeafName = "FolderWithInfo";
+            ListItem newItem = myList.AddItem(infoFolder);
+            newItem["Title"] = "FolderWithInfo";
+            newItem.Update();
+
+            spCtx.ExecuteQuery();
+            spCtx.Dispose();
+        }
+        //gavdcodeend 24
+
+        //gavdcodebegin 25
+        static void SpCsCsomAddItemInFolder(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+            List myList = myWeb.Lists.GetByTitle("TestList");
+
+            ListItemCreationInformation myListItemCreationInfo =
+                new ListItemCreationInformation
+                {
+                    FolderUrl = string.Format("{0}/lists/{1}/{2}", spCtx.Url,
+                                                        "TestList", "FolderWithInfo")
+                };
+            ListItem newListItem = myList.AddItem(myListItemCreationInfo);
+            newListItem["Title"] = "NewListItemInFolderCsCsom";
+            newListItem.Update();
+
+            spCtx.ExecuteQuery();
+            spCtx.Dispose();
+        }
+        //gavdcodeend 25
+
+        //gavdcodebegin 26
+        static void SpCsCsomUploadOneDocumentInFolder(ClientContext spCtx)
+        {
+            List myList = spCtx.Web.Lists.GetByTitle("TestDocuments");
+
+            string filePath = @"C:\Temporary\";
+            string fileName = @"TestDocument01.docx";
+
+            using (FileStream myFileStream = new
+                                    FileStream(filePath + fileName, FileMode.Open))
+            {
+                spCtx.Load(myList.RootFolder);
+                spCtx.ExecuteQuery();
+
+                FileCreationInformation myFileCreationInfo = new FileCreationInformation
+                {
+                    Overwrite = true,
+                    ContentStream = myFileStream,
+                    Url = string.Format("{0}/{1}/{2}/{3}", spCtx.Url, "TestDocuments",
+                                                        "FirstLevelFolder", fileName)
+                };
+
+                Microsoft.SharePoint.Client.File newFile =
+                                        myList.RootFolder.Files.Add(myFileCreationInfo);
+                spCtx.Load(newFile);
+                spCtx.ExecuteQuery();
+            }
+        }
+        //gavdcodeend 26
+
+        //gavdcodebegin 27
+        static void SpCsCsomReadAllFolders(ClientContext spCtx)
+        {
+            List myList = spCtx.Web.Lists.GetByTitle("TestList");
+            ListItemCollection allItems = myList.GetItems(CamlQuery.CreateAllFoldersQuery());
+            spCtx.Load(allItems, itms => itms.Include(itm => itm.Folder));
+
+            spCtx.ExecuteQuery();
+
+            List<Folder> allFolders = allItems.Select(itm => itm.Folder).ToList();
+
+            foreach (Folder oneFolder in allFolders)
+            {
+                Console.WriteLine(oneFolder.Name + " - " + oneFolder.ServerRelativeUrl);
+            }
+        }
+        //gavdcodeend 27
+
+        //gavdcodebegin 28
+        static void SpCsCsomReadAllItemsInFolder(ClientContext spCtx)
+        {
+            List myList = spCtx.Web.Lists.GetByTitle("TestList");
+            CamlQuery myQuery = CamlQuery.CreateAllItemsQuery();
+            myQuery.FolderServerRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfo";
+            ListItemCollection allItems = myList.GetItems(myQuery);
+            spCtx.Load(allItems, itms => itms.Include(itm => itm["Title"],
+                                                     itm => itm.Id));
+            spCtx.ExecuteQuery();
+
+            foreach (ListItem oneItem in allItems)
+            {
+                Console.WriteLine(oneItem["Title"] + " - " + oneItem.Id);
+            }
+        }
+        //gavdcodeend 28
+
+        //gavdcodebegin 29
+        static void SpCsCsomDeleteOneFolder(ClientContext spCtx)
+        {
+            string folderRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfo";
+            Folder myFolder = spCtx.Web.GetFolderByServerRelativeUrl(folderRelativeUrl);
+
+            myFolder.DeleteObject();
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 29
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()

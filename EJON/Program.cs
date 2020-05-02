@@ -103,6 +103,21 @@ namespace EJON
         }
         //gavdcodeend 02
 
+        //gavdcodebegin 06
+        static void LoginPnPCoreMFA()
+        {
+            string siteUrl = ConfigurationManager.AppSettings["spUrl"];
+            var authManager = new OfficeDevPnP.Core.AuthenticationManager();
+            ClientContext mfaContext = authManager.GetWebLoginClientContext(siteUrl);
+            
+            Web myWeb = mfaContext.Web;
+            mfaContext.Load(myWeb, wb => wb.Title);
+            mfaContext.ExecuteQuery();
+            
+            Console.WriteLine("Connected to the site " + myWeb.Title + " using MFA");
+        }
+        //gavdcodeend 06
+
         //gavdcodebegin 03
         static void LoginPnPCoreDirectly()
         {

@@ -192,6 +192,79 @@ Function SpPsPnpResetSecurityInheritance()
 }
 #gavdcodeend 20
 
+#gavdcodebegin 21
+Function SpPsPnpAddFolder()
+{
+	Add-PnPFolder -Name "PnPPowerShellFolder" -Folder "TestDocuments"
+}
+#gavdcodeend 21
+
+#gavdcodebegin 22
+Function SpPsPnpResolveFolder()
+{
+	Resolve-PnPFolder -SiteRelativePath "TestDocuments/PnPPowerShellFolderResolve"
+}
+#gavdcodeend 22
+
+#gavdcodebegin 23
+Function SpPsPnpGetFolder()
+{
+	Get-PnPFolder -Url "TestDocuments/PnPPowerShellFolder"
+}
+#gavdcodeend 23
+
+#gavdcodebegin 24
+Function SpPsPnpGetFolderItem()
+{
+	Get-PnPFolderItem -FolderSiteRelativeUrl  "TestDocuments/PnPPowerShellFolder"
+}
+#gavdcodeend 24
+
+#gavdcodebegin 25
+Function SpPsPnpRenameFolder()
+{
+	Rename-PnPFolder -Folder "TestDocuments/PnPPowerShellFolder" `
+					 -TargetFolderName "PnPPowerShellFolderRenamed"
+}
+#gavdcodeend 25
+
+#gavdcodebegin 26
+Function SpPsPnpMoveFolder()
+{
+	Move-PnPFolder -Folder "TestDocuments/PnPPowerShellFolder" `
+				   -TargetFolder "Shared Documents"
+}
+#gavdcodeend 26
+
+#gavdcodebegin 27
+Function SpPsPnpRemoveFolder()
+{
+	Remove-PnPFolder -Name "PnPPowerShellFolder" `
+				     -Folder "TestDocuments" `
+					 -Recycle
+}
+#gavdcodeend 27
+
+#gavdcodebegin 28
+Function SpPsPnpAddRightsFolder()
+{
+	Set-PnPFolderPermission -List "TestDocuments" `
+							-Identity "TestDocuments\PnPPowerShellFolder" `
+							-User "user@domain.OnMicrosoft.com" `
+							-AddRole "Contribute"
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function SpPsPnpRemoveRightsFolder()
+{
+	Set-PnPFolderPermission -List "TestDocuments" `
+							-Identity "TestDocuments\PnPPowerShellFolder" `
+							-User "user@domain.OnMicrosoft.com" `
+							-RemoveRole "Contribute"
+}
+#gavdcodeend 29
+
 #----------------------------------------------------------------------------------------
 
 [xml]$configFile = get-content "C:\Projects\spPs.values.config"
@@ -218,5 +291,14 @@ $spCtx = LoginPsPnP
 #SpPsPnpAddUserToSecurityRole
 #SpPsPnpRemoveUserFromSecurityRole
 #SpPsPnpResetSecurityInheritance
+#SpPsPnpAddFolder
+#SpPsPnpResolveFolder
+#SpPsPnpGetFolder
+#SpPsPnpGetFolderItem
+#SpPsPnpRenameFolder
+#SpPsPnpMoveFolder
+#SpPsPnpRemoveFolder
+#SpPsPnpAddRightsFolder
+#SpPsPnpRemoveRightsFolder
 
 Write-Host "Done"

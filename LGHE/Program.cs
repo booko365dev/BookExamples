@@ -38,6 +38,10 @@ namespace LGHE
             //SpCsRestAddUserToSecurityRoleInListItem(webUri, userName, password);
             //SpCsRestUpdateUserSecurityRoleInListItem(webUri, userName, password);
             //SpCsRestDeleteUserFromSecurityRoleInListItem(webUri, userName, password);
+            //SpCsRestCreateOneFolder(webUri, userName, password);
+            //SpCsRestReadAllFolders(webUri, userName, password);
+            //SpCsRestRenameOneFolder(webUri, userName, password);
+            //SpCsRestDeleteOneFolder(webUri, userName, password);
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -419,6 +423,90 @@ namespace LGHE
             }
         }
         //gavdcodeend 16
+
+        //gavdcodebegin 17
+        static void SpCsRestCreateOneFolder(Uri webUri, string userName,
+                                                                    string password)
+        {
+            string myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolder";
+
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = new
+                {
+                    __metadata = new { type = "SP.Folder" },
+                    ServerRelativeUrl = myServerRelativeUrl
+                };
+                string endpointUrl = webUri + "/_api/web/Folders";
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 17 
+
+        //gavdcodebegin 18
+        static void SpCsRestReadAllFolders(Uri webUri, string userName,
+                                                                    string password)
+        {
+            string myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolder";
+
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = null;
+                string endpointUrl = webUri + "/_api/web/GetFolderByServerRelativeUrl('" +
+                                        myServerRelativeUrl + "')/ListItemAllFields";
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Get, myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 18
+
+        //gavdcodebegin 19
+        static void SpCsRestRenameOneFolder(Uri webUri, string userName,
+                                                                    string password)
+        {
+            string myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolder";
+
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = new
+                {
+                    __metadata = new { type = "SP.Data.TestDocumentsItem" },
+                    Title = "RestFolderRenamed",
+                    FileLeafRef = "RestFolderRenamend"
+                };
+                string endpointUrl = webUri + "/_api/web/GetFolderByServerRelativeUrl('" +
+                                        myServerRelativeUrl + "')/ListItemAllFields";
+                IDictionary<string, string> headers = new Dictionary<string, string>();
+                headers.Add("IF-MATCH", "*");
+                headers.Add("X-HTTP-Method", "MERGE");
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
+                                                                headers, myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 19 
+
+        //gavdcodebegin 20
+        static void SpCsRestDeleteOneFolder(Uri webUri, string userName,
+                                                                    string password)
+        {
+            string myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolder";
+
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = null;
+                string endpointUrl = webUri + "/_api/web/GetFolderByServerRelativeUrl('" +
+                                                            myServerRelativeUrl + "')";
+                IDictionary<string, string> headers = new Dictionary<string, string>();
+                headers.Add("IF-MATCH", "*");
+                headers.Add("X-HTTP-Method", "DELETE");
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, headers,
+                                                                    myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 20 
     }
 
     //-----------------------------------------------------------------------------------
