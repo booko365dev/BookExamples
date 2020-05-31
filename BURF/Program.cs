@@ -26,6 +26,10 @@ namespace BURF
             //SpCsCsomUpdateUserSecurityRoleInList(spCtx);
             //SpCsCsomDeleteUserFromSecurityRoleInList(spCtx);
             //SpCsCsomResetSecurityInheritanceList(spCtx);
+            //SpCsCsomFieldCreateText(spCtx);
+            //SpCsCsomReadAllSiteColumns(spCtx);
+            //SpCsCsomAddOneSiteColumn(spCtx);
+            //SpCsCsomColumnIndex(spCtx);
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -251,9 +255,71 @@ namespace BURF
             myList.RoleAssignments.GetByPrincipal(myUser).DeleteObject();
 
             spCtx.ExecuteQuery();
-            spCtx.Dispose();
         }
         //gavdcodeend 14
+
+        //gavdcodebegin 16
+        static void SpCsCsomFieldCreateText(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+            List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
+
+            Guid myGuid = Guid.NewGuid();
+            string schemaField = "<Field ID='" + myGuid + "' Type='Text' " +
+                "Name='myTextCol' StaticName='myTextCol' DisplayName='My Text Col' />";
+            Field myField = myList.Fields.AddFieldAsXml(schemaField, true,
+                        AddFieldOptions.AddFieldInternalNameHint |
+                        AddFieldOptions.AddToDefaultContentType);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 16
+
+        //gavdcodebegin 17
+        static void SpCsCsomReadAllSiteColumns(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+            FieldCollection allSiteColls = myWeb.Fields;
+
+            spCtx.Load(allSiteColls, flds => flds.Include(fld => fld.Title,
+                                                       fld => fld.Group));
+            spCtx.ExecuteQuery();
+
+            foreach (Field oneColl in allSiteColls)
+            {
+                Console.WriteLine(oneColl.Title + " - " + oneColl.Group);
+            }
+        }
+        //gavdcodeend 17
+
+        //gavdcodebegin 18
+        static void SpCsCsomAddOneSiteColumn(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+
+            string fieldXml = "<Field DisplayName='MySiteColMultilineField' " +
+                                                    "Type='Note' Group='MyGroup' />";
+            Field myField = myWeb.Fields.AddFieldAsXml(fieldXml,
+                                                       true,
+                                                       AddFieldOptions.DefaultValue);
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 18
+
+        //gavdcodebegin 19
+        static void SpCsCsomColumnIndex(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+            List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
+
+            string myColumn = "My Text Col";
+            Field myField = myList.Fields.GetByTitle(myColumn);
+            myField.Indexed = true;
+            myField.Update();
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 19
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()

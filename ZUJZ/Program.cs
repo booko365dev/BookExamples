@@ -37,6 +37,7 @@ namespace ZUJZ
             //SpCsRestAddUserToSecurityRoleInList(webUri, userName, password);
             //SpCsRestUpdateUserSecurityRoleInList(webUri, userName, password);
             //SpCsRestDeleteUserFromSecurityRoleInList(webUri, userName, password);
+            //SpCsRestColumnIndex(webUri, userName, password);
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -380,6 +381,29 @@ namespace ZUJZ
             }
         }
         //gavdcodeend 15
+
+        //gavdcodebegin 16
+        static void SpCsRestColumnIndex(Uri webUri, string userName,
+                                                                string password)
+        {
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = new
+                {
+                    __metadata = new { type = "SP.Field" },
+                    Indexed = "true"
+                };
+                string endpointUrl = webUri + "/_api/lists/getbytitle('NewListRestCs')" +
+                                                "/fields/getbytitle('MyMultilineField')";
+                IDictionary<string, string> headers = new Dictionary<string, string>();
+                headers.Add("IF-MATCH", "*");
+                headers.Add("X-HTTP-Method", "MERGE");
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
+                                                                headers, myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 16
     }
 
     //-----------------------------------------------------------------------------------

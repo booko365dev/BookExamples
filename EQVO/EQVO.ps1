@@ -272,13 +272,30 @@ Function SpPsCsomDeleteUserFromSecurityRoleInList($spCtx)
 }
 #gavdcodeend 16
 
+#gavdcodebegin 17
+Function SpPsCsomColumnIndex($spCtx)
+{
+	$myWeb = $spCtx.Web
+	$myList = $myWeb.Lists.GetByTitle("NewListCsCsom")
+	$myField = $myList.Fields.GetByTitle("My Text Col")
+
+	$myField.Indexed = $true
+
+	$myField.Update()
+	$spCtx.Load($myField)
+	$spCtx.ExecuteQuery()
+
+	Write-Host $myField.Description
+}
+#gavdcodeend 17
+
 #-----------------------------------------------------------------------------------------
 
 
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
-[xml]$configFile = get-content "C:\Temporary\spPs.values.config"
+[xml]$configFile = get-content "C:\Projects\spPs.values.config"
 
 $spCtx = LoginPsCsom
 
@@ -297,5 +314,6 @@ $spCtx = LoginPsCsom
 #SpPsCsomAddUserToSecurityRoleInList $spCtx
 #SpPsCsomUpdateUserSecurityRoleInList $spCtx
 #SpPsCsomDeleteUserFromSecurityRoleInList $spCtx
+#SpPsCsomColumnIndex $spCtx
 
 Write-Host "Done"
