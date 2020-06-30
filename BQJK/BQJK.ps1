@@ -498,7 +498,7 @@ Function SpPsCsomReadAllItemsInFolder($spCtx)
 #gavdcodeend 26
 
 #gavdcodebegin 27
-Function SpCsCsomDeleteOneFolder($spCtx)
+Function SpPsCsomDeleteOneFolder($spCtx)
 {
     $folderRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfoPS"
     $myFolder = $spCtx.Web.GetFolderByServerRelativeUrl($folderRelativeUrl)
@@ -507,6 +507,87 @@ Function SpCsCsomDeleteOneFolder($spCtx)
     $spCtx.ExecuteQuery()
 }
 #gavdcodeend 27
+
+#gavdcodebegin 28
+Function SpPsCsomCreateOneAttachment($spCtx)
+{
+    $myList = $spCtx.Web.Lists.GetByTitle("TestList")
+    $listItemId = 3
+    $myListItem = $myList.GetItemById($listItemId)
+
+    $myFilePath = "C:\Temporary\Test.csv"
+    $myFileName = "Test.csv"
+    $myAttachmentInfo = New-Object Microsoft.SharePoint.Client.AttachmentCreationInformation
+    $myAttachmentInfo.FileName = $myFileName
+    
+    $fileMode = [System.IO.FileMode]::Open
+    $myFileStream = New-Object System.IO.FileStream $myFilePath, $FileMode
+    $myAttachmentInfo.ContentStream = $myFileStream
+    $myAttachment = $myListItem.AttachmentFiles.Add($myAttachmentInfo)
+    $spCtx.Load($myAttachment)
+    $spCtx.ExecuteQuery()
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function SpPsCsomReadAllAttachments($spCtx)
+{
+    $myList = $spCtx.Web.Lists.GetByTitle("TestList")
+    $listItemId = 3
+    $myListItem = $myList.GetItemById($listItemId)
+
+    $allAttachments = $myListItem.AttachmentFiles
+    $spCtx.Load($allAttachments)
+    $spCtx.ExecuteQuery()
+
+    foreach ($oneAttachment in $allAttachments) {
+        Write-Host "File Name - " $oneAttachment.FileName
+    }
+}
+#gavdcodeend 29
+
+#gavdcodebegin 30
+Function SpPsCsomDownloadAllAttachments($spCtx)
+{
+    $myList = $spCtx.Web.Lists.GetByTitle("TestList")
+    $listItemId = 3
+    $myListItem = $myList.GetItemById($listItemId)
+
+    $allAttachments = $myListItem.AttachmentFiles
+    $spCtx.Load($allAttachments)
+    $spCtx.ExecuteQuery()
+
+    $myFilesPath = "C:\Temporary\"
+    foreach ($oneAttachment in $allAttachments) {
+        Write-Host "File Name - " $oneAttachment.FileName
+        $myFileInfo = [Microsoft.SharePoint.Client.File]::OpenBinaryDirect($spCtx, $oneAttachment.ServerRelativeUrl)
+        $spCtx.ExecuteQuery()
+
+        $myFileStream = [System.IO.File]::Create($myFilesPath + $oneAttachment.FileName)
+        $myFileInfo.Stream.CopyTo($myFileStream)
+        $myFileStream.Close()
+    }
+}
+#gavdcodeend 30
+
+#gavdcodebegin 31
+Function SpPsCsomDeleteAllAttachments($spCtx)
+{
+    $myList = $spCtx.Web.Lists.GetByTitle("TestList")
+    $listItemId = 3
+    $myListItem = $myList.GetItemById($listItemId)
+
+    $allAttachments = $myListItem.AttachmentFiles
+    $spCtx.Load($allAttachments)
+    $spCtx.ExecuteQuery()
+
+    foreach ($oneAttachment in $allAttachments) {
+        $oneAttachment.DeleteObject()
+    }
+
+    $spCtx.ExecuteQuery()
+}
+#gavdcodeend 31
 
 #-----------------------------------------------------------------------------------------
 
@@ -544,6 +625,10 @@ $spCtx = LoginPsCsom
 #SpPsCsomUploadOneDocumentInFolder $spCtx
 #SpPsCsomReadAllFolders $spCtx
 #SpPsCsomReadAllItemsInFolder $spCtx
-#SpCsCsomDeleteOneFolder $spCtx
+#SpPsCsomDeleteOneFolder $spCtx
+#SpPsCsomCreateOneAttachment $spCtx
+#SpPsCsomReadAllAttachments $spCtx
+#SpPsCsomDownloadAllAttachments $spCtx
+#SpPsCsomDeleteAllAttachments $spCtx
 
 Write-Host "Done"

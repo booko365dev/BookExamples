@@ -265,6 +265,33 @@ Function SpPsPnpRemoveRightsFolder()
 }
 #gavdcodeend 29
 
+#gavdcodebegin 30
+Function SpPsPnpReadAllAttachments()
+{
+	$myListitem = Get-PnPListItem -List "TestList" -Id 3
+	$myAttachments = Get-PnPProperty -ClientObject $myListitem -Property "AttachmentFiles"
+	foreach ($oneAttachment in $myAttachments) {
+		Write-Host "File Name - " $oneAttachment.ServerRelativeUrl
+	}
+}
+#gavdcodeend 30
+
+#gavdcodebegin 31
+Function SpPsPnpDownloadAllAttachments()
+{
+	$myListitem = Get-PnPListItem -List "TestList" -Id 3
+	$myAttachments = Get-PnPProperty -ClientObject $myListitem -Property "AttachmentFiles"
+	$myFilesPath = "C:\Temporary\"
+	foreach ($oneAttachment in $myAttachments) {
+		Write-Host "File Name - " $oneAttachment.FileName
+		Get-PnPFile -Url $oneAttachment.ServerRelativeUrl `
+					-FileName $oneAttachement.FileName `
+					-Path $myFilesPath `
+					-AsFile
+	}
+}
+#gavdcodeend 31
+
 #----------------------------------------------------------------------------------------
 
 [xml]$configFile = get-content "C:\Projects\spPs.values.config"
@@ -300,5 +327,7 @@ $spCtx = LoginPsPnP
 #SpPsPnpRemoveFolder
 #SpPsPnpAddRightsFolder
 #SpPsPnpRemoveRightsFolder
+#SpPsPnpReadAllAttachments
+#SpPsPnpDownloadAllAttachments
 
 Write-Host "Done"

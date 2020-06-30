@@ -42,6 +42,10 @@ namespace LGHE
             //SpCsRestReadAllFolders(webUri, userName, password);
             //SpCsRestRenameOneFolder(webUri, userName, password);
             //SpCsRestDeleteOneFolder(webUri, userName, password);
+            //SpCsRestCreateOneAttachment(webUri, userName, password);
+            //SpCsRestReadAllAttachments(webUri, userName, password);
+            //SpCsRestDownloadOneAttachmentByFileName(webUri, userName, password);
+            //SpCsRestDeleteOneAttachmentByFileName(webUri, userName, password);
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -190,9 +194,11 @@ namespace LGHE
                 };
                 string endpointUrl = webUri + "/_api/lists/getbytitle('TestList')/" +
                                                                             "items(16)";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "MERGE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "MERGE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
                                                                 headers, myPayload);
                 Console.WriteLine(data);
@@ -213,9 +219,11 @@ namespace LGHE
                 };
                 string endpointUrl = webUri + "/_api/lists/getbytitle('TestLibrary')/" +
                                                                         "items(22)";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "MERGE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "MERGE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
                                                                 headers, myPayload);
                 Console.WriteLine(data);
@@ -232,9 +240,11 @@ namespace LGHE
                 object myPayload = null;
                 string endpointUrl = webUri + "/_api/lists/getbytitle('TestList')" +
                                                                     "/items(16)";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "DELETE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "DELETE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, headers,
                                                                     myPayload);
                 Console.WriteLine(data);
@@ -251,9 +261,11 @@ namespace LGHE
                 object myPayload = null;
                 string endpointUrl = webUri + "/_api/lists/getbytitle('TestLibrary')" +
                                                         "/items(22)";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "DELETE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "DELETE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, headers,
                                                                     myPayload);
                 Console.WriteLine(data);
@@ -271,9 +283,11 @@ namespace LGHE
                 string endpointUrl = webUri + "/_api/lists/getbytitle('TestList')/" +
                     "items(17)/breakroleinheritance(copyRoleAssignments=false," +
                     "clearSubscopes=true)";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "MERGE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "MERGE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
                                                                     headers, myPayload);
                 Console.WriteLine(data);
@@ -333,9 +347,11 @@ namespace LGHE
                 string endpointUrl = webUri + "/_api/web/lists/getbytitle" +
                           "('TestList')/items(17)/roleassignments/addroleassignment" +
                           "(principalid=" + userId + ",roledefid=" + roleId + ")";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "MERGE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "MERGE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
                                                                     headers, myPayload);
                 Console.WriteLine(data);
@@ -380,9 +396,11 @@ namespace LGHE
                 string endpointUrl = webUri + "/_api/web/lists/getbytitle" +
                             "('TestList')/items(17)/roleassignments/addroleassignment" +
                             "(principalid=" + userId + ",roledefid=" + roleId + ")";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "MERGE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "MERGE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
                                                                 headers, myPayload);
                 Console.WriteLine(data);
@@ -414,9 +432,11 @@ namespace LGHE
                 string endpointUrl = webUri + "/_api/web/lists/getbytitle" +
                         "('TestList')/items(17)/roleassignments/getbyprincipalid(" +
                         "principalid=" + userId + ")";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "DELETE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "DELETE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
                                                                     headers, myPayload);
                 Console.WriteLine(data);
@@ -477,9 +497,11 @@ namespace LGHE
                 };
                 string endpointUrl = webUri + "/_api/web/GetFolderByServerRelativeUrl('" +
                                         myServerRelativeUrl + "')/ListItemAllFields";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "MERGE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "MERGE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post,
                                                                 headers, myPayload);
                 Console.WriteLine(data);
@@ -498,15 +520,105 @@ namespace LGHE
                 object myPayload = null;
                 string endpointUrl = webUri + "/_api/web/GetFolderByServerRelativeUrl('" +
                                                             myServerRelativeUrl + "')";
-                IDictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("IF-MATCH", "*");
-                headers.Add("X-HTTP-Method", "DELETE");
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "DELETE" }
+                };
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, headers,
                                                                     myPayload);
                 Console.WriteLine(data);
             }
         }
         //gavdcodeend 20 
+
+        //gavdcodebegin 21
+        static void SpCsRestCreateOneAttachment(Uri webUri, string userName,
+                                                                    string password)
+        {
+            string myFilePath = @"C:\Temporary\Test.csv";
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = null;
+                string endpointUrl = webUri + "/_api/lists/GetByTitle('TestList')" +
+                        "/items(3)/AttachmentFiles/add(FileName='" + myFilePath + "')";
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 21
+
+        //gavdcodebegin 22
+        static void SpCsRestReadAllAttachments(Uri webUri, string userName,
+                                                                    string password)
+        {
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = null;
+                string endpointUrl = webUri + "/_api/lists/GetByTitle('TestList')" +
+                                                        "/items(3)/AttachmentFiles";
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Get, myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 22
+
+        //gavdcodebegin 23
+        static void SpCsRestDownloadOneAttachmentByFileName(Uri webUri, string userName,
+                                                                    string password)
+        {
+            string webUrlRel = new Uri(webUri.ToString()).AbsolutePath;
+
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                string myFileName = "Test.csv";
+                string myFilesPath = @"C:\Temporary\";
+
+                object myPayload = null;
+                string endpointUrl = webUri + "/_api/lists/GetByTitle('TestList')" +
+                                      "/items(3)/AttachmentFiles('" + myFileName + "')" +
+                                      "/$value";
+                Stream data = (Stream)client.ExecuteJson(endpointUrl, HttpMethod.Get,
+                                                                    myPayload, true);
+
+                byte[] result;
+                using (var streamReader = new MemoryStream())
+                {
+                    data.CopyTo(streamReader);
+                    result = streamReader.ToArray();
+                }
+                FileStream outputStream = new FileStream(myFilesPath + myFileName,
+                                    FileMode.OpenOrCreate | FileMode.Append,
+                                    FileAccess.Write, FileShare.None);
+                outputStream.Write(result, 0, result.Length);
+                outputStream.Flush(true);
+                outputStream.Close();
+            }
+        }
+        //gavdcodeend 23
+
+        //gavdcodebegin 24
+        static void SpCsRestDeleteOneAttachmentByFileName(Uri webUri, string userName,
+                                                                    string password)
+        {
+            string myFileName = "Test.csv";
+
+            using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = null;
+                string endpointUrl = webUri + "/_api/lists/GetByTitle('TestList')" +
+                                      "/items(3)/AttachmentFiles('" + myFileName + "')";
+                IDictionary<string, string> headers = new Dictionary<string, string>
+                {
+                    { "IF-MATCH", "*" },
+                    { "X-HTTP-Method", "DELETE" }
+                };
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, headers,
+                                                                    myPayload);
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 24
     }
 
     //-----------------------------------------------------------------------------------

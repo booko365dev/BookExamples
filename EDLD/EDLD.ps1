@@ -503,6 +503,71 @@ Function SpPsRestDeleteOneFolder()
 }
 #gavdcodeend 20 
 
+#gavdcodebegin 21
+Function SpPsRestCreateOneAttachment()
+{
+	$FileInfo = New-Object System.IO.FileInfo("C:\Temporary\Test.csv")
+	$FileContent = [System.IO.File]::ReadAllBytes($FileInfo.FullName)
+
+    $endpointUrl = $webUrl + "/_api/lists/GetByTitle('TestList')" + `
+                        "/items(3)/AttachmentFiles/add(FileName='" + $FileInfo.Name + "')"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+    $data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Body $FileContent -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue
+    
+	$data | ConvertTo-Json
+}
+#gavdcodeend 21
+
+#gavdcodebegin 22
+Function SpPsRestReadAllAttachments()
+{
+    $endpointUrl = $webUrl + "/_api/lists/GetByTitle('TestList')" + `
+                                                        "/items(3)/AttachmentFiles"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName -Password `
+		  $password -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue 
+
+	$data | ConvertTo-Json
+}
+#gavdcodeend 22
+
+#gavdcodebegin 23
+Function SpPsRestDownloadOneAttachmentByFileName()
+{
+	$myFileName = "Test.csv"
+
+	$endpointUrl = $WebUrl + "/_api/lists/GetByTitle('TestList')" +
+                                      "/items(3)/AttachmentFiles('" + $myFileName + "')" +
+                                      "/$value"
+	$fileContent = Invoke-RestSPO -Url $endpointUrl -Method Get -UserName $UserName `
+									-Password $Password -BinaryStringResponseBody $True
+	$fileName = [System.IO.Path]::GetFileName($myFileName)
+	$downloadFilePath = [System.IO.Path]::Combine("C:\Temporary", $fileName)
+	[System.IO.File]::WriteAllBytes($downloadFilePath, $fileContent)
+}
+#gavdcodeend 23
+
+#gavdcodebegin 24
+Function SpPsRestDeleteOneAttachmentByFileName()
+{
+	$myFileName = "Test.csv"
+
+	$endpointUrl = $WebUrl + "/_api/lists/GetByTitle('TestList')" + `
+                                      "/items(3)/AttachmentFiles('" + $myFileName + "')"
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+		$password -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue `
+		-ETag "*" -XHTTPMethod "DELETE"
+
+	$data | ConvertTo-Json
+}
+#gavdcodeend 24
+
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
@@ -535,5 +600,9 @@ $password = $configFile.appsettings.spUserPw
 #SpPsRestReadAllFolders
 #SpPsRestRenameOneFolder
 #SpPsRestDeleteOneFolder
+#SpPsRestCreateOneAttachment
+#SpPsRestReadAllAttachments
+#SpPsRestDownloadOneAttachmentByFileName
+#SpPsRestDeleteOneAttachmentByFileName
 
 Write-Host "Done" 

@@ -43,6 +43,11 @@ namespace IUUQ
             //SpCsCsomReadAllFolders(spCtx);
             //SpCsCsomReadAllItemsInFolder(spCtx);
             //SpCsCsomDeleteOneFolder(spCtx);
+            //SpCsCsomCreateOneAttachment(spCtx);
+            //SpCsCsomReadAllAttachments(spCtx);
+            //SpCsCsomDownloadAllAttachments(spCtx);
+            //SpCsCsomDeleteAllAttachments(spCtx);
+
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -614,6 +619,92 @@ namespace IUUQ
             spCtx.ExecuteQuery();
         }
         //gavdcodeend 29
+
+        //gavdcodebegin 30
+        static void SpCsCsomCreateOneAttachment(ClientContext spCtx)
+        {
+            List myList = spCtx.Web.Lists.GetByTitle("TestList");
+            int listItemId = 3;
+            ListItem myListItem = myList.GetItemById(listItemId);
+
+            string myFilePath = @"C:\Temporary\Test.csv";
+            var myAttachmentInfo = new AttachmentCreationInformation();
+            myAttachmentInfo.FileName = Path.GetFileName(myFilePath);
+            using (FileStream myFileStream = new FileStream(myFilePath, FileMode.Open))
+            {
+                myAttachmentInfo.ContentStream = myFileStream;
+                Attachment myAttachment = myListItem.AttachmentFiles.Add(myAttachmentInfo);
+                spCtx.Load(myAttachment);
+                spCtx.ExecuteQuery();
+            }
+        }
+        //gavdcodeend 30
+
+        //gavdcodebegin 31
+        static void SpCsCsomReadAllAttachments(ClientContext spCtx)
+        {
+            List myList = spCtx.Web.Lists.GetByTitle("TestList");
+            int listItemId = 3;
+            ListItem myListItem = myList.GetItemById(listItemId);
+
+            AttachmentCollection allAttachments = myListItem.AttachmentFiles;
+            spCtx.Load(allAttachments);
+            spCtx.ExecuteQuery();
+
+            foreach (Attachment oneAttachment in allAttachments)
+            {
+                Console.WriteLine("File Name - " + oneAttachment.FileName);
+            }
+        }
+        //gavdcodeend 31
+
+        //gavdcodebegin 32
+        static void SpCsCsomDownloadAllAttachments(ClientContext spCtx)
+        {
+            List myList = spCtx.Web.Lists.GetByTitle("TestList");
+            int listItemId = 3;
+            ListItem myListItem = myList.GetItemById(listItemId);
+
+            AttachmentCollection allAttachments = myListItem.AttachmentFiles;
+            spCtx.Load(allAttachments);
+            spCtx.ExecuteQuery();
+
+            string myFilesPath = @"C:\Temporary\";
+            foreach (Attachment oneAttachment in allAttachments)
+            {
+                Console.WriteLine("File Name - " + oneAttachment.FileName);
+                FileInformation myFileInfo = Microsoft.SharePoint.Client.File.
+                                OpenBinaryDirect(spCtx, oneAttachment.ServerRelativeUrl);
+                spCtx.ExecuteQuery();
+
+                using (FileStream myFileStream = System.IO.File.Create(
+                                                   myFilesPath + oneAttachment.FileName))
+                {
+                    myFileInfo.Stream.CopyTo(myFileStream);
+                }
+            }
+        }
+        //gavdcodeend 32
+
+        //gavdcodebegin 33
+        static void SpCsCsomDeleteAllAttachments(ClientContext spCtx)
+        {
+            List myList = spCtx.Web.Lists.GetByTitle("TestList");
+            int listItemId = 3;
+            ListItem myListItem = myList.GetItemById(listItemId);
+
+            AttachmentCollection allAttachments = myListItem.AttachmentFiles;
+            spCtx.Load(allAttachments);
+            spCtx.ExecuteQuery();
+
+            foreach (Attachment oneAttachment in allAttachments)
+            {
+                oneAttachment.DeleteObject();
+            }
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 33
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()

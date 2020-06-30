@@ -11,6 +11,21 @@ Function LoginPsTeams()
 }
 #gavdcodeend 01
 
+#gavdcodebegin 18
+Function LoginPsTeamsSkype()
+{
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+			$configFile.appsettings.tmUserPw -AsPlainText -Force
+
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+			-argumentlist $configFile.appsettings.tmUserName, $securePW
+	
+	Import-Module SkypeOnlineConnector
+	$mySession = New-CsOnlineSession -Credential $myCredentials
+	Import-PSSession $mySession
+}
+#gavdcodeend 18
+
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 02
@@ -160,11 +175,102 @@ Function TeamsPsMtpPolicyPackageUserRecommended()
 }
 #gavdcodeend 17
 
+#gavdcodebegin 19
+Function TeamsPsGetCallingPolicy()
+{
+	Get-CsTeamsCallingPolicy
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 19
+
+#gavdcodebegin 20
+Function TeamsPsGetCallParkPolicy()
+{
+	Get-CsTeamsCallParkPolicy
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 20
+
+#gavdcodebegin 21
+Function TeamsPsGetChannelPolicy()
+{
+	Get-CsTeamsChannelsPolicy
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 21
+
+#gavdcodebegin 22
+Function TeamsPsCreateChannelPolicy()
+{
+	New-CsTeamsChannelsPolicy -Identity myPolicy -AllowPrivateTeamDiscovery $false
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 22
+
+#gavdcodebegin 23
+Function TeamsPsAssignChannelPolicy()
+{
+	Grant-CsTeamsChannelsPolicy -Identity user@tenant.OnMicrosoft.com -PolicyName myPolicy
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 23
+
+#gavdcodebegin 24
+Function TeamsPsModifyChannelPolicy()
+{
+	Set-CsTeamsChannelsPolicy -Identity myPolicy -AllowPrivateTeamDiscovery $true
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 24
+
+#gavdcodebegin 25
+Function TeamsPsModifyChannelPolicy()
+{
+	Grant-CsTeamsChannelsPolicy -Identity user@tenant.OnMicrosoft.com -PolicyName Default
+	Remove-CsTeamsChannelsPolicy -Identity myPolicy -Force
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 25
+
+#gavdcodebegin 26
+Function TeamsPsGetTeamsClientConfiguration()
+{
+	Get-CsTeamsClientConfiguration
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 26
+
+#gavdcodebegin 27
+Function TeamsPsGetGuestMessagingConfiguration()
+{
+	Get-CsTeamsGuestMessagingConfiguration
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 27
+
+#gavdcodebegin 28
+Function TeamsPsGetMeetingBroadcastConfiguration()
+{
+	Get-CsTeamsMeetingBroadcastConfiguration
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function TeamsPsRemoveGoogleDrive()
+{
+	Set-CsTeamsClientConfiguration -Identity Global -AllowGoogleDrive $false
+	Get-PSSession | Remove-PSSession
+}
+#gavdcodeend 29
+
 #-----------------------------------------------------------------------------------------
 
 [xml]$configFile = get-content "C:\Projects\tmPs.values.config"
 
-LoginPsTeams
+#------------------------ Using Teams cmdlets
+
+#LoginPsTeams
 
 #TeamsPsMtpTeamsHelp
 #TeamsPsMtpTeamsEnumarate
@@ -185,6 +291,22 @@ LoginPsTeams
 #TeamsPsMtpPolicyPackageEnumerate
 #TeamsPsMtpPolicyPackageUser
 #TeamsPsMtpPolicyPackageUserRecommended
+
+#------------------------ Using Skype For Business cmdlets
+
+#LoginPsTeamsSkype
+
+#TeamsPsGetCallingPolicy
+#TeamsPsGetCallParkPolicy
+#TeamsPsGetChannelPolicy
+#TeamsPsCreateChannelPolicy
+#TeamsPsAssignChannelPolicy
+#TeamsPsModifyChannelPolicy
+#TeamsPsModifyChannelPolicy
+#TeamsPsGetTeamsClientConfiguration
+#TeamsPsGetGuestMessagingConfiguration
+#TeamsPsGetMeetingBroadcastConfiguration
+#TeamsPsRemoveGoogleDrive
 
 Write-Host "Done"  
 
