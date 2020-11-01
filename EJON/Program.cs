@@ -18,56 +18,88 @@ namespace EJON
     {
         static void Main(string[] args)
         {
-            //==> CSOM
+            //SpCsCsomExample();                //==> CSOM
+            //SpCsPnPCoreExample();             //==> PnP Core
+            //LoginPnPCoreDirectly();           //==> PnP Core direct login
+            //SpCsRestExample01();              // Simple REST GET request without body
+            //SpCsRestExample02();              // Full REST POST query with data in the body
+
+            Console.ReadLine();
+        }
+
+        //-------------------------------------------------------------------------------
+
+        //gavdcodebegin 07
+        static void SpCsCsomExample()
+        {
             ClientContext spCtx = LoginCsom();
+
             Web rootWeb = spCtx.Web;
             spCtx.Load(rootWeb);
             spCtx.ExecuteQuery();
-            Console.WriteLine(rootWeb.Created.ToShortDateString());
 
-            //==> PnP Core
+            Console.WriteLine(rootWeb.Created.ToShortDateString());
+        }
+        //gavdcodeend 07
+
+        //gavdcodebegin 08
+        static void SpCsPnPCoreExample()
+        {
             ClientContext spPnpCtx = LoginPnPCore();
+
             Web rootWebPnp = spPnpCtx.Web;
             spPnpCtx.Load(rootWebPnp);
             spPnpCtx.ExecuteQuery();
+
             Console.WriteLine(rootWebPnp.Created.ToShortDateString());
+        }
+        //gavdcodeend 08
 
-            //==> PnP Core direct login
-            LoginPnPCoreDirectly();
-
-            //==> REST
+        //gavdcodebegin 09
+        static void SpCsRestExample01()
+        {
             Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
             string userName = ConfigurationManager.AppSettings["spUserName"];
             string password = ConfigurationManager.AppSettings["spUserPw"];
 
-            // Simple GET request without body
             using (var client = new SPHttpClient(webUri, userName, password))
             {
                 object myPayload = null;
                 string endpointUrl = webUri + "/_api/web/created";
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Get, myPayload);
+
                 Console.WriteLine(data);
             }
-
-            //// Full POST query with data in the body
-            //using (var client = new SPHttpClient(webUri, userName, password))
-            //{
-            //    object myPayload = new
-            //    {
-            //        __metadata = new { type = "SP.List" },
-            //        Title = "NewTestListRest",
-            //        BaseTemplate = 100,
-            //        Description = "Test NewListRest",
-            //        AllowContentTypes = true,
-            //        ContentTypesEnabled = true
-            //    };
-            //    string endpointUrl = webUri + "/_api/web/lists";
-            //    var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, myPayload);
-            //    Console.WriteLine(data);
-            //}
-
-            Console.ReadLine();
         }
+        //gavdcodeend 09
+
+        //gavdcodebegin 10
+        static void SpCsRestExample02()
+        {
+            Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
+            string userName = ConfigurationManager.AppSettings["spUserName"];
+            string password = ConfigurationManager.AppSettings["spUserPw"];
+
+            using (var client = new SPHttpClient(webUri, userName, password))
+            {
+                object myPayload = new
+                {
+                    __metadata = new { type = "SP.List" },
+                    Title = "NewTestListRest",
+                    BaseTemplate = 100,
+                    Description = "Test NewListRest",
+                    AllowContentTypes = true,
+                    ContentTypesEnabled = true
+                };
+                string endpointUrl = webUri + "/_api/web/lists";
+                var data = client.ExecuteJson(endpointUrl, HttpMethod.Post, myPayload);
+
+                Console.WriteLine(data);
+            }
+        }
+        //gavdcodeend 10
+
+        //-------------------------------------------------------------------------------
 
         //gavdcodebegin 01
         static ClientContext LoginCsom()

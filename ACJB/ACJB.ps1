@@ -173,7 +173,117 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 }
 #gavdcodeend 05
 
-#-----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
+
+#gavdcodebegin 06
+Function PsRestGetExample(){
+	$webUrl = $configFile.appsettings.spUrl
+	$userName = $configFile.appsettings.spUserName
+	$password = $configFile.appsettings.spUserPw
+
+	$endpointUrl = $WebUrl + "/_api/web/Created"
+	$myResult = Invoke-RestSPO -Url $endpointUrl `
+							   -Method Get `
+							   -UserName $userName `
+							   -Password $password
+	$myResult
+}
+#gavdcodeend 06
+
+#gavdcodebegin 07
+Function PsRestPostExample(){
+	$webUrl = $configFile.appsettings.spUrl
+	$userName = $configFile.appsettings.spUserName
+	$password = $configFile.appsettings.spUserPw
+
+	$endpointUrl = $WebUrl + "/_api/web/lists"
+	$myPayload = @{ 
+				__metadata = @{ 'type' = 'SP.List' }; 
+				Title = 'NewListRest'; 
+				BaseTemplate = 100; 
+				Description = 'Test NewListRest'; 
+	            AllowContentTypes = $true;
+	            ContentTypesEnabled = $true
+			   } | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl `
+									  -UserName $userName `
+									  -Password $password
+	Invoke-RestSPO -Url $endpointUrl `
+				   -Method Post `
+				   -UserName $userName `
+				   -Password $password `
+				   -Metadata $myPayload `
+				   -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue 
+}
+#gavdcodeend 07
+
+#gavdcodebegin 08
+Function PsCsomExample(){
+	$spCtx = LoginPsCsom
+	
+	$rootWeb = $spCtx.Web
+	$spCtx.Load($rootWeb)
+	$spCtx.ExecuteQuery()
+	$spCtx.Dispose()
+	
+	Write-Host $rootWeb.Created  
+}
+#gavdcodeend 08
+
+#gavdcodebegin 09
+Function PsPsoExample(){
+	LoginPsPSO
+	Test-SPOSite $configFile.appsettings.spUrl
+	Disconnect-SPOService
+}
+#gavdcodeend 09
+
+#gavdcodebegin 10
+Function PsPnpExample(){
+	LoginPsPnP
+	
+	$myWeb = Get-PnPWeb
+	
+	Write-Host $myWeb.Title
+	
+	#Disconnect-PnPOnline
+}
+#gavdcodeend 10
+
+#gavdcodebegin 11
+Function PsPnpRestGetExample(){
+	LoginPsPnP
+	
+	$myWeb = Invoke-PnPSPRestMethod -Url /_api/web
+	
+	Write-Host $myWeb.Title
+}
+#gavdcodeend 11
+
+#gavdcodebegin 12
+Function PsPnpRestPostExample01(){
+	LoginPsPnP
+	
+	$myBody = "{'Title':'Test01'}"
+	Invoke-PnPSPRestMethod -Method Post `
+						   -Url "/_api/web/lists/GetByTitle('TestList')/items" `
+						   -Content $myBody
+}
+#gavdcodeend 12
+
+#gavdcodebegin 13
+Function PsPnpRestPostExample02(){
+	LoginPsPnP
+	
+	$myBody = "{ '__metadata': { 'type': 'SP.ListItem' }, 'Title': 'Test02'}"
+	Invoke-PnPSPRestMethod -Method Post `
+						   -Url "/_api/web/lists/GetByTitle('TestList')/items" `
+						   -Content $myBody `
+						   -ContentType "application/json;odata=verbose"
+}
+#gavdcodeend 13
+
+#----------------------------------------------------------------------------------------
 
 # Running the Functions
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
@@ -182,47 +292,22 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 [xml]$configFile = get-content "C:\Projects\spPs.values.config"
 
 ##==> CSOM
-$spCtx = LoginPsCsom
-$rootWeb = $spCtx.Web
-$spCtx.Load($rootWeb)
-$spCtx.ExecuteQuery()
-$spCtx.Dispose()
-Write-Host $rootWeb.Created  
+#PsCsomExample
 
 ##==> PSO
-LoginPsPSO
-Test-SPOSite $configFile.appsettings.spUrl
-Disconnect-SPOService
+#PsPsoExample
 
 ##==> PnP PowerShell
-#LoginPsPnP
-#$myWeb = Get-PnPWeb
-#Write-Host $myWeb.Title
-##Get-PnPTenant
-#Disconnect-PnPOnline  # Doesn't work, it does not disconnect the session, thus it gets an error calling the next routine
+#PsPnpExample
 
-#==> REST
-$webUrl = $configFile.appsettings.spUrl
-$userName = $configFile.appsettings.spUserName
-$password = $configFile.appsettings.spUserPw
+#==> REST PowerShell cmdlets
+#PsRestGetExample       ## Simple GET request without body
+#PsRestPostExample      ## Full POST query with data in the body
 
-## Simple GET request without body
-#$endpointUrl = $WebUrl + "/_api/web/Created"
-#$myResult = Invoke-RestSPO -Url $endpointUrl -Method Get -UserName $userName -Password $password
-#$myResult
-
-## Full POST query with data in the body
-#$endpointUrl = $WebUrl + "/_api/web/lists"
-#$myPayload = @{ 
-#			__metadata = @{ 'type' = 'SP.List' }; 
-#			Title = 'NewListRest'; 
-#			BaseTemplate = 100; 
-#			Description = 'Test NewListRest'; 
-#            AllowContentTypes = $true;
-#            ContentTypesEnabled = $true
-#		   } | ConvertTo-Json
-#$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName -Password $password
-#Invoke-RestSPO -Url $endpointUrl -Method Post -UserName $userName -Password $password -Metadata $myPayload -RequestDigest $contextInfo.GetContextWebInformation.FormDigestValue 
+#==> REST PnP PowerShell cmdlets
+#PsPnpRestGetExample
+#PsPnpRestPostExample01
+#PsPnpRestPostExample02
 
 Write-Host ""  
 
