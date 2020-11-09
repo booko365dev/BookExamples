@@ -123,7 +123,7 @@ Function GrPsCreateMessage()
 	$myBody = "{ 'subject':'Test message created by Graph Application', `
 			     'body':{ 'contentType':'Text', `
 						  'content':'This is a test mail' }, `
-			     'toRecipients':[{ 'emailAddress':{ 'address':'gustavo@gavd.net' } }] }"
+			     'toRecipients':[{ 'emailAddress':{ 'address':'user@domain.com' } }] }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -248,7 +248,7 @@ Function GrPsSendMessage()
 	$myBody = "{ 'message':{ 'subject':'Test message sent by Graph Application', `
 			     'body':{ 'contentType':'Text', `
 			     'content':'This is a test mail' }, `
-			     'toRecipients':[{ 'emailAddress':{ 'address':'gustavo@gavd.net' } }]} }"
+			     'toRecipients':[{ 'emailAddress':{ 'address':'user@domain.com' } }]} }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -354,8 +354,8 @@ Function GrPsForwardMessage()
 	
 	$myBody = "{ 'comment': 'Please review this email', `
 				 'toRecipients': [{ `
-						'emailAddress': { 'name': 'gustavo', `
-										  'address': 'gustavo@gavd.net' }}] }"
+						'emailAddress': { 'name': 'user', `
+										  'address': 'user@domain.com' }}] }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -600,7 +600,7 @@ Function GrPsCreateMessageInFolder()
 	$myBody = "{ 'subject':'Test message created by Graph Application', `
 			     'body':{ 'contentType':'Text', `
 						  'content':'This is a test mail in a folder' }, `
-			     'toRecipients':[{ 'emailAddress':{ 'address':'gustavo@gavd.net' } }] }"
+			     'toRecipients':[{ 'emailAddress':{ 'address':'user@domain.com' } }] }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -749,7 +749,5 @@ $UserPw = $configFile.appsettings.UserPw
 #GrPsCopyFolder
 #GrPsMoveFolder
 #GrPsDeleteFolder
-
-##### ***** Quitar "gustavo@gavd.net" de todas partes  ******
 
 Write-Host "Done" 
