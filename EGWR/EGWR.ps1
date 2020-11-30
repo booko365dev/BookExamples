@@ -63,7 +63,7 @@ Function Get-AzureTokenDelegation(){
 }
 #gavdcodeend 07 
 
-#----------------------------------------------------------------------------------------
+#*** Using Classic PowerShell cmdlets ---------------------------------------------------
 
 #gavdcodebegin 02
 Function GrPsGetTeam()
@@ -196,6 +196,116 @@ Function GrPsDeleteChannel()
 }
 #gavdcodeend 06
 
+#*** Using Classic PowerShell cmdlets ---------------------------------------------------
+
+#gavdcodebegin 08
+Function GrPsLoginGraphInteractive()
+{
+	Connect-Graph
+}
+#gavdcodeend 08
+
+#gavdcodebegin 09
+Function GrPsLoginGraphAssignRights()
+{
+	Connect-Graph -Scopes "User.Read","User.ReadWrite.All","Mail.ReadWrite",`
+				"Directory.Read.All","Chat.ReadWrite", "People.Read", `
+				"Group.Read.All", "Tasks.ReadWrite", `
+				"Sites.Manage.All"
+}
+#gavdcodeend 09
+
+#gavdcodebegin 10
+Function GrPsLoginGraphApplication()
+{
+	Connect-Graph -TenantId "e82079f9-5663-48aa-a0c7-c9b7b4db2cf5"
+}
+#gavdcodeend 10
+
+#gavdcodebegin 11
+Function GrPsGetGroupsSelect()
+{
+	Get-MgGroup | Select-Object id, DisplayName, GroupTypes
+}
+#gavdcodeend 11
+
+#*** Using PowerShell-MicrosoftGraphAPI module ------------------------------------------
+
+#gavdcodebegin 12
+Function GrPsGetToken()
+{
+	Import-Module .\MicrosoftGraph.psm1
+
+	$myCredential = New-Object System.Management.Automation.PSCredential(`
+			$ClientIDApp,(ConvertTo-SecureString $ClientSecretApp -AsPlainText -Force))
+	$myToken = Get-MSGraphAuthToken -Credential $myCredential -TenantID $TenantID
+
+	Return $myToken
+}
+#gavdcodeend 12
+
+#gavdcodebegin 13
+Function GrPsGetTeamWithModule()
+{
+	$myToken = GrPsGetToken
+	Invoke-MSGraphQuery `
+		-URI "https://graph.microsoft.com/v1.0/teams/5b409eec-a4ae-4f04-a354-0434c444265d" `
+		-Token $myToken
+}
+#gavdcodeend 13
+
+#gavdcodebegin 14
+Function GrPsCreateChannelWithModule()
+{
+	$Url = `
+		"https://graph.microsoft.com/v1.0/teams/5b409eec-a4ae-4f04-a354-0434c444265d" + 
+							"/channels"
+	
+	$myToken = GrPsGetToken
+	$myBody = "{ 'displayName':'Graph Channel 40', `
+				 'description':'Channel created with Graph' }"
+	Invoke-MSGraphQuery `
+		-URI $Url `
+		-Body $myBody `
+		-Token $myToken `
+		-Meth Post
+}
+#gavdcodeend 14
+
+#gavdcodebegin 15
+Function GrPsUpdateChannelWithModule()
+{
+	$Url = `
+		"https://graph.microsoft.com/v1.0/teams/5b409eec-a4ae-4f04-a354-0434c444265d" + 
+							"/channels/19:bb17af0c3a894262809c5412606f09f3@thread.tacv2"
+	
+	$myToken = GrPsGetToken
+	$myBody = "{ 'description':'Channel Description Updated' }"
+	Invoke-MSGraphQuery `
+		-URI $Url `
+		-Body $myBody `
+		-Token $myToken `
+		-Meth Patch
+}
+#gavdcodeend 15
+
+#gavdcodebegin 16
+Function GrPsDeleteChannelWithModule()
+{
+	$Url = `
+		"https://graph.microsoft.com/v1.0/teams/5b409eec-a4ae-4f04-a354-0434c444265d" + 
+							"/channels/19:bb17af0c3a894262809c5412606f09f3@thread.tacv2"
+	
+	$myToken = GrPsGetToken
+	$myBody = "{ 'description':'Channel Description Updated' }"
+	Invoke-MSGraphQuery `
+		-URI $Url `
+		-Body $myBody `
+		-Token $myToken `
+		-Meth Delete
+}
+#gavdcodeend 16
+
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
@@ -205,13 +315,28 @@ $ClientIDApp = $configFile.appsettings.ClientIdApp
 $ClientSecretApp = $configFile.appsettings.ClientSecretApp
 $ClientIDDel = $configFile.appsettings.ClientIdDel
 $TenantName = $configFile.appsettings.TenantName
+$TenantID = $configFile.appsettings.TenantId
 $UserName = $configFile.appsettings.UserName
 $UserPw = $configFile.appsettings.UserPw
 
+#*** Using Classic PowerShell cmdlets
 #GrPsGetTeam
 #GrPsCreateChannel
 #GrPsGetChannel
 #GrPsUpdateChannel
 #GrPsDeleteChannel
+
+#*** Using Microsoft Graph PowerShell cmdlets
+#GrPsLoginGraphInteractive
+#GrPsLoginGraphAssignRights
+#GrPsLoginGraphApplication
+#GrPsGetGroupsSelect
+
+#*** Using PowerShell-MicrosoftGraphAPI module
+#GrPsGetToken
+#GrPsGetTeamWithModule
+#GrPsCreateChannelWithModule
+#GrPsUpdateChannelWithModule
+#GrPsDeleteChannelWithModule
 
 Write-Host "Done" 
