@@ -39,6 +39,16 @@ Function LoginPsPnP()
 }
 #gavdcodeend 03
 
+#gavdcodebegin 14
+Function LoginPsCLI()
+{
+	m365 login $configFile.appsettings.spBaseUrl `
+	     --authType password `
+	     --userName $configFile.appsettings.spUserName `
+	     --password $configFile.appsettings.spUserPw
+}
+#gavdcodeend 14
+
 #gavdcodebegin 04
 Function Invoke-RestSPO() {
 	Param (
@@ -283,6 +293,16 @@ Function PsPnpRestPostExample02(){
 }
 #gavdcodeend 13
 
+#gavdcodebegin 15
+Function PsCliExample(){
+	LoginPsCLI
+	
+	m365 spo site list --type TeamSite
+
+	m365 logout
+}
+#gavdcodeend 15
+
 #----------------------------------------------------------------------------------------
 
 # Running the Functions
@@ -308,6 +328,9 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 #PsPnpRestGetExample
 #PsPnpRestPostExample01
 #PsPnpRestPostExample02
+
+##==> CLI
+#PsCliExample
 
 Write-Host ""  
 
