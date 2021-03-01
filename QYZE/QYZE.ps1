@@ -14,6 +14,18 @@
 
 #----------------------------------------------------------------------------------------
 
+Function LoginPsSPO()
+{
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+			$configFile.appsettings.spUserPw -AsPlainText -Force
+
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+			-argumentlist $configFile.appsettings.spUserName, $securePW
+	Connect-SPOService -Url $configFile.appsettings.spAdminUrl -Credential $myCredentials
+}
+
+#----------------------------------------------------------------------------------------
+
 Function LoginPsPnP()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -673,6 +685,766 @@ Function SpPsRestGetPropertiesUserProfile()
 }
 #gavdcodeend 39
 
+#gavdcodebegin 40
+Function SpPsSpoGenerateListSiteScript()
+{
+	$mySourceListUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca/Lists/TestList"
+	Get-SPOSiteScriptFromList -ListUrl $mySourceListUrl
+}
+#gavdcodeend 40
+
+#gavdcodebegin 41
+Function SpPsSpoGenerateWebSiteScript()
+{
+	$mySourceWebUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca"
+	Get-SPOSiteScriptFromWeb -WebUrl $mySourceWebUrl `
+						     -IncludeBranding `
+							 -IncludeTheme `
+							 -IncludeRegionalSettings `
+							 -IncludeSiteExternalSharingCapability `
+							 -IncludeLinksToExportedItems `
+							 -IncludedLists ("Shared Documents", "Lists/TestList")
+}
+#gavdcodeend 41
+
+#gavdcodebegin 42
+Function SpPsSpoAddSiteScript()
+{
+	$myScript = Get-Content "C:\Temporary\TestListSiteScript.json" -Raw
+	Add-SPOSiteScript -Title "CustomListFromSiteScript" `
+					  -Content $myScript `
+					  -Description "Creates a Custom List using SPO"
+}
+#gavdcodeend 42
+
+#gavdcodebegin 43
+Function SpPsSpoGetAllSiteScripts()
+{
+	Get-SPOSiteScript
+}
+#gavdcodeend 43
+
+#gavdcodebegin 44
+Function SpPsSpoGetOneSiteScript()
+{
+	$myScriptId = "83a75409-c005-4125-b7b1-f8b288bb3374"
+	Get-SPOSiteScript -Identity $myScriptId
+}
+#gavdcodeend 44
+
+#gavdcodebegin 45
+Function SpPsSpoUpdateSiteScript()
+{
+	$myScriptId = "83a75409-c005-4125-b7b1-f8b288bb3374"
+	$myScript = Get-Content "C:\Temporary\TestListSiteScript.json" -Raw
+	Set-SPOSiteScript -Identity $myScriptId `
+					  -Title "CustomerListFromSiteScript" `
+					  -Content $myScript `
+					  -Description "Creates a Custom List updated"
+}
+#gavdcodeend 45
+
+#gavdcodebegin 46
+Function SpPsSpoDeleteOneSiteScript()
+{
+	$myScriptId = "83a75409-c005-4125-b7b1-f8b288bb3374"
+	Remove-SPOSiteScript -Identity $myScriptId
+}
+#gavdcodeend 46
+
+#gavdcodebegin 47
+Function SpPsRestGenerateListSiteScript()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GetSiteScriptFromList"
+	$myPayload = @{
+			listUrl = 'https://[domain].sharepoint.com/sites/Test_Guitaca/Lists/TestList'
+			} | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 47
+
+#gavdcodebegin 48
+Function SpPsRestGenerateWebSiteScript()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GetSiteScriptFromWeb"
+
+	$myPayload = '{ 
+	   "webUrl":"https://[domain].sharepoint.com/sites/Test_Guitaca",
+	   "info":{ 
+			  "IncludeBranding":true,
+			  "IncludedLists":[ 
+				 "Shared Documents",
+				 "Lists/TestList"
+			  ],
+			  "IncludeRegionalSettings":true,
+			  "IncludeSiteExternalSharingCapability":true,
+			  "IncludeTheme":true,
+			  "IncludeLinksToExportedItems":true
+			}
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 48
+
+#gavdcodebegin 49
+Function SpPsRestAddSiteScript()
+{
+	$myPayload = '
+		{
+		  "$schema": "https://developer.microsoft.com/json-schemas/sp/site-design-script-actions.schema.json",
+		  "actions": [
+			{
+			  "verb": "createSPList",
+			  "listName": "TestList",
+			  "templateType": 100,
+			  "color": "1",
+			  "icon": "8",
+			  "subactions": [
+				{
+				  "verb": "setDescription",
+				  "description": "This is a test list"
+				},
+				{
+				  "verb": "addSPFieldXml",
+				  "schemaXml": "<Field ID=\"{fa564e0f-0c70-4ab9-b863-0177e6ddd247}\" 
+					Type=\"Text\" Name=\"Title\" DisplayName=\"Title\" Required=\"TRUE\"
+					SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" 
+					StaticName=\"Title\" FromBaseType=\"TRUE\" MaxLength=\"255\" />"
+				},
+				{
+				  "verb": "addSPFieldXml",
+				  "schemaXml": "<Field Description=\"This is a test column\" DisplayName=\"TestColumn\" Format=\"Dropdown\" IsModern=\"TRUE\" 
+					MaxLength=\"255\" Name=\"TestColumn\" Required=\"TRUE\" 
+					Title=\"TestColumn\" Type=\"Text\" ID=\"{22191eb9-6879-4d8b-8e6b-2c288577ee28}\" 
+					StaticName=\"TestColumn\" />"
+				},
+				{
+				  "verb": "addSPFieldXml",
+				  "schemaXml": "<Field ID=\"{82642ec8-ef9b-478f-acf9-31f7d45fbc31}\" 
+					DisplayName=\"Title\" Description=\"undefined\" Name=\"LinkTitle\" 
+					SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" 
+					StaticName=\"LinkTitle\" Type=\"Computed\" ReadOnly=\"TRUE\" 
+					FromBaseType=\"TRUE\" Width=\"150\" DisplayNameSrcField=\"Title\" 
+					Sealed=\"FALSE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef 
+					Name=\"LinkTitleNoMenu\" /><FieldRef Name=\"_EditMenuTableStart2\" />
+					<FieldRef Name=\"_EditMenuTableEnd\" />
+					</FieldRefs><DisplayPattern><FieldSwitch><Expr><GetVar 
+					Name=\"FreeForm\" /></Expr><Case Value=\"TRUE\"><Field 
+					Name=\"LinkTitleNoMenu\" /></Case><Default><HTML>
+					<![CDATA[<div class=\"ms-vb itx\" onmouseover=\"OnItem(this)\" 
+					CTXName=\"ctx]]></HTML><Field Name=\"_EditMenuTableStart2\" />
+					<HTML><![CDATA[\">]]></HTML><Field Name=\"LinkTitleNoMenu\" />
+					<HTML><![CDATA[</div>]]></HTML><HTML><![CDATA[<div 
+					class=\"s4-ctx\" onmouseover=\"OnChildItem(this.parentNode); 
+					return false;\">]]></HTML><HTML><![CDATA[<span>&nbsp;</span>]]>
+					</HTML><HTML><![CDATA[<a 
+					onfocus=\"OnChildItem(this.parentNode.parentNode); return false;\" 
+					onclick=\"PopMenuFromChevron(event); return false;\" 
+					href=\"javascript:;\" title=\"Open Menu\"></a>]]></HTML><HTML>
+					<![CDATA[<span>&nbsp;</span>]]></HTML><HTML><![CDATA[</div>]]>
+					</HTML></Default></FieldSwitch></DisplayPattern></Field>"
+				},
+				{
+				  "verb": "addSPView",
+				  "name": "All Items",
+				  "viewFields": [
+					"LinkTitle",
+					"TestColumn"
+				  ],
+				  "query": "",
+				  "rowLimit": 30,
+				  "isPaged": true,
+				  "makeDefault": true,
+				  "formatterJSON": "",
+				  "replaceViewFields": true
+				}
+			  ]
+			}
+		  ]
+		}'	
+
+	$endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"CreateSiteScript(Title=@title)?@title='CustomListFromSiteScript'"
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 49
+
+#gavdcodebegin 50
+Function SpPsRestGetAllSiteScripts()
+{
+	$endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GetSiteScripts"
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 50
+
+#gavdcodebegin 51
+Function SpPsRestGetOneSiteScript()
+{
+	$endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GetSiteScriptMetadata"
+
+	$myPayload = @{
+			id = 'fde0681c-9512-4652-8198-3f9b9934a394'
+			} | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 51
+
+#gavdcodebegin 52
+Function SpPsRestUpdateSiteScript()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"UpdateSiteScript"
+
+	$myPayload = '{ 
+	   "updateInfo":{ 
+			"Id":"fde0681c-9512-4652-8198-3f9b9934a394",  
+		    "Title":"CustomListFromSiteScript", 
+		    "Description":"Custom List Updated", 
+		    "Version": 2
+			}
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 52
+
+#gavdcodebegin 53
+Function SpPsRestDeleteSiteScript()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"DeleteSiteScript"
+
+	$myPayload = '{ 
+			"id":"fde0681c-9512-4652-8198-3f9b9934a394"  
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 53
+
+#gavdcodebegin 54
+Function SpPsSpoAddSiteDesign()
+{
+	Add-SPOSiteDesign -Title "Custom List From Site Design SPO" `
+					  -WebTemplate "64" `
+					  -SiteScripts "79a5174f-0712-49c7-b6af-5a45918c55ee" `
+					  -Description "Creates a Custom List in a site using SPO Site Design"
+}
+#gavdcodeend 54
+
+#gavdcodebegin 55
+Function SpPsSpoGetAllSiteDesigns()
+{
+	Get-SPOSiteDesign
+}
+#gavdcodeend 55
+
+#gavdcodebegin 56
+Function SpPsSpoGetOneSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+
+	Get-SPOSiteDesign -Identity $myDesignId
+}
+#gavdcodeend 56
+
+#gavdcodebegin 57
+Function SpPsSpoGetRunsSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+	$mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca"
+
+	Get-SPOSiteDesignRun -SiteDesignId $myDesignId -WebUrl $mySiteUrl
+}
+#gavdcodeend 57
+
+#gavdcodebegin 58
+Function SpPsSpoGetRunStatusSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+	$mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca"
+	
+	$myRuns = Get-SPOSiteDesignRun -SiteDesignId $myDesignId -WebUrl $mySiteUrl
+	Get-SPOSiteDesignRunStatus -Run $myRuns
+}
+#gavdcodeend 58
+
+#gavdcodebegin 59
+Function SpPsSpoDeleteSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+	
+	Remove-SPOSiteDesign -Identity $myDesignId
+}
+#gavdcodeend 59
+
+#gavdcodebegin 60
+Function SpPsSpoInvokeSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+	$mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca"
+
+	Invoke-SPOSiteDesign -Identity $myDesignId -WebUrl $mySiteUrl
+}
+#gavdcodeend 60
+
+#gavdcodebegin 61
+Function SpPsSpoAddTaskSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+	$mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca"
+
+	Add-SPOSiteDesignTask -SiteDesignId $myDesignId -WebUrl $mySiteUrl
+}
+#gavdcodeend 61
+
+#gavdcodebegin 62
+Function SpPsSpoGetTaskSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+	$mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca"
+
+	Get-SPOSiteDesignTask -Identity $myDesignId -WebUrl $mySiteUrl
+}
+#gavdcodeend 62
+
+#gavdcodebegin 63
+Function SpPsSpoDeleteTaskSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+
+	Remove-SPOSiteDesignTask -Identity $myDesignId
+}
+#gavdcodeend 63
+
+#gavdcodebegin 64
+Function SpPsSpoGrantRightsSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+
+	Grant-SPOSiteDesignRights -Identity $myDesignId `
+							  -Principals "[user]@[domain].onmicrosoft.com" `
+							  -Rights View
+}
+#gavdcodeend 64
+
+#gavdcodebegin 65
+Function SpPsSpoGetRightsSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+
+	Get-SPOSiteDesignRights -Identity $myDesignId
+}
+#gavdcodeend 65
+
+#gavdcodebegin 66
+Function SpPsSpoDeleteRightsSiteDesign()
+{
+	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
+
+	Revoke-SPOSiteDesignRights -Identity $myDesignId `
+							   -Principals "[user]@[domain].onmicrosoft.com" `
+}
+#gavdcodeend 66
+
+#gavdcodebegin 67
+Function SpPsRestAddSiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"CreateSiteDesign"
+
+	$myPayload = '{ 
+	   "info":{ 
+				"Title":"Custom List From Site Design REST",
+				"Description":"Creates a Custom List in a site using REST Site Design",
+				"SiteScriptIds":["79a5174f-0712-49c7-b6af-5a45918c55ee"],
+				"WebTemplate":"64",
+				"PreviewImageUrl":"https://[domain].sharepoint.com/SiteAssets/mydesign.png",
+				"PreviewImageAltText":"Custom List in a site using REST Site Design"
+			}
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 67
+
+#gavdcodebegin 68
+Function SpPsRestGetAllSiteDesigns()
+{
+	$endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GetSiteDesigns"
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 68
+
+#gavdcodebegin 69
+Function SpPsRestGetOneSiteDesign()
+{
+	$endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GetSiteDesignMetadata"
+
+	$myPayload = @{
+			id = 'c80235ae-b26f-431e-9199-d459be24e89f'
+			} | ConvertTo-Json
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 69
+
+#gavdcodebegin 70
+Function SpPsRestUpdateSiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"UpdateSiteDesign"
+
+	$myPayload = '{ 
+	   "updateInfo":{ 
+			"Id":"c80235ae-b26f-431e-9199-d459be24e89f",  
+		    "Title":"Custom List From REST Site Design", 
+		    "Description":"Custom List Updated", 
+		    "SiteScriptIds":["79a5174f-0712-49c7-b6af-5a45918c55ee"], 
+		    "Version": 2
+			}
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 70
+
+#gavdcodebegin 71
+Function SpPsRestDeleteSiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"DeleteSiteDesign"
+
+	$myPayload = '{ 
+			"id":"c80235ae-b26f-431e-9199-d459be24e89f"  
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 71
+
+#gavdcodebegin 72
+Function SpPsRestApplySiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"ApplySiteDesign"
+
+	$myPayload = '{ 
+			"siteDesignId":"c80235ae-b26f-431e-9199-d459be24e89f",  
+			"webUrl":"https://[domain].sharepoint.com/sites/Test_Guitaca"  
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 72
+
+#gavdcodebegin 73
+Function SpPsRestApplyToSiteSiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"AddSiteDesignTaskToCurrentWeb"
+
+	$myPayload = '{ 
+			"siteDesignId":"c80235ae-b26f-431e-9199-d459be24e89f"  
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 73
+
+#gavdcodebegin 74
+Function SpPsRestGetRigthsSiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GetSiteDesignRights"
+
+	$myPayload = '{ 
+			"id":"c80235ae-b26f-431e-9199-d459be24e89f"  
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 74
+
+#gavdcodebegin 75
+Function SpPsRestGrantRightsSiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"GrantSiteDesignRights"
+
+	$myPayload = '{ 
+			"id":"c80235ae-b26f-431e-9199-d459be24e89f",  
+			"principalNames":["[user]@[domain].onmicrosoft.com"],
+			"grantedRights":"View"
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 75
+
+#gavdcodebegin 76
+Function SpPsRestDeleteRightsSiteDesign()
+{
+    $endpointUrl = $webUrl + "/_api/" + 
+			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
+			"RevokeSiteDesignRights"
+
+	$myPayload = '{ 
+			"id":"c80235ae-b26f-431e-9199-d459be24e89f",  
+			"principalNames":["[user]@[domain].onmicrosoft.com"]
+	}'
+
+	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
+																-Password $password
+	$data = Invoke-RestSPO -Url $endpointUrl -Method POST -UserName $userName -Password `
+						$password -Metadata $myPayload -RequestDigest `
+						$contextInfo.GetContextWebInformation.FormDigestValue 
+	$data | ConvertTo-Json
+}
+#gavdcodeend 76
+
+#gavdcodebegin 77
+Function SpPsPnpGenerateSiteTemplateXml()
+{
+	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSite.xml"
+}
+#gavdcodeend 77
+
+#gavdcodebegin 78
+Function SpPsPnpGenerateListsTemplate()
+{
+	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningLists.xml" `
+								-ListsToExtract "MyCustomList",`
+												"7B8f0d6e79-406c-48a9-834e-af0c56489bbe"
+}
+#gavdcodeend 78
+
+#gavdcodebegin 79
+Function SpPsPnpGenerateTemplateTermGroups()
+{
+	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningTermGroups.xml" `
+								-IncludeAllTermGroups
+}
+#gavdcodeend 79
+
+#gavdcodebegin 80
+Function SpPsPnpGenerateSiteTemplatePnP()
+{
+	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSite.pnp"
+}
+#gavdcodeend 80
+
+#gavdcodebegin 81
+Function SpPsPnpApplySiteTemplate()
+{
+	Apply-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.xml"
+}
+#gavdcodeend 81
+
+#gavdcodebegin 82
+Function SpPsPnpTenantTemplateConnect()
+{
+	Connect-PnPOnline -Graph
+}
+#gavdcodeend 82
+
+#gavdcodebegin 83
+Function SpPsPnpGenerateTenantTemplateXml()
+{
+	Get-PnPTenantTemplate -Out "C:\Temporary\TestProvisioningTenant.xml" `
+						  -SiteUrl "https://[domain].sharepoint.com/sites/Test_Guitaca" `
+						  -Configuration "C:\Temporary\TestConfiguration.xml"
+}
+#gavdcodeend 83
+
+#gavdcodebegin 84
+Function SpPsPnpApplyTenantTemplate()
+{
+	Apply-PnPTenantTemplate -Path "C:\Temporary\TestProvisioningTenant.xml"
+}
+#gavdcodeend 84
+
+#gavdcodebegin 85
+Function SpPsPnpGenerateSiteTemplateWithConfig()
+{
+	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSiteWithConfig.xml" `
+						  -Configuration "C:\Temporary\TestConfiguration.xml"
+}
+#gavdcodeend 85
+
+#gavdcodebegin 86
+Function SpPsPnpGenerateSiteTemplateInMem()
+{
+	$myTemplate = PnPProvisioningTemplate -OutputInstance
+	$myTemplate | ConvertTo-Json
+}
+#gavdcodeend 86
+
+#gavdcodebegin 87
+Function SpPsPnpGenerateSiteTemplateInMemFromFile()
+{
+	$myTemplate = Read-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.xml"
+	$myTemplate | ConvertTo-Json
+}
+#gavdcodeend 87
+
+#gavdcodebegin 88
+Function SpPsPnpGenerateSiteTemplateInMemFromScratch()
+{
+	$myTemplate = New-PnPProvisioningTemplate
+	$myTemplate | ConvertTo-Json
+}
+#gavdcodeend 88
+
+#gavdcodebegin 89
+Function SpPsPnpSaveSiteTemplateInMemFromScratch()
+{
+	$myTemplate = New-PnPProvisioningTemplate
+	Save-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSiteInMem.xml" `
+								 -InputInstance $myTemplate
+}
+#gavdcodeend 89
+
+#gavdcodebegin 90
+Function SpPsPnpModifySiteTemplateInMem()
+{
+	$myTemplate = Read-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.xml"
+	$myTemplate.DisplayName = "In-memory modified template"
+	$myTemplate.Security.AdditionalOwners.Clear()
+	$myTemplate | ConvertTo-Json
+}
+#gavdcodeend 90
+
+#gavdcodebegin 91
+Function SpPsPnpGenerateSiteTemplateInMemFromFilePnP()
+{
+	$myTemplate = Read-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.pnp"
+	$myTemplate | ConvertTo-Json
+}
+#gavdcodeend 91
+
+#gavdcodebegin 92
+Function SpPsPnpAddFileSiteTemplateInMemFromFilePnP()
+{
+	Add-PnPFileToProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.pnp" `
+									  -Source "C:\Temporary\MyStyles.css" `
+								      -Folder "SiteAssets"
+}
+#gavdcodeend 92
+
+#gavdcodebegin 93
+Function SpPsPnpRemoveFileSiteTemplateInMemFromFilePnP()
+{
+	Remove-PnPFileFromProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.pnp" `
+										   -File "MyStyles.css"
+}
+#gavdcodeend 93
+
 #-----------------------------------------------------------------------------------------
 
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
@@ -749,5 +1521,80 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 #SpPsRestGetAllPropertiesUserProfile
 #SpPsRestGetAllMyPropertiesUserProfile
 #SpPsRestGetPropertiesUserProfile
+
+# SPO PowerShell Site Scripts
+#LoginPsSPO
+#SpPsSpoGenerateListSiteScript
+#SpPsSpoGenerateWebSiteScript
+#SpPsSpoAddSiteScript
+#SpPsSpoGetAllSiteScripts
+#SpPsSpoGetOneSiteScript
+#SpPsSpoUpdateSiteScript
+#SpPsSpoDeleteOneSiteScript
+#Disconnect-SPOService
+
+# REST PowerShell Site Scripts
+#$webUrl = $configFile.appsettings.spBaseUrl
+#$userName = $configFile.appsettings.spUserName
+#$password = $configFile.appsettings.spUserPw
+#SpPsRestGenerateListSiteScript
+#SpPsRestGenerateWebSiteScript
+#SpPsRestAddSiteScript
+#SpPsRestGetAllSiteScripts
+#SpPsRestGetOneSiteScript
+#SpPsRestUpdateSiteScript
+#SpPsRestDeleteSiteScript
+
+# SPO PowerShell Site Designs
+#LoginPsSPO
+#SpPsSpoAddSiteDesign
+#SpPsSpoGetAllSiteDesigns
+#SpPsSpoGetOneSiteDesign
+#SpPsSpoGetRunsSiteDesign
+#SpPsSpoGetRunStatusSiteDesign
+#SpPsSpoDeleteSiteDesign
+#SpPsSpoInvokeSiteDesign
+#SpPsSpoAddTaskSiteDesign
+#SpPsSpoGetTaskSiteDesign
+#SpPsSpoDeleteTaskSiteDesign
+#SpPsSpoGrantRightsSiteDesign
+#SpPsSpoGetRightsSiteDesign
+#SpPsSpoDeleteRightsSiteDesign
+#Disconnect-SPOService
+
+# REST PowerShell Site Designs
+#$webUrl = $configFile.appsettings.spBaseUrl
+#$userName = $configFile.appsettings.spUserName
+#$password = $configFile.appsettings.spUserPw
+#SpPsRestAddSiteDesign
+#SpPsRestGetAllSiteDesigns
+#SpPsRestGetOneSiteDesign
+#SpPsRestUpdateSiteDesign
+#SpPsRestDeleteSiteDesign
+#SpPsRestApplySiteDesign
+#SpPsRestApplyToSiteSiteDesign
+#SpPsRestGetRigthsSiteDesign
+#SpPsRestGrantRightsSiteDesign
+#SpPsRestDeleteRightsSiteDesign
+
+# PnP PowerShell Provisioning
+#$spCtx = LoginPsPnP
+#SpPsPnpGenerateSiteTemplateXml
+#SpPsPnpGenerateListsTemplate
+#SpPsPnpGenerateTemplateTermGroups
+#SpPsPnpGenerateSiteTemplatePnP
+#SpPsPnpTenantTemplateConnect
+#SpPsPnpGenerateTenantTemplateXml
+#SpPsPnpApplySiteTemplate
+#SpPsPnpApplyTenantTemplate
+#SpPsPnpGenerateSiteTemplateWithConfig
+#SpPsPnpGenerateSiteTemplateInMem
+#SpPsPnpGenerateSiteTemplateInMemFromFile
+#SpPsPnpGenerateSiteTemplateInMemFromScratch
+#SpPsPnpSaveSiteTemplateInMemFromScratch
+#SpPsPnpModifySiteTemplateInMem
+#SpPsPnpGenerateSiteTemplateInMemFromFilePnP
+#SpPsPnpAddFileSiteTemplateInMemFromFilePnP
+#SpPsPnpRemoveFileSiteTemplateInMemFromFilePnP
 
 Write-Host "Done"
