@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Search.Query;
 using Microsoft.SharePoint.Client.Taxonomy;
 using Microsoft.SharePoint.Client.UserProfiles;
@@ -73,6 +74,32 @@ namespace ZFYL
             //SpCsRestGetAllPropertiesUserProfile(webUri, userName, password);
             //SpCsRestGetAllMyPropertiesUserProfile(webUri, userName, password);
             //SpCsRestGetPropertiesUserProfile(webUri, userName, password);
+
+            // CSOM Site Scripts
+            //ClientContext spCtx = LoginCsomAdminSite();
+            //SpCsCsomGenerateWebSiteScript(spCtx);
+            //SpCsCsomAddSiteScript(spCtx);
+            //SpCsCsomGetAllSiteScripts(spCtx);  // Not working
+            //SpCsCsomUpdateSiteScript(spCtx);   // Not working
+            //SpCsCsomDeleteSiteScript(spCtx);
+
+            // CSOM Site Designs
+            //ClientContext spCtx = LoginCsomAdminSite();
+            //SpCsCsomAddSiteDesign(spCtx);
+            //SpCsCsomApplySiteDesign(spCtx);
+            //SpCsCsomGetAllSiteDesigns(spCtx);
+            //SpCsCsomUpdateSiteDesign(spCtx);
+            //SpCsCsomGetTasksSiteDesign(spCtx);
+            //SpCsCsomGetRunsSiteDesign(spCtx);
+            //SpCsCsomGetRunStatusSiteDesign(spCtx);
+            //SpCsCsomGrantRightsSiteDesign(spCtx);
+            //SpCsCsomDeleteSiteDesign(spCtx);
+
+            // PnPCore Provisioning
+            //ClientContext spCtxPnp = LoginPnPCore();
+            //SpCsPnpcoreGenerateSiteTemplateXml(spCtxPnp);
+            //SpCsPnpcoreGenerateSiteListTemplate(spCtxPnp);
+            //SpCsPnpcoreApplySiteTemplate(spCtxPnp);
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -355,13 +382,13 @@ namespace ZFYL
             KeywordQuery keywordQuery = new KeywordQuery(spCtx);
             keywordQuery.QueryText = "Team";
             SearchExecutor searchExecutor = new SearchExecutor(spCtx);
-            ClientResult<ResultTableCollection> results = 
+            ClientResult<ResultTableCollection> results =
                                         searchExecutor.ExecuteQuery(keywordQuery);
             spCtx.ExecuteQuery();
 
             foreach (var resultRow in results.Value[0].ResultRows)
             {
-                Console.WriteLine(resultRow["Title"] + " - " + 
+                Console.WriteLine(resultRow["Title"] + " - " +
                                         resultRow["Path"] + " - " + resultRow["Write"]);
             }
         }
@@ -390,8 +417,11 @@ namespace ZFYL
             {
                 object myPayload = new
                 {
-                    __metadata = new { type = 
-                                "Microsoft.Office.Server.Search.REST.SearchRequest" },
+                    __metadata = new
+                    {
+                        type =
+                                "Microsoft.Office.Server.Search.REST.SearchRequest"
+                    },
                     Querytext = "team",
                     RowLimit = 20,
                     ClientType = "ContentSearchRegular"
@@ -404,19 +434,19 @@ namespace ZFYL
         //gavdcodeend 23
 
         //gavdcodebegin 24
-        static void SpCsCsomGetAllPropertiesUserProfile (ClientContext spCtx)
+        static void SpCsCsomGetAllPropertiesUserProfile(ClientContext spCtx)
         {
-            string myUser = "i:0#.f|membership|" + 
+            string myUser = "i:0#.f|membership|" +
                                         ConfigurationManager.AppSettings["spUserName"];
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
             PersonProperties myUserProperties = myPeopleManager.GetPropertiesFor(myUser);
-            spCtx.Load(myUserProperties, prop => prop.AccountName, 
+            spCtx.Load(myUserProperties, prop => prop.AccountName,
                                                     prop => prop.UserProfileProperties);
             spCtx.ExecuteQuery();
 
             foreach (var oneProperty in myUserProperties.UserProfileProperties)
             {
-                Console.WriteLine(oneProperty.Key.ToString() + " - " + 
+                Console.WriteLine(oneProperty.Key.ToString() + " - " +
                                                         oneProperty.Value.ToString());
             }
         }
@@ -445,11 +475,11 @@ namespace ZFYL
             string myUser = "i:0#.f|membership|" +
                                         ConfigurationManager.AppSettings["spUserName"];
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
-            string[] myProfPropertyNames = new string[] 
+            string[] myProfPropertyNames = new string[]
                                                    { "Manager", "Department", "Title" };
-            UserProfilePropertiesForUser myProfProperties = 
+            UserProfilePropertiesForUser myProfProperties =
                 new UserProfilePropertiesForUser(spCtx, myUser, myProfPropertyNames);
-            IEnumerable<string> myProfPropertyValues = 
+            IEnumerable<string> myProfPropertyValues =
                 myPeopleManager.GetUserProfilePropertiesFor(myProfProperties);
 
             spCtx.Load(myProfProperties);
@@ -504,7 +534,7 @@ namespace ZFYL
                      ConfigurationManager.AppSettings["spUserName"].Replace("@", "%40");
                 object myPayload = null;
                 string endpointUrl = webUri +
-                      "/_api/sp.userprofiles.peoplemanager/getpropertiesfor(@v)?@v='" + 
+                      "/_api/sp.userprofiles.peoplemanager/getpropertiesfor(@v)?@v='" +
                       myUser + "'";
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Get, myPayload);
                 Console.WriteLine(data);
@@ -537,7 +567,7 @@ namespace ZFYL
             {
                 object myPayload = null;
                 string endpointUrl = webUri +
-                      "/_api/sp.userprofiles.peoplemanager/getuserprofilepropertyfor" + 
+                      "/_api/sp.userprofiles.peoplemanager/getuserprofilepropertyfor" +
                       "(accountame=@v, propertyname='AboutMe')?@v='" + myUser + "'";
                 var data = client.ExecuteJson(endpointUrl, HttpMethod.Get, myPayload);
                 Console.WriteLine(data);
@@ -545,11 +575,347 @@ namespace ZFYL
         }
         //gavdcodeend 31
 
+        //gavdcodebegin 32
+        static void SpCsCsomGenerateWebSiteScript(ClientContext spCtx)
+        {
+            Tenant myTenant = new Tenant(spCtx);
+
+            TenantSiteScriptSerializationInfo myInfo = new TenantSiteScriptSerializationInfo()
+            {
+                IncludeBranding = true,
+                IncludeTheme = true,
+                IncludeRegionalSettings = true,
+                IncludeLinksToExportedItems = true,
+                IncludeSiteExternalSharingCapability = true,
+                IncludedLists = new[] { "Shared Documents", "Lists/TestList" }
+            };
+
+            var response = myTenant.GetSiteScriptFromSite(
+                "https://[domain].sharepoint.com/sites/Test_Guitaca/", myInfo);
+
+            spCtx.ExecuteQuery();
+
+            Console.WriteLine(response.Value.JSON);
+        }
+        //gavdcodeend 32
+
+        //gavdcodebegin 33
+        static void SpCsCsomAddSiteScript(ClientContext spCtx)
+        {
+            string myScript = System.IO.File.ReadAllText
+                                            (@"C:\Temporary\TestListSiteScript.json");
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            TenantSiteScriptCreationInfo myInfo = new TenantSiteScriptCreationInfo()
+            {
+                Title = "CustomListFromSiteScript",
+                Content = myScript,
+                Description = "Creates a Custom List using CSOM"
+            };
+
+            var response = myTenant.CreateSiteScript(myInfo);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 33
+
+        //gavdcodebegin 34
+        static void SpCsCsomGetAllSiteScripts(ClientContext spCtx)
+        {
+            Tenant myTenant = new Tenant(spCtx);
+
+            // ATTENTION: It doesn't work
+            var response = myTenant.GetSiteScripts();
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 34
+
+        //gavdcodebegin 35
+        static void SpCsCsomUpdateSiteScript(ClientContext spCtx)
+        {
+            Tenant myTenant = new Tenant(spCtx);
+
+            // ATTENTION: There is no TenantSiteScriptUpdateInfo object
+            //TenantSiteScriptUpdateInfo myInfo = new TenantSiteScriptUpdateInfo()
+            //{
+            //    Title = "CustomListFromSiteScript",
+            //    Description = "Creates a Custom List using CSOM updated"
+            //};
+
+            //var response = myTenant.UpdateSiteScript(myInfo);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 35
+
+        //gavdcodebegin 36
+        static void SpCsCsomDeleteSiteScript(ClientContext spCtx)
+        {
+            Guid myId = new Guid("da06b992-aeaf-439d-a73a-08905ae3e884");
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            myTenant.DeleteSiteScript(myId);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 36
+
+        //gavdcodebegin 37
+        static void SpCsCsomAddSiteDesign(ClientContext spCtx)
+        {
+            Guid myId = new Guid("79a5174f-0712-49c7-b6af-5a45918c55ee");
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            TenantSiteDesignCreationInfo myInfo = new TenantSiteDesignCreationInfo()
+            {
+                Title = "Custom List From Site Design CSOM",
+                WebTemplate = "64",
+                SiteScriptIds = new Guid[] { myId },
+                Description = "Creates a Custom List in a site using CSOM Site Design"
+            };
+
+            var response = myTenant.CreateSiteDesign(myInfo);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 37
+
+        //gavdcodebegin 38
+        static void SpCsCsomApplySiteDesign(ClientContext spCtx)
+        {
+            string mySiteUrl = "https://[domain].sharepoint.com/sites/aaa05";
+            Guid myId = new Guid("abed53c3-4515-4308-8821-ffc3ec3dbcdb");
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            var response = myTenant.ApplySiteDesign(mySiteUrl, myId);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 38
+
+        //gavdcodebegin 39
+        static void SpCsCsomGetAllSiteDesigns(ClientContext spCtx)
+        {
+            Tenant myTenant = new Tenant(spCtx);
+
+            // ATTENTION: It doesn't work
+            var response = myTenant.GetSiteDesigns();
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 39
+
+        //gavdcodebegin 40
+        static void SpCsCsomUpdateSiteDesign(ClientContext spCtx)
+        {
+            Tenant myTenant = new Tenant(spCtx);
+
+            // ATTENTION: There is no TenantSiteDesignUpdateInfo object
+            //TenantSiteDesignUpdateInfo myInfo = new TenantSiteDesignUpdateInfo()
+            //{
+            //    Title = "CustomListFromSiteScript",
+            //    Description = "Creates a Custom List using CSOM updated"
+            //};
+
+            //var response = myTenant.UpdateSiteDesign(myInfo);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 40
+
+        //gavdcodebegin 41
+        static void SpCsCsomGetTasksSiteDesign(ClientContext spCtx)
+        {
+            string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            var response = myTenant.GetSiteDesignTasks(mySiteUrl);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 41
+
+        //gavdcodebegin 42
+        static void SpCsCsomGetRunsSiteDesign(ClientContext spCtx)
+        {
+            string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
+            Guid myId = new Guid("79a5174f-0712-49c7-b6af-5a45918c55ee");
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            var response = myTenant.GetSiteDesignRun(mySiteUrl, myId);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 42
+
+        //gavdcodebegin 43
+        static void SpCsCsomGetRunStatusSiteDesign(ClientContext spCtx)
+        {
+            string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
+            Guid myId = new Guid("79a5174f-0712-49c7-b6af-5a45918c55ee");
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            var myRuns = myTenant.GetSiteDesignRun(mySiteUrl, myId);
+            if (myRuns.AreItemsAvailable == true)
+            {
+                foreach (TenantSiteDesignRun oneRun in myRuns)
+                {
+                    var response = myTenant.GetSiteDesignRunStatus(oneRun.SiteId,
+                                                                   oneRun.WebId,
+                                                                   oneRun.Id);
+                    Console.WriteLine(response.ToString());
+                }
+            }
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 43
+
+        //gavdcodebegin 44
+        static void SpCsCsomGrantRightsSiteDesign(ClientContext spCtx)
+        {
+            Guid myId = new Guid("da06b992-aeaf-439d-a73a-08905ae3e884");
+            string[] myPrincipals = new string[] { "[user]@[domain].onmicrosoft.com" };
+            TenantSiteDesignPrincipalRights myRights = TenantSiteDesignPrincipalRights.View;
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            myTenant.GrantSiteDesignRights(myId, myPrincipals, myRights);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 44
+
+        //gavdcodebegin 45
+        static void SpCsCsomDeleteSiteDesign(ClientContext spCtx)
+        {
+            Guid myId = new Guid("abed53c3-4515-4308-8821-ffc3ec3dbcdb");
+
+            Tenant myTenant = new Tenant(spCtx);
+
+            myTenant.DeleteSiteDesign(myId);
+
+            spCtx.ExecuteQuery();
+        }
+        //gavdcodeend 45
+
+        //gavdcodebegin 46
+        static void SpCsPnpcoreGenerateSiteTemplateXml(ClientContext spCtx)
+        {
+            OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
+                ProvisioningTemplateCreationInformation myProvisioner = 
+                            new OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
+                                     ProvisioningTemplateCreationInformation(spCtx.Web);
+
+            myProvisioner.FileConnector = 
+                    new OfficeDevPnP.Core.Framework.Provisioning.Connectors.
+                        FileSystemConnector(@"C:\Temporary\InMemTemplate.xml", "");
+
+            // Write progress to output
+            myProvisioner.ProgressDelegate = delegate (String prMessage, 
+                                                       Int32 prProgress, 
+                                                       Int32 prTotal)
+            {
+                Console.WriteLine("{0:00}/{1:00} - {2}", prProgress, prTotal, prMessage);
+            };
+
+            // Template in memory
+            OfficeDevPnP.Core.Framework.Provisioning.Model.ProvisioningTemplate 
+                            myTemplate = spCtx.Web.GetProvisioningTemplate(myProvisioner);
+
+            // Template in file
+            OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.XMLTemplateProvider 
+                myXmlProvider = new OfficeDevPnP.Core.Framework.Provisioning.Providers.
+                    Xml.XMLFileSystemTemplateProvider(@"C:\Temporary", "");
+            myXmlProvider.SaveAs(myTemplate, "TestProvisioningSite.xml");
+        }
+        //gavdcodeend 46
+
+        //gavdcodebegin 47
+        static void SpCsPnpcoreGenerateSiteListTemplate(ClientContext spCtx)
+        {
+            OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
+                ProvisioningTemplateCreationInformation myProvisioner = 
+                            new OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
+                                     ProvisioningTemplateCreationInformation(spCtx.Web);
+
+            myProvisioner.FileConnector = 
+                    new OfficeDevPnP.Core.Framework.Provisioning.Connectors.
+                        FileSystemConnector(@"C:\Temporary\InMemTemplate.xml", "");
+            List<string> myLists = new List<string>();
+            myLists.Add("MyCustomList");
+            myLists.Add("Shared Documents");
+            myProvisioner.ListsToExtract = myLists;
+
+            // Write progress to output
+            myProvisioner.ProgressDelegate = delegate (String prMessage, 
+                                                       Int32 prProgress, 
+                                                       Int32 prTotal)
+            {
+                Console.WriteLine("{0:00}/{1:00} - {2}", prProgress, prTotal, prMessage);
+            };
+
+            // Template in memory
+            OfficeDevPnP.Core.Framework.Provisioning.Model.ProvisioningTemplate 
+                            myTemplate = spCtx.Web.GetProvisioningTemplate(myProvisioner);
+
+            // Template in file
+            OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.XMLTemplateProvider 
+                myXmlProvider = new OfficeDevPnP.Core.Framework.Provisioning.Providers.
+                    Xml.XMLFileSystemTemplateProvider(@"C:\Temporary", "");
+            myXmlProvider.SaveAs(myTemplate, "TestProvisioningLists.xml");
+        }
+        //gavdcodeend 47
+
+        //gavdcodebegin 48
+        static void SpCsPnpcoreApplySiteTemplate(ClientContext spCtx)
+        {
+            Web myWeb = spCtx.Web;
+            spCtx.Load(myWeb, w => w.Title);
+            spCtx.ExecuteQueryRetry();
+
+            OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.XMLTemplateProvider 
+                myXmlProvider = new OfficeDevPnP.Core.Framework.Provisioning.Providers.
+                    Xml.XMLFileSystemTemplateProvider(@"C:\Temporary", "");
+
+            OfficeDevPnP.Core.Framework.Provisioning.Model.ProvisioningTemplate 
+                myTemplate = myXmlProvider.GetTemplate("TestProvisioningSite.xml");
+
+            myWeb.ApplyProvisioningTemplate(myTemplate);
+        }
+        //gavdcodeend 48
+
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()
         {
             ClientContext rtnContext = new ClientContext(
                 ConfigurationManager.AppSettings["spUrl"]);
+
+            SecureString securePw = new SecureString();
+            foreach (
+                char oneChar in ConfigurationManager.AppSettings["spUserPw"].ToCharArray())
+            {
+                securePw.AppendChar(oneChar);
+            }
+            rtnContext.Credentials = new SharePointOnlineCredentials(
+                ConfigurationManager.AppSettings["spUserName"], securePw);
+
+            return rtnContext;
+        }
+
+        //-------------------------------------------------------------------------------
+        static ClientContext LoginCsomAdminSite()
+        {
+            ClientContext rtnContext = new ClientContext(
+                ConfigurationManager.AppSettings["spAdminUrl"]);
 
             SecureString securePw = new SecureString();
             foreach (
