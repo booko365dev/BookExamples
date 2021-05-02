@@ -306,9 +306,62 @@ Function GrPsDeleteChannelWithModule()
 }
 #gavdcodeend 16
 
+#*** Using PowerShell PnP ---------------------------------------------------------------
+
+#gavdcodebegin 17
+Function GrPsLoginGraphPnP()
+{
+	Connect-PnPOnline -Graph -LaunchBrowser  #-AzureEnvironment
+
+	#Disconnect-PnPOnline
+}
+#gavdcodeend 17
+
+#gavdcodebegin 18
+Function GrPsLoginGraphPnPExample()
+{
+	Connect-PnPOnline -Graph -LaunchBrowser
+	Get-PnPTeamsUser -Team "Design"
+
+	#Disconnect-PnPOnline
+}
+#gavdcodeend 18
+
+#gavdcodebegin 19
+Function GrPsLoginGraphPnPChangeScope()
+{
+	Connect-PnPOnline -Scopes “Group.ReadWrite.All”
+}
+#gavdcodeend 19
+
+#gavdcodebegin 20
+Function GrPsLoginGraphPnPWithCredentials()
+{
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+		$configFile.appsettings.UserPw -AsPlainText -Force
+	$myCredentials = New-Object System.Management.Automation.PSCredential `
+		-argumentlist $configFile.appsettings.UserName, $securePW
+
+	Connect-PnPOnline -Scopes "Group.ReadWrite.All" -Credentials $myCredentials
+}
+#gavdcodeend 20
+
+#gavdcodebegin 21
+Function GrPsLoginGraphPnPGetToken()
+{
+	Connect-PnPOnline -Graph -LaunchBrowser
+	Get-PnPGraphAccessToken -Decoded
+
+	#Disconnect-PnPOnline
+}
+#gavdcodeend 21
+
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
+Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
+Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
+
 [xml]$configFile = get-content "C:\Projects\grPs.values.config"
 
 $ClientIDApp = $configFile.appsettings.ClientIdApp
@@ -338,5 +391,12 @@ $UserPw = $configFile.appsettings.UserPw
 #GrPsCreateChannelWithModule
 #GrPsUpdateChannelWithModule
 #GrPsDeleteChannelWithModule
+
+#*** Using PowerShell PnP
+#GrPsLoginGraphPnP
+#GrPsLoginGraphPnPExample
+#GrPsLoginGraphPnPChangeScope
+#GrPsLoginGraphPnPWithCredentials
+#GrPsLoginGraphPnPGetToken
 
 Write-Host "Done" 
