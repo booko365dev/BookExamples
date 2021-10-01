@@ -27,7 +27,7 @@ namespace MHWO
                         new Uri(ConfigurationManager.AppSettings["spUrl"]), 
                         ConfigurationManager.AppSettings["spUserName"],
                         usrPw, 
-                        ConfigurationManager.AppSettings["azAppId"]))
+                        ConfigurationManager.AppSettings["azAppIdApplication"]))
             {
                 SpCsCsomReadAllList(spCtx);
 

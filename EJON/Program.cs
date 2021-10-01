@@ -19,10 +19,12 @@ namespace EJON
         static void Main(string[] args)
         {
             //SpCsCsomExample();                //==> CSOM
-            //SpCsPnPCoreExample();             //==> PnP Core
-            //LoginPnPCoreDirectly();           //==> PnP Core direct login
             //SpCsRestExample01();              // Simple REST GET request without body
             //SpCsRestExample02();              // Full REST POST query with data in the body
+            
+            // ATTENTION: Next routines using the deprecated SharePointPnPCoreOnline module
+            //SpCsPnPCoreExample();             //==> PnP Core
+            //LoginPnPCoreDirectly();           //==> PnP Core direct login
 
             Console.ReadLine();
         }
@@ -45,6 +47,7 @@ namespace EJON
         //gavdcodebegin 08
         static void SpCsPnPCoreExample()
         {
+            // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             ClientContext spPnpCtx = LoginPnPCore();
 
             Web rootWebPnp = spPnpCtx.Web;
@@ -123,6 +126,7 @@ namespace EJON
         //gavdcodebegin 02
         static ClientContext LoginPnPCore()
         {
+            // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
                 new OfficeDevPnP.Core.AuthenticationManager();
             ClientContext rtnContext =
@@ -138,6 +142,7 @@ namespace EJON
         //gavdcodebegin 06
         static void LoginPnPCoreMFA()
         {
+            // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             string siteUrl = ConfigurationManager.AppSettings["spUrl"];
             var authManager = new OfficeDevPnP.Core.AuthenticationManager();
             ClientContext mfaContext = authManager.GetWebLoginClientContext(siteUrl);
@@ -153,6 +158,7 @@ namespace EJON
         //gavdcodebegin 03
         static void LoginPnPCoreDirectly()
         {
+            // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
                 new OfficeDevPnP.Core.AuthenticationManager();
             using (ClientContext spCtx =
