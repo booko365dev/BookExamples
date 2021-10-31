@@ -306,12 +306,12 @@ Function GrPsDeleteChannelWithModule()
 }
 #gavdcodeend 16
 
-#*** Using PowerShell PnP ---------------------------------------------------------------
+#*** Using Graph PowerShell PnP ---------------------------------------------------------------
 
 #gavdcodebegin 17
 Function GrPsLoginGraphPnP()
 {
-	Connect-PnPOnline -Graph -LaunchBrowser  #-AzureEnvironment
+	Connect-PnPOnline -Url $configFile.appsettings.TenantUrl -DeviceLogin -LaunchBrowser
 
 	#Disconnect-PnPOnline
 }
@@ -320,7 +320,7 @@ Function GrPsLoginGraphPnP()
 #gavdcodebegin 18
 Function GrPsLoginGraphPnPExample()
 {
-	Connect-PnPOnline -Graph -LaunchBrowser
+	Connect-PnPOnline -Url $configFile.appsettings.TenantUrl -DeviceLogin -LaunchBrowser
 	Get-PnPTeamsUser -Team "Design"
 
 	#Disconnect-PnPOnline
@@ -328,9 +328,9 @@ Function GrPsLoginGraphPnPExample()
 #gavdcodeend 18
 
 #gavdcodebegin 19
-Function GrPsLoginGraphPnPChangeScope()
+Function GrPsLoginGraphPnPInteractive()
 {
-	Connect-PnPOnline -Scopes “Group.ReadWrite.All”
+	Connect-PnPOnline -Url $configFile.appsettings.TenantUrl -Interactive
 }
 #gavdcodeend 19
 
@@ -342,14 +342,14 @@ Function GrPsLoginGraphPnPWithCredentials()
 	$myCredentials = New-Object System.Management.Automation.PSCredential `
 		-argumentlist $configFile.appsettings.UserName, $securePW
 
-	Connect-PnPOnline -Scopes "Group.ReadWrite.All" -Credentials $myCredentials
+	Connect-PnPOnline -Url $configFile.appsettings.TenantUrl -Credentials $myCredentials
 }
 #gavdcodeend 20
 
 #gavdcodebegin 21
 Function GrPsLoginGraphPnPGetToken()
 {
-	Connect-PnPOnline -Graph -LaunchBrowser
+	Connect-PnPOnline -Url $configFile.appsettings.TenantUrl -DeviceLogin -LaunchBrowser
 	Get-PnPGraphAccessToken -Decoded
 
 	#Disconnect-PnPOnline
@@ -392,10 +392,10 @@ $UserPw = $configFile.appsettings.UserPw
 #GrPsUpdateChannelWithModule
 #GrPsDeleteChannelWithModule
 
-#*** Using PowerShell PnP
+#*** Using Graph PowerShell PnP
 #GrPsLoginGraphPnP
 #GrPsLoginGraphPnPExample
-#GrPsLoginGraphPnPChangeScope
+#GrPsLoginGraphPnPInteractive
 #GrPsLoginGraphPnPWithCredentials
 #GrPsLoginGraphPnPGetToken
 
