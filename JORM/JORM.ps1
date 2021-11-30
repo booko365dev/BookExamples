@@ -1,4 +1,6 @@
 ﻿
+# Functions to login in Azure
+
 Function Get-AzureTokenApplication(){
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -61,8 +63,17 @@ Function Get-AzureTokenDelegation(){
 
 #----------------------------------------------------------------------------------------
 
+Function LoginPsCLI()
+{
+	m365 login --authType password `
+			   --userName $configFile.appsettings.UserName `
+			   --password $configFile.appsettings.UserPw
+}
+
+#----------------------------------------------------------------------------------------
+
 #gavdcodebegin 01
-Function TdPsGetAllListsMe()
+Function TodoPsGraphGetAllListsMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -86,7 +97,7 @@ Function TdPsGetAllListsMe()
 #gavdcodeend 01 
 
 #gavdcodebegin 02
-Function TdPsGetAllListsUser()
+Function TodoPsGraphGetAllListsUser()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -110,7 +121,7 @@ Function TdPsGetAllListsUser()
 #gavdcodeend 02 
 
 #gavdcodebegin 03
-Function TdPsCreateOneListMe()
+Function TodoPsGraphCreateOneListMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -134,7 +145,7 @@ Function TdPsCreateOneListMe()
 #gavdcodeend 03 
 
 #gavdcodebegin 04
-Function TdPsGetOneListMe()
+Function TodoPsGraphGetOneListMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -160,7 +171,7 @@ Function TdPsGetOneListMe()
 #gavdcodeend 04 
 
 #gavdcodebegin 05
-Function TdPsUpdateOneListMe()
+Function TodoPsGraphUpdateOneListMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -186,7 +197,7 @@ Function TdPsUpdateOneListMe()
 #gavdcodeend 05 
 
 #gavdcodebegin 06
-Function TdPsDeleteOneListMe()
+Function TodoPsGraphDeleteOneListMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -207,7 +218,7 @@ Function TdPsDeleteOneListMe()
 #gavdcodeend 06 
 
 #gavdcodebegin 07
-Function TdPsGetAllTasksInOneListMe()
+Function TodoPsGraphGetAllTasksInOneListMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -233,7 +244,7 @@ Function TdPsGetAllTasksInOneListMe()
 #gavdcodeend 07 
 
 #gavdcodebegin 08
-Function TdPsGetOneTaskMe()
+Function TodoPsGraphGetOneTaskMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -263,7 +274,7 @@ Function TdPsGetOneTaskMe()
 #gavdcodeend 08 
 
 #gavdcodebegin 09
-Function TdPsCreateOneTaskMe()
+Function TodoPsGraphCreateOneTaskMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -292,7 +303,7 @@ Function TdPsCreateOneTaskMe()
 #gavdcodeend 09 
 
 #gavdcodebegin 10
-Function TdPsUpdateOneTaskMe()
+Function TodoPsGraphUpdateOneTaskMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -325,7 +336,7 @@ Function TdPsUpdateOneTaskMe()
 #gavdcodeend 10 
 
 #gavdcodebegin 11
-Function TdPsDeleteOneTaskMe()
+Function TodoPsGraphDeleteOneTaskMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -350,7 +361,7 @@ Function TdPsDeleteOneTaskMe()
 #gavdcodeend 11 
 
 #gavdcodebegin 12
-Function TdPsCreateOneLinkedResourceMe()
+Function TodoPsGraphCreateOneLinkedResourceMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -381,7 +392,7 @@ Function TdPsCreateOneLinkedResourceMe()
 #gavdcodeend 12 
 
 #gavdcodebegin 13
-Function TdPsGetAllLinkedResourcesInOneTaskMe()
+Function TodoPsGraphGetAllLinkedResourcesInOneTaskMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -411,7 +422,7 @@ Function TdPsGetAllLinkedResourcesInOneTaskMe()
 #gavdcodeend 13 
 
 #gavdcodebegin 14
-Function TdPsGetOneLinkedResourceInOneTaskMe()
+Function TodoPsGraphGetOneLinkedResourceInOneTaskMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -442,7 +453,7 @@ Function TdPsGetOneLinkedResourceInOneTaskMe()
 #gavdcodeend 14 
 
 #gavdcodebegin 15
-Function TdPsUpdateOneLinkedResourceMe()
+Function TodoPsGraphUpdateOneLinkedResourceMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -473,7 +484,7 @@ Function TdPsUpdateOneLinkedResourceMe()
 #gavdcodeend 15 
 
 #gavdcodebegin 16
-Function TdPsDeleteOneLinkedResourceMe()
+Function TodoPsGraphDeleteOneLinkedResourceMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -499,7 +510,7 @@ Function TdPsDeleteOneLinkedResourceMe()
 #gavdcodeend 16 
 
 #gavdcodebegin 17
-Function TdPsCreateOneListWithExtensionMe()
+Function TodoPsGraphCreateOneListWithExtensionMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -529,7 +540,7 @@ Function TdPsCreateOneListWithExtensionMe()
 #gavdcodeend 17 
 
 #gavdcodebegin 18
-Function TdPsGetOneListExtensionMe()
+Function TodoPsGraphGetOneListExtensionMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -557,7 +568,7 @@ Function TdPsGetOneListExtensionMe()
 #gavdcodeend 18 
 
 #gavdcodebegin 19
-Function TdPsCreateOneTaskWithExtensionMe()
+Function TodoPsGraphCreateOneTaskWithExtensionMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
@@ -592,7 +603,7 @@ Function TdPsCreateOneTaskWithExtensionMe()
 #gavdcodeend 19 
 
 #gavdcodebegin 20
-Function TdPsGetOneTaskExtensionMe()
+Function TodoPsGraphGetOneTaskExtensionMe()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
@@ -622,38 +633,163 @@ Function TdPsGetOneTaskExtensionMe()
 }
 #gavdcodeend 20 
 
+#gavdcodebegin 21
+Function TodoPsCliGetAllLists(){
+	LoginPsCLI
+	
+	m365 todo list list
+
+	m365 logout
+}
+#gavdcodeend 21
+
+#gavdcodebegin 22
+Function TodoPsCliGetListsByQuery(){
+	LoginPsCLI
+	
+	m365 todo list list --output json `
+						--query "[?displayName == 'My ToDo']"
+
+	m365 logout
+}
+#gavdcodeend 22
+
+#gavdcodebegin 23
+Function TodoPsCliAddOneList(){
+	LoginPsCLI
+	
+	m365 todo list add --name "ToDoCreatedWithCLI"
+
+	m365 logout
+}
+#gavdcodeend 23
+
+#gavdcodebegin 24
+Function TodoPsCliUpdateOneList(){
+	LoginPsCLI
+	
+	m365 todo list set --name "ToDoCreatedWithCLI" `
+					   --newName "ToDoUpdatedWithCLI"
+
+	m365 logout
+}
+#gavdcodeend 24
+
+#gavdcodebegin 25
+Function TodoPsCliDeleteOneList(){
+	LoginPsCLI
+	
+	m365 todo list remove --name "ToDoUpdatedWithCLI" `
+						  --confirm
+
+	m365 logout
+}
+#gavdcodeend 25
+
+#gavdcodebegin 26
+Function TodoPsCliGetAllTasks(){
+	LoginPsCLI
+	
+	m365 todo task list --listName "ToDoCreatedWithCLI"
+
+	m365 logout
+}
+#gavdcodeend 26
+
+#gavdcodebegin 27
+Function TodoPsCliGetTasksByQuery(){
+	LoginPsCLI
+	
+	m365 todo task list --listName "ToDoCreatedWithCLI" `
+						--output json `
+						--query "[?title == 'Task number one']"
+
+	m365 logout
+}
+#gavdcodeend 27
+
+#gavdcodebegin 28
+Function TodoPsCliAddOneTask(){
+	LoginPsCLI
+	
+	m365 todo task add --listName "ToDoCreatedWithCLI" `
+					   --title "ToDoTaskCreatedWithCLI"
+
+	m365 logout
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function TodoPsCliUpdateOneTask(){
+	LoginPsCLI
+	
+	m365 todo task set --listName "ToDoCreatedWithCLI" `
+					   --id "AAMkAGRiNjdkMjA5LTNkOWMtNDkxMS...A1yrhXAAA=" `
+					   --title "ToDoTaskUpdatedWithCLI" `
+					   --status "deferred"
+
+	m365 logout
+}
+#gavdcodeend 29
+
+#gavdcodebegin 30
+Function TodoPsCliDeleteOneTask(){
+	LoginPsCLI
+	
+	m365 todo task remove --listName "ToDoCreatedWithCLI" `
+						  --id "AAMkAGRiNjdkMjA5LTNkOWMtNDkxMS...A1yrhXAAA=" `
+						  --confirm
+
+	m365 logout
+}
+#gavdcodeend 30
+
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
 [xml]$configFile = get-content "C:\Projects\grPs.values.config"
 
-$ClientIDApp = $configFile.appsettings.ClientIdApp
-$ClientSecretApp = $configFile.appsettings.ClientSecretApp
-$ClientIDDel = $configFile.appsettings.ClientIdDel
-$TenantName = $configFile.appsettings.TenantName
-$UserName = $configFile.appsettings.UserName
-$UserPw = $configFile.appsettings.UserPw
+#------------------------ Using Microsoft Graph PowerShell for Teams
 
-#TdPsGetAllListsMe
-#TdPsGetAllListsUser
-#TdPsCreateOneListMe
-#TdPsGetOneListMe
-#TdPsUpdateOneListMe
-#TdPsDeleteOneListMe
-#TdPsGetAllTasksInOneListMe
-#TdPsGetOneTaskMe
-#TdPsCreateOneTaskMe
-#TdPsUpdateOneTaskMe
-#TdPsDeleteOneTaskMe
-#TdPsCreateOneLinkedResourceMe
-#TdPsGetAllLinkedResourcesInOneTaskMe
-#TdPsGetOneLinkedResourceInOneTaskMe
-#TdPsUpdateOneLinkedResourceMe
-#TdPsDeleteOneLinkedResourceMe
-#TdPsCreateOneListWithExtensionMe
-#TdPsGetOneListExtensionMe
-#TdPsCreateOneTaskWithExtensionMe
-#TdPsGetOneTaskExtensionMe
+#$ClientIDApp = $configFile.appsettings.ClientIdApp
+#$ClientSecretApp = $configFile.appsettings.ClientSecretApp
+#$ClientIDDel = $configFile.appsettings.ClientIdDel
+#$TenantName = $configFile.appsettings.TenantName
+#$UserName = $configFile.appsettings.UserName
+#$UserPw = $configFile.appsettings.UserPw
+
+#TodoPsGraphGetAllListsMe
+#TodoPsGraphGetAllListsUser
+#TodoPsGraphCreateOneListMe
+#TodoPsGraphGetOneListMe
+#TodoPsGraphUpdateOneListMe
+#TodoPsGraphDeleteOneListMe
+#TodoPsGraphGetAllTasksInOneListMe
+#TodoPsGraphGetOneTaskMe
+#TodoPsGraphCreateOneTaskMe
+#TodoPsGraphUpdateOneTaskMe
+#TodoPsGraphDeleteOneTaskMe
+#TodoPsGraphCreateOneLinkedResourceMe
+#TodoPsGraphGetAllLinkedResourcesInOneTaskMe
+#TodoPsGraphGetOneLinkedResourceInOneTaskMe
+#TodoPsGraphUpdateOneLinkedResourceMe
+#TodoPsGraphDeleteOneLinkedResourceMe
+#TodoPsGraphCreateOneListWithExtensionMe
+#TodoPsGraphGetOneListExtensionMe
+#TodoPsGraphCreateOneTaskWithExtensionMe
+#TodoPsGraphGetOneTaskExtensionMe
+
+#------------------------ Using Microsoft PnP CLI for Teams
+
+#TodoPsCliGetAllLists
+#TodoPsCliGetListsByQuery
+#TodoPsCliAddOneList
+#TodoPsCliUpdateOneList
+#TodoPsCliDeleteOneList
+#TodoPsCliGetAllTasks
+#TodoPsCliGetTasksByQuery
+#TodoPsCliAddOneTask
+#TodoPsCliUpdateOneTask
+#TodoPsCliDeleteOneTask
 
 Write-Host "Done" 
-

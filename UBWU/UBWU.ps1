@@ -1,4 +1,6 @@
 ﻿
+# Functions to login in Azure
+
 Function Get-AzureTokenApplication(){
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -61,8 +63,17 @@ Function Get-AzureTokenDelegation(){
 
 #----------------------------------------------------------------------------------------
 
+Function LoginPsCLI()
+{
+	m365 login --authType password `
+			   --userName $configFile.appsettings.UserName `
+			   --password $configFile.appsettings.UserPw
+}
+
+#----------------------------------------------------------------------------------------
+
 #gavdcodebegin 01
-Function GrPsGetAllPlansForOneGroup()
+Function PlannerPsGraphGetAllPlansForOneGroup()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -87,7 +98,7 @@ Function GrPsGetAllPlansForOneGroup()
 #gavdcodeend 01 
 
 #gavdcodebegin 02
-Function GrPsCreateOnePlan()
+Function PlannerPsGraphCreateOnePlan()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -113,7 +124,7 @@ Function GrPsCreateOnePlan()
 #gavdcodeend 02 
 
 #gavdcodebegin 03
-Function GrPsGetOnePlan()
+Function PlannerPsGraphGetOnePlan()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -138,7 +149,7 @@ Function GrPsGetOnePlan()
 #gavdcodeend 03 
 
 #gavdcodebegin 04
-Function GrPsUpdateOnePlan()
+Function PlannerPsGraphUpdateOnePlan()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -166,7 +177,7 @@ Function GrPsUpdateOnePlan()
 #gavdcodeend 04 
 
 #gavdcodebegin 05
-Function GrPsGetOnePlanDetails()
+Function PlannerPsGraphGetOnePlanDetails()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -191,7 +202,7 @@ Function GrPsGetOnePlanDetails()
 #gavdcodeend 05 
 
 #gavdcodebegin 06
-Function GrPsUpdateOnePlanDetails()
+Function PlannerPsGraphUpdateOnePlanDetails()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -222,7 +233,7 @@ Function GrPsUpdateOnePlanDetails()
 #gavdcodeend 06 
 
 #gavdcodebegin 07
-Function GrPsGetAllBucketsInOnePlan()
+Function PlannerPsGraphGetAllBucketsInOnePlan()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -247,7 +258,7 @@ Function GrPsGetAllBucketsInOnePlan()
 #gavdcodeend 07 
 
 #gavdcodebegin 08
-Function GrPsGetOneBucket()
+Function PlannerPsGraphGetOneBucket()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -272,7 +283,7 @@ Function GrPsGetOneBucket()
 #gavdcodeend 08 
 
 #gavdcodebegin 09
-Function GrPsCreateOneBucket()
+Function PlannerPsGraphCreateOneBucket()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -299,7 +310,7 @@ Function GrPsCreateOneBucket()
 #gavdcodeend 09 
 
 #gavdcodebegin 10
-Function GrPsUpdateOneBucket()
+Function PlannerPsGraphUpdateOneBucket()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -326,7 +337,7 @@ Function GrPsUpdateOneBucket()
 #gavdcodeend 10 
 
 #gavdcodebegin 11
-Function GrPsDeleteOneBucket()
+Function PlannerPsGraphDeleteOneBucket()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -347,7 +358,7 @@ Function GrPsDeleteOneBucket()
 #gavdcodeend 11 
 
 #gavdcodebegin 12
-Function GrPsDeleteOnePlan()
+Function PlannerPsGraphDeleteOnePlan()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -368,7 +379,7 @@ Function GrPsDeleteOnePlan()
 #gavdcodeend 12 
 
 #gavdcodebegin 13
-Function GrPsGetAllTasksInOneBucket()
+Function PlannerPsGraphGetAllTasksInOneBucket()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -393,7 +404,7 @@ Function GrPsGetAllTasksInOneBucket()
 #gavdcodeend 13 
 
 #gavdcodebegin 14
-Function GrPsGetOneTask()
+Function PlannerPsGraphGetOneTask()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -418,7 +429,7 @@ Function GrPsGetOneTask()
 #gavdcodeend 14 
 
 #gavdcodebegin 15
-Function GrPsCreateOneTask()
+Function PlannerPsGraphCreateOneTask()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -450,7 +461,7 @@ Function GrPsCreateOneTask()
 #gavdcodeend 15 
 
 #gavdcodebegin 16
-Function GrPsUpdateOneTask()
+Function PlannerPsGraphUpdateOneTask()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -477,7 +488,7 @@ Function GrPsUpdateOneTask()
 #gavdcodeend 16 
 
 #gavdcodebegin 17
-Function GrPsDeleteOneTask()
+Function PlannerPsGraphDeleteOneTask()
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -498,35 +509,154 @@ Function GrPsDeleteOneTask()
 }
 #gavdcodeend 17 
 
+#gavdcodebegin 18
+Function PlannerPsCliGetAllPlans(){
+	LoginPsCLI
+	
+	m365 planner plan list --ownerGroupId "ad111b29-e670-4ed5-9091-a3f38e96699c"
+	Write-Host ("-------")
+	m365 planner plan list --ownerGroupName "Sales and Marketing"
+
+	m365 logout
+}
+#gavdcodeend 18
+
+#gavdcodebegin 19
+Function PlannerPsCliGetPlansByQuery(){
+	LoginPsCLI
+	
+	m365 planner plan list --ownerGroupId "c77f29d7-fdaa-4570-9c3c-210e2d20bc90" `
+						   --output json `
+						   --query "[?title == 'Product Launch Event']"
+
+	m365 logout
+}
+#gavdcodeend 19
+
+#gavdcodebegin 20
+Function PlannerPsCliGetOnePlan(){
+	LoginPsCLI
+	
+	m365 planner plan get --id "UkAjM0Z1kkCuBbMiW_faZWUAHAwS"
+
+	m365 logout
+}
+#gavdcodeend 20
+
+#gavdcodebegin 21
+Function PlannerPsCliAddOnePlan(){
+	LoginPsCLI
+	
+	m365 planner plan add --title "PlanCreatedWithCLI" `
+						  --ownerGroupId "7bfa5f9c-6bd5-453b-a028-d8d57dfb48ba"
+
+	m365 logout
+}
+#gavdcodeend 21
+
+#gavdcodebegin 22
+Function PlannerPsCliGetAllBuckets(){
+	LoginPsCLI
+	
+	m365 planner bucket list --planId "17lVrTdRhU26Jzdylapl0mUAEoMx"
+	Write-Host ("-------")
+	m365 planner bucket list --planName "PlanCreatedWithCLI" `
+							 --ownerGroupName "GroupForPlanner"
+
+	m365 logout
+}
+#gavdcodeend 22
+
+#gavdcodebegin 23
+Function PlannerPsCliGetBucketsByQuery(){
+	LoginPsCLI
+	
+	m365 planner bucket list --planId "17lVrTdRhU26Jzdylapl0mUAEoMx" `
+						     --output json `
+						     --query "[?name == 'To do']"
+
+	m365 logout
+}
+#gavdcodeend 23
+
+#gavdcodebegin 24
+Function PlannerPsCliAddOneBucket(){
+	LoginPsCLI
+	
+	m365 planner bucket add --name "BucketCreatedWithCLI" `
+						    --planId "17lVrTdRhU26Jzdylapl0mUAEoMx" `
+							--orderHint " !"
+
+	m365 logout
+}
+#gavdcodeend 24
+
+#gavdcodebegin 25
+Function PlannerPsCliGetAllTasks(){
+	LoginPsCLI
+	
+	m365 planner task list --planId "17lVrTdRhU26Jzdylapl0mUAEoMx" `
+						   --bucketId "WGqJZ3Q-zEeI4-oFTKeMAWUACUt1"
+
+	m365 logout
+}
+#gavdcodeend 25
+
+#gavdcodebegin 26
+Function PlannerPsCliGetTasksByQuery(){
+	LoginPsCLI
+	
+	m365 planner task list --planId "17lVrTdRhU26Jzdylapl0mUAEoMx" `
+						   --output json `
+						   --query "[?title == 'Task added manually']"
+
+	m365 logout
+}
+#gavdcodeend 26
+
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
 [xml]$configFile = get-content "C:\Projects\grPs.values.config"
 
-$ClientIDApp = $configFile.appsettings.ClientIdApp
-$ClientSecretApp = $configFile.appsettings.ClientSecretApp
-$ClientIDDel = $configFile.appsettings.ClientIdDel
-$TenantName = $configFile.appsettings.TenantName
-$UserName = $configFile.appsettings.UserName
-$UserPw = $configFile.appsettings.UserPw
+#------------------------ Using Microsoft Graph PowerShell for Teams
 
-#GrPsGetAllPlansForOneGroup
-#GrPsCreateOnePlan
-#GrPsGetOnePlan
-#GrPsUpdateOnePlan
-#GrPsDeleteOnePlan
-#GrPsGetOnePlanDetails
-#GrPsUpdateOnePlanDetails
-#GrPsGetAllBucketsInOnePlan
-#GrPsGetOneBucket
-#GrPsCreateOneBucket
-#GrPsUpdateOneBucket
-#GrPsDeleteOneBucket
-#GrPsGetAllTasksInOneBucket
-#GrPsGetOneTask
-#GrPsCreateOneTask
-#GrPsUpdateOneTask
-#GrPsDeleteOneTask
+#$ClientIDApp = $configFile.appsettings.ClientIdApp
+#$ClientSecretApp = $configFile.appsettings.ClientSecretApp
+#$ClientIDDel = $configFile.appsettings.ClientIdDel
+#$TenantName = $configFile.appsettings.TenantName
+#$UserName = $configFile.appsettings.UserName
+#$UserPw = $configFile.appsettings.UserPw
+
+#PlannerPsGraphGetAllPlansForOneGroup
+#PlannerPsGraphCreateOnePlan
+#PlannerPsGraphGetOnePlan
+#PlannerPsGraphUpdateOnePlan
+#PlannerPsGraphDeleteOnePlan
+#PlannerPsGraphGetOnePlanDetails
+#PlannerPsGraphUpdateOnePlanDetails
+#PlannerPsGraphGetAllBucketsInOnePlan
+#PlannerPsGraphGetOneBucket
+#PlannerPsGraphCreateOneBucket
+#PlannerPsGraphUpdateOneBucket
+#PlannerPsGraphDeleteOneBucket
+#PlannerPsGraphGetAllTasksInOneBucket
+#PlannerPsGraphGetOneTask
+#PlannerPsGraphCreateOneTask
+#PlannerPsGraphUpdateOneTask
+#PlannerPsGraphDeleteOneTask
+
+#------------------------ Using Microsoft PnP CLI for Teams
+
+#PlannerPsCliGetAllPlans
+#PlannerPsCliGetPlansByQuery
+#PlannerPsCliGetOnePlan
+#PlannerPsCliAddOnePlan
+#PlannerPsCliGetAllBuckets
+#PlannerPsCliGetBucketsByQuery
+#PlannerPsCliAddOneBucket
+#PlannerPsCliGetAllTasks
+#PlannerPsCliGetTasksByQuery
 
 Write-Host "Done" 
 
