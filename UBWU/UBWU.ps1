@@ -72,6 +72,18 @@ Function LoginPsCLI()
 
 #----------------------------------------------------------------------------------------
 
+Function LoginPsPnPPowerShell()
+{
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+			$configFile.appsettings.UserPw -AsPlainText -Force
+
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.TenantUrl -Credentials $myCredentials
+}
+
+#----------------------------------------------------------------------------------------
+
 #gavdcodebegin 01
 Function PlannerPsGraphGetAllPlansForOneGroup()
 {
@@ -544,7 +556,7 @@ Function PlannerPsCliGetOnePlan(){
 #gavdcodeend 20
 
 #gavdcodebegin 21
-Function PlannerPsCliAddOnePlan(){
+Function PlannerPsCliCreateOnePlan(){
 	LoginPsCLI
 	
 	m365 planner plan add --title "PlanCreatedWithCLI" `
@@ -580,7 +592,7 @@ Function PlannerPsCliGetBucketsByQuery(){
 #gavdcodeend 23
 
 #gavdcodebegin 24
-Function PlannerPsCliAddOneBucket(){
+Function PlannerPsCliCreateOneBucket(){
 	LoginPsCLI
 	
 	m365 planner bucket add --name "BucketCreatedWithCLI" `
@@ -614,6 +626,286 @@ Function PlannerPsCliGetTasksByQuery(){
 }
 #gavdcodeend 26
 
+#gavdcodebegin 27
+Function PlannerPsPnPGetPlansByGroup(){
+	# App Registration permissions: Group.Read.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerPlan -Group "MyPlan"
+}
+#gavdcodeend 27
+
+#gavdcodebegin 28
+Function PlannerPsPnPGetPlansByGroupAndPlan(){
+	# App Registration permissions: Group.Read.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerPlan -Group "MyPlan" -Identity "MyOtherPlan"
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function PlannerPsPnPCreatePlan(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	New-PnPPlannerPlan -Group "MyPlan" -Title "PlanCreatedWithPnP"
+}
+#gavdcodeend 29
+
+#gavdcodebegin 30
+Function PlannerPsPnPUpdatePlanByPlan(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Set-PnPPlannerPlan -Group "MyPlan" `
+					   -Plan "PlanCreatedWithPnP" `
+					   -Title "PlanUpdatedWithPnP"
+}
+#gavdcodeend 30
+
+#gavdcodebegin 31
+Function PlannerPsPnPUpdatePlanById(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Set-PnPPlannerPlan -PlanId "aX4Jj_e8LU-oEh2bmfyvTJgAGgYr" `
+					   -Title "PlanUpdatedWithPnPById"
+}
+#gavdcodeend 31
+
+#gavdcodebegin 32
+Function PlannerPsPnPDeletePlan(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Remove-PnPPlannerPlan -Group "MyPlan" `
+						  -Identity "aX4Jj_e8LU-oEh2bmfyvTJgAGgYr"
+}
+#gavdcodeend 32
+
+#gavdcodebegin 33
+Function PlannerPsPnPGetBucketsByGroupAndPlan(){
+	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerBucket -Group "MyPlan" -Plan "MyOtherPlan"
+}
+#gavdcodeend 33
+
+#gavdcodebegin 34
+Function PlannerPsPnPGetBucketsById(){
+	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerBucket -PlanId "D8_FXAjY-kK5pfc4bk6ImZgAEYJ1"
+}
+#gavdcodeend 34
+
+#gavdcodebegin 35
+Function PlannerPsPnPCreateBucketById(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Add-PnPPlannerBucket -PlanId "D8_FXAjY-kK5pfc4bk6ImZgAEYJ1" `
+						 -Name "BucketCreatedWithPnP"
+}
+#gavdcodeend 35
+
+#gavdcodebegin 36
+Function PlannerPsPnPCreateBucketByGroupAndPlan(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Add-PnPPlannerBucket -Group "MyPlan" `
+						 -Plan "MyOtherPlan" `
+						 -Name "BucketCreatedWithPnPByGroupAndPlan"
+}
+#gavdcodeend 36
+
+#gavdcodebegin 37
+Function PlannerPsPnPUpdateBucketById(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Set-PnPPlannerBucket -PlanId "D8_FXAjY-kK5pfc4bk6ImZgAEYJ1" `
+						 -Bucket "BucketCreatedWithPnP" `
+						 -Name "BucketUpdatedWithPnP"
+}
+#gavdcodeend 37
+
+#gavdcodebegin 38
+Function PlannerPsPnPUpdateBucketByGroupAndPlan(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Set-PnPPlannerBucket -Group "MyPlan" `
+						 -Plan "MyOtherPlan" `
+						 -Bucket "BucketCreatedWithPnPByGroupAndPlan" `
+						 -Name "BucketUpdatedWithPnPByGroupAndPlan"
+}
+#gavdcodeend 38
+
+#gavdcodebegin 39
+Function PlannerPsPnPDeleteBucketById(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	# Note: It doesn't work --> Issue raised to Microsoft
+	#Remove-PnPPlannerBucket -BucketId "D8_FXAjY-kK5pfc4bk6ImZgAEYJ1" `
+	#						-Identity "BucketUpdatedWithPnPByGroupAndPlan"
+}
+#gavdcodeend 39
+
+#gavdcodebegin 40
+Function PlannerPsPnPDeleteBucketByGroupAndPlan(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Remove-PnPPlannerBucket -Group "MyPlan" `
+							-Plan "MyOtherPlan" `
+							-Identity "BucketUpdatedWithPnPByGroupAndPlan"
+}
+#gavdcodeend 40
+
+#gavdcodebegin 41
+Function PlannerPsPnPGetTasksByPlanId(){
+	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerTask -PlanId "D8_FXAjY-kK5pfc4bk6ImZgAEYJ1"
+}
+#gavdcodeend 41
+
+#gavdcodebegin 42
+Function PlannerPsPnPGetTasksByBucketId(){
+	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerTask -Bucket "JsiP6IO10UGm3yzUsjmiJ5gAGKcq"
+}
+#gavdcodeend 42
+
+#gavdcodebegin 43
+Function PlannerPsPnPGetTasksByTaskId(){
+	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerTask -TaskId "pzWcc9A4xECghOOhBQFh5ZgAM5Ni" `
+					   -IncludeDetails `
+					   -ResolveUserDisplayNames
+}
+#gavdcodeend 43
+
+#gavdcodebegin 44
+Function PlannerPsPnPGetTasksByGroupAndPlan(){
+	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerTask -Group "MyPlan" `
+					   -Plan "MyOtherPlan"
+}
+#gavdcodeend 44
+
+#gavdcodebegin 45
+Function PlannerPsPnPCreateTaskByGroupAndPlan(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Add-PnPPlannerTask -Group "MyPlan" `
+					   -Plan "MyOtherPlan" `
+					   -Bucket "MyBucket" `
+					   -Title "TaskCreatedWithPnP" `
+					   -AssignedTo "user@tenant.onmicrosoft.com"
+}
+#gavdcodeend 45
+
+#gavdcodebegin 46
+Function PlannerPsPnPCreateTaskById(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Add-PnPPlannerTask -PlanId "D8_FXAjY-kK5pfc4bk6ImZgAEYJ1" `
+					   -Bucket "MyBucket" `
+					   -Title "TaskCreatedWithPnPById" `
+}
+#gavdcodeend 46
+
+#gavdcodebegin 47
+Function PlannerPsPnPUpdateTaskById(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Set-PnPPlannerTask -TaskId "pzWcc9A4xECghOOhBQFh5ZgAM5Ni" `
+					   -Title "TaskUpdatedWithPnP" `
+					   -AssignedTo "user1@dom.onmicrosoft.com","user2@dom.onmicrosoft.com"
+}
+#gavdcodeend 47
+
+#gavdcodebegin 48
+Function PlannerPsPnPDeleteTaskById(){
+	# App Registration permissions: Group.ReadWrite.All
+
+	LoginPsPnPPowerShell
+	
+	Remove-PnPPlannerTask -Task "pzWcc9A4xECghOOhBQFh5ZgAM5Ni"
+}
+#gavdcodeend 48
+
+#gavdcodebegin 49
+Function PlannerPsPnPGetUserPolicy(){
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerUserPolicy -Identity "user@domain.onmicrosoft.com"
+}
+#gavdcodeend 49
+
+#gavdcodebegin 50
+Function PlannerPsPnPSetUserPolicy(){
+	LoginPsPnPPowerShell
+	
+	Set-PnPPlannerUserPolicy -Identity "user@domain.onmicrosoft.com" `
+							 -BlockDeleteTasksNotCreatedBySelf $true
+}
+#gavdcodeend 50
+
+#gavdcodebegin 51
+Function PlannerPsPnPGetConfiguration(){
+	LoginPsPnPPowerShell
+	
+	Get-PnPPlannerConfiguration
+}
+#gavdcodeend 51
+
+#gavdcodebegin 52
+Function PlannerPsPnPSetConfiguration(){
+	LoginPsPnPPowerShell
+	
+	Set-PnPPlannerConfiguration -AllowCalendarSharing $false
+}
+#gavdcodeend 52
+
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
@@ -646,17 +938,46 @@ Function PlannerPsCliGetTasksByQuery(){
 #PlannerPsGraphUpdateOneTask
 #PlannerPsGraphDeleteOneTask
 
-#------------------------ Using Microsoft PnP CLI for Teams
+#------------------------ Using PnP CLI for Teams
 
 #PlannerPsCliGetAllPlans
 #PlannerPsCliGetPlansByQuery
 #PlannerPsCliGetOnePlan
-#PlannerPsCliAddOnePlan
+#PlannerPsCliCreateOnePlan
 #PlannerPsCliGetAllBuckets
 #PlannerPsCliGetBucketsByQuery
-#PlannerPsCliAddOneBucket
+#PlannerPsCliCreateOneBucket
 #PlannerPsCliGetAllTasks
 #PlannerPsCliGetTasksByQuery
+
+#------------------------ Using PowerShell PnP for Teams
+
+#PlannerPsPnPGetPlansByGroup
+#PlannerPsPnPGetPlansByGroupAndPlan
+#PlannerPsPnPCreatePlan
+#PlannerPsPnPUpdatePlanByPlan
+#PlannerPsPnPUpdatePlanById
+#PlannerPsPnPDeletePlan
+#PlannerPsPnPGetBucketsByGroupAndPlan
+#PlannerPsPnPGetBucketsById
+#PlannerPsPnPCreateBucketById
+#PlannerPsPnPCreateBucketByGroupAndPlan
+#PlannerPsPnPUpdateBucketById
+#PlannerPsPnPUpdateBucketByGroupAndPlan
+#PlannerPsPnPDeleteBucketById (It doesn't work --> Issue raised to Microsoft)
+#PlannerPsPnPDeleteBucketByGroupAndPlan
+#PlannerPsPnPGetTasksByPlanId
+#PlannerPsPnPGetTasksByBucketId
+#PlannerPsPnPGetTasksByTaskId
+#PlannerPsPnPGetTasksByGroupAndPlan
+#PlannerPsPnPCreateTaskByGroupAndPlan
+#PlannerPsPnPCreateTaskById
+#PlannerPsPnPUpdateTaskById
+#PlannerPsPnPDeleteTaskById
+#PlannerPsPnPGetUserPolicy
+#PlannerPsPnPSetUserPolicy
+#PlannerPsPnPGetConfiguration
+#PlannerPsPnPSetConfiguration
 
 Write-Host "Done" 
 
