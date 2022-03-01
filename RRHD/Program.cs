@@ -1,167 +1,186 @@
 ﻿using Microsoft.SharePoint.Client;
-using System;
 using System.Configuration;
 using System.Security;
+using PnP.Framework;
 
-namespace RRHD
+//---------------------------------------------------------------------------------------
+// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+//---------------------------------------------------------------------------------------
+#nullable disable
+
+//---------------------------------------------------------------------------------------
+//***-----------------------------------*** Login routines ***---------------------------
+//---------------------------------------------------------------------------------------
+
+//gavdcodebegin 01
+static ClientContext LoginPnPFramework_WithAccPw()
 {
-    class Program
+    SecureString mySecurePw = new SecureString();
+    foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
+    { mySecurePw.AppendChar(oneChr); }
+
+    AuthenticationManager myAuthManager = new
+        AuthenticationManager(
+                            ConfigurationManager.AppSettings["ClientIdWithAccPw"],
+                            ConfigurationManager.AppSettings["UserName"],
+                            mySecurePw);
+
+    ClientContext rtnContext = myAuthManager.GetContext(
+                            ConfigurationManager.AppSettings["SiteCollUrl"]);
+
+    return rtnContext;
+}
+//gavdcodeend 01
+
+//gavdcodebegin 02
+static ClientContext LoginPnPFramework_WithCertificate()
+{
+    AuthenticationManager myAuthManager = new
+        AuthenticationManager(
+                            ConfigurationManager.AppSettings["ClientIdWithCert"],
+                            @"[PathForThePfxCertificateFile]",
+                            "[PasswordForTheCertificate]",
+                            "[Domain].onmicrosoft.com");
+
+    ClientContext rtnContext = myAuthManager.GetContext(
+                                     ConfigurationManager.AppSettings["SiteCollUrl"]);
+
+    return rtnContext;
+}
+//gavdcodeend 02
+
+//gavdcodebegin 03
+static ClientContext LoginPnPFramework_PnPManagementShell()
+{
+    SecureString mySecurePw = new SecureString();
+    foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
+    { mySecurePw.AppendChar(oneChr); }
+
+    AuthenticationManager myAuthManager = new
+        AuthenticationManager(
+                            ConfigurationManager.AppSettings["UserName"],
+                            mySecurePw);
+
+    ClientContext rtnContext = myAuthManager.GetContext(
+                            ConfigurationManager.AppSettings["SiteCollUrl"]);
+
+    return rtnContext;
+}
+//gavdcodeend 03
+
+//gavdcodebegin 04
+static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
+{
+    // NOTE: Microsoft stopped AzureAD App access for authentication of SharePoint
+    //  using secrets. This method does not work anymore for any SharePoint query
+    ClientContext rtnContext = new
+        AuthenticationManager().GetACSAppOnlyContext(
+                        ConfigurationManager.AppSettings["SiteCollUrl"],
+                        ConfigurationManager.AppSettings["ClientIdWithSecret"],
+                        ConfigurationManager.AppSettings["ClientSecret"]);
+
+    return rtnContext;
+}
+//gavdcodeend 04
+
+//---------------------------------------------------------------------------------------
+//***-----------------------------------*** Example routines ***-------------------------
+//---------------------------------------------------------------------------------------
+
+//gavdcodebegin 05
+static void SpCsPnPFrameworkExampleWithAccPw()
+{
+    using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
     {
-        static void Main(string[] args)
-        {
-            //SpCsPnPFrameworkExampleDel();     //==> PnP Framework Delegate permissions
-            //SpCsPnPFrameworkExampleApp();     //==> PnP Framework Application permissions
-            //SpCsPnPFrameworkExampleManag();   //==> PnP Framework Management Shell
-            //SpCsPnPFrameworkExampleSecret();    //==> PnP Framework using Secret
+        // Requires Delegated permissions for SharePoint - Sites.FullControl.All
 
-            //LoginPnPFramework_UrlAppIdAppSecret();
+        Web myWeb = spPnpCtx.Web;
+        spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
+        spPnpCtx.ExecuteQuery();
 
-            Console.ReadLine();
-        }
+        Console.WriteLine(myWeb.Id + " - " + myWeb.Title);
 
-        //-------------------------------------------------------------------------------
+        List myDocuments = myWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
 
-        //gavdcodebegin 05
-        static void SpCsPnPFrameworkExampleDel()
-        {
-            using (ClientContext spPnpCtx = LoginPnPFramework_Delegate())
-            {
-                Web myWeb = spPnpCtx.Web;
-                spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
-                spPnpCtx.ExecuteQuery();
-
-                Console.WriteLine(myWeb.Id + " - " + myWeb.Title);
-
-                List myDocuments = myWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
-
-                Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
-            }
-        }
-        //gavdcodeend 05
-
-        //gavdcodebegin 06
-        static void SpCsPnPFrameworkExampleApp()
-        {
-            using (ClientContext spPnpCtx = LoginPnPFramework_Application())
-            {
-                Web myWeb = spPnpCtx.Web;
-                spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
-                spPnpCtx.ExecuteQuery();
-
-                Console.WriteLine(myWeb.Id + " - " + myWeb.Title);
-
-                List myDocuments = myWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
-
-                Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
-            }
-        }
-        //gavdcodeend 06
-
-        //gavdcodebegin 07
-        static void SpCsPnPFrameworkExampleManag()
-        {
-            using (ClientContext spPnpCtx = LoginPnPFramework_PnPManagementShell())
-            {
-                Web myWeb = spPnpCtx.Web;
-                spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
-                spPnpCtx.ExecuteQuery();
-
-                Console.WriteLine(myWeb.Id + " - " + myWeb.Title);
-
-                List myDocuments = myWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
-
-                Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
-            }
-        }
-        //gavdcodeend 07
-
-        //gavdcodebegin 08
-        static void SpCsPnPFrameworkExampleSecret()
-        {
-            using (ClientContext spPnpCtx = LoginPnPFramework_UrlAppIdAppSecret())
-            {
-                Web myWeb = spPnpCtx.Web;
-                spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
-                spPnpCtx.ExecuteQuery();
-
-                Console.WriteLine(myWeb.Id + " - " + myWeb.Title);
-
-                List myDocuments = myWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
-
-                Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
-            }
-        }
-        //gavdcodeend 08
-
-        //-------------------------------------------------------------------------------
-
-        //gavdcodebegin 01
-        static ClientContext LoginPnPFramework_Delegate()
-        {
-            SecureString mySecurePw = new SecureString();
-            foreach (char oneChr in ConfigurationManager.AppSettings["spUserPw"])
-            { mySecurePw.AppendChar(oneChr); }
-
-            PnP.Framework.AuthenticationManager myAuthManager = new
-                PnP.Framework.AuthenticationManager(
-                                    ConfigurationManager.AppSettings["azAppIdDelegate"],
-                                    ConfigurationManager.AppSettings["spUserName"],
-                                    mySecurePw);
-
-            ClientContext rtnContext = myAuthManager.GetContext(
-                                    ConfigurationManager.AppSettings["spUrl"]);
-
-            return rtnContext;
-        }
-        //gavdcodeend 01
-
-        //gavdcodebegin 02
-        static ClientContext LoginPnPFramework_Application()
-        {
-            PnP.Framework.AuthenticationManager myAuthManager = new
-                PnP.Framework.AuthenticationManager(
-                                    ConfigurationManager.AppSettings["azAppIdApplication"],
-                                    @"[PathForTheCertificate]",
-                                    "[PasswordForTheCertificate]",
-                                    "[Domain].onmicrosoft.com");
-
-            ClientContext rtnContext = myAuthManager.GetContext(
-                                             ConfigurationManager.AppSettings["spUrl"]);
-
-            return rtnContext;
-        }
-        //gavdcodeend 02
-
-        //gavdcodebegin 03
-        static ClientContext LoginPnPFramework_PnPManagementShell()
-        {
-            SecureString mySecurePw = new SecureString();
-            foreach (char oneChr in ConfigurationManager.AppSettings["spUserPw"])
-            { mySecurePw.AppendChar(oneChr); }
-
-            PnP.Framework.AuthenticationManager myAuthManager = new
-                PnP.Framework.AuthenticationManager(
-                                    ConfigurationManager.AppSettings["spUserName"],
-                                    mySecurePw);
-
-            ClientContext rtnContext = myAuthManager.GetContext(
-                                    ConfigurationManager.AppSettings["spUrl"]);
-
-            return rtnContext;
-        }
-        //gavdcodeend 03
-
-        //gavdcodebegin 04
-        static ClientContext LoginPnPFramework_UrlAppIdAppSecret()
-        {
-            ClientContext rtnContext = new
-                PnP.Framework.AuthenticationManager().GetACSAppOnlyContext(
-                                ConfigurationManager.AppSettings["spUrl"],
-                                ConfigurationManager.AppSettings["azAppIdApplication"],
-                                ConfigurationManager.AppSettings["azAppSecret"]);
-
-            return rtnContext;
-        }
-        //gavdcodeend 04
+        Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
     }
 }
+//gavdcodeend 05
+
+//gavdcodebegin 06
+static void SpCsPnPFrameworkExampleWithCertificate()
+{
+    using (ClientContext spPnpCtx = LoginPnPFramework_WithCertificate())
+    {
+        // Requires Application permissions for SharePoint - Sites.FullControl.All
+
+        Site mySite = spPnpCtx.Site;
+        spPnpCtx.Load(mySite, ms => ms.Id, ms => ms.RootWeb.Title);
+        spPnpCtx.ExecuteQuery();
+
+        Console.WriteLine(mySite.Id + " - " + mySite.RootWeb.Title);
+
+        List myDocuments = mySite.RootWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
+
+        Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
+    }
+}
+//gavdcodeend 06
+
+//gavdcodebegin 07
+static void SpCsPnPFrameworkExampleWithManagementShell()
+{
+    using (ClientContext spPnpCtx = LoginPnPFramework_PnPManagementShell())
+    {
+        Web myWeb = spPnpCtx.Web;
+        spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
+        spPnpCtx.ExecuteQuery();
+
+        Console.WriteLine(myWeb.Id + " - " + myWeb.Title);
+
+        List myDocuments = myWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
+
+        Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
+    }
+}
+//gavdcodeend 07
+
+//gavdcodebegin 08
+static void SpCsPnPFrameworkExampleWithSecret()  //*** LEGACY CODE ***
+{
+    // NOTE: Microsoft stopped AzureAD App access for authentication of SharePoint
+    //  using secrets. This method does not work anymore for any SharePoint query
+    using (ClientContext spPnpCtx = LoginPnPFramework_WithSecret())
+    {
+        Web myWeb = spPnpCtx.Web;
+        spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
+        spPnpCtx.ExecuteQuery();
+
+        Console.WriteLine(myWeb.Id + " - " + myWeb.Title);
+
+        List myDocuments = myWeb.GetListByTitle("Documents", md => md.Id, md => md.Title);
+
+        Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
+    }
+}
+//gavdcodeend 08
+
+//---------------------------------------------------------------------------------------
+//***-----------------------------------*** Running the routines ***---------------------
+//---------------------------------------------------------------------------------------
+//SpCsPnPFrameworkExampleWithAccPw();             //==> PnP Framework Delegate permissions
+//SpCsPnPFrameworkExampleWithCertificate();       //==> PnP Framework Application permissions
+//SpCsPnPFrameworkExampleWithManagementShell();   //==> PnP Framework Management Shell
+//SpCsPnPFrameworkExampleWithSecret();            //==> PnP Framework using Secret
+
+//LoginPnPFramework_UrlAppIdAppSecret();
+
+Console.WriteLine("Done");
+
+//---------------------------------------------------------------------------------------
+//***-----------------------------------*** Class routines ***---------------------------
+//---------------------------------------------------------------------------------------
+
+
+#nullable enable
+

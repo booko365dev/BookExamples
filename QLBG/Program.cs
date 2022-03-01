@@ -1,21 +1,17 @@
 ﻿using Microsoft.Exchange.WebServices.Data;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QLBG
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args)  //*** LEGACY CODE ***
         {
             ExchangeService myExService = ConnectBA(
-                                ConfigurationManager.AppSettings["exUserName"],
-                                ConfigurationManager.AppSettings["exUserPw"]);
+                                ConfigurationManager.AppSettings["UserName"],
+                                ConfigurationManager.AppSettings["UserPw"]);
 
             //CreateOneContact(myExService);
             //CreateOneContactWithPhoto(myExService);
@@ -33,7 +29,7 @@ namespace QLBG
         }
 
         //gavdcodebegin 01
-        static void CreateOneContact(ExchangeService ExService)
+        static void CreateOneContact(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Contact newContact = new Contact(ExService)
             {
@@ -48,9 +44,9 @@ namespace QLBG
             newContact.PhoneNumbers[PhoneNumberKey.HomePhone] = "0987654321";
             newContact.PhoneNumbers[PhoneNumberKey.CarPhone] = "1029384756";
 
-            newContact.EmailAddresses[EmailAddressKey.EmailAddress1] = new 
+            newContact.EmailAddresses[EmailAddressKey.EmailAddress1] = new
                                                     EmailAddress("somename@domain.com");
-            newContact.EmailAddresses[EmailAddressKey.EmailAddress2] = new 
+            newContact.EmailAddresses[EmailAddressKey.EmailAddress2] = new
                                             EmailAddress("somename.mymiddle@domain.com");
 
             newContact.ImAddresses[ImAddressKey.ImAddress1] = "somenameIM1@domain.com";
@@ -81,16 +77,16 @@ namespace QLBG
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void FindAllContacts(ExchangeService ExService)
+        static void FindAllContacts(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             ContactsFolder myContactsfolder = ContactsFolder.Bind(
                                                 ExService, WellKnownFolderName.Contacts);
 
-            int ammountContacts = myContactsfolder.TotalCount < 50 ? 
+            int ammountContacts = myContactsfolder.TotalCount < 50 ?
                                                         myContactsfolder.TotalCount : 50;
 
             ItemView myView = new ItemView(ammountContacts);
-            myView.PropertySet = new PropertySet(BasePropertySet.IdOnly, 
+            myView.PropertySet = new PropertySet(BasePropertySet.IdOnly,
                                                             ContactSchema.DisplayName);
             FindItemsResults<Item> allContacts = ExService.FindItems(
                                                     WellKnownFolderName.Contacts, myView);
@@ -106,7 +102,7 @@ namespace QLBG
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void FindOneContactByName(ExchangeService ExService)
+        static void FindOneContactByName(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             FindItemsResults<Item> allFound =
                         ExService.FindItems(WellKnownFolderName.Contacts,
@@ -125,7 +121,7 @@ namespace QLBG
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void UpdateOneContact(ExchangeService ExService)
+        static void UpdateOneContact(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             FindItemsResults<Item> allFound =
                         ExService.FindItems(WellKnownFolderName.Contacts,
@@ -146,7 +142,7 @@ namespace QLBG
             myContact.Surname = "Hissurname";
             myContact.CompanyName = "Hiscompany";
             myContact.PhoneNumbers[PhoneNumberKey.BusinessPhone] = "32143254321";
-            myContact.EmailAddresses[EmailAddressKey.EmailAddress2] = new 
+            myContact.EmailAddresses[EmailAddressKey.EmailAddress2] = new
                                                     EmailAddress("somebody@domain.com");
             myContact.ImAddresses[ImAddressKey.ImAddress1] = "otherM1@domain.com";
 
@@ -165,7 +161,7 @@ namespace QLBG
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void DeleteOneContact(ExchangeService ExService)
+        static void DeleteOneContact(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             FindItemsResults<Item> allFound =
                         ExService.FindItems(WellKnownFolderName.Contacts,
@@ -188,7 +184,8 @@ namespace QLBG
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void FindContactsByPartialName(ExchangeService ExService)
+        static void FindContactsByPartialName(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             NameResolutionCollection resolvedNames = ExService.ResolveName("Mymiddle");
 
@@ -202,7 +199,8 @@ namespace QLBG
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void FindContactsByPartialNameFiltered(ExchangeService ExService)
+        static void FindContactsByPartialNameFiltered(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             NameResolutionCollection resolvedNames = ExService.ResolveName(
                             "Mymiddle", ResolveNameSearchLocation.ContactsOnly, false);
@@ -217,7 +215,8 @@ namespace QLBG
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void CreateOneContactWithPhoto(ExchangeService ExService)
+        static void CreateOneContactWithPhoto(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Contact newContact = new Contact(ExService)
             {
@@ -235,7 +234,7 @@ namespace QLBG
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void GetPhotoOneContact(ExchangeService ExService)
+        static void GetPhotoOneContact(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             FindItemsResults<Item> allFound =
                         ExService.FindItems(WellKnownFolderName.Contacts,
@@ -264,7 +263,7 @@ namespace QLBG
 
             FileAttachment contactPhoto = myContact.GetContactPictureAttachment();
             using (FileStream myPhotoStream = new FileStream(
-                                @"C:\Temporary\Photo_" + contactPhoto.Name, 
+                                @"C:\Temporary\Photo_" + contactPhoto.Name,
                                 FileMode.Create, System.IO.FileAccess.Write))
             {
                 contactPhoto.Load(myPhotoStream);
@@ -273,7 +272,8 @@ namespace QLBG
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        private static void ExportContacts(ExchangeService ExService)
+        private static void ExportContacts(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             FindItemsResults<Item> findResults =
                         ExService.FindItems(WellKnownFolderName.Contacts,
@@ -305,7 +305,7 @@ namespace QLBG
         //gavdcodeend 10
 
         //-------------------------------------------------------------------------------
-        static ExchangeService ConnectBA(string userEmail, string userPW)
+        static ExchangeService ConnectBA(string userEmail, string userPW)  //*** LEGACY CODE ***
         {
             ExchangeService exService = new ExchangeService
             {
@@ -320,7 +320,7 @@ namespace QLBG
             return exService;
         }
 
-        static bool RedirectionUrlValidationCallback(string redirectionUrl)
+        static bool RedirectionUrlValidationCallback(string redirectionUrl)  //*** LEGACY CODE ***
         {
             bool validationResult = false;
 

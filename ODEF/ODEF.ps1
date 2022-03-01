@@ -1,5 +1,5 @@
 ﻿
-Function ConnectPsEwsBA()
+Function ConnectPsEwsBA()  #*** LEGACY CODE ***
 {
 	$ExService = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService
 	$ExService.Credentials = New-Object Microsoft.Exchange.WebServices.Data.WebCredentials(`
@@ -11,10 +11,19 @@ Function ConnectPsEwsBA()
 
 	return $ExService
 }
+
+Function LoginPsCLI()
+{
+	m365 login --authType password `
+			   --userName $configFile.appsettings.UserName `
+			   --password $configFile.appsettings.UserPw
+}
 #-----------------------------------------------------------------------------------------
 
+##==> Routines for EWS
+
 #gavdcodebegin 01
-Function ExPsEwsCreateOneFolder($ExService)
+Function ExPsEwsCreateOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $newFolder = New-Object Microsoft.Exchange.WebServices.Data.Folder($ExService)
     $newFolder.DisplayName = "My Custom Folder PowerShell"
@@ -24,7 +33,8 @@ Function ExPsEwsCreateOneFolder($ExService)
 #gavdcodeend 01
 
 #gavdcodebegin 02
-Function ExPsEwsGetAllFolders($ExService) {
+Function ExPsEwsGetAllFolders($ExService)  #*** LEGACY CODE ***
+{
     $myView = [Microsoft.Exchange.WebServices.Data.FolderView]100
     $isHidden = `
 			New-Object Microsoft.Exchange.WebServices.Data.ExtendedPropertyDefinition(`
@@ -47,7 +57,7 @@ Function ExPsEwsGetAllFolders($ExService) {
 #gavdcodeend 02
 
 #gavdcodebegin 03
-Function ExPsEwsFindOneFolder($ExService)
+Function ExPsEwsFindOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
 			$ExService, `
@@ -71,7 +81,7 @@ Function ExPsEwsFindOneFolder($ExService)
 #gavdcodeend 03
 
 #gavdcodebegin 04
-Function ExPsEwsUpdateOneFolder($ExService)
+Function ExPsEwsUpdateOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
 			$ExService, `
@@ -99,7 +109,7 @@ Function ExPsEwsUpdateOneFolder($ExService)
 #gavdcodeend 04
 
 #gavdcodebegin 05
-Function ExPsEwsDeleteOneFolder($ExService)
+Function ExPsEwsDeleteOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
 			$ExService, `
@@ -127,7 +137,7 @@ Function ExPsEwsDeleteOneFolder($ExService)
 #gavdcodeend 05
 
 #gavdcodebegin 06
-Function ExPsEwsCreateAndSendEmail($ExService)
+Function ExPsEwsCreateAndSendEmail($ExService)  #*** LEGACY CODE ***
 {
     $newEmail = New-Object Microsoft.Exchange.WebServices.Data.EmailMessage($ExService)
     $newEmail.Subject = "Email send by EWS PowerShell"
@@ -144,7 +154,7 @@ Function ExPsEwsCreateAndSendEmail($ExService)
 #gavdcodeend 06
 
 #gavdcodebegin 07
-Function ExPsEwsGetUnreadEmails($ExService)
+Function ExPsEwsGetUnreadEmails($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -164,7 +174,7 @@ Function ExPsEwsGetUnreadEmails($ExService)
 #gavdcodeend 07
 
 #gavdcodebegin 08
-Function ExPsEwsReplyToEmail($ExService)
+Function ExPsEwsReplyToEmail($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -193,7 +203,7 @@ Function ExPsEwsReplyToEmail($ExService)
 #gavdcodeend 08
 
 #gavdcodebegin 09
-Function ExPsEwsDeleteOneEmail($ExService)
+Function ExPsEwsDeleteOneEmail($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -225,7 +235,7 @@ Function ExPsEwsDeleteOneEmail($ExService)
 #gavdcodeend 09
 
 #gavdcodebegin 10
-Function ExPsEwsCreateOneContact($ExService)
+Function ExPsEwsCreateOneContact($ExService)  #*** LEGACY CODE ***
 {
     $newContact = New-Object Microsoft.Exchange.WebServices.Data.Contact($ExService)
     $newContact.GivenName = "Somename"
@@ -279,7 +289,7 @@ Function ExPsEwsCreateOneContact($ExService)
 #gavdcodeend 10
 
 #gavdcodebegin 11
-Function ExPsEwsFindAllContacts($ExService)
+Function ExPsEwsFindAllContacts($ExService)  #*** LEGACY CODE ***
 {
     $myContactsfolder = [Microsoft.Exchange.WebServices.Data.ContactsFolder]::Bind(`
 		$ExService, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Contacts)
@@ -298,7 +308,7 @@ Function ExPsEwsFindAllContacts($ExService)
 #gavdcodeend 11
 
 #gavdcodebegin 12
-Function ExPsEwsFindOneContactByName($ExService)
+Function ExPsEwsFindOneContactByName($ExService)  #*** LEGACY CODE ***
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
 	$myFilter = `
@@ -316,7 +326,7 @@ Function ExPsEwsFindOneContactByName($ExService)
 #gavdcodeend 12
 
 #gavdcodebegin 13
-Function ExPsEwsUpdateOneContact($ExService)
+Function ExPsEwsUpdateOneContact($ExService)  #*** LEGACY CODE ***
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
 	$myFilter = `
@@ -363,7 +373,7 @@ Function ExPsEwsUpdateOneContact($ExService)
 #gavdcodeend 13
 
 #gavdcodebegin 14
-Function ExPsEwsDeleteOneContact($ExService)
+Function ExPsEwsDeleteOneContact($ExService)  #*** LEGACY CODE ***
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
 	$myFilter = `
@@ -387,7 +397,7 @@ Function ExPsEwsDeleteOneContact($ExService)
 #gavdcodeend 14
 
 #gavdcodebegin 15
-Function ExPsEwsCreateAppointment($ExService)
+Function ExPsEwsCreateAppointment($ExService)  #*** LEGACY CODE ***
 {
     $myDt = (Get-Date).AddDays(+1)
     $newAppointment = New-Object `
@@ -407,7 +417,7 @@ Function ExPsEwsCreateAppointment($ExService)
 #gavdcodeend 15
 
 #gavdcodebegin 16
-Function ExPsEwsFindAppointmentsByDate($ExService)
+Function ExPsEwsFindAppointmentsByDate($ExService)  #*** LEGACY CODE ***
 {
 	$myView = New-Object `
 		Microsoft.Exchange.WebServices.Data.CalendarView((Get-Date), `
@@ -424,7 +434,7 @@ Function ExPsEwsFindAppointmentsByDate($ExService)
 #gavdcodeend 16
 
 #gavdcodebegin 17
-Function ExPsEwsUpdateOneAppointment($ExService)
+Function ExPsEwsUpdateOneAppointment($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -462,7 +472,7 @@ Function ExPsEwsUpdateOneAppointment($ExService)
 #gavdcodeend 17
 
 #gavdcodebegin 18
-Function ExPsEwsDeleteOneAppointment($ExService)
+Function ExPsEwsDeleteOneAppointment($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -510,30 +520,225 @@ Function ExPsEwsDeleteOneAppointment($ExService)
 
 #-----------------------------------------------------------------------------------------
 
-Add-Type -Path "C:\Program Files\Microsoft\Exchange\Web Services\2.2\Microsoft.Exchange.WebServices.dll"
+##==> Routines for CLI
 
-[xml]$configFile = get-content "C:\Projects\exPs.values.config"
+#gavdcodebegin 19
+Function ExPsCliGetAllMessages()
+{
+	LoginPsCLI
+	
+	m365 outlook message list --folderName "Inbox"
 
-$ExService = ConnectPsEwsBA
+	m365 logout
+}
+#gavdcodeend 19
 
-#ExPsEwsCreateOneFolder $ExService
-#ExPsEwsGetAllFolders $ExService
-#ExPsEwsFindOneFolder $ExService
-#ExPsEwsUpdateOneFolder $ExService
-#ExPsEwsDeleteOneFolder $ExService
-#ExPsEwsCreateAndSendEmail $ExService
-#ExPsEwsGetUnreadEmails $ExService
-#ExPsEwsReplyToEmail $ExService
-#ExPsEwsDeleteOneEmail $ExService
-#ExPsEwsCreateOneContact $ExService
-#ExPsEwsFindAllContacts $ExService
-#ExPsEwsFindOneContactByName $ExService
-#ExPsEwsUpdateOneContact $ExService
-#ExPsEwsDeleteOneContact $ExService
-#ExPsEwsCreateAppointment $ExService
-#ExPsEwsFindAppointmentsByDate $ExService
-#ExPsEwsUpdateOneAppointment $ExService
-#ExPsEwsDeleteOneAppointment $ExService
+#gavdcodebegin 20
+Function ExPsCliGetAllMessagesById()
+{
+	LoginPsCLI
+	
+	m365 outlook message list `
+            --folderName "Inbox" `
+            --query "[?id == 'AAMkAGIQ4MzMtNGI4N...AAAAAEaNs_BT6QvguaLAAAAAAk4AAA=']"
+
+	m365 logout
+}
+#gavdcodeend 20
+
+#gavdcodebegin 21
+Function ExPsCliMoveMessage()
+{
+	LoginPsCLI
+	
+	m365 outlook message move `
+            --sourceFolderName "Inbox" `
+            --targetFolderName "MyFolder" `
+            --messageId "AAMkAGIQ4MzMtNGI4N...AAAAAEaNs_BT6QvguaLAAAAAAk4AAA="
+
+	m365 logout
+}
+#gavdcodeend 21
+
+#gavdcodebegin 22
+Function ExPsCliSendMessage()
+{
+	LoginPsCLI
+	
+	m365 outlook mail send `
+            --to "AdeleV@M365x920541.OnMicrosoft.com" `
+            --subject "Test Email from CLI" `
+            --bodyContents "This is a <b>test</b> message" `
+            --bodyContentType HTML
+
+	m365 logout
+}
+#gavdcodeend 22
+
+#gavdcodebegin 23
+Function ExPsCliExchangeReportActivity()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailactivitycounts --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 23
+
+#gavdcodebegin 24
+Function ExPsCliExchangeReportActivityUser()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailactivityusercounts --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 24
+
+#gavdcodebegin 25
+Function ExPsCliExchangeReportActivityUserDetails()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailactivityuserdetail --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 25
+
+#gavdcodebegin 26
+Function ExPsCliExchangeReportActivityByAppTotals()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailappusageappsusercounts --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 26
+
+#gavdcodebegin 27
+Function ExPsCliExchangeReportActivityByApp()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailappusageusercounts --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 27
+
+#gavdcodebegin 28
+Function ExPsCliExchangeReportActivityByAppAndUserDetails()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailappusageuserdetail --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function ExPsCliExchangeReportActivityByAppVersions()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailappusageversionsusercounts --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 29
+
+#gavdcodebegin 30
+Function ExPsCliExchangeReportUsageDetail()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailboxusagedetail --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 30
+
+#gavdcodebegin 31
+Function ExPsCliExchangeReportUsageMailboxes()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailboxusagemailboxcount --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 31
+
+#gavdcodebegin 32
+Function ExPsCliExchangeReportQuotaMailboxes()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailboxusagequotastatusmailboxcounts --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 32
+
+#gavdcodebegin 33
+Function ExPsCliExchangeReportStorageMailboxes()
+{
+	LoginPsCLI
+	
+	m365 outlook report mailboxusagestorage --period D7 --output json
+
+	m365 logout
+}
+#gavdcodeend 33
+
+#-----------------------------------------------------------------------------------------
+
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+
+##==> EWS
+#Add-Type -Path "C:\Program Files\Microsoft\Exchange\Web Services\2.2\Microsoft.Exchange.WebServices.dll"
+#$ExService = ConnectPsEwsBA  #*** LEGACY CODE ***
+
+#ExPsEwsCreateOneFolder $ExService  #*** LEGACY CODE ***
+#ExPsEwsGetAllFolders $ExService  #*** LEGACY CODE ***
+#ExPsEwsFindOneFolder $ExService  #*** LEGACY CODE ***
+#ExPsEwsUpdateOneFolder $ExService  #*** LEGACY CODE ***
+#ExPsEwsDeleteOneFolder $ExService  #*** LEGACY CODE ***
+#ExPsEwsCreateAndSendEmail $ExService  #*** LEGACY CODE ***
+#ExPsEwsGetUnreadEmails $ExService  #*** LEGACY CODE ***
+#ExPsEwsReplyToEmail $ExService  #*** LEGACY CODE ***
+#ExPsEwsDeleteOneEmail $ExService  #*** LEGACY CODE ***
+#ExPsEwsCreateOneContact $ExService  #*** LEGACY CODE ***
+#ExPsEwsFindAllContacts $ExService  #*** LEGACY CODE ***
+#ExPsEwsFindOneContactByName $ExService  #*** LEGACY CODE ***
+#ExPsEwsUpdateOneContact $ExService  #*** LEGACY CODE ***
+#ExPsEwsDeleteOneContact $ExService  #*** LEGACY CODE ***
+#ExPsEwsCreateAppointment $ExService  #*** LEGACY CODE ***
+#ExPsEwsFindAppointmentsByDate $ExService  #*** LEGACY CODE ***
+#ExPsEwsUpdateOneAppointment $ExService  #*** LEGACY CODE ***
+#ExPsEwsDeleteOneAppointment $ExService  #*** LEGACY CODE ***
+
+##==> CLI
+#ExPsCliGetAllMessages
+#ExPsCliGetAllMessagesById
+#ExPsCliMoveMessage
+#ExPsCliSendMessage
+#ExPsCliExchangeReportActivity
+#ExPsCliExchangeReportActivityUser
+#ExPsCliExchangeReportActivityUserDetails
+#ExPsCliExchangeReportActivityByAppTotals
+#ExPsCliExchangeReportActivityByApp
+#ExPsCliExchangeReportActivityByAppAndUserDetails
+#ExPsCliExchangeReportActivityByAppVersions
+#ExPsCliExchangeReportUsageDetail
+#ExPsCliExchangeReportUsageMailboxes
+#ExPsCliExchangeReportQuotaMailboxes
+#ExPsCliExchangeReportStorageMailboxes
 
 Write-Host "Done"  
 

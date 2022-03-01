@@ -3,13 +3,22 @@
 Function LoginPsPowerPlatform()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.ppUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
-	Add-PowerAppsAccount -Username $configFile.appsettings.ppUserName -Password $securePW
+	Add-PowerAppsAccount -Username $configFile.appsettings.UserName -Password $securePW
 }
 #gavdcodeend 01
 
+Function LoginPsCLI()
+{
+	m365 login --authType password `
+			   --userName $configFile.appsettings.UserName `
+			   --password $configFile.appsettings.UserPw
+}
+
 #----------------------------------------------------------------------------------------
+
+##==> Routines for PowerShell
 
 #gavdcodebegin 02
 Function PowerAutomatePsAdminEnumarateFlows()
@@ -243,9 +252,190 @@ Function PowerAutomatePsMakerDeleteRoleUser()
 
 #-----------------------------------------------------------------------------------------
 
-[xml]$configFile = get-content "C:\Projects\ppPs.values.config"
+##==> Routines for CLI
 
-LoginPsPowerPlatform
+#gavdcodebegin 26
+Function PowerAutomatePsCliGetAllFlowsByEnvironment()
+{
+	LoginPsCLI
+	
+	m365 flow list --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+				   --asAdmin
+
+	m365 logout
+}
+#gavdcodeend 26
+
+#gavdcodebegin 27
+Function PowerAutomatePsCliGetOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow get --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+				  --name "3126a4e4-71b9-49d8-802d-734a71534ff4" `
+				  --asAdmin
+
+	m365 logout
+}
+#gavdcodeend 27
+
+#gavdcodebegin 28
+Function PowerAutomatePsCliExportOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow export --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					 --id "3126a4e4-71b9-49d8-802d-734a71534ff4" `
+					 --format "zip" `
+					 --packageDisplayName "MyTestFlow" `
+					 --packageDescription "It is a test flow" `
+					 --packageCreatedBy "Guitaca" `
+					 --packageSourceEnvironment "My Default Environment" `
+					 --path 'C:\Temporary\MyTestFlow.zip'
+
+	m365 logout
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function PowerAutomatePsCliDisableOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow disable --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					  --name "3126a4e4-71b9-49d8-802d-734a71534ff4"
+
+	m365 logout
+}
+#gavdcodeend 29
+
+#gavdcodebegin 30
+Function PowerAutomatePsCliEnableOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow enable --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					 --name "3126a4e4-71b9-49d8-802d-734a71534ff4"
+
+	m365 logout
+}
+#gavdcodeend 30
+
+#gavdcodebegin 31
+Function PowerAutomatePsCliDeleteOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow remove --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					 --name "e7817682-71ce-4bee-b435-b98e0edfad12"
+
+	m365 logout
+}
+#gavdcodeend 31
+
+#gavdcodebegin 32
+Function PowerAutomatePsCliGetAllEnvironment()
+{
+	LoginPsCLI
+	
+	m365 flow environment list
+
+	m365 logout
+}
+#gavdcodeend 32
+
+#gavdcodebegin 33
+Function PowerAutomatePsCliGetOneEnvironment()
+{
+	LoginPsCLI
+	
+	m365 flow environment get --name "default-021ee864-951d-4f25-a5c3-b6d4412c4052"
+
+	m365 logout
+}
+#gavdcodeend 33
+
+#gavdcodebegin 34
+Function PowerAutomatePsCliGetAllConnectors()
+{
+	LoginPsCLI
+	
+	m365 flow connector list --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052"
+
+	m365 logout
+}
+#gavdcodeend 34
+
+#gavdcodebegin 35
+Function PowerAutomatePsCliExportOneConnectors()
+{
+	LoginPsCLI
+	
+	m365 flow connector export --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+							   --connector "sh_con-201-5f20a1f2d8d6777a75-5fa602f410652f4dfa" `
+							   --outputFolder "C:\Temp\MyConnector"
+
+	m365 logout
+}
+#gavdcodeend 35
+
+#gavdcodebegin 36
+Function PowerAutomatePsCliGetRunsOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow run list --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					   --flow "3126a4e4-71b9-49d8-802d-734a71534ff4"
+
+	m365 logout
+}
+#gavdcodeend 36
+
+#gavdcodebegin 37
+Function PowerAutomatePsCliGetOneRunOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow run get --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					  --flow "3126a4e4-71b9-49d8-802d-734a71534ff4" `
+					  --name "08585583736314022523222750393CU146"
+
+	m365 logout
+}
+#gavdcodeend 37
+
+#gavdcodebegin 38
+Function PowerAutomatePsCliResubmitOneRunOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow run resubmit --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					       --flow "3126a4e4-71b9-49d8-802d-734a71534ff4" `
+					       --name "08585583736314022523222750393CU146"
+
+	m365 logout
+}
+#gavdcodeend 38
+
+#gavdcodebegin 39
+Function PowerAutomatePsCliCancelOneRunOneFlow()
+{
+	LoginPsCLI
+	
+	m365 flow run cancel --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					     --flow "3126a4e4-71b9-49d8-802d-734a71534ff4" `
+					     --name "08585583736314022523222750393CU146"
+
+	m365 logout
+}
+#gavdcodeend 39
+
+#-----------------------------------------------------------------------------------------
+
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+
+##==> PowerShell
+#LoginPsPowerPlatform
 
 #PowerAutomatePsAdminEnumarateFlows
 #PowerAutomatePsAdminOwnerRole
@@ -271,5 +461,21 @@ LoginPsPowerPlatform
 #PowerAutomatePsMakerOwnerRole
 #PowerAutomatePsMakerAddRoleUser
 #PowerAutomatePsMakerDeleteRoleUser
+
+##==> CLI
+#PowerAutomatePsCliGetAllFlowsByEnvironment
+#PowerAutomatePsCliGetOneFlow
+#PowerAutomatePsCliExportOneFlow
+#PowerAutomatePsCliDisableOneFlow
+#PowerAutomatePsCliEnableOneFlow
+#PowerAutomatePsCliDeleteOneFlow
+#PowerAutomatePsCliGetAllEnvironment
+#PowerAutomatePsCliGetOneEnvironment
+#PowerAutomatePsCliGetAllConnectors
+#PowerAutomatePsCliExportOneConnectors
+#PowerAutomatePsCliGetRunsOneFlow
+#PowerAutomatePsCliGetOneRunOneFlow
+#PowerAutomatePsCliResubmitOneRunOneFlow
+#PowerAutomatePsCliCancelOneRunOneFlow
 
 Write-Host "Done"  

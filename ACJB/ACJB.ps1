@@ -1,14 +1,14 @@
 ﻿
 #gavdcodebegin 01
-Function LoginPsCsom()
+Function LoginPsCsom()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials `
-			($configFile.appsettings.spUserName, $securePW)
+			($configFile.appsettings.UserName, $securePW)
 	$rtnContext = New-Object Microsoft.SharePoint.Client.ClientContext `
-			($configFile.appsettings.spUrl) 
+			($configFile.appsettings.SiteCollUrl) 
 	$rtnContext.Credentials = $myCredentials
 
 	return $rtnContext
@@ -16,27 +16,27 @@ Function LoginPsCsom()
 #gavdcodeend 01
 
 #gavdcodebegin 02
-Function LoginPsPSO()
+Function LoginPsPSO()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.spUserName, $securePW
-	Connect-SPOService -Url $configFile.appsettings.spAdminUrl -Credential $myCredentials
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
 }
 #gavdcodeend 02
 
 #gavdcodebegin 03
-Function LoginPsPnP()
+Function LoginPsPnP() #*** LEGACY CODE *** 
 {
     # ATTENTION: Using the deprecated PnP-PowerShell module
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.spUserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl -Credentials $myCredentials
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
 }
 #gavdcodeend 03
 
@@ -44,11 +44,11 @@ Function LoginPsPnP()
 Function LoginPsPnPPowerShell()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.spUserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl -Credentials $myCredentials
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
 }
 #gavdcodeend 16
 
@@ -58,10 +58,10 @@ Function LoginPsPnPPowerShellCertificate()
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			"myStrongPassword" -AsPlainText -Force
 
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl `
-					  -ClientId $configFile.appsettings.azAppIdApplication `
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithCert `
 					  -Tenant "[Domain].onmicrosoft.com" `
-					  -CertificatePath "[PathForTheCertificate]" `
+					  -CertificatePath "[PathForThePfxCertificateFile]" `
 					  -CertificatePassword $securePW
 }
 #gavdcodeend 18
@@ -72,8 +72,8 @@ Function LoginPsPnPPowerShellCertificateBase64()
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			"myStrongPassword" -AsPlainText -Force
 
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl `
-					  -ClientId $configFile.appsettings.azAppIdApplication `
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithCert `
 					  -Tenant "[Domain].onmicrosoft.com" `
 					  -CertificateBase64Encoded "[Base64EncodedValue]" `
 					  -CertificatePassword $securePW
@@ -83,23 +83,44 @@ Function LoginPsPnPPowerShellCertificateBase64()
 #gavdcodebegin 21
 Function LoginPsPnPPowerShellInteractive()
 {
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl `
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
 					  -Credentials (Get-Credential)
 }
 #gavdcodeend 21
 
 #gavdcodebegin 14
-Function LoginPsCLI()
+Function LoginPsCLIWithAccPw()
 {
-	m365 login $configFile.appsettings.spBaseUrl `
-	     --authType password `
-	     --userName $configFile.appsettings.spUserName `
-	     --password $configFile.appsettings.spUserPw
+	m365 login --authType password `
+			   --userName $configFile.appsettings.UserName `
+			   --password $configFile.appsettings.UserPw
 }
 #gavdcodeend 14
 
+#gavdcodebegin 23
+Function LoginPsCLIWithSecret()
+{
+	m365 login --authType secret `
+			   --tenant $configFile.appsettings.TenantName `
+			   --appId $configFile.appsettings.ClientIdWithSecret `
+			   --secret $configFile.appsettings.ClientSecret
+}
+#gavdcodeend 23
+
+#gavdcodebegin 25
+Function LoginPsCLIWithCertificate()
+{
+	m365 login --authType certificate `
+			   --tenant $configFile.appsettings.TenantName `
+			   --appId $configFile.appsettings.ClientIdWithCert `
+			   --certificateFile $configFile.appsettings.CertificateFilePath `
+			   --password $configFile.appsettings.CertificateFilePw
+}
+#gavdcodeend 25
+
 #gavdcodebegin 04
-Function Invoke-RestSPO() {
+Function Invoke-RestSPO() 
+{
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -207,7 +228,8 @@ Function Invoke-RestSPO() {
 #gavdcodeend 04
  
 #gavdcodebegin 05
-Function Get-SPOContextInfo(){
+Function Get-SPOContextInfo()
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$WebUrl,
@@ -223,7 +245,8 @@ Function Get-SPOContextInfo(){
 	Invoke-RestSPO $Url Post $UserName $Password
 }
 
-Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) {
+Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) 
+{
     $buffer = New-Object Byte[] 8192 
     $bytesRead = 0
     while (($bytesRead = $Source.Read($buffer, 0, $buffer.Length)) -gt 0) {
@@ -235,10 +258,11 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 06
-Function PsRestGetExample(){
-	$webUrl = $configFile.appsettings.spUrl
-	$userName = $configFile.appsettings.spUserName
-	$password = $configFile.appsettings.spUserPw
+Function PsRestGetExample()
+{
+	$webUrl = $configFile.appsettings.SiteCollUrl
+	$userName = $configFile.appsettings.UserName
+	$password = $configFile.appsettings.UserPw
 
 	$endpointUrl = $WebUrl + "/_api/web/Created"
 	$myResult = Invoke-RestSPO -Url $endpointUrl `
@@ -250,10 +274,11 @@ Function PsRestGetExample(){
 #gavdcodeend 06
 
 #gavdcodebegin 07
-Function PsRestPostExample(){
-	$webUrl = $configFile.appsettings.spUrl
-	$userName = $configFile.appsettings.spUserName
-	$password = $configFile.appsettings.spUserPw
+Function PsRestPostExample()
+{
+	$webUrl = $configFile.appsettings.SiteCollUrl
+	$userName = $configFile.appsettings.UserName
+	$password = $configFile.appsettings.UserPw
 
 	$endpointUrl = $WebUrl + "/_api/web/lists"
 	$myPayload = @{ 
@@ -277,7 +302,8 @@ Function PsRestPostExample(){
 #gavdcodeend 07
 
 #gavdcodebegin 08
-Function PsCsomExample(){
+Function PsCsomExample()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+{
 	$spCtx = LoginPsCsom
 	
 	$rootWeb = $spCtx.Web
@@ -290,15 +316,17 @@ Function PsCsomExample(){
 #gavdcodeend 08
 
 #gavdcodebegin 09
-Function PsPsoExample(){
+Function PsPsoExample()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+{
 	LoginPsPSO
-	Test-SPOSite $configFile.appsettings.spUrl
+	Test-SPOSite $configFile.appsettings.SiteCollUrl
 	Disconnect-SPOService
 }
 #gavdcodeend 09
 
 #gavdcodebegin 10
-Function PsPnpExample(){
+Function PsPnpExample()    #*** LEGACY CODE ***
+{ 
     # ATTENTION: Using the deprecated PnP-PowerShell module
 	LoginPsPnP
 	
@@ -311,7 +339,8 @@ Function PsPnpExample(){
 #gavdcodeend 10
 
 #gavdcodebegin 17
-Function PsPnpPowerShellExample(){
+Function PsPnpPowerShellExample()
+{
 	LoginPsPnPPowerShell
 	
 	$myWeb = Get-PnPWeb
@@ -323,7 +352,8 @@ Function PsPnpPowerShellExample(){
 #gavdcodeend 17
 
 #gavdcodebegin 19
-Function PsPnpPowerShellCertificateExample(){
+Function PsPnpPowerShellCertificateExample()
+{
 	LoginPsPnPPowerShellCertificate
 	
 	$myWeb = Get-PnPWeb
@@ -335,7 +365,8 @@ Function PsPnpPowerShellCertificateExample(){
 #gavdcodeend 19
 
 #gavdcodebegin 22
-Function PsPnpPowerShellInteractiveExample(){
+Function PsPnpPowerShellInteractiveExample()
+{
 	LoginPsPnPPowerShellInteractive
 	
 	$myWeb = Get-PnPWeb
@@ -347,7 +378,8 @@ Function PsPnpPowerShellInteractiveExample(){
 #gavdcodeend 22
 
 #gavdcodebegin 11
-Function PsPnpRestGetExample(){
+Function PsPnpRestGetExample()
+{
 	LoginPsPnP
 	
 	$myWeb = Invoke-PnPSPRestMethod -Url /_api/web
@@ -357,7 +389,8 @@ Function PsPnpRestGetExample(){
 #gavdcodeend 11
 
 #gavdcodebegin 12
-Function PsPnpRestPostExample01(){
+Function PsPnpRestPostExample01()
+{
 	LoginPsPnP
 	
 	$myBody = "{'Title':'Test01'}"
@@ -368,7 +401,8 @@ Function PsPnpRestPostExample01(){
 #gavdcodeend 12
 
 #gavdcodebegin 13
-Function PsPnpRestPostExample02(){
+Function PsPnpRestPostExample02()
+{
 	LoginPsPnP
 	
 	$myBody = "{ '__metadata': { 'type': 'SP.ListItem' }, 'Title': 'Test02'}"
@@ -380,8 +414,9 @@ Function PsPnpRestPostExample02(){
 #gavdcodeend 13
 
 #gavdcodebegin 15
-Function PsCliExample(){
-	LoginPsCLI
+Function PsCliExampleWithAccPw()
+{
+	LoginPsCLIWithAccPw
 	
 	m365 spo site list --type TeamSite
 
@@ -389,13 +424,35 @@ Function PsCliExample(){
 }
 #gavdcodeend 15
 
+#gavdcodebegin 24
+Function PsCliExampleWithSecret()
+{
+	LoginPsCLIWithSecret
+	
+	m365 teams team list
+
+	m365 logout
+}
+#gavdcodeend 24
+
+#gavdcodebegin 26
+Function PsCliExampleWithCertificate()
+{
+	LoginPsCLIWithCertificate
+	
+	m365 spo tenant settings list
+
+	m365 logout
+}
+#gavdcodeend 26
+
 #----------------------------------------------------------------------------------------
 
 # Running the Functions
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
-[xml]$configFile = get-content "C:\Projects\spPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 ##==> CSOM
 #PsCsomExample
@@ -422,7 +479,10 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 #PsPnpRestPostExample02
 
 ##==> CLI
-#PsCliExample
+#PsCliExampleWithAccPw
+#PsCliExampleWithSecret
+#PsCliExampleWithCertificate
 
 Write-Host ""  
-
+Write-Host "Done"
+Write-Host ""

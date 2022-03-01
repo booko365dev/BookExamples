@@ -18,8 +18,15 @@ namespace XDHG
         }
 
         //gavdcodebegin 01
-        static RestClient LoginRestSharp()
+        static RestClient LoginRestSharp() //*** LEGACY CODE *** 
         {
+            //****************************************************************************
+            // Microsoft removed the "SharePointOnlineCredentials" object from the
+            // "Microsoft.SharePointOnline.CSOM" namespace (from version 16.1.20) to
+            // prevent login with the credentials of a user. It is not possible to use
+            // the code shown in this section any more
+            //****************************************************************************
+
             var securePw = new SecureString();
             foreach (
                 char oneChar in ConfigurationManager.AppSettings["spUserPw"].ToCharArray())
@@ -42,7 +49,7 @@ namespace XDHG
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void TestRestSharpGet()
+        static void TestRestSharpGet() //*** LEGACY CODE *** 
         {
             RestClient myClient = LoginRestSharp();
 
@@ -55,7 +62,7 @@ namespace XDHG
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void TestRestSharepPost()
+        static void TestRestSharepPost() //*** LEGACY CODE *** 
         {
             RestClient myClient = LoginRestSharp();
 
@@ -74,7 +81,7 @@ namespace XDHG
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static RestRequest RequestCreate(string Digest)
+        static RestRequest RequestCreate(string Digest) //*** LEGACY CODE *** 
         {
             RestRequest myRequest = new RestRequest(
                     "web/lists/getbytitle('TestList')/items", Method.POST);
@@ -91,7 +98,7 @@ namespace XDHG
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static RestRequest RequestUpdate(string Digest)
+        static RestRequest RequestUpdate(string Digest) //*** LEGACY CODE *** 
         {
             RestRequest myRequest = new RestRequest(
                     "web/lists/getbytitle('TestList')/items(1)", Method.POST);
@@ -110,7 +117,7 @@ namespace XDHG
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static RestRequest RequestDelete(string Digest)
+        static RestRequest RequestDelete(string Digest) //*** LEGACY CODE *** 
         {
             RestRequest myRequest = new RestRequest(
                     "web/lists/getbytitle('TestList')/items(2)", Method.POST);

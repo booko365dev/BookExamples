@@ -8,11 +8,11 @@ namespace ZOUX
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args)  //*** LEGACY CODE ***
         {
             ExchangeService myExService = ConnectBA(
-                                ConfigurationManager.AppSettings["exUserName"],
-                                ConfigurationManager.AppSettings["exUserPw"]);
+                                ConfigurationManager.AppSettings["UserName"],
+                                ConfigurationManager.AppSettings["UserPw"]);
 
             //CreateAppointment(myExService);
             //CreateRecurrentAppointment(myExService);
@@ -35,7 +35,7 @@ namespace ZOUX
         }
 
         //gavdcodebegin 01
-        static void CreateAppointment(ExchangeService ExService)
+        static void CreateAppointment(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             DateTime myDt = DateTime.Now.AddDays(1);
             Appointment newAppointment = new Appointment(ExService)
@@ -55,7 +55,8 @@ namespace ZOUX
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void CreateRecurrentAppointment(ExchangeService ExService)
+        static void CreateRecurrentAppointment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             // Fixed date recurrent appointment
             DateTime myDt = DateTime.Now.AddDays(2);
@@ -104,7 +105,7 @@ namespace ZOUX
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void FindAppointmentsByDate(ExchangeService ExService)
+        static void FindAppointmentsByDate(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             FindItemsResults<Appointment> allAppointments =
                 ExService.FindAppointments(WellKnownFolderName.Calendar,
@@ -120,7 +121,8 @@ namespace ZOUX
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        private static void FindAppointmentsByUser(ExchangeService ExService)
+        private static void FindAppointmentsByUser(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             List<AttendeeInfo> accountsToScan = new List<AttendeeInfo>
             {
@@ -158,7 +160,8 @@ namespace ZOUX
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void FindRecurrentAppointmentsByDate(ExchangeService ExService)
+        static void FindRecurrentAppointmentsByDate(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter.SearchFilterCollection myFilter = 
                                                 new SearchFilter.SearchFilterCollection
@@ -193,7 +196,7 @@ namespace ZOUX
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void FindAppointmentsBySubject(ExchangeService ExService)
+        static void FindAppointmentsBySubject(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -220,7 +223,7 @@ namespace ZOUX
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void UpdateOneAppointment(ExchangeService ExService)
+        static void UpdateOneAppointment(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -251,7 +254,8 @@ namespace ZOUX
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void UpdateOneRecurrentAppointment(ExchangeService ExService)
+        static void UpdateOneRecurrentAppointment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -292,7 +296,8 @@ namespace ZOUX
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void AcceptDeclineOneAppointment(ExchangeService ExService)
+        static void AcceptDeclineOneAppointment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -327,7 +332,7 @@ namespace ZOUX
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        static void ForwardOneAppointment(ExchangeService ExService)
+        static void ForwardOneAppointment(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -364,7 +369,8 @@ namespace ZOUX
         //gavdcodeend 10
 
         //gavdcodebegin 11
-        static void TrackResponsesOneAppointment(ExchangeService ExService)
+        static void TrackResponsesOneAppointment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -407,7 +413,7 @@ namespace ZOUX
         //gavdcodeend 11
 
         //gavdcodebegin 12
-        static void DeleteOneAppointment(ExchangeService ExService)
+        static void DeleteOneAppointment(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -446,7 +452,8 @@ namespace ZOUX
         //gavdcodeend 12
 
         //gavdcodebegin 13
-        static void DeleteOneRecurrentAppointment(ExchangeService ExService)
+        static void DeleteOneRecurrentAppointment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                                     LogicalOperator.And,
@@ -495,7 +502,8 @@ namespace ZOUX
         //gavdcodeend 13
 
         //gavdcodebegin 14
-        private static void ExportOneAppointment(ExchangeService ExService)
+        private static void ExportOneAppointment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                         LogicalOperator.And,
@@ -528,7 +536,8 @@ namespace ZOUX
         //gavdcodeend 14
 
         //gavdcodebegin 15
-        private static void ImportOneAppointment(ExchangeService ExService)
+        private static void ImportOneAppointment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Appointment appointmentToImport = new Appointment(ExService);
 
@@ -555,7 +564,7 @@ namespace ZOUX
         //gavdcodeend 15
 
         //-------------------------------------------------------------------------------
-        static ExchangeService ConnectBA(string userEmail, string userPW)
+        static ExchangeService ConnectBA(string userEmail, string userPW)  //*** LEGACY CODE ***
         {
             ExchangeService exService = new ExchangeService
             {
@@ -570,7 +579,7 @@ namespace ZOUX
             return exService;
         }
 
-        static bool RedirectionUrlValidationCallback(string redirectionUrl)
+        static bool RedirectionUrlValidationCallback(string redirectionUrl)  //*** LEGACY CODE ***
         {
             bool validationResult = false;
 

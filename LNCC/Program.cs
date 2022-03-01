@@ -8,11 +8,11 @@ namespace LNCC
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args)  //*** LEGACY CODE ***
         {
             ExchangeService myExService = ConnectBA(
-                                ConfigurationManager.AppSettings["exUserName"],
-                                ConfigurationManager.AppSettings["exUserPw"]);
+                                ConfigurationManager.AppSettings["UserName"],
+                                ConfigurationManager.AppSettings["UserPw"]);
 
             //CreateAndSendEmail(myExService);
             //CreateDraftEmail(myExService);
@@ -43,7 +43,7 @@ namespace LNCC
         }
 
         //gavdcodebegin 01
-        static void CreateAndSendEmail(ExchangeService ExService)
+        static void CreateAndSendEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             EmailMessage newEmail = new EmailMessage(ExService)
             {
@@ -63,7 +63,7 @@ namespace LNCC
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void CreateDraftEmail(ExchangeService ExService)
+        static void CreateDraftEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             EmailMessage newEmail = new EmailMessage(ExService)
             {
@@ -77,7 +77,7 @@ namespace LNCC
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void SendDraftEmail(ExchangeService ExService)
+        static void SendDraftEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And, 
@@ -103,7 +103,7 @@ namespace LNCC
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void SendDelayedEmail(ExchangeService ExService)
+        static void SendDelayedEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             EmailMessage newEmail = new EmailMessage(ExService);
 
@@ -124,7 +124,7 @@ namespace LNCC
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void ReplyToEmail(ExchangeService ExService)
+        static void ReplyToEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And,
@@ -149,7 +149,7 @@ namespace LNCC
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void ForwardEmail(ExchangeService ExService)
+        static void ForwardEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And,
@@ -176,7 +176,7 @@ namespace LNCC
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void GetUnreadEmails(ExchangeService ExService)
+        static void GetUnreadEmails(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And, new SearchFilter.IsEqualTo(
@@ -190,7 +190,7 @@ namespace LNCC
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void MoveOneEmail(ExchangeService ExService)
+        static void MoveOneEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And,
@@ -216,7 +216,7 @@ namespace LNCC
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void CopyOneEmail(ExchangeService ExService)
+        static void CopyOneEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And,
@@ -242,7 +242,7 @@ namespace LNCC
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        static void DeleteOneEmail(ExchangeService ExService)
+        static void DeleteOneEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And,
@@ -268,7 +268,8 @@ namespace LNCC
         //gavdcodeend 10
 
         //gavdcodebegin 11
-        static void EntityExtractionFromEmail(ExchangeService ExService)
+        static void EntityExtractionFromEmail(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                                 LogicalOperator.And,
@@ -329,7 +330,7 @@ namespace LNCC
         //gavdcodeend 11
 
         //gavdcodebegin 12
-        private static void ExportEmail(ExchangeService ExService)
+        private static void ExportEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                     LogicalOperator.And,
@@ -370,7 +371,7 @@ namespace LNCC
         //gavdcodeend 12
 
         //gavdcodebegin 13
-        private static void ImportEmail(ExchangeService ExService)
+        private static void ImportEmail(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             EmailMessage emailToImport = new EmailMessage(ExService);
 
@@ -401,7 +402,7 @@ namespace LNCC
         //gavdcodeend 13
 
         //gavdcodebegin 14
-        static void GetOutOfOfficeConfig(ExchangeService ExService)
+        static void GetOutOfOfficeConfig(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             OofSettings myOOFConfig = ExService.GetUserOofSettings("user@domain.com");
 
@@ -430,7 +431,7 @@ namespace LNCC
         //gavdcodeend 14
 
         //gavdcodebegin 15
-        static void SetOutOfOfficeConfig(ExchangeService ExService)
+        static void SetOutOfOfficeConfig(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             OofSettings myOOFConfig = new OofSettings
             {
@@ -448,7 +449,8 @@ namespace LNCC
         //gavdcodeend 15
 
         //gavdcodebegin 16
-        static void CreateAndSendEmailWithAttachment(ExchangeService ExService)
+        static void CreateAndSendEmailWithAttachment(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             EmailMessage newEmail = new EmailMessage(ExService)
             {
@@ -476,7 +478,7 @@ namespace LNCC
         //gavdcodeend 16
 
         //gavdcodebegin 17
-        static void GetAttachments(ExchangeService ExService)
+        static void GetAttachments(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                     LogicalOperator.And,
@@ -521,7 +523,8 @@ namespace LNCC
         //gavdcodeend 17
 
         //gavdcodebegin 18
-        static void RemoveAttachmentsFromEmail(ExchangeService ExService)
+        static void RemoveAttachmentsFromEmail(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                     LogicalOperator.And,
@@ -567,7 +570,8 @@ namespace LNCC
         //gavdcodeend 18
 
         //gavdcodebegin 19
-        private static void SetEmailAsJunk(ExchangeService ExService)
+        private static void SetEmailAsJunk(
+                                        ExchangeService ExService)  //*** LEGACY CODE ***
         {
             SearchFilter myFilter = new SearchFilter.SearchFilterCollection(
                     LogicalOperator.And,
@@ -591,7 +595,7 @@ namespace LNCC
         //gavdcodeend 19
 
         //gavdcodebegin 20
-        static void CreateInboxRule(ExchangeService ExService)
+        static void CreateInboxRule(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Rule newRule = new Rule
             {
@@ -608,7 +612,7 @@ namespace LNCC
         //gavdcodeend 20
 
         //gavdcodebegin 21
-        static void GetInboxRules(ExchangeService ExService)
+        static void GetInboxRules(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             RuleCollection allRules = ExService.GetInboxRules("user@domain.com");
 
@@ -620,7 +624,7 @@ namespace LNCC
         //gavdcodeend 21
 
         //gavdcodebegin 22
-        static void UpdateInboxRule(ExchangeService ExService)
+        static void UpdateInboxRule(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             RuleCollection allRules = ExService.GetInboxRules("user@domain.com");
 
@@ -639,7 +643,7 @@ namespace LNCC
         //gavdcodeend 22
 
         //gavdcodebegin 23
-        static void DeleteInboxRule(ExchangeService ExService)
+        static void DeleteInboxRule(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             RuleCollection allRules = ExService.GetInboxRules("user@domain.com");
 
@@ -658,7 +662,7 @@ namespace LNCC
         //gavdcodeend 23
 
         //-------------------------------------------------------------------------------
-        static ExchangeService ConnectBA(string userEmail, string userPW)
+        static ExchangeService ConnectBA(string userEmail, string userPW)  //*** LEGACY CODE ***
         {
             ExchangeService exService = new ExchangeService
             {
@@ -673,7 +677,7 @@ namespace LNCC
             return exService;
         }
 
-        static bool RedirectionUrlValidationCallback(string redirectionUrl)
+        static bool RedirectionUrlValidationCallback(string redirectionUrl)  //*** LEGACY CODE ***
         {
             bool validationResult = false;
 

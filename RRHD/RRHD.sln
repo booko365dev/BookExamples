@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RRHD", "RRHD.csproj", "{C70CA889-6D1D-41D6-8B5B-93CF77FD9EE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RRHD", "RRHD.csproj", "{381981A7-E57C-459E-B4D6-3D510265E6D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C70CA889-6D1D-41D6-8B5B-93CF77FD9EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C70CA889-6D1D-41D6-8B5B-93CF77FD9EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C70CA889-6D1D-41D6-8B5B-93CF77FD9EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C70CA889-6D1D-41D6-8B5B-93CF77FD9EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{381981A7-E57C-459E-B4D6-3D510265E6D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381981A7-E57C-459E-B4D6-3D510265E6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381981A7-E57C-459E-B4D6-3D510265E6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381981A7-E57C-459E-B4D6-3D510265E6D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6699458C-3747-44FC-813A-18E38D2D01FB}
+		SolutionGuid = {EAEFCFA2-1BD0-4928-98DB-E33DCF6A0EBA}
 	EndGlobalSection
 EndGlobal

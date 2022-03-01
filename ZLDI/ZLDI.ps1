@@ -1,6 +1,6 @@
 ﻿
 #gavdcodebegin 01
-Function ConnectPsEwsBA()
+Function ConnectPsEwsBA()  #*** LEGACY CODE ***
 {
 	$ExService = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService
 	$ExService.Credentials = New-Object Microsoft.Exchange.WebServices.Data.WebCredentials(`
@@ -15,7 +15,7 @@ Function ConnectPsEwsBA()
 #gavdcodeend 01
 
 #gavdcodebegin 03
-Function ConnectPsOnlBA() 
+Function ConnectPsOnlBA()  #*** LEGACY CODE ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 				$configFile.appsettings.exUserPw -AsPlainText -Force
@@ -29,7 +29,7 @@ Function ConnectPsOnlBA()
 #gavdcodeend 03
 #-----------------------------------------------------------------------------------------
 
-Function CallEWSTest($ExService) {
+Function CallEWSTest($ExService) {  #*** LEGACY CODE ***
 	$myFolderView = [Microsoft.Exchange.WebServices.Data.FolderView]100
 	$allFolders = $ExService.FindFolders(`
 		[Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::MsgFolderRoot, `
@@ -44,7 +44,7 @@ Function CallEWSTest($ExService) {
 [xml]$configFile = get-content "C:\Projects\exPs.values.config"
 
 #gavdcodebegin 04
-##==> EWS Basic Authorization
+##==> EWS Basic Authorization  #*** LEGACY CODE ***
 Add-Type -Path "C:\Program Files\Microsoft\Exchange\Web Services\2.2\Microsoft.Exchange.WebServices.dll"
 $ExService = ConnectPsEwsBA
 
@@ -52,7 +52,7 @@ CallEWSTest $ExService  #Calling any function
 #gavdcodeend 04
 
 #gavdcodebegin 02
-##==> EWS oAuth Authorization
+##==> EWS oAuth Authorization  #*** LEGACY CODE ***
 Import-Module .\GenericOauthEWS.ps1 -Force
 #Test-EWSConnection -MailboxName $configFile.appsettings.exUserName
 $ExService = Connect-Exchange `
@@ -62,7 +62,7 @@ CallEWSTest $ExService  #Calling any function
 #gavdcodeend 02
 
 #gavdcodebegin 05
-##==> Exchange Online PowerShell Basic Authorization
+##==> Exchange Online PowerShell Basic Authorization  #*** LEGACY CODE ***
 ConnectPsOnlBA
 
 Get-Mailbox  #Calling any cmdlet

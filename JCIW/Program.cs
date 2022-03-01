@@ -9,7 +9,7 @@ namespace JCIW
     {
         // Note: Remove one of the two Main routines to run the program
         //gavdcodebegin 02
-        static void Main(string[] args)
+        static void Main(string[] args) //*** LEGACY CODE ***
         {
             ExchangeService myExService = ConnectBA(
                                 ConfigurationManager.AppSettings["exUserName"],
@@ -20,7 +20,7 @@ namespace JCIW
         //gavdcodeend 02
 
         //gavdcodebegin 04
-        static void Main(string[] args)
+        static void Main(string[] args) //*** LEGACY CODE ***
         {
             ExchangeService myExService = ConnectOA(
                                 ConfigurationManager.AppSettings["exAppId"],
@@ -32,7 +32,8 @@ namespace JCIW
         //gavdcodeend 04
 
         //gavdcodebegin 01
-        static ExchangeService ConnectBA(string userEmail, string userPW)
+        static ExchangeService ConnectBA(string userEmail, 
+                                                      string userPW) //*** LEGACY CODE ***
         {
             ExchangeService exService = new ExchangeService
             {
@@ -48,7 +49,8 @@ namespace JCIW
             return exService;
         }
 
-        static bool RedirectionUrlValidationCallback(string redirectionUrl)
+        static bool RedirectionUrlValidationCallback(
+                                             string redirectionUrl)  //*** LEGACY CODE ***
         {
             bool validationResult = false;
 
@@ -64,7 +66,7 @@ namespace JCIW
 
         //gavdcodebegin 03
         static async System.Threading.Tasks.Task<ExchangeService> ConnectOA(
-                                                            string AppId, string TenId)
+                                        string AppId, string TenId)  //*** LEGACY CODE ***
         {
             ExchangeService exService = new ExchangeService();
 
@@ -90,10 +92,10 @@ namespace JCIW
         }
         //gavdcodeend 03
 
-        static void CallEWSTest(ExchangeService ExchService)
+        static void CallEWSTest(ExchangeService ExchService)  //*** LEGACY CODE ***
         {
-            FindFoldersResults allFolders = ExchService.FindFolders(WellKnownFolderName.MsgFolderRoot,
-                                                                    new FolderView(10));
+            FindFoldersResults allFolders = ExchService.FindFolders(
+                                WellKnownFolderName.MsgFolderRoot, new FolderView(10));
             foreach (Folder oneFolder in allFolders)
             {
                 Console.WriteLine(oneFolder.DisplayName);

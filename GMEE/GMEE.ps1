@@ -2,9 +2,9 @@
 Function ConnectPsOnlBA() 
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-				$configFile.appsettings.exUserPw -AsPlainText -Force
+				$configFile.appsettings.UserPw -AsPlainText -Force
 	$myCredentials = New-Object System.Management.Automation.PSCredential -ArgumentList `
-				$configFile.appsettings.exUserName, $securePW
+				$configFile.appsettings.UserName, $securePW
 	$mySession = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri `
 				https://outlook.office365.com/powershell-liveid/ -Authentication Basic `
 				-AllowRedirection -Credential $myCredentials
@@ -87,7 +87,7 @@ Function ExPsEolBlockIP()
 
 #-----------------------------------------------------------------------------------------
 
-[xml]$configFile = get-content "C:\Projects\exPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 ConnectPsOnlBA
 

@@ -6,11 +6,11 @@ namespace RCAQ
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args)  //*** LEGACY CODE ***
         {
             ExchangeService myExService = ConnectBA(
-                                ConfigurationManager.AppSettings["exUserName"],
-                                ConfigurationManager.AppSettings["exUserPw"]);
+                                ConfigurationManager.AppSettings["UserName"],
+                                ConfigurationManager.AppSettings["UserPw"]);
 
             //GetFolders(myExService);
             //GetOneRootFolder(myExService);
@@ -28,7 +28,7 @@ namespace RCAQ
         }
 
         //gavdcodebegin 01
-        static void GetFolders(ExchangeService ExService)
+        static void GetFolders(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             FolderView myView = new FolderView(100);
             ExtendedPropertyDefinition isHidden = new 
@@ -48,7 +48,7 @@ namespace RCAQ
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void GetOneRootFolder(ExchangeService ExService)
+        static void GetOneRootFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder myInboxFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
 
@@ -64,7 +64,7 @@ namespace RCAQ
         //gavdcodeend 02
 
         //gavdcodebegin 05
-        static void FindOneFolder(ExchangeService ExService)
+        static void FindOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
             rootFolder.Load();
@@ -85,7 +85,7 @@ namespace RCAQ
         //gavdcodeend 05
 
         //gavdcodebegin 03
-        static void CreateOneFolder(ExchangeService ExService)
+        static void CreateOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder newFolder = new Folder(ExService)
             {
@@ -98,7 +98,7 @@ namespace RCAQ
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void CopyOneFolder(ExchangeService ExService)
+        static void CopyOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
             rootFolder.Load();
@@ -122,7 +122,7 @@ namespace RCAQ
         //gavdcodeend 04
 
         //gavdcodebegin 06
-        static void MoveOneFolder(ExchangeService ExService)
+        static void MoveOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Inbox);
             rootFolder.Load();
@@ -146,7 +146,7 @@ namespace RCAQ
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void UpdateOneFolder(ExchangeService ExService)
+        static void UpdateOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Drafts);
             rootFolder.Load();
@@ -171,7 +171,7 @@ namespace RCAQ
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void EmptyOneFolder(ExchangeService ExService)
+        static void EmptyOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Drafts);
             rootFolder.Load();
@@ -195,7 +195,7 @@ namespace RCAQ
         //gavdcodeend 08
 
         //gavdcodebegin 10
-        static void HideOneFolder(ExchangeService ExService)
+        static void HideOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.JunkEmail);
             rootFolder.Load();
@@ -224,7 +224,7 @@ namespace RCAQ
         //gavdcodeend 10
 
         //gavdcodebegin 09
-        static void DeleteOneFolder(ExchangeService ExService)
+        static void DeleteOneFolder(ExchangeService ExService)  //*** LEGACY CODE ***
         {
             Folder rootFolder = Folder.Bind(ExService, WellKnownFolderName.Drafts);
             rootFolder.Load();
@@ -248,7 +248,7 @@ namespace RCAQ
         //gavdcodeend 09
 
         //-------------------------------------------------------------------------------
-        static ExchangeService ConnectBA(string userEmail, string userPW)
+        static ExchangeService ConnectBA(string userEmail, string userPW)  //*** LEGACY CODE ***
         {
             ExchangeService exService = new ExchangeService
             {
@@ -263,7 +263,7 @@ namespace RCAQ
             return exService;
         }
 
-        static bool RedirectionUrlValidationCallback(string redirectionUrl)
+        static bool RedirectionUrlValidationCallback(string redirectionUrl)  //*** LEGACY CODE ***
         {
             bool validationResult = false;
 

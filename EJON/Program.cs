@@ -18,13 +18,14 @@ namespace EJON
     {
         static void Main(string[] args)
         {
+            // ATTENTION: Next routines using the deprecated SharePointPnPCoreOnline module
             //SpCsCsomExample();                //==> CSOM
             //SpCsRestExample01();              // Simple REST GET request without body
             //SpCsRestExample02();              // Full REST POST query with data in the body
-            
+
             // ATTENTION: Next routines using the deprecated SharePointPnPCoreOnline module
-            //SpCsPnPCoreExample();             //==> PnP Core
-            //LoginPnPCoreDirectly();           //==> PnP Core direct login
+            //SpCsPnPCoreExample();             //==> PnP Core  //*** LEGACY CODE ***
+            //LoginPnPCoreDirectly();           //==> PnP Core direct login  //*** LEGACY CODE ***
 
             Console.ReadLine();
         }
@@ -32,7 +33,7 @@ namespace EJON
         //-------------------------------------------------------------------------------
 
         //gavdcodebegin 07
-        static void SpCsCsomExample()
+        static void SpCsCsomExample()  //*** LEGACY CODE ***
         {
             ClientContext spCtx = LoginCsom();
 
@@ -45,7 +46,7 @@ namespace EJON
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void SpCsPnPCoreExample()
+        static void SpCsPnPCoreExample()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             ClientContext spPnpCtx = LoginPnPCore();
@@ -59,7 +60,7 @@ namespace EJON
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void SpCsRestExample01()
+        static void SpCsRestExample01()  //*** LEGACY CODE ***
         {
             Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
             string userName = ConfigurationManager.AppSettings["spUserName"];
@@ -77,7 +78,7 @@ namespace EJON
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        static void SpCsRestExample02()
+        static void SpCsRestExample02()  //*** LEGACY CODE ***
         {
             Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
             string userName = ConfigurationManager.AppSettings["spUserName"];
@@ -105,7 +106,7 @@ namespace EJON
         //-------------------------------------------------------------------------------
 
         //gavdcodebegin 01
-        static ClientContext LoginCsom()
+        static ClientContext LoginCsom()  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(
                 ConfigurationManager.AppSettings["spUrl"]);
@@ -124,7 +125,7 @@ namespace EJON
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static ClientContext LoginPnPCore()
+        static ClientContext LoginPnPCore()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
@@ -140,7 +141,7 @@ namespace EJON
         //gavdcodeend 02
 
         //gavdcodebegin 06
-        static void LoginPnPCoreMFA()
+        static void LoginPnPCoreMFA()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             string siteUrl = ConfigurationManager.AppSettings["spUrl"];
@@ -156,7 +157,7 @@ namespace EJON
         //gavdcodeend 06
 
         //gavdcodebegin 03
-        static void LoginPnPCoreDirectly()
+        static void LoginPnPCoreDirectly()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
@@ -177,7 +178,7 @@ namespace EJON
     }
 
     //gavdcodebegin 04
-    class SPHttpClientHandler : HttpClientHandler
+    class SPHttpClientHandler : HttpClientHandler  //*** LEGACY CODE ***
     {
         public SPHttpClientHandler(Uri webUri, string userName, string password)
         {
@@ -219,7 +220,7 @@ namespace EJON
     //gavdcodeend 04
 
     //gavdcodebegin 05
-    class SPHttpClient : HttpClient
+    class SPHttpClient : HttpClient  //*** LEGACY CODE ***
     {
         public SPHttpClient(Uri webUri, string userName, string password) : base(
                                 new SPHttpClientHandler(webUri, userName, password))

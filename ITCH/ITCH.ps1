@@ -2,7 +2,7 @@
 #gavdcodebegin 01
 Function ConnectPsExoV2()
 {
-    Connect-ExchangeOnline -UserPrincipalName $configFile.appsettings.exUserName
+    Connect-ExchangeOnline -UserPrincipalName $configFile.appsettings.UserName
 }
 #gavdcodeend 01
 
@@ -32,28 +32,28 @@ Function ExPsExoV2GetMailboxesBySetAndProperty()
 #gavdcodebegin 05
 Function ExPsExoV2GetClientAccessSettings()
 {
-    Get-EXOCASMailbox -Identity $configFile.appsettings.exUserName
+    Get-EXOCASMailbox -Identity $configFile.appsettings.UserName
 }
 #gavdcodeend 05
 
 #gavdcodebegin 06
 Function ExPsExoV2GetEmailboxPermissions()
 {
-    Get-EXOMailboxPermission -Identity $configFile.appsettings.exUserName
+    Get-EXOMailboxPermission -Identity $configFile.appsettings.UserName
 }
 #gavdcodeend 06
 
 #gavdcodebegin 07
 Function ExPsExoV2GetEmailboxStatistics()
 {
-    Get-EXOMailboxStatistics -Identity $configFile.appsettings.exUserName
+    Get-EXOMailboxStatistics -Identity $configFile.appsettings.UserName
 }
 #gavdcodeend 07
 
 #gavdcodebegin 08
 Function ExPsExoV2GetFolderPermissions()
 {
-    $myIdentifier = $configFile.appsettings.exUserName + ":\Inbox"
+    $myIdentifier = $configFile.appsettings.UserName + ":\Inbox"
     Get-EXOMailboxFolderPermission -Identity $myIdentifier
 }
 #gavdcodeend 08
@@ -61,14 +61,14 @@ Function ExPsExoV2GetFolderPermissions()
 #gavdcodebegin 09
 Function ExPsExoV2GetFolderStatisticsAll()
 {
-    Get-EXOMailboxFolderStatistics -Identity $configFile.appsettings.exUserName
+    Get-EXOMailboxFolderStatistics -Identity $configFile.appsettings.UserName
 }
 #gavdcodeend 09
 
 #gavdcodebegin 10
 Function ExPsExoV2GetFolderStatisticsOne()
 {
-    Get-EXOMailboxFolderStatistics -Identity $configFile.appsettings.exUserName `
+    Get-EXOMailboxFolderStatistics -Identity $configFile.appsettings.UserName `
                                                             -FolderScope Calendar
 }
 #gavdcodeend 10
@@ -76,14 +76,14 @@ Function ExPsExoV2GetFolderStatisticsOne()
 #gavdcodebegin 11
 Function ExPsExoV2GetDeviceStatistics()
 {
-    Get-EXOMobileDeviceStatistics -Mailbox $configFile.appsettings.exUserName
+    Get-EXOMobileDeviceStatistics -Mailbox $configFile.appsettings.UserName
 }
 #gavdcodeend 11
 
 #gavdcodebegin 12
 Function ExPsExoV2GetRecipients()
 {
-    Get-EXORecipient -Identity $configFile.appsettings.exUserName
+    Get-EXORecipient -Identity $configFile.appsettings.UserName
 }
 #gavdcodeend 12
 
@@ -96,7 +96,7 @@ Function ExPsExoV2GetRecipientPermissions()
 
 #-----------------------------------------------------------------------------------------
 
-[xml]$configFile = get-content "C:\Projects\exPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 ConnectPsExoV2
 
@@ -112,6 +112,8 @@ ConnectPsExoV2
 #ExPsExoV2GetDeviceStatistics
 #ExPsExoV2GetRecipients
 #ExPsExoV2GetRecipientPermissions
+
+Disconnect-ExchangeOnline -Confirm:$false
 
 Write-Host "Done"  
 

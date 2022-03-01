@@ -713,11 +713,11 @@ Function GrPsDeleteFolder()
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
-[xml]$configFile = get-content "C:\Projects\grPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-$ClientIDApp = $configFile.appsettings.ClientIdApp
-$ClientSecretApp = $configFile.appsettings.ClientSecretApp
-$ClientIDDel = $configFile.appsettings.ClientIdDel
+$ClientIDApp = $configFile.appsettings.ClientIdWithSecret
+$ClientSecretApp = $configFile.appsettings.ClientSecret
+$ClientIDDel = $configFile.appsettings.ClientIdWithAccPw
 $TenantName = $configFile.appsettings.TenantName
 $UserName = $configFile.appsettings.UserName
 $UserPw = $configFile.appsettings.UserPw

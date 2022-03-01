@@ -3,13 +3,22 @@
 Function LoginPsPowerPlatform()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.ppUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
-	Add-PowerAppsAccount -Username $configFile.appsettings.ppUserName -Password $securePW
+	Add-PowerAppsAccount -Username $configFile.appsettings.UserName -Password $securePW
 }
 #gavdcodeend 01
 
+Function LoginPsCLI()
+{
+	m365 login --authType password `
+			   --userName $configFile.appsettings.UserName `
+			   --password $configFile.appsettings.UserPw
+}
+
 #----------------------------------------------------------------------------------------
+
+##==> Routines for PowerShell
 
 #gavdcodebegin 02
 Function PowerAppPsAdminEnumerateApps()
@@ -214,9 +223,130 @@ Function PowerAppsPsMakerDeleteRoles()
 
 #-----------------------------------------------------------------------------------------
 
-[xml]$configFile = get-content "C:\Projects\ppPs.values.config"
+##==> Routines for CLI
 
-LoginPsPowerPlatform
+#gavdcodebegin 25
+Function PowerAppsPsCliGetAllApps()
+{
+	LoginPsCLI
+	
+	m365 pa app list
+
+	m365 logout
+}
+#gavdcodeend 25
+
+#gavdcodebegin 26
+Function PowerAppsPsCliGetAllAppsByEnvironment()
+{
+	LoginPsCLI
+	
+	m365 pa app list --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+					 --asAdmin
+
+	m365 logout
+}
+#gavdcodeend 26
+
+#gavdcodebegin 27
+Function PowerAppsPsCliGetOneApp()
+{
+	LoginPsCLI
+	
+	m365 pa app get --name "d2b01511-bff7-4dbb-849d-6a482541fa4d"
+	m365 pa app get --displayName "TestApp01"
+
+	m365 logout
+}
+#gavdcodeend 27
+
+#gavdcodebegin 28
+Function PowerAppsPsCliDeleteOneApp()
+{
+	LoginPsCLI
+	
+	m365 pa app remove --name "d2b01511-bff7-4dbb-849d-6a482541fa4d" --confirm
+
+	m365 logout
+}
+#gavdcodeend 28
+
+#gavdcodebegin 29
+Function PowerAppsPsCliGetAllEnvironment()
+{
+	LoginPsCLI
+	
+	m365 pa environment list
+
+	m365 logout
+}
+#gavdcodeend 29
+
+#gavdcodebegin 30
+Function PowerAppsPsCliGetOneEnvironment()
+{
+	LoginPsCLI
+	
+	m365 pa environment get --name "default-021ee864-951d-4f25-a5c3-b6d4412c4052"
+
+	m365 logout
+}
+#gavdcodeend 30
+
+#gavdcodebegin 31
+Function PowerAppsPsCliGetAllConnectors()
+{
+	LoginPsCLI
+	
+	m365 pa connector list --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052"
+
+	m365 logout
+}
+#gavdcodeend 31
+
+#gavdcodebegin 32
+Function PowerAppsPsCliExportOneConnectors()
+{
+	LoginPsCLI
+	
+	m365 pa connector export --environment "default-021ee864-951d-4f25-a5c3-b6d4412c4052" `
+							 --connector "sh_con-201-5f20a1f2d8d6777a75-5fa602f410652f4dfa" `
+							 --outputFolder "C:\Temp\MyConnector"
+
+	m365 logout
+}
+#gavdcodeend 32
+
+#gavdcodebegin 33
+Function PowerAppsPsCliScaffoldSolution()
+{
+	LoginPsCLI
+	
+	m365 pa solution init --publisherName "GuitacaSolution" --publisherPrefix "ypn"
+
+	m365 logout
+}
+#gavdcodeend 33
+
+#gavdcodebegin 33
+Function PowerAppsPsCliScaffoldComponent()
+{
+	LoginPsCLI
+	
+	m365 pa pcf init --namespace "GuitacaNameSpace" `
+					 --name "GuitacaDataset" `
+					 --template "Dataset"
+
+	m365 logout
+}
+#gavdcodeend 33
+
+#-----------------------------------------------------------------------------------------
+
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+
+##==> PowerShell
+#LoginPsPowerPlatform
 
 #PowerAppPsAdminEnumerateApps
 #PowerAppPsAdminFindOneApps
@@ -241,5 +371,16 @@ LoginPsPowerPlatform
 #PowerAppsPsMakerFindRoles
 #PowerAppsPsMakerAddRoles
 #PowerAppsPsMakerDeleteRoles
+
+##==> CLI
+#PowerAppsPsCliGetAllApps
+#PowerAppsPsCliGetAllAppsByEnvironment
+#PowerAppsPsCliGetOneApp
+#PowerAppsPsCliDeleteOneApp
+#PowerAppsPsCliGetAllEnvironment
+#PowerAppsPsCliGetOneEnvironment
+#PowerAppsPsCliGetAllConnectors
+#PowerAppsPsCliExportOneConnectors
+#PowerAppsPsCliScaffoldComponent
 
 Write-Host "Done"  
