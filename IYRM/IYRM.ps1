@@ -1,12 +1,12 @@
-﻿Function LoginAdminCsom()
+﻿Function LoginAdminCsom()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials `
-			($configFile.appsettings.spUserName, $securePW)
+			($configFile.appsettings.UserName, $securePW)
 	$rtnContext = New-Object Microsoft.SharePoint.Client.ClientContext `
-			($configFile.appsettings.spAdminUrl) 
+			($configFile.appsettings.SiteAdminUrl) 
 	$rtnContext.Credentials = $myCredentials
 
 	return $rtnContext
@@ -14,19 +14,20 @@
 
 #----------------------------------------------------------------------------------------
 
-Function LoginPsSPO()
+Function LoginPsSPO()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.spUserName, $securePW
-	Connect-SPOService -Url $configFile.appsettings.spAdminUrl -Credential $myCredentials
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
 }
 
 #----------------------------------------------------------------------------------------
 
-Function Invoke-RestSPO() {
+Function Invoke-RestSPO()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+{
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -132,7 +133,8 @@ Function Invoke-RestSPO() {
 	}
 }
  
-Function Get-SPOContextInfo(){
+Function Get-SPOContextInfo()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$WebUrl,
@@ -148,7 +150,8 @@ Function Get-SPOContextInfo(){
 	Invoke-RestSPO $Url Post $UserName $Password
 }
 
-Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) {
+Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination)   #*** USE POWERSHELL 5.x, NOT 7.x ***
+{
     $buffer = New-Object Byte[] 8192 
     $bytesRead = 0
     while (($bytesRead = $Source.Read($buffer, 0, $buffer.Length)) -gt 0) {
@@ -159,7 +162,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 01
-Function SpPsCsomGetPropertiesTenant($spAdminCtx)
+Function SpPsCsomGetPropertiesTenant($spAdminCtx)  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -171,7 +174,7 @@ Function SpPsCsomGetPropertiesTenant($spAdminCtx)
 #gavdcodeend 01
 
 #gavdcodebegin 02
-Function SpPsCsomGetValuePropertyTenant($spAdminCtx)
+Function SpPsCsomGetValuePropertyTenant($spAdminCtx)  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -185,7 +188,7 @@ Function SpPsCsomGetValuePropertyTenant($spAdminCtx)
 #gavdcodeend 02
 
 #gavdcodebegin 03
-Function SpPsCsomUpdateValuePropertyTenant($spAdminCtx)
+Function SpPsCsomUpdateValuePropertyTenant($spAdminCtx)#*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -197,7 +200,7 @@ Function SpPsCsomUpdateValuePropertyTenant($spAdminCtx)
 #gavdcodeend 03
 
 #gavdcodebegin 04
-Function SpPsRestFindAppCatalog()
+Function SpPsRestFindAppCatalog()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
     $endpointUrl = $webBaseUrl + "/_api/SP_TenantSettings_Current"
 	$contextInfo = Get-SPOContextInfo -WebUrl $webBaseUrl -UserName $userName `
@@ -209,7 +212,7 @@ Function SpPsRestFindAppCatalog()
 #gavdcodeend 04
 
 #gavdcodebegin 05
-Function SpPsRestFindTenantProps()
+Function SpPsRestFindTenantProps()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
     $catalogUrl = $webBaseUrl + "/sites/appcatalog"
     $endpointUrl = $webBaseUrl + "/_api/web/GetStorageEntity('SomeKey')"
@@ -222,7 +225,7 @@ Function SpPsRestFindTenantProps()
 #gavdcodeend 05
 
 #gavdcodebegin 06
-Function SpPsSpoGetTenant()
+Function SpPsSpoGetTenant()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Get-SPOTenant
 	Disconnect-SPOService
@@ -230,31 +233,34 @@ Function SpPsSpoGetTenant()
 #gavdcodeend 06
 
 #gavdcodebegin 07
-Function SpPsSpoModifyTenantProperties()
+Function SpPsSpoModifyTenantProperties()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
-	Set-SPOTenant -NoAccessRedirectUrl $configFile.appsettings.spBaseUrl
+	Set-SPOTenant -NoAccessRedirectUrl $configFile.appsettings.SiteBaseUrl
 	Disconnect-SPOService
 }
 #gavdcodeend 07
 
 #gavdcodebegin 08
-Function SpPsSpoGetTenantLogs()
+Function SpPsSpoGetTenantLogs()  #*** LEGACY CODE ***
 {
+
 	Get-SPOTenantLogEntry
 	Disconnect-SPOService
 }
 #gavdcodeend 08
 
 #gavdcodebegin 09
-Function SpPsSpoGetTenantLogsLastEntryTime()
+Function SpPsSpoGetTenantLogsLastEntryTime()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
+	# This cmdlet has been changed by Microsoft in the latest release of the module, 
+	#    and it is now reserved for internal Microsoft use.
 	Get-SPOTenantLogLastAvailableTimeInUtc
 	Disconnect-SPOService
 }
 #gavdcodeend 09
 
 #gavdcodebegin 10
-Function SpPsSpoGetCdnEnabled()
+Function SpPsSpoGetCdnEnabled()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Get-SPOTenantCdnEnabled -CdnType Public
 	Disconnect-SPOService
@@ -262,7 +268,7 @@ Function SpPsSpoGetCdnEnabled()
 #gavdcodeend 10
 
 #gavdcodebegin 11
-Function SpPsSpoGetCdnOrigins()
+Function SpPsSpoGetCdnOrigins()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Get-SPOTenantCdnOrigins -CdnType Public
 	Disconnect-SPOService
@@ -270,7 +276,7 @@ Function SpPsSpoGetCdnOrigins()
 #gavdcodeend 11
 
 #gavdcodebegin 12
-Function SpPsSpoGetCdnPolicies()
+Function SpPsSpoGetCdnPolicies()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Get-SPOTenantCdnPolicies -CdnType Public
 	Disconnect-SPOService
@@ -278,7 +284,7 @@ Function SpPsSpoGetCdnPolicies()
 #gavdcodeend 12
 
 #gavdcodebegin 13
-Function SpPsSpoEnableCdn()
+Function SpPsSpoEnableCdn()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Set-SPOTenantCdnEnabled -CdnType public -Enable $false
 	Disconnect-SPOService
@@ -286,7 +292,7 @@ Function SpPsSpoEnableCdn()
 #gavdcodeend 13
 
 #gavdcodebegin 14
-Function SpPsSpoCdnPolicy()
+Function SpPsSpoCdnPolicy()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Set-SPOTenantCdnPolicy -CdnType Public `
 						   -PolicyType ExcludeRestrictedSiteClassifications `
@@ -296,7 +302,7 @@ Function SpPsSpoCdnPolicy()
 #gavdcodeend 14
 
 #gavdcodebegin 15
-Function SpPsSpoAddCdn()
+Function SpPsSpoAddCdn()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Add-SPOTenantCdnOrigin -CdnType Public `
 						   -OriginUrl "/sites/[sitename]/[library]"
@@ -305,7 +311,7 @@ Function SpPsSpoAddCdn()
 #gavdcodeend 15
 
 #gavdcodebegin 16
-Function SpPsSpoRemoveCdn()
+Function SpPsSpoRemoveCdn()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	Remove-SPOTenantCdnOrigin -CdnType Public `
 							  -OriginUrl "/sites/[sitename]/[library]"
@@ -314,9 +320,9 @@ Function SpPsSpoRemoveCdn()
 #gavdcodeend 16
 
 #gavdcodebegin 17
-Function SpPsSpoSetKey()
+Function SpPsSpoSetKey()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
-	$appCatUrl = $configFile.appsettings.spBaseUrl + "/sites/appcatalog"
+	$appCatUrl = $configFile.appsettings.SiteBaseUrl + "/sites/appcatalog"
 	Set-SPOStorageEntity -Site $appCatUrl -Key "MyPropertyKey" `
 						 -Value "ValueOfMyKey" -Description "This is my key" `
 						 -Comments "Comments for my key"
@@ -325,18 +331,18 @@ Function SpPsSpoSetKey()
 #gavdcodeend 17
 
 #gavdcodebegin 18
-Function SpPsSpoGetKey()
+Function SpPsSpoGetKey()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
-	$appCatUrl = $configFile.appsettings.spBaseUrl + "/sites/appcatalog"
+	$appCatUrl = $configFile.appsettings.SiteBaseUrl + "sites/appcatalog"
 	Get-SPOStorageEntity -Site $appCatUrl -Key "MyPropertyKey"
 	Disconnect-SPOService
 }
 #gavdcodeend 18
 
 #gavdcodebegin 19
-Function SpPsSpoDeleteKey()
+Function SpPsSpoDeleteKey()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
-	$appCatUrl = $configFile.appsettings.spBaseUrl + "/sites/appcatalog"
+	$appCatUrl = $configFile.appsettings.SiteBaseUrl + "/sites/appcatalog"
 	Remove-SPOStorageEntity -Site $appCatUrl -Key "MyPropertyKey"
 	Disconnect-SPOService
 }
@@ -348,16 +354,16 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 Add-Type -Path "C:\Program Files\SharePoint Online Management Shell\Microsoft.Online.SharePoint.PowerShell\Microsoft.Online.SharePoint.Client.Tenant.dll"
 
-[xml]$configFile = get-content "C:\Projects\spPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 #$spAdminCtx = LoginAdminCsom
 #SpPsCsomGetPropertiesTenant $spAdminCtx
 #SpPsCsomGetValuePropertyTenant $spAdminCtx
 #SpPsCsomUpdateValuePropertyTenant $spAdminCtx
 
-#$webBaseUrl = $configFile.appsettings.spBaseUrl
-#$userName = $configFile.appsettings.spUserName
-#$password = $configFile.appsettings.spUserPw
+#$webBaseUrl = $configFile.appsettings.SiteBaseUrl
+#$userName = $configFile.appsettings.UserName
+#$password = $configFile.appsettings.UserPw
 #SpPsRestFindAppCatalog
 #SpPsRestFindTenantProps
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -7,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,6 +20,11 @@ namespace ESSV
     {
         static void Main(string[] args)
         {
+            // Because Microsoft removed the SharePointOnlineCredentials object from
+            // the Microsoft.SharePointOnline.CSOM namespace (from version 16.1.20) to
+            // prevent login with the credentials of a user, it is not possible to use
+            // the code in this solution
+
             ClientContext spCtx = LoginCsom();
             ClientContext spAdminCtx = LoginAdminCsom();
 
@@ -42,7 +45,8 @@ namespace ESSV
         }
 
         //gavdcodebegin 01
-        static void SpCsCsomGetPropertiesTenant(ClientContext spAdminCtx)
+        static void SpCsCsomGetPropertiesTenant(
+                                          ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
 
@@ -54,7 +58,8 @@ namespace ESSV
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void SpCsCsomGetValuePropertyTenant(ClientContext spAdminCtx)
+        static void SpCsCsomGetValuePropertyTenant(
+                                          ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
 
@@ -67,7 +72,8 @@ namespace ESSV
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void SpCsCsomUpdateValuePropertyTenant(ClientContext spAdminCtx)
+        static void SpCsCsomUpdateValuePropertyTenant(
+                                          ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
 
@@ -79,7 +85,7 @@ namespace ESSV
 
         //gavdcodebegin 04
         static void SpCsRestFindAppCatalog(Uri webBaseUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webBaseUri, userName, password))
             {
@@ -94,7 +100,7 @@ namespace ESSV
 
         //gavdcodebegin 05
         static void SpCsRestFindTenantProps(Uri webBaseUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri catalogUri = new Uri(webBaseUri + "/sites/appcatalog");
             using (SPHttpClient client = new SPHttpClient(catalogUri, userName, password))
@@ -109,7 +115,7 @@ namespace ESSV
         //gavdcodeend 05
 
         //-------------------------------------------------------------------------------
-        static ClientContext LoginCsom()
+        static ClientContext LoginCsom()  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(
                 ConfigurationManager.AppSettings["spUrl"]);
@@ -126,7 +132,7 @@ namespace ESSV
             return rtnContext;
         }
 
-        static ClientContext LoginCsom(string WebFullUrl)
+        static ClientContext LoginCsom(string WebFullUrl)  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(WebFullUrl);
 
@@ -142,7 +148,7 @@ namespace ESSV
             return rtnContext;
         }
 
-        static ClientContext LoginAdminCsom()
+        static ClientContext LoginAdminCsom()  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(
                 ConfigurationManager.AppSettings["spAdminUrl"]);
@@ -161,7 +167,7 @@ namespace ESSV
     }
 
     //-----------------------------------------------------------------------------------
-    class SPHttpClientHandler : HttpClientHandler
+    class SPHttpClientHandler : HttpClientHandler  //*** LEGACY CODE ***
     {
         public SPHttpClientHandler(Uri webUri, string userName, string password)
         {
@@ -201,7 +207,7 @@ namespace ESSV
         Xml
     }
 
-    class SPHttpClient : HttpClient
+    class SPHttpClient : HttpClient  //*** LEGACY CODE ***
     {
         public SPHttpClient(Uri webUri, string userName, string password) : base(
                                 new SPHttpClientHandler(webUri, userName, password))

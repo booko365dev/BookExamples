@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DUSN", "DUSN.csproj", "{D596DE8B-0E22-43AB-8086-61FB12CE0A37}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D596DE8B-0E22-43AB-8086-61FB12CE0A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D596DE8B-0E22-43AB-8086-61FB12CE0A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D596DE8B-0E22-43AB-8086-61FB12CE0A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D596DE8B-0E22-43AB-8086-61FB12CE0A37}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {371BF516-D39B-4F09-8A52-4172090C0F7E}
+	EndGlobalSection
+EndGlobal
