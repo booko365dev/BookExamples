@@ -119,8 +119,9 @@ Function LoginPsCLIWithCertificate()
 #gavdcodeend 25
 
 #gavdcodebegin 04
-Function Invoke-RestSPO() 
+Function Invoke-RestSPO() #*** LEGACY CODE ***  
 {
+	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -228,8 +229,9 @@ Function Invoke-RestSPO()
 #gavdcodeend 04
  
 #gavdcodebegin 05
-Function Get-SPOContextInfo()
+Function Get-SPOContextInfo() #*** LEGACY CODE *** 
 {
+	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$WebUrl,
@@ -245,8 +247,10 @@ Function Get-SPOContextInfo()
 	Invoke-RestSPO $Url Post $UserName $Password
 }
 
-Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) 
+Function Stream-CopyTo(
+	[System.IO.Stream]$Source, [System.IO.Stream]$Destination) #*** LEGACY CODE *** 
 {
+	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
     $buffer = New-Object Byte[] 8192 
     $bytesRead = 0
     while (($bytesRead = $Source.Read($buffer, 0, $buffer.Length)) -gt 0) {
@@ -255,11 +259,23 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 }
 #gavdcodeend 05
 
+Function LoginPsPnPPowerShellWithAccPwDefault
+{
+	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+			$configFile.appsettings.UserPw -AsPlainText -Force
+
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+}
+
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 06
-Function PsRestGetExample()
+Function PsRestGetExample() #*** LEGACY CODE *** 
 {
+	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	$webUrl = $configFile.appsettings.SiteCollUrl
 	$userName = $configFile.appsettings.UserName
 	$password = $configFile.appsettings.UserPw
@@ -274,8 +290,9 @@ Function PsRestGetExample()
 #gavdcodeend 06
 
 #gavdcodebegin 07
-Function PsRestPostExample()
+Function PsRestPostExample() #*** LEGACY CODE *** 
 {
+	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	$webUrl = $configFile.appsettings.SiteCollUrl
 	$userName = $configFile.appsettings.UserName
 	$password = $configFile.appsettings.UserPw
@@ -378,38 +395,68 @@ Function PsPnpPowerShellInteractiveExample()
 #gavdcodeend 22
 
 #gavdcodebegin 11
-Function PsPnpRestGetExample()
+Function PsPnpRestGetWebExample()
 {
-	LoginPsPnP
+	LoginPsPnPPowerShellWithAccPwDefault
+	$myOAuth = Get-PnPAppAuthAccessToken
 	
-	$myWeb = Invoke-PnPSPRestMethod -Url /_api/web
-	
-	Write-Host $myWeb.Title
+	$endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web"
+	$myHeader = @{ 'Authorization' = "Bearer $($myOAuth)"; `
+				   'Accept' = 'application/json;odata=verbose' }
+	$data = Invoke-WebRequest -Method Get `
+							  -Headers $myHeader `
+							  -Uri $endpointUrl `
+							  -ContentType "application/json;odata=verbose"
+
+	$dataObject = $data.content | ConvertFrom-Json
+	Write-Host $dataObject.d.Title
 }
 #gavdcodeend 11
 
 #gavdcodebegin 12
-Function PsPnpRestPostExample01()
+Function PsPnpRestGetItemsExample()
 {
-	LoginPsPnP
+	LoginPsPnPPowerShellWithAccPwDefault
+	$myOAuth = Get-PnPAppAuthAccessToken
 	
-	$myBody = "{'Title':'Test01'}"
-	Invoke-PnPSPRestMethod -Method Post `
-						   -Url "/_api/web/lists/GetByTitle('TestList')/items" `
-						   -Content $myBody
+	$endpointUrl = $configFile.appsettings.SiteCollUrl + 
+						"/_api/web/lists/GetByTitle('TestList')/items" + 
+						"?`$filter=startswith(Title,'ItemOne')"
+	$myHeader = @{ 'Authorization' = "Bearer $($myOAuth)"; `
+				   'Accept' = 'application/json;odata=verbose' }
+	$data = Invoke-WebRequest -Method Get `
+							  -Headers $myHeader `
+							  -Uri $endpointUrl `
+							  -ContentType "application/json;odata=verbose"
+
+	$dataObject = $data.content.Replace("ID", "_ID") | ConvertFrom-Json
+	Write-Host $dataObject.d.results.Title
 }
 #gavdcodeend 12
 
 #gavdcodebegin 13
-Function PsPnpRestPostExample02()
+Function PsPnpRestPostExample()
 {
-	LoginPsPnP
+	LoginPsPnPPowerShellWithAccPwDefault
+	$myOAuth = Get-PnPAppAuthAccessToken
 	
-	$myBody = "{ '__metadata': { 'type': 'SP.ListItem' }, 'Title': 'Test02'}"
-	Invoke-PnPSPRestMethod -Method Post `
-						   -Url "/_api/web/lists/GetByTitle('TestList')/items" `
-						   -Content $myBody `
-						   -ContentType "application/json;odata=verbose"
+	$endpointUrl = $configFile.appsettings.SiteCollUrl + 
+						"/_api/web/lists/GetByTitle('TestList')/items"
+	$myPayload = 
+		"{
+		  '__metadata': { 'type': 'SP.ListItem' },
+		  'Title': 'ItemTwo'
+		}"
+	$myHeader = @{ 'Authorization' = "Bearer $($myOAuth)"; `
+				   'Accept' = 'application/json;odata=verbose' }
+
+	$data = Invoke-WebRequest -Method Post `
+							  -Headers $myHeader `
+							  -Body $myPayload `
+							  -Uri $endpointUrl `
+							  -ContentType "application/json;odata=verbose"
+
+	Write-Host $data
 }
 #gavdcodeend 13
 
@@ -449,8 +496,8 @@ Function PsCliExampleWithCertificate()
 #----------------------------------------------------------------------------------------
 
 # Running the Functions
-Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
-Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
+#Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
+#Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
@@ -469,14 +516,15 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 #PsPnpPowerShellCertificateExample
 #PsPnpPowerShellInteractiveExample
 
-#==> REST PowerShell cmdlets
+#==> REST PowerShell cmdlets (Legacy)
+# ATTENTION: Using the deprecated PnP-PowerShell module
 #PsRestGetExample       ## Simple GET request without body
 #PsRestPostExample      ## Full POST query with data in the body
 
 #==> REST PnP PowerShell cmdlets
-#PsPnpRestGetExample
-#PsPnpRestPostExample01
-#PsPnpRestPostExample02
+#PsPnpRestGetWebExample
+#PsPnpRestGetItemsExample
+#PsPnpRestPostExample
 
 ##==> CLI
 #PsCliExampleWithAccPw

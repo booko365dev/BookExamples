@@ -29,7 +29,8 @@ namespace PHZP
         }
 
         //gavdcodebegin 01
-        static void SpCsPnpcoreSiteIsCommunication(ClientContext spCtx)
+        static void SpCsPnpcoreSiteIsCommunication(
+                                            ClientContext spCtx)  //*** LEGACY CODE ***
         {
             bool SiteIsCommnication = spCtx.Site.IsCommunicationSite();
             Console.WriteLine(SiteIsCommnication);
@@ -37,7 +38,7 @@ namespace PHZP
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void SpCsPnpcoreCreateOneCommunicationSiteCollection()
+        static void SpCsPnpcoreCreateOneCommunicationSiteCollection()//*** LEGACY CODE ***
         {
             string myBaseUrl = ConfigurationManager.AppSettings["spBaseUrl"];
             ClientContext spCtx = LoginPnPCore(myBaseUrl);
@@ -57,7 +58,7 @@ namespace PHZP
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void SpCsPnpcoreFindWebTemplates(ClientContext spCtx)
+        static void SpCsPnpcoreFindWebTemplates(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
             WebTemplateCollection myTemplates = mySite.GetWebTemplates(1033, 0);
@@ -72,7 +73,8 @@ namespace PHZP
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void SpCsPnpcoreCreateOneWebInSiteCollection(ClientContext spCtx)
+        static void SpCsPnpcoreCreateOneWebInSiteCollection(
+                                            ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
 
@@ -84,7 +86,8 @@ namespace PHZP
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void SpCsPnpcoreGetWebsInSiteCollection(ClientContext spCtx)
+        static void SpCsPnpcoreGetWebsInSiteCollection(
+                                            ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
 
@@ -98,7 +101,7 @@ namespace PHZP
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void SpCsPnpcoreWebExists(ClientContext spCtx)
+        static void SpCsPnpcoreWebExists(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
             spCtx.Load(mySite);
@@ -111,7 +114,7 @@ namespace PHZP
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void SpCsPnpcoreExportSearchSettings()
+        static void SpCsPnpcoreExportSearchSettings()  //*** LEGACY CODE ***
         {
             string fullWebUrl = ConfigurationManager.AppSettings["spBaseUrl"] +
                                                 "/sites/NewCommSiteCollectionCsPnP";
@@ -123,7 +126,7 @@ namespace PHZP
         //gavdcodeend 07
 
         //-------------------------------------------------------------------------------
-        static ClientContext LoginPnPCore()
+        static ClientContext LoginPnPCore()  //*** LEGACY CODE ***
         {
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
                 new OfficeDevPnP.Core.AuthenticationManager();
@@ -136,7 +139,7 @@ namespace PHZP
             return rtnContext;
         }
 
-        static ClientContext LoginPnPCore(string SiteFullUrl)
+        static ClientContext LoginPnPCore(string SiteFullUrl)  //*** LEGACY CODE ***
         {
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
                 new OfficeDevPnP.Core.AuthenticationManager();

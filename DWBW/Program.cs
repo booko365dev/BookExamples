@@ -2,7 +2,6 @@
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Security;
 
@@ -46,13 +45,14 @@ namespace DWBW
         }
 
         //gavdcodebegin 01
-        static void SpCsCsomCreateOneSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomCreateOneSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             string myUser = ConfigurationManager.AppSettings["spUserName"];
             SiteCreationProperties mySiteCreationProps = new SiteCreationProperties
             {
-                Url = ConfigurationManager.AppSettings["spBaseUrl"] + 
+                Url = ConfigurationManager.AppSettings["spBaseUrl"] +
                                                 "/sites/NewSiteCollectionModernCsCsom01",
                 Title = "NewSiteCollectionModernCsCsom01",
                 Owner = ConfigurationManager.AppSettings["spUserName"],
@@ -75,10 +75,11 @@ namespace DWBW
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void SpCsCsomFindWebTemplates(ClientContext spAdminCtx)
+        static void SpCsCsomFindWebTemplates(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
-            SPOTenantWebTemplateCollection myTemplates = 
+            SPOTenantWebTemplateCollection myTemplates =
                                     myTenant.GetSPOTenantWebTemplates(1033, 0);
             spAdminCtx.Load(myTemplates);
             spAdminCtx.ExecuteQuery();
@@ -91,7 +92,8 @@ namespace DWBW
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void SpCsCsomReadAllSiteCollections(ClientContext spAdminCtx)
+        static void SpCsCsomReadAllSiteCollections(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.GetSiteProperties(0, true);
@@ -108,7 +110,8 @@ namespace DWBW
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void SpCsCsomRemoveSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomRemoveSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.RemoveSite(
@@ -120,7 +123,8 @@ namespace DWBW
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void SpCsCsomRestoreSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomRestoreSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.RestoreDeletedSite(
@@ -132,7 +136,8 @@ namespace DWBW
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void SpCsCsomRemoveDeletedSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomRemoveDeletedSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.RemoveDeletedSite(
@@ -144,7 +149,8 @@ namespace DWBW
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void SpCsCsomCreateGroupForSite(ClientContext spAdminCtx)
+        static void SpCsCsomCreateGroupForSite(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             string[] myOwners = new string[] { "user@domain.onmicrosoft.com" };
             GroupCreationParams myGroupParams = new GroupCreationParams(spAdminCtx);
@@ -164,7 +170,8 @@ namespace DWBW
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void SpCsCsomSetAdministratorSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomSetAdministratorSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.SetSiteAdmin(
@@ -178,7 +185,8 @@ namespace DWBW
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void SpCsCsomRegisterAsHubSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomRegisterAsHubSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.RegisterHubSite(
@@ -190,7 +198,8 @@ namespace DWBW
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        static void SpCsCsomUnregisterAsHubSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomUnregisterAsHubSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.UnregisterHubSite(
@@ -202,7 +211,8 @@ namespace DWBW
         //gavdcodeend 10
 
         //gavdcodebegin 11
-        static void SpCsCsomGetHubSiteCollectionProperties(ClientContext spAdminCtx)
+        static void SpCsCsomGetHubSiteCollectionProperties(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             HubSiteProperties myProps = myTenant.GetHubSitePropertiesByUrl(
@@ -217,7 +227,8 @@ namespace DWBW
         //gavdcodeend 11
 
         //gavdcodebegin 12
-        static void SpCsCsomUpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
+        static void SpCsCsomUpdateHubSiteCollectionProperties(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             HubSiteProperties myProps = myTenant.GetHubSitePropertiesByUrl(
@@ -238,7 +249,8 @@ namespace DWBW
         //gavdcodeend 12
 
         //gavdcodebegin 13
-        static void SpCsCsomAddSiteToHubSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomAddSiteToHubSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.ConnectSiteToHubSite(
@@ -251,7 +263,8 @@ namespace DWBW
         //gavdcodeend 13
 
         //gavdcodebegin 14
-        static void SpCsCsomremoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
+        static void SpCsCsomremoveSiteFromHubSiteCollection(
+                                        ClientContext spAdminCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spAdminCtx);
             myTenant.DisconnectSiteFromHubSite(
@@ -262,7 +275,8 @@ namespace DWBW
         //gavdcodeend 14
 
         //gavdcodebegin 15
-        static void SpCsCsomCreateOneWebInSiteCollection(ClientContext spCtx)
+        static void SpCsCsomCreateOneWebInSiteCollection(
+                                        ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
 
@@ -282,7 +296,8 @@ namespace DWBW
         //gavdcodeend 15
 
         //gavdcodebegin 16
-        static void SpCsCsomGetWebsInSiteCollection(ClientContext spCtx)
+        static void SpCsCsomGetWebsInSiteCollection(
+                                        ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
 
@@ -298,7 +313,7 @@ namespace DWBW
         //gavdcodeend 16
 
         //gavdcodebegin 17
-        static void SpCsCsomGetOneWebInSiteCollection()
+        static void SpCsCsomGetOneWebInSiteCollection()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -313,7 +328,7 @@ namespace DWBW
         //gavdcodeend 17
 
         //gavdcodebegin 18
-        static void SpCsCsomUpdateOneWebInSiteCollection()
+        static void SpCsCsomUpdateOneWebInSiteCollection()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -327,7 +342,7 @@ namespace DWBW
         //gavdcodeend 18
 
         //gavdcodebegin 19
-        static void SpCsCsomDeleteOneWebInSiteCollection()
+        static void SpCsCsomDeleteOneWebInSiteCollection()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -340,7 +355,7 @@ namespace DWBW
         //gavdcodeend 19
 
         //gavdcodebegin 20
-        static void SpCsCsomBreakSecurityInheritanceWeb()
+        static void SpCsCsomBreakSecurityInheritanceWeb()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -360,7 +375,7 @@ namespace DWBW
         //gavdcodeend 20
 
         //gavdcodebegin 21
-        static void SpCsCsomResetSecurityInheritanceWeb()
+        static void SpCsCsomResetSecurityInheritanceWeb()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -380,7 +395,7 @@ namespace DWBW
         //gavdcodeend 21
 
         //gavdcodebegin 22
-        static void SpCsCsomAddUserToSecurityRoleInWeb()
+        static void SpCsCsomAddUserToSecurityRoleInWeb()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -399,7 +414,7 @@ namespace DWBW
         //gavdcodeend 22
 
         //gavdcodebegin 23
-        static void SpCsCsomUpdateUserSecurityRoleInWeb()
+        static void SpCsCsomUpdateUserSecurityRoleInWeb()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -422,7 +437,7 @@ namespace DWBW
         //gavdcodeend 23
 
         //gavdcodebegin 24
-        static void SpCsCsomDeleteUserFromSecurityRoleInWeb()
+        static void SpCsCsomDeleteUserFromSecurityRoleInWeb()  //*** LEGACY CODE ***
         {
             string myWebFullUrl = ConfigurationManager.AppSettings["spUrl"] +
                                                             "/NewWebSiteModernCsCsom";
@@ -439,7 +454,7 @@ namespace DWBW
         //gavdcodeend 24
 
         //-------------------------------------------------------------------------------
-        static ClientContext LoginCsom()
+        static ClientContext LoginCsom()  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(
                 ConfigurationManager.AppSettings["spUrl"]);
@@ -456,7 +471,7 @@ namespace DWBW
             return rtnContext;
         }
 
-        static ClientContext LoginCsom(string WebFullUrl)
+        static ClientContext LoginCsom(string WebFullUrl)  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(WebFullUrl);
 
@@ -472,7 +487,7 @@ namespace DWBW
             return rtnContext;
         }
 
-        static ClientContext LoginAdminCsom()
+        static ClientContext LoginAdminCsom()  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(
                 ConfigurationManager.AppSettings["spAdminUrl"]);

@@ -1,12 +1,12 @@
 ﻿Function LoginPsCsom()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials `
-			($configFile.appsettings.spUserName, $securePW)
+			($configFile.appsettings.UserName, $securePW)
 	$rtnContext = New-Object Microsoft.SharePoint.Client.ClientContext `
-			($configFile.appsettings.spUrl) 
+			($configFile.appsettings.SiteCollUrl) 
 	$rtnContext.Credentials = $myCredentials
 
 	return $rtnContext
@@ -15,10 +15,10 @@
 Function LoginCsom($WebFullUrl)
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials `
-			($configFile.appsettings.spUserName, $securePW)
+			($configFile.appsettings.UserName, $securePW)
 	$rtnContext = New-Object Microsoft.SharePoint.Client.ClientContext($WebFullUrl) 
 	$rtnContext.Credentials = $myCredentials
 
@@ -28,12 +28,12 @@ Function LoginCsom($WebFullUrl)
 Function LoginAdminCsom()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials `
-			($configFile.appsettings.spUserName, $securePW)
+			($configFile.appsettings.UserName, $securePW)
 	$rtnContext = New-Object Microsoft.SharePoint.Client.ClientContext `
-			($configFile.appsettings.spAdminUrl) 
+			($configFile.appsettings.SiteAdminUrl) 
 	$rtnContext.Credentials = $myCredentials
 
 	return $rtnContext
@@ -46,13 +46,13 @@ Function SpPsCsomCreateOneSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
-    $myUser = $configFile.appsettings.spUserName
+    $myUser = $configFile.appsettings.UserName
     $mySiteCreationProps = New-Object `
 				Microsoft.Online.SharePoint.TenantAdministration.SiteCreationProperties
-    $mySiteCreationProps.Url = $configFile.appsettings.spBaseUrl + 
+    $mySiteCreationProps.Url = $configFile.appsettings.SiteBaseUrl + 
                                         "/sites/NewSiteCollectionModernPsCsom"
     $mySiteCreationProps.Title = "NewSiteCollectionModernPsCsom"
-    $mySiteCreationProps.Owner = $configFile.appsettings.spUserName
+    $mySiteCreationProps.Owner = $configFile.appsettings.UserName
     $mySiteCreationProps.Template = "STS#3"
     $mySiteCreationProps.StorageMaximumLevel = 100
     $mySiteCreationProps.UserCodeMaximumLevel = 50
@@ -103,7 +103,7 @@ Function SpPsCsomRemoveSiteCollection($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.RemoveSite(
-        $configFile.appsettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
+        $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
     
 	$spAdminCtx.ExecuteQuery()
 }
@@ -115,7 +115,7 @@ Function SpPsCsomRestoreSiteCollection($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.RestoreDeletedSite(
-        $configFile.appsettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
+        $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
     
 	$spAdminCtx.ExecuteQuery()
 }
@@ -143,7 +143,7 @@ Function SpPsCsomCreateGroupForSite($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.CreateGroupForSite(
-        $configFile.appsettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom",
+        $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom",
 			"GroupForNewSiteCollectionModernPsCsom",
 			"GroupForNewSiteCollAlias",
 			$true,
@@ -159,7 +159,7 @@ Function SpPsCsomSetAdministratorSiteCollection($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.SetSiteAdmin(
-        $configFile.AppSettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom",
+        $configFile.AppSettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom",
         "user@domain.onmicrosoft.com",
         $true)
 
@@ -173,7 +173,7 @@ Function SpPsCsomRegisterAsHubSiteCollection($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.RegisterHubSite(
-        $configFile.AppSettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
+        $configFile.AppSettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
 
     $spAdminCtx.ExecuteQuery()
 }
@@ -185,7 +185,7 @@ Function SpPsCsomUnregisterAsHubSiteCollection($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.UnregisterHubSite(
-        $onfigFile.appsettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
+        $onfigFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
 
     $spAdminCtx.ExecuteQuery()
 }
@@ -197,7 +197,7 @@ Function SpPsCsomGetHubSiteCollectionProperties($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myProps = $myTenant.GetHubSitePropertiesByUrl(
-		$configFile.appsettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
+		$configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
 
     $spAdminCtx.Load($myProps)
     $spAdminCtx.ExecuteQuery()
@@ -212,7 +212,7 @@ Function SpPsCsomUpdateHubSiteCollectionProperties($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myProps = $myTenant.GetHubSitePropertiesByUrl(
-        $configFile.appsettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
+        $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
 
     $spAdminCtx.Load($myProps)
     $spAdminCtx.ExecuteQuery()
@@ -233,8 +233,8 @@ Function SpPsCsomAddSiteToHubSiteCollection($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.ConnectSiteToHubSite(
-        $configFile.appsettings.spBaseUrl + "/sites/NewSiteForHub",
-		$configFile.appsettings.spBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
+        $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteForHub",
+		$configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollectionModernPsCsom")
 
     $spAdminCtx.ExecuteQuery()
 }
@@ -246,7 +246,7 @@ Function SpPsCsomremoveSiteFromHubSiteCollection($spAdminCtx)
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
     $myTenant.DisconnectSiteFromHubSite(
-        $configFile.appsettings.spBaseUrl + "/sites/NewSiteForHub")
+        $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteForHub")
 
     $spAdminCtx.ExecuteQuery()
 }
@@ -289,7 +289,7 @@ Function SpPsCsomGetWebsInSiteCollection($spCtx)
 #gavdcodebegin 17
 Function SpPsCsomGetOneWebInSiteCollection()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
@@ -303,7 +303,7 @@ Function SpPsCsomGetOneWebInSiteCollection()
 #gavdcodebegin 18
 Function SpPsCsomUpdateOneWebInSiteCollection()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
@@ -316,7 +316,7 @@ Function SpPsCsomUpdateOneWebInSiteCollection()
 #gavdcodebegin 19
 Function SpPsCsomDeleteOneWebInSiteCollection()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
@@ -328,7 +328,7 @@ Function SpPsCsomDeleteOneWebInSiteCollection()
 #gavdcodebegin 20
 Function SpPsCsomBreakSecurityInheritanceWeb()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
@@ -344,7 +344,7 @@ Function SpPsCsomBreakSecurityInheritanceWeb()
 #gavdcodebegin 21
 Function SpPsCsomResetSecurityInheritanceWeb()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
@@ -360,12 +360,12 @@ Function SpPsCsomResetSecurityInheritanceWeb()
 #gavdcodebegin 22
 Function SpPsCsomAddUserToSecurityRoleInWeb()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
 
-    $myUser = $myWeb.EnsureUser($configFile.appsettings.spUserName)
+    $myUser = $myWeb.EnsureUser($configFile.appsettings.UserName)
     $roleDefinition = New-Object `
 				Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
     $roleDefinition.Add($myWeb.RoleDefinitions.GetByType(
@@ -379,12 +379,12 @@ Function SpPsCsomAddUserToSecurityRoleInWeb()
 #gavdcodebegin 23
 Function SpPsCsomUpdateUserSecurityRoleInWeb()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
 
-    $myUser = $myWeb.EnsureUser($configFile.appsettings.spUserName)
+    $myUser = $myWeb.EnsureUser($configFile.appsettings.UserName)
     $roleDefinition = New-Object `
 					Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
     $roleDefinition.Add($myWeb.RoleDefinitions.GetByType(
@@ -401,12 +401,12 @@ Function SpPsCsomUpdateUserSecurityRoleInWeb()
 #gavdcodebegin 24
 Function SpPsCsomDeleteUserFromSecurityRoleInWeb()
 {
-    $myWebFullUrl = $configFile.appsettings.spUrl + "/NewWebSiteModernPsCsom"
+    $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
     $spCtx = LoginCsom($myWebFullUrl)
 
     $myWeb = $spCtx.Web
 
-    $myUser = $myWeb.EnsureUser($configFile.appsettings.spUserName)
+    $myUser = $myWeb.EnsureUser($configFile.appsettings.UserName)
     $myWeb.RoleAssignments.GetByPrincipal($myUser).DeleteObject()
 
     $spCtx.ExecuteQuery()
@@ -419,7 +419,7 @@ Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extens
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 Add-Type -Path "C:\Program Files\SharePoint Online Management Shell\Microsoft.Online.SharePoint.PowerShell\Microsoft.Online.SharePoint.Client.Tenant.dll"
 
-[xml]$configFile = get-content "C:\Projects\spPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 $spCtx = LoginPsCsom
 $spAdminCtx = LoginAdminCsom

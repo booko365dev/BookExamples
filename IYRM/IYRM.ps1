@@ -26,7 +26,7 @@ Function LoginPsSPO()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 
 #----------------------------------------------------------------------------------------
 
-Function Invoke-RestSPO()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+Function Invoke-RestSPO()  #*** LEGACY CODE ***
 {
 	Param (
 		[Parameter(Mandatory=$True)]
@@ -133,7 +133,7 @@ Function Invoke-RestSPO()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 	}
 }
  
-Function Get-SPOContextInfo()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+Function Get-SPOContextInfo()  #*** LEGACY CODE ***
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -150,7 +150,7 @@ Function Get-SPOContextInfo()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 	Invoke-RestSPO $Url Post $UserName $Password
 }
 
-Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination)   #*** USE POWERSHELL 5.x, NOT 7.x ***
+Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination)   #*** LEGACY CODE ***
 {
     $buffer = New-Object Byte[] 8192 
     $bytesRead = 0
@@ -159,6 +159,16 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
     }
 }
 
+Function LoginPsPnPPowerShellWithAccPwDefault
+{
+	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+			$configFile.appsettings.UserPw -AsPlainText -Force
+
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+}
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 01
@@ -200,7 +210,7 @@ Function SpPsCsomUpdateValuePropertyTenant($spAdminCtx)#*** USE POWERSHELL 5.x, 
 #gavdcodeend 03
 
 #gavdcodebegin 04
-Function SpPsRestFindAppCatalog()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+Function SpPsRestFindAppCatalog()  #*** LEGACY CODE ***
 {
     $endpointUrl = $webBaseUrl + "/_api/SP_TenantSettings_Current"
 	$contextInfo = Get-SPOContextInfo -WebUrl $webBaseUrl -UserName $userName `
@@ -212,7 +222,7 @@ Function SpPsRestFindAppCatalog()  #*** USE POWERSHELL 5.x, NOT 7.x ***
 #gavdcodeend 04
 
 #gavdcodebegin 05
-Function SpPsRestFindTenantProps()  #*** USE POWERSHELL 5.x, NOT 7.x ***
+Function SpPsRestFindTenantProps()  #*** LEGACY CODE ***
 {
     $catalogUrl = $webBaseUrl + "/sites/appcatalog"
     $endpointUrl = $webBaseUrl + "/_api/web/GetStorageEntity('SomeKey')"
@@ -223,6 +233,43 @@ Function SpPsRestFindTenantProps()  #*** USE POWERSHELL 5.x, NOT 7.x ***
     $data | ConvertTo-Json
 }
 #gavdcodeend 05
+
+#gavdcodebegin 104
+Function SpPsRestFindAppCatalogAD
+{
+	LoginPsPnPPowerShellWithAccPwDefault
+	$myOAuth = Get-PnPAppAuthAccessToken
+
+    $endpointUrl = $configFile.appsettings.SiteBaseUrl + "/_api/SP_TenantSettings_Current"
+	$myHeader = @{ 'Authorization' = "Bearer $($myOAuth)"; `
+				   'Accept' = 'application/json;odata=verbose' }
+	$data = Invoke-WebRequest -Method Get `
+							  -Headers $myHeader `
+							  -Uri $endpointUrl `
+							  -ContentType "application/json;odata=verbose"
+
+	$dataObject = $data.content | ConvertFrom-Json
+	Write-Host "Catalog Url - " $dataObject.d.CorporateCatalogUrl
+}
+#gavdcodeend 104
+
+#gavdcodebegin 105
+Function SpPsRestFindTenantPropsAD
+{
+	LoginPsPnPPowerShellWithAccPwDefault
+	$myOAuth = Get-PnPAppAuthAccessToken
+
+    $endpointUrl = $configFile.appsettings.SiteBaseUrl + "/sites/appcatalog/_api/web/AllProperties"
+	$myHeader = @{ 'Authorization' = "Bearer $($myOAuth)"; `
+				   'Accept' = 'application/json;odata=verbose' }
+	$data = Invoke-WebRequest -Method Get `
+							  -Headers $myHeader `
+							  -Uri $endpointUrl `
+							  -ContentType "application/json;odata=verbose"
+
+	Write-Host $data
+}
+#gavdcodeend 105
 
 #gavdcodebegin 06
 Function SpPsSpoGetTenant()  #*** USE POWERSHELL 5.x, NOT 7.x ***
@@ -366,6 +413,8 @@ Add-Type -Path "C:\Program Files\SharePoint Online Management Shell\Microsoft.On
 #$password = $configFile.appsettings.UserPw
 #SpPsRestFindAppCatalog
 #SpPsRestFindTenantProps
+#SpPsRestFindAppCatalogAD
+#SpPsRestFindTenantPropsAD
 
 #LoginPsSPO
 #SpPsSpoGetTenant

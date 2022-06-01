@@ -16,7 +16,7 @@ namespace FCJY
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args)  //*** LEGACY CODE ***
         {
             Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
             Uri webBaseUri = new Uri(ConfigurationManager.AppSettings["spBaseUrl"]);
@@ -45,7 +45,7 @@ namespace FCJY
 
         //gavdcodebegin 01
         static void SpCsRestCreateOneCommunicationSiteCollection(Uri webBaseUri,
-                                                string userName, string password)
+                                  string userName, string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webBaseUri, userName, password))
             {
@@ -73,7 +73,7 @@ namespace FCJY
 
         //gavdcodebegin 02
         static void SpCsRestCreateOneSiteCollection(Uri webBaseUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webBaseUri, userName, password))
             {
@@ -101,7 +101,7 @@ namespace FCJY
 
         //gavdcodebegin 03
         static void SpCsRestCreateOneWebInSiteCollection(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -123,7 +123,7 @@ namespace FCJY
 
         //gavdcodebegin 04
         static void SpCsRestReadAllSiteCollections(Uri webBaseUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webBaseUri, userName, password))
             {
@@ -138,7 +138,7 @@ namespace FCJY
 
         //gavdcodebegin 05
         static void SpCsRestReadAllWebsInSiteCollection(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -152,7 +152,7 @@ namespace FCJY
 
         //gavdcodebegin 06
         static void SpCsRestUpdateOneWeb(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
             using (SPHttpClient client = new SPHttpClient(subWebUri, userName, password))
@@ -175,7 +175,7 @@ namespace FCJY
 
         //gavdcodebegin 07
         static void SpCsRestDeleteOneWebFromSiteCollection(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
             using (SPHttpClient client = new SPHttpClient(subWebUri, userName, password))
@@ -194,7 +194,7 @@ namespace FCJY
 
         //gavdcodebegin 08
         static void SpCsRestGetRoleDefinitionsWeb(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
             using (SPHttpClient client = new SPHttpClient(subWebUri, userName, password))
@@ -209,7 +209,7 @@ namespace FCJY
 
         //gavdcodebegin 09
         static void SpCsRestFindUserPermissionsWeb(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
             using (SPHttpClient client = new SPHttpClient(subWebUri, userName, password))
@@ -226,7 +226,7 @@ namespace FCJY
 
         //gavdcodebegin 10
         static void SpCsRestFindOtherUserPermissionsWeb(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
             using (SPHttpClient client = new SPHttpClient(subWebUri, userName, password))
@@ -243,7 +243,7 @@ namespace FCJY
 
         //gavdcodebegin 11
         static void SpCsRestBreakSecurityInheritanceWeb(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
             using (SPHttpClient client = new SPHttpClient(subWebUri, userName, password))
@@ -264,7 +264,7 @@ namespace FCJY
 
         //gavdcodebegin 12
         static void SpCsRestResetSecurityInheritanceWeb(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
             using (SPHttpClient client = new SPHttpClient(subWebUri, userName, password))
@@ -279,7 +279,7 @@ namespace FCJY
 
         //gavdcodebegin 13
         static void SpCsRestAddUserToSecurityRoleInWeb(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
 
@@ -328,7 +328,7 @@ namespace FCJY
 
         //gavdcodebegin 14
         static void SpCsRestUpdateUserSecurityRoleInWeb(Uri webUri,
-                                                    string userName, string password)
+                                  string userName, string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
 
@@ -377,7 +377,7 @@ namespace FCJY
 
         //gavdcodebegin 15
         static void SpCsRestDeleteUserFromSecurityRoleInWeb(Uri webUri,
-                                                    string userName, string password)
+                                  string userName, string password)  //*** LEGACY CODE ***
         {
             Uri subWebUri = new Uri(webUri + "/NewWebSiteModernCsRest");
 
@@ -413,16 +413,16 @@ namespace FCJY
     }
 
     //-----------------------------------------------------------------------------------
-    class SPHttpClientHandler : HttpClientHandler
+    class SPHttpClientHandler : HttpClientHandler  //*** LEGACY CODE ***
     {
-        public SPHttpClientHandler(Uri webUri, string userName, string password)
+        public SPHttpClientHandler(Uri webUri, string userName, string password)  //*** LEGACY CODE ***
         {
             CookieContainer = GetAuthCookies(webUri, userName, password);
             FormatType = FormatType.JsonVerbose;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-                                                CancellationToken cancellationToken)
+                               CancellationToken cancellationToken)  //*** LEGACY CODE ***
         {
             request.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f");
             if (FormatType == FormatType.JsonVerbose)
@@ -433,7 +433,7 @@ namespace FCJY
         }
 
         private static CookieContainer GetAuthCookies(Uri webUri,
-                                                string userName, string password)
+                                  string userName, string password)  //*** LEGACY CODE ***
         {
             var securePassword = new SecureString();
             foreach (var c in password) { securePassword.AppendChar(c); }
@@ -447,23 +447,23 @@ namespace FCJY
         public FormatType FormatType { get; set; }
     }
 
-    public enum FormatType
+    public enum FormatType  //*** LEGACY CODE ***
     {
         JsonVerbose,
         Xml
     }
 
-    class SPHttpClient : HttpClient
+    class SPHttpClient : HttpClient  //*** LEGACY CODE ***
     {
         public SPHttpClient(Uri webUri, string userName, string password) : base(
-                                new SPHttpClientHandler(webUri, userName, password))
+               new SPHttpClientHandler(webUri, userName, password))  //*** LEGACY CODE ***
         {
             BaseAddress = webUri;
         }
 
         public object ExecuteJson(string requestUri, HttpMethod method,
                                     IDictionary<string, string> headers, object payload,
-                                    bool GetBinaryResponse = false)
+                                    bool GetBinaryResponse = false)  //*** LEGACY CODE ***
         {
             HttpResponseMessage response;
             switch (method.Method)
@@ -525,18 +525,18 @@ namespace FCJY
         }
 
         public object ExecuteJson<T>(string requestUri, HttpMethod method, T payload,
-                                        bool GetBinaryResponse = false)
+                                    bool GetBinaryResponse = false)  //*** LEGACY CODE ***
         {
             return ExecuteJson(requestUri, method, null, payload, GetBinaryResponse);
         }
 
-        public object ExecuteJson(string requestUri, bool GetBinaryResponse = false)
+        public object ExecuteJson(string requestUri, bool GetBinaryResponse = false)  //*** LEGACY CODE ***
         {
             return ExecuteJson(requestUri, HttpMethod.Get, null, default(string),
                                                                     GetBinaryResponse);
         }
 
-        public string RequestFormDigest()
+        public string RequestFormDigest()  //*** LEGACY CODE ***
         {
             var endpointUrl = string.Format("{0}/_api/contextinfo", BaseAddress);
             var result = this.PostAsync(endpointUrl, new StringContent(
