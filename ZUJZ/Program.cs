@@ -22,29 +22,29 @@ namespace ZUJZ
             string userName = ConfigurationManager.AppSettings["spUserName"];
             string password = ConfigurationManager.AppSettings["spUserPw"];
 
-            //SpCsRestCreateOneList(webUri, userName, password);
-            //SpCsRestReadeAllLists(webUri, userName, password);
-            //SpCsRestReadeOneList(webUri, userName, password);
-            //SpCsRestUpdateOneList(webUri, userName, password);
-            //SpCsRestDeleteOneList(webUri, userName, password);
-            //SpCsRestAddOneFieldToList(webUri, userName, password);
-            //SpCsRestReadAllFieldsFromList(webUri, userName, password);
-            //SpCsRestReadOneFieldFromList(webUri, userName, password);
-            //SpCsRestUpdateOneFieldInList(webUri, userName, password);
-            //SpCsRestDeleteOneFieldFromList(webUri, userName, password);
-            //SpCsRestBreakSecurityInheritanceList(webUri, userName, password);
-            //SpCsRestResetSecurityInheritanceList(webUri, userName, password);
-            //SpCsRestAddUserToSecurityRoleInList(webUri, userName, password);
-            //SpCsRestUpdateUserSecurityRoleInList(webUri, userName, password);
-            //SpCsRestDeleteUserFromSecurityRoleInList(webUri, userName, password);
-            //SpCsRestColumnIndex(webUri, userName, password);
+            //SpCsRest_CreateOneList(webUri, userName, password);
+            //SpCsRest_ReadeAllLists(webUri, userName, password);
+            //SpCsRest_ReadeOneList(webUri, userName, password);
+            //SpCsRest_UpdateOneList(webUri, userName, password);
+            //SpCsRest_DeleteOneList(webUri, userName, password);
+            //SpCsRest_AddOneFieldToList(webUri, userName, password);
+            //SpCsRest_ReadAllFieldsFromList(webUri, userName, password);
+            //SpCsRest_ReadOneFieldFromList(webUri, userName, password);
+            //SpCsRest_UpdateOneFieldInList(webUri, userName, password);
+            //SpCsRest_DeleteOneFieldFromList(webUri, userName, password);
+            //SpCsRest_BreakSecurityInheritanceList(webUri, userName, password);
+            //SpCsRest_ResetSecurityInheritanceList(webUri, userName, password);
+            //SpCsRest_AddUserToSecurityRoleInList(webUri, userName, password);
+            //SpCsRest_UpdateUserSecurityRoleInList(webUri, userName, password);
+            //SpCsRest_DeleteUserFromSecurityRoleInList(webUri, userName, password);
+            //SpCsRest_ColumnIndex(webUri, userName, password);
 
             Console.WriteLine("Done");
             Console.ReadLine();
         }
 
         //gavdcodebegin 01
-        static void SpCsRestCreateOneList(Uri webUri, string userName, string password)
+        static void SpCsRest_CreateOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -65,7 +65,7 @@ namespace ZUJZ
         //gavdcodeend 01 
 
         //gavdcodebegin 02
-        static void SpCsRestReadeAllLists(Uri webUri, string userName, string password)
+        static void SpCsRest_ReadeAllLists(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -78,7 +78,7 @@ namespace ZUJZ
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void SpCsRestReadeOneList(Uri webUri, string userName, string password)
+        static void SpCsRest_ReadeOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -91,7 +91,7 @@ namespace ZUJZ
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void SpCsRestUpdateOneList(Uri webUri, string userName, string password)
+        static void SpCsRest_UpdateOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -112,7 +112,7 @@ namespace ZUJZ
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void SpCsRestDeleteOneList(Uri webUri, string userName, string password)
+        static void SpCsRest_DeleteOneList(Uri webUri, string userName, string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -129,7 +129,7 @@ namespace ZUJZ
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void SpCsRestAddOneFieldToList(Uri webUri, string userName,
+        static void SpCsRest_AddOneFieldToList(Uri webUri, string userName,
                                                                 string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -149,7 +149,7 @@ namespace ZUJZ
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void SpCsRestReadAllFieldsFromList(Uri webUri, string userName,
+        static void SpCsRest_ReadAllFieldsFromList(Uri webUri, string userName,
                                                                     string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -164,7 +164,7 @@ namespace ZUJZ
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void SpCsRestReadOneFieldFromList(Uri webUri, string userName,
+        static void SpCsRest_ReadOneFieldFromList(Uri webUri, string userName,
                                                                     string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -179,7 +179,7 @@ namespace ZUJZ
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void SpCsRestUpdateOneFieldInList(Uri webUri, string userName,
+        static void SpCsRest_UpdateOneFieldInList(Uri webUri, string userName,
                                                                 string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -202,7 +202,7 @@ namespace ZUJZ
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        static void SpCsRestDeleteOneFieldFromList(Uri webUri, string userName,
+        static void SpCsRest_DeleteOneFieldFromList(Uri webUri, string userName,
                                                                     string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -221,7 +221,7 @@ namespace ZUJZ
         //gavdcodeend 10
 
         //gavdcodebegin 11
-        static void SpCsRestBreakSecurityInheritanceList(Uri webUri, string userName,
+        static void SpCsRest_BreakSecurityInheritanceList(Uri webUri, string userName,
                                                                     string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -240,7 +240,7 @@ namespace ZUJZ
         //gavdcodeend 11
 
         //gavdcodebegin 12
-        static void SpCsRestResetSecurityInheritanceList(Uri webUri, string userName,
+        static void SpCsRest_ResetSecurityInheritanceList(Uri webUri, string userName,
                                                                     string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
@@ -255,7 +255,7 @@ namespace ZUJZ
         //gavdcodeend 12
 
         //gavdcodebegin 13
-        static void SpCsRestAddUserToSecurityRoleInList(Uri webUri, string userName,
+        static void SpCsRest_AddUserToSecurityRoleInList(Uri webUri, string userName,
                                                                     string password)
         {
             // Find the User
@@ -302,7 +302,7 @@ namespace ZUJZ
         //gavdcodeend 13
 
         //gavdcodebegin 14
-        static void SpCsRestUpdateUserSecurityRoleInList(Uri webUri,
+        static void SpCsRest_UpdateUserSecurityRoleInList(Uri webUri,
                                                     string userName, string password)
         {
             // Find the User
@@ -349,7 +349,7 @@ namespace ZUJZ
         //gavdcodeend 14
 
         //gavdcodebegin 15
-        static void SpCsRestDeleteUserFromSecurityRoleInList(Uri webUri,
+        static void SpCsRest_DeleteUserFromSecurityRoleInList(Uri webUri,
                                                     string userName, string password)
         {
             // Find the User
@@ -383,7 +383,7 @@ namespace ZUJZ
         //gavdcodeend 15
 
         //gavdcodebegin 16
-        static void SpCsRestColumnIndex(Uri webUri, string userName,
+        static void SpCsRest_ColumnIndex(Uri webUri, string userName,
                                                                 string password)
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))

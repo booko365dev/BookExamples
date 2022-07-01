@@ -15,25 +15,25 @@ namespace ZJLE
         {
             ClientContext psCtx = LoginPnPCore();
 
-            //SpCsPnpcoreCreateOneList(psCtx);
-            //SpCsPnpcoreReadOneList(psCtx);
-            //SpCsPnpcoreListExists(psCtx);
-            //SpCsPnpcoreAddUserToSecurityRoleInList(psCtx);
-            //SpCsPnpcoreAddOneFieldToList(psCtx);
-            //SpCsPnpcoreReadFilteredFieldsFromList(psCtx);
-            //SpCsPnpcoreReadOneFieldFromList(psCtx);
-            //SpCsPnpcoreGetContentTypeList(psCtx);
-            //SpCsPnpcoreAddContentTypeToList(psCtx);
-            //SpCsPnpcoreRemoveContentTypeFromList(psCtx);
-            //SpCsPnpcoreGetViewList(psCtx);
-            //SpCsPnpcoreAddViewToList(psCtx);
+            //SpCsPnpcore_CreateOneList(psCtx);
+            //SpCsPnpcore_ReadOneList(psCtx);
+            //SpCsPnpcore_ListExists(psCtx);
+            //SpCsPnpcore_AddUserToSecurityRoleInList(psCtx);
+            //SpCsPnpcore_AddOneFieldToList(psCtx);
+            //SpCsPnpcore_ReadFilteredFieldsFromList(psCtx);
+            //SpCsPnpcore_ReadOneFieldFromList(psCtx);
+            //SpCsPnpcore_GetContentTypeList(psCtx);
+            //SpCsPnpcore_AddContentTypeToList(psCtx);
+            //SpCsPnpcore_RemoveContentTypeFromList(psCtx);
+            //SpCsPnpcore_GetViewList(psCtx);
+            //SpCsPnpcore_AddViewToList(psCtx);
 
             Console.WriteLine("Done");
             Console.ReadLine();
         }
 
         //gavdcodebegin 01
-        static void SpCsPnpcoreCreateOneList(ClientContext spCtx)
+        static void SpCsPnpcore_CreateOneList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             ListTemplateType myTemplate = ListTemplateType.GenericList;
             string listName = "NewListPnPCore";
@@ -43,7 +43,7 @@ namespace ZJLE
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void SpCsPnpcoreReadOneList(ClientContext spCtx)
+        static void SpCsPnpcore_ReadOneList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.GetListByTitle("NewListPnPCore");
@@ -53,7 +53,7 @@ namespace ZJLE
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void SpCsPnpcoreListExists(ClientContext spCtx)
+        static void SpCsPnpcore_ListExists(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             bool blnListExists = myWeb.ListExists("NewListPnPCore");
@@ -63,7 +63,7 @@ namespace ZJLE
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void SpCsPnpcoreAddUserToSecurityRoleInList(ClientContext spCtx)
+        static void SpCsPnpcore_AddUserToSecurityRoleInList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.GetListByTitle("NewListPnPCore");
@@ -73,7 +73,7 @@ namespace ZJLE
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void SpCsPnpcoreAddOneFieldToList(ClientContext spCtx)
+        static void SpCsPnpcore_AddOneFieldToList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -95,7 +95,7 @@ namespace ZJLE
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void SpCsPnpcoreReadFilteredFieldsFromList(ClientContext spCtx)
+        static void SpCsPnpcore_ReadFilteredFieldsFromList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -112,7 +112,7 @@ namespace ZJLE
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void SpCsPnpcoreReadOneFieldFromList(ClientContext spCtx)
+        static void SpCsPnpcore_ReadOneFieldFromList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -125,7 +125,7 @@ namespace ZJLE
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void SpCsPnpcoreGetContentTypeList(ClientContext spCtx)
+        static void SpCsPnpcore_GetContentTypeList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -136,7 +136,7 @@ namespace ZJLE
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void SpCsPnpcoreAddContentTypeToList(ClientContext spCtx)
+        static void SpCsPnpcore_AddContentTypeToList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -145,7 +145,7 @@ namespace ZJLE
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        static void SpCsPnpcoreRemoveContentTypeFromList(ClientContext spCtx)
+        static void SpCsPnpcore_RemoveContentTypeFromList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -154,7 +154,7 @@ namespace ZJLE
         //gavdcodeend 10
 
         //gavdcodebegin 11
-        static void SpCsPnpcoreGetViewList(ClientContext spCtx)
+        static void SpCsPnpcore_GetViewList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -165,7 +165,7 @@ namespace ZJLE
         //gavdcodeend 11
 
         //gavdcodebegin 12
-        static void SpCsPnpcoreAddViewToList(ClientContext spCtx)
+        static void SpCsPnpcore_AddViewToList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -174,7 +174,7 @@ namespace ZJLE
         //gavdcodeend 12
 
         //----------------------------------------------------------------------------------------
-        static ClientContext LoginPnPCore()
+        static ClientContext LoginPnPCore()  //*** LEGACY CODE ***
         {
             OfficeDevPnP.Core.AuthenticationManager pnpAuthMang =
                 new OfficeDevPnP.Core.AuthenticationManager();

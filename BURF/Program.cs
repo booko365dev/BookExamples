@@ -11,32 +11,32 @@ namespace BURF
         {
             ClientContext spCtx = LoginCsom();
 
-            //SpCsCsomCreateOneList(spCtx);
-            //SpCsCsomReadAllList(spCtx);
-            //SpCsCsomReadOneList(spCtx);
-            //SpCsCsomUpdateOneList(spCtx);
-            //SpCsCsomDeleteOneList(spCtx);
-            //SpCsCsomAddOneFieldToList(spCtx);
-            //SpCsCsomReadAllFieldsFromList(spCtx);
-            //SpCsCsomReadOneFieldFromList(spCtx);
-            //SpCsCsomUpdateOneFieldInList(spCtx);
-            //SpCsCsomDeleteOneFieldFromList(spCtx);
-            //SpCsCsomBreakSecurityInheritanceList(spCtx);
-            //SpCsCsomAddUserToSecurityRoleInList(spCtx);
-            //SpCsCsomUpdateUserSecurityRoleInList(spCtx);
-            //SpCsCsomDeleteUserFromSecurityRoleInList(spCtx);
-            //SpCsCsomResetSecurityInheritanceList(spCtx);
-            //SpCsCsomFieldCreateText(spCtx);
-            //SpCsCsomReadAllSiteColumns(spCtx);
-            //SpCsCsomAddOneSiteColumn(spCtx);
-            //SpCsCsomColumnIndex(spCtx);
+            //SpCsCsom_CreateOneList(spCtx);
+            //SpCsCsom_ReadAllList(spCtx);
+            //SpCsCsom_ReadOneList(spCtx);
+            //SpCsCsom_UpdateOneList(spCtx);
+            //SpCsCsom_DeleteOneList(spCtx);
+            //SpCsCsom_AddOneFieldToList(spCtx);
+            //SpCsCsom_ReadAllFieldsFromList(spCtx);
+            //SpCsCsom_ReadOneFieldFromList(spCtx);
+            //SpCsCsom_UpdateOneFieldInList(spCtx);
+            //SpCsCsom_DeleteOneFieldFromList(spCtx);
+            //SpCsCsom_BreakSecurityInheritanceList(spCtx);
+            //SpCsCsom_AddUserToSecurityRoleInList(spCtx);
+            //SpCsCsom_UpdateUserSecurityRoleInList(spCtx);
+            //SpCsCsom_DeleteUserFromSecurityRoleInList(spCtx);
+            //SpCsCsom_ResetSecurityInheritanceList(spCtx);
+            //SpCsCsom_FieldCreateText(spCtx);
+            //SpCsCsom_ReadAllSiteColumns(spCtx);
+            //SpCsCsom_AddOneSiteColumn(spCtx);
+            //SpCsCsom_ColumnIndex(spCtx);
 
             Console.WriteLine("Done");
             Console.ReadLine();
         }
 
         //gavdcodebegin 01
-        static void SpCsCsomCreateOneList(ClientContext spCtx)
+        static void SpCsCsom_CreateOneList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             ListCreationInformation myListCreationInfo = new ListCreationInformation();
             myListCreationInfo.Title = "NewListCsCsom";
@@ -51,7 +51,7 @@ namespace BURF
         //gavdcodeend 01
 
         //gavdcodebegin 02
-        static void SpCsCsomReadAllList(ClientContext spCtx)
+        static void SpCsCsom_ReadAllList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             ListCollection allLists = myWeb.Lists;
@@ -67,7 +67,7 @@ namespace BURF
         //gavdcodeend 02
 
         //gavdcodebegin 03
-        static void SpCsCsomReadOneList(ClientContext spCtx)
+        static void SpCsCsom_ReadOneList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -79,7 +79,7 @@ namespace BURF
         //gavdcodeend 03
 
         //gavdcodebegin 04
-        static void SpCsCsomUpdateOneList(ClientContext spCtx)
+        static void SpCsCsom_UpdateOneList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -93,7 +93,7 @@ namespace BURF
         //gavdcodeend 04
 
         //gavdcodebegin 05
-        static void SpCsCsomDeleteOneList(ClientContext spCtx)
+        static void SpCsCsom_DeleteOneList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -103,7 +103,7 @@ namespace BURF
         //gavdcodeend 05
 
         //gavdcodebegin 06
-        static void SpCsCsomAddOneFieldToList(ClientContext spCtx)
+        static void SpCsCsom_AddOneFieldToList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -116,7 +116,7 @@ namespace BURF
         //gavdcodeend 06
 
         //gavdcodebegin 07
-        static void SpCsCsomReadAllFieldsFromList(ClientContext spCtx)
+        static void SpCsCsom_ReadAllFieldsFromList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -133,7 +133,7 @@ namespace BURF
         //gavdcodeend 07
 
         //gavdcodebegin 08
-        static void SpCsCsomReadOneFieldFromList(ClientContext spCtx)
+        static void SpCsCsom_ReadOneFieldFromList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -146,7 +146,7 @@ namespace BURF
         //gavdcodeend 08
 
         //gavdcodebegin 09
-        static void SpCsCsomUpdateOneFieldInList(ClientContext spCtx)
+        static void SpCsCsom_UpdateOneFieldInList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -166,7 +166,7 @@ namespace BURF
         //gavdcodeend 09
 
         //gavdcodebegin 10
-        static void SpCsCsomDeleteOneFieldFromList(ClientContext spCtx)
+        static void SpCsCsom_DeleteOneFieldFromList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -177,7 +177,7 @@ namespace BURF
         //gavdcodeend 10
 
         //gavdcodebegin 11
-        static void SpCsCsomBreakSecurityInheritanceList(ClientContext spCtx)
+        static void SpCsCsom_BreakSecurityInheritanceList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -194,7 +194,7 @@ namespace BURF
         //gavdcodeend 11
 
         //gavdcodebegin 15
-        static void SpCsCsomResetSecurityInheritanceList(ClientContext spCtx)
+        static void SpCsCsom_ResetSecurityInheritanceList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -211,7 +211,7 @@ namespace BURF
         //gavdcodeend 15
 
         //gavdcodebegin 12
-        static void SpCsCsomAddUserToSecurityRoleInList(ClientContext spCtx)
+        static void SpCsCsom_AddUserToSecurityRoleInList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -227,7 +227,7 @@ namespace BURF
         //gavdcodeend 12
 
         //gavdcodebegin 13
-        static void SpCsCsomUpdateUserSecurityRoleInList(ClientContext spCtx)
+        static void SpCsCsom_UpdateUserSecurityRoleInList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -246,7 +246,7 @@ namespace BURF
         //gavdcodeend 13
 
         //gavdcodebegin 14
-        static void SpCsCsomDeleteUserFromSecurityRoleInList(ClientContext spCtx)
+        static void SpCsCsom_DeleteUserFromSecurityRoleInList(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -259,7 +259,7 @@ namespace BURF
         //gavdcodeend 14
 
         //gavdcodebegin 16
-        static void SpCsCsomFieldCreateText(ClientContext spCtx)
+        static void SpCsCsom_FieldCreateText(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -276,7 +276,7 @@ namespace BURF
         //gavdcodeend 16
 
         //gavdcodebegin 17
-        static void SpCsCsomReadAllSiteColumns(ClientContext spCtx)
+        static void SpCsCsom_ReadAllSiteColumns(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             FieldCollection allSiteColls = myWeb.Fields;
@@ -293,7 +293,7 @@ namespace BURF
         //gavdcodeend 17
 
         //gavdcodebegin 18
-        static void SpCsCsomAddOneSiteColumn(ClientContext spCtx)
+        static void SpCsCsom_AddOneSiteColumn(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
 
@@ -307,7 +307,7 @@ namespace BURF
         //gavdcodeend 18
 
         //gavdcodebegin 19
-        static void SpCsCsomColumnIndex(ClientContext spCtx)
+        static void SpCsCsom_ColumnIndex(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -322,7 +322,7 @@ namespace BURF
         //gavdcodeend 19
 
         //-------------------------------------------------------------------------------
-        static ClientContext LoginCsom()
+        static ClientContext LoginCsom()  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(
                 ConfigurationManager.AppSettings["spUrl"]);
