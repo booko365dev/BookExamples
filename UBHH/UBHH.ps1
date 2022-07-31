@@ -1,24 +1,24 @@
 ﻿
-Function LoginPsPnP()
+Function LoginPsPnP()  #*** LEGACY CODE *** 
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.spUserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl -Credentials $myCredentials
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
 }
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 01
-Function SpPsPnpCreateOneList()
+Function SpPsPnp_CreateOneList()  #*** LEGACY CODE *** 
 {
 	New-PnPList -Title "NewListPsPnp" -Template GenericList
 }
 #gavdcodeend 01
 
 #gavdcodebegin 02
-Function SpPsPnpReadAllList()
+Function SpPsPnp_ReadAllList()  #*** LEGACY CODE *** 
 {
 	$allLists = Get-PnPList
 
@@ -30,7 +30,7 @@ Function SpPsPnpReadAllList()
 #gavdcodeend 02
 
 #gavdcodebegin 03
-Function SpPsPnpReadOneList()
+Function SpPsPnp_ReadOneList()  #*** LEGACY CODE *** 
 {
 	$myList = Get-PnPList -Identity "NewListPsPnp"
 
@@ -39,21 +39,21 @@ Function SpPsPnpReadOneList()
 #gavdcodeend 03
 
 #gavdcodebegin 04
-Function SpPsPnpUpdateOneList()
+Function SpPsPnp_UpdateOneList()  #*** LEGACY CODE *** 
 {
 	Set-PnPList -Identity "NewListPsPnp" -Description "New List Description"
 }
 #gavdcodeend 04
 
 #gavdcodebegin 05
-Function SpPsPnpDeleteOneList()
+Function SpPsPnp_DeleteOneList()  #*** LEGACY CODE *** 
 {
 	 Remove-PnPList -Identity "NewListPsPnp" -Force
 }
 #gavdcodeend 05
 
 #gavdcodebegin 06
-Function SpPsPnpAddOneFieldToList()
+Function SpPsPnp_AddOneFieldToList()  #*** LEGACY CODE *** 
 {
 	$fieldXml = "<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
 	Add-PnPFieldFromXml -List "NewListPsPnp" -FieldXml $fieldXml
@@ -61,7 +61,7 @@ Function SpPsPnpAddOneFieldToList()
 #gavdcodeend 06
 
 #gavdcodebegin 07
-Function SpPsPnpReadAllFieldsFromList()
+Function SpPsPnp_ReadAllFieldsFromList()  #*** LEGACY CODE *** 
 {
 	$allFields = Get-PnPField -List "NewListPsPnp"
 
@@ -73,7 +73,7 @@ Function SpPsPnpReadAllFieldsFromList()
 #gavdcodeend 07
 
 #gavdcodebegin 08
-Function SpPsPnpReadOneFieldFromList()
+Function SpPsPnp_ReadOneFieldFromList()  #*** LEGACY CODE *** 
 {
 	$myField = Get-PnPField -List "NewListPsPnp" -Identity "MyMultilineField"
 
@@ -82,7 +82,7 @@ Function SpPsPnpReadOneFieldFromList()
 #gavdcodeend 08
 
 #gavdcodebegin 09
-Function SpPsPnpUpdateOneFieldInList()
+Function SpPsPnp_UpdateOneFieldInList()  #*** LEGACY CODE *** 
 {
 	Set-PnPField -List "NewListPsPnp" -Identity "MyMultilineField" `
 									-Values @{Description="New Field Description"}
@@ -90,7 +90,7 @@ Function SpPsPnpUpdateOneFieldInList()
 #gavdcodeend 09
 
 #gavdcodebegin 10
-Function SpPsPnpDeleteOneFieldFromList()
+Function SpPsPnp_DeleteOneFieldFromList()  #*** LEGACY CODE *** 
 {
 	Remove-PnPField -List "NewListPsPnp" -Identity "MyMultilineField" -Force
 }
@@ -101,19 +101,19 @@ Function SpPsPnpDeleteOneFieldFromList()
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
-[xml]$configFile = get-content "C:\Projects\spPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 $spCtx = LoginPsPnP
 
-#SpPsPnpCreateOneList
-#SpPsPnpReadAllList
-#SpPsPnpReadOneList
-#SpPsPnpUpdateOneList
-#SpPsPnpDeleteOneList
-#SpPsPnpAddOneFieldToList
-#SpPsPnpReadAllFieldsFromList
-#SpPsPnpReadOneFieldFromList
-#SpPsPnpUpdateOneFieldInList
-SpPsPnpDeleteOneFieldFromList
+#SpPsPnp_CreateOneList
+#SpPsPnp_ReadAllList
+#SpPsPnp_ReadOneList
+#SpPsPnp_UpdateOneList
+#SpPsPnp_DeleteOneList
+#SpPsPnp_AddOneFieldToList
+#SpPsPnp_ReadAllFieldsFromList
+#SpPsPnp_ReadOneFieldFromList
+#SpPsPnp_UpdateOneFieldInList
+#SpPsPnp_DeleteOneFieldFromList
 
 Write-Host "Done"
