@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.2.32526.322
+VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IUUQ", "IUUQ.csproj", "{4C1F9247-288C-435F-BF1C-BCB73F5076D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RXBM", "RXBM.csproj", "{1B706B93-9F13-43EF-AC06-3F7D844ADA54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4C1F9247-288C-435F-BF1C-BCB73F5076D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C1F9247-288C-435F-BF1C-BCB73F5076D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C1F9247-288C-435F-BF1C-BCB73F5076D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C1F9247-288C-435F-BF1C-BCB73F5076D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B706B93-9F13-43EF-AC06-3F7D844ADA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B706B93-9F13-43EF-AC06-3F7D844ADA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B706B93-9F13-43EF-AC06-3F7D844ADA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B706B93-9F13-43EF-AC06-3F7D844ADA54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {606CCA22-96DE-453A-AB3F-8FB6D61A7DAE}
+		SolutionGuid = {569271EB-CAAD-46FB-AFEF-7952480773A0}
 	EndGlobalSection
 EndGlobal
