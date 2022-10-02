@@ -1,23 +1,23 @@
 ﻿Function LoginPsPnP()
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.spUserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl -Credentials $myCredentials
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
 }
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 01
-Function SpPsPnpCreateOneListItem()
+Function SpPsPnpCreateOneListItem()  #*** LEGACY CODE ***
 {
 	Add-PnPListItem -List "TestList" -Values @{"Title" = "NewListItemPsPnp"}
 }
 #gavdcodeend 01
 
 #gavdcodebegin 02
-Function SpPsPnpUploadOneDocument()
+Function SpPsPnpUploadOneDocument()  #*** LEGACY CODE ***
 {
 	$fileFullPath = "C:\Temporary\TestDocument01.docx"
 	Add-PnPFile -Path $fileFullPath -Folder "TestLibrary"
@@ -25,7 +25,7 @@ Function SpPsPnpUploadOneDocument()
 #gavdcodeend 02
 
 #gavdcodebegin 03
-Function SpPsPnpUploadSeveralDocuments()
+Function SpPsPnpUploadSeveralDocuments()  #*** LEGACY CODE ***
 {
 	$filesPath = "C:\Temporary\"
 	$myFiles = Get-ChildItem -Path $filesPath -Force -Recurse
@@ -38,7 +38,7 @@ Function SpPsPnpUploadSeveralDocuments()
 #gavdcodeend 03
 
 #gavdcodebegin 04
-Function SpPsPnpDownloadOneDocument()
+Function SpPsPnpDownloadOneDocument()  #*** LEGACY CODE ***
 {
 	Get-PnPFile -Url  "/TestLibrary/TestDocument01.docx" `
 				-Path "C:\Temporary\" `
@@ -48,28 +48,28 @@ Function SpPsPnpDownloadOneDocument()
 #gavdcodeend 04
 
 #gavdcodebegin 05
-Function SpPsPnpReadAllListItems()
+Function SpPsPnpReadAllListItems()  #*** LEGACY CODE ***
 {
 	Get-PnPListItem -List "TestList"
 }
 #gavdcodeend 05
 
 #gavdcodebegin 06
-Function SpPsPnpReadOneListItem()
+Function SpPsPnpReadOneListItem()  #*** LEGACY CODE ***
 {
 	Get-PnPListItem -List "TestList" -Id 44
 }
 #gavdcodeend 06
 
 #gavdcodebegin 10
-Function SpPsPnpFindOneLibraryDocument()
+Function SpPsPnpFindOneLibraryDocument()  #*** LEGACY CODE ***
 {
 	Find-PnPFile -List "TestLibrary" -Match *.docx
 }
 #gavdcodeend 10
 
 #gavdcodebegin 11
-Function SpPsPnpCopyOneLibraryDocument()
+Function SpPsPnpCopyOneLibraryDocument()  #*** LEGACY CODE ***
 {
 	Copy-PnPFile -SourceUrl "TestLibrary/TestDocument01.docx" `
 						-TargetUrl "OtherTestLibrary/TestDocument01.docx"
@@ -77,9 +77,9 @@ Function SpPsPnpCopyOneLibraryDocument()
 #gavdcodeend 11
 
 #gavdcodebegin 12
-Function SpPsPnpMoveOneLibraryDocument()
+Function SpPsPnpMoveOneLibraryDocument()  #*** LEGACY CODE ***
 {
-	$webUrl = $configFile.appsettings.spUrl
+	$webUrl = $configFile.appsettings.SiteCollUrl
 	$WebUri = [System.Uri]$WebUrl
 	$WebUrlRel = $WebUri.AbsolutePath
 	
@@ -89,7 +89,7 @@ Function SpPsPnpMoveOneLibraryDocument()
 #gavdcodeend 12
 
 #gavdcodebegin 07
-Function SpPsPnpUpdateOneListItem()
+Function SpPsPnpUpdateOneListItem()  #*** LEGACY CODE ***
 {
 	Set-PnPListItem -List "TestList" -Identity 44 `
 			-Values @{"Title" = "NewListItemPsPnpUpdated"}
@@ -97,9 +97,9 @@ Function SpPsPnpUpdateOneListItem()
 #gavdcodeend 07
 
 #gavdcodebegin 13
-Function SpPsPnpRenameOneLibraryDocument()
+Function SpPsPnpRenameOneLibraryDocument()  #*** LEGACY CODE ***
 {
-	$webUrl = $configFile.appsettings.spUrl
+	$webUrl = $configFile.appsettings.SiteCollUrl
 	$WebUri = [System.Uri]$WebUrl
 	$WebUrlRel = $WebUri.AbsolutePath
 	
@@ -109,23 +109,23 @@ Function SpPsPnpRenameOneLibraryDocument()
 #gavdcodeend 13
 
 #gavdcodebegin 08
-Function SpPsPnpDeleteOneListItem()
+Function SpPsPnpDeleteOneListItem()  #*** LEGACY CODE ***
 {
 	Remove-PnPListItem -List "TestList" -Identity "44" -Force -Recycle
 }
 #gavdcodeend 08
 
 #gavdcodebegin 09
-Function SpPsPnpDeleteToRecycleOneListItem()
+Function SpPsPnpDeleteToRecycleOneListItem()  #*** LEGACY CODE ***
 {
 	Move-PnPListItemToRecycleBin -List "TestList" -Identity "45" -Force
 }
 #gavdcodeend 09
 
 #gavdcodebegin 14
-Function SpPsPnpDeleteOneLibraryDoc()
+Function SpPsPnpDeleteOneLibraryDoc()  #*** LEGACY CODE ***
 {
-	$webUrl = $configFile.appsettings.spUrl
+	$webUrl = $configFile.appsettings.SiteCollUrl
 	$WebUri = [System.Uri]$WebUrl
 	$WebUrlRel = $WebUri.AbsolutePath
 	
@@ -135,9 +135,9 @@ Function SpPsPnpDeleteOneLibraryDoc()
 #gavdcodeend 14
 
 #gavdcodebegin 15
-Function SpPsPnpResetVersionOneLibraryDoc()
+Function SpPsPnpResetVersionOneLibraryDoc()  #*** LEGACY CODE ***
 {
-	$webUrl = $configFile.appsettings.spUrl
+	$webUrl = $configFile.appsettings.SiteCollUrl
 	$WebUri = [System.Uri]$WebUrl
 	$WebUrlRel = $WebUri.AbsolutePath
 	
@@ -147,9 +147,9 @@ Function SpPsPnpResetVersionOneLibraryDoc()
 #gavdcodeend 15
 
 #gavdcodebegin 16
-Function SpPsPnpCheckOutOneLibraryDoc()
+Function SpPsPnpCheckOutOneLibraryDoc()  #*** LEGACY CODE ***
 {
-	$webUrl = $configFile.appsettings.spUrl
+	$webUrl = $configFile.appsettings.SiteCollUrl
 	$WebUri = [System.Uri]$WebUrl
 	$WebUrlRel = $WebUri.AbsolutePath
 	
@@ -158,9 +158,9 @@ Function SpPsPnpCheckOutOneLibraryDoc()
 #gavdcodeend 16
 
 #gavdcodebegin 17
-Function SpPsPnpCheckInOneLibraryDoc()
+Function SpPsPnpCheckInOneLibraryDoc()  #*** LEGACY CODE ***
 {
-	$webUrl = $configFile.appsettings.spUrl
+	$webUrl = $configFile.appsettings.SiteCollUrl
 	$WebUri = [System.Uri]$WebUrl
 	$WebUrlRel = $WebUri.AbsolutePath
 	
@@ -170,58 +170,58 @@ Function SpPsPnpCheckInOneLibraryDoc()
 #gavdcodeend 17
 
 #gavdcodebegin 18
-Function SpPsPnpAddUserToSecurityRole()
+Function SpPsPnpAddUserToSecurityRole()  #*** LEGACY CODE ***
 {
 	Set-PnPListItemPermission -List 'TestLibrary' -Identity 35 `
-				-User $configFile.appsettings.spUserName -AddRole 'Read'
+				-User $configFile.appsettings.UserName -AddRole 'Read'
 }
 #gavdcodeend 18
 
 #gavdcodebegin 19
-Function SpPsPnpRemoveUserFromSecurityRole()
+Function SpPsPnpRemoveUserFromSecurityRole()  #*** LEGACY CODE ***
 {
 	Set-PnPListItemPermission -List 'TestLibrary' -Identity 35 `
-				-User $configFile.appsettings.spUserName -RemoveRole 'Read'
+				-User $configFile.appsettings.UserName -RemoveRole 'Read'
 }
 #gavdcodeend 19
 
 #gavdcodebegin 20
-Function SpPsPnpResetSecurityInheritance()
+Function SpPsPnpResetSecurityInheritance()  #*** LEGACY CODE ***
 {
 	Set-PnPListItemPermission -List 'TestLibrary' -Identity 35 -InheritPermissions
 }
 #gavdcodeend 20
 
 #gavdcodebegin 21
-Function SpPsPnpAddFolder()
+Function SpPsPnpAddFolder()  #*** LEGACY CODE ***
 {
 	Add-PnPFolder -Name "PnPPowerShellFolder" -Folder "TestDocuments"
 }
 #gavdcodeend 21
 
 #gavdcodebegin 22
-Function SpPsPnpResolveFolder()
+Function SpPsPnpResolveFolder()  #*** LEGACY CODE ***
 {
 	Resolve-PnPFolder -SiteRelativePath "TestDocuments/PnPPowerShellFolderResolve"
 }
 #gavdcodeend 22
 
 #gavdcodebegin 23
-Function SpPsPnpGetFolder()
+Function SpPsPnpGetFolder()  #*** LEGACY CODE ***
 {
 	Get-PnPFolder -Url "TestDocuments/PnPPowerShellFolder"
 }
 #gavdcodeend 23
 
 #gavdcodebegin 24
-Function SpPsPnpGetFolderItem()
+Function SpPsPnpGetFolderItem()  #*** LEGACY CODE ***
 {
 	Get-PnPFolderItem -FolderSiteRelativeUrl  "TestDocuments/PnPPowerShellFolder"
 }
 #gavdcodeend 24
 
 #gavdcodebegin 25
-Function SpPsPnpRenameFolder()
+Function SpPsPnpRenameFolder()  #*** LEGACY CODE ***
 {
 	Rename-PnPFolder -Folder "TestDocuments/PnPPowerShellFolder" `
 					 -TargetFolderName "PnPPowerShellFolderRenamed"
@@ -229,7 +229,7 @@ Function SpPsPnpRenameFolder()
 #gavdcodeend 25
 
 #gavdcodebegin 26
-Function SpPsPnpMoveFolder()
+Function SpPsPnpMoveFolder()  #*** LEGACY CODE ***
 {
 	Move-PnPFolder -Folder "TestDocuments/PnPPowerShellFolder" `
 				   -TargetFolder "Shared Documents"
@@ -237,7 +237,7 @@ Function SpPsPnpMoveFolder()
 #gavdcodeend 26
 
 #gavdcodebegin 27
-Function SpPsPnpRemoveFolder()
+Function SpPsPnpRemoveFolder()  #*** LEGACY CODE ***
 {
 	Remove-PnPFolder -Name "PnPPowerShellFolder" `
 				     -Folder "TestDocuments" `
@@ -246,7 +246,7 @@ Function SpPsPnpRemoveFolder()
 #gavdcodeend 27
 
 #gavdcodebegin 28
-Function SpPsPnpAddRightsFolder()
+Function SpPsPnpAddRightsFolder()  #*** LEGACY CODE ***
 {
 	Set-PnPFolderPermission -List "TestDocuments" `
 							-Identity "TestDocuments\PnPPowerShellFolder" `
@@ -256,7 +256,7 @@ Function SpPsPnpAddRightsFolder()
 #gavdcodeend 28
 
 #gavdcodebegin 29
-Function SpPsPnpRemoveRightsFolder()
+Function SpPsPnpRemoveRightsFolder()  #*** LEGACY CODE ***
 {
 	Set-PnPFolderPermission -List "TestDocuments" `
 							-Identity "TestDocuments\PnPPowerShellFolder" `
@@ -266,7 +266,7 @@ Function SpPsPnpRemoveRightsFolder()
 #gavdcodeend 29
 
 #gavdcodebegin 30
-Function SpPsPnpReadAllAttachments()
+Function SpPsPnpReadAllAttachments()  #*** LEGACY CODE ***
 {
 	$myListitem = Get-PnPListItem -List "TestList" -Id 3
 	$myAttachments = Get-PnPProperty -ClientObject $myListitem -Property "AttachmentFiles"
@@ -277,7 +277,7 @@ Function SpPsPnpReadAllAttachments()
 #gavdcodeend 30
 
 #gavdcodebegin 31
-Function SpPsPnpDownloadAllAttachments()
+Function SpPsPnpDownloadAllAttachments()  #*** LEGACY CODE ***
 {
 	$myListitem = Get-PnPListItem -List "TestList" -Id 3
 	$myAttachments = Get-PnPProperty -ClientObject $myListitem -Property "AttachmentFiles"
@@ -294,7 +294,7 @@ Function SpPsPnpDownloadAllAttachments()
 
 #----------------------------------------------------------------------------------------
 
-[xml]$configFile = get-content "C:\Projects\spPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 $spCtx = LoginPsPnP
 
