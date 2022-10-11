@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@pnp/cli-microsoft365": "^4.4.0"
+    "@pnp/cli-microsoft365": "^5.8.0"
   }
 }
