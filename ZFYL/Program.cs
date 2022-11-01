@@ -290,7 +290,7 @@ namespace ZFYL
         //gavdcodeend 11
 
         //gavdcodebegin 12
-        static void SpCsPnpcoreCreateTermGroup(ClientContext spCtx)
+        static void SpCsPnpcoreCreateTermGroup(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
 
@@ -302,7 +302,8 @@ namespace ZFYL
         //gavdcodeend 12
 
         //gavdcodebegin 13
-        static void SpCsPnpcoreCreateTermGroupEnsure(ClientContext spCtx)
+        static void SpCsPnpcoreCreateTermGroupEnsure
+                                              (ClientContext spCtx)  //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             Console.WriteLine(myTermGroup.Id);
@@ -310,7 +311,7 @@ namespace ZFYL
         //gavdcodeend 13
 
         //gavdcodebegin 16
-        static void SpCsPnpcoreFindTermGroup(ClientContext spCtx)
+        static void SpCsPnpcoreFindTermGroup(ClientContext spCtx)    //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.GetTermGroupByName("CsPnpcoreTermGroupEns");
             Console.WriteLine(myTermGroup.Id);
@@ -318,7 +319,8 @@ namespace ZFYL
         //gavdcodeend 16
 
         //gavdcodebegin 14
-        static void SpCsPnpcoreCreateTermSetEnsure(ClientContext spCtx)
+        static void SpCsPnpcoreCreateTermSetEnsure
+                                              (ClientContext spCtx)  //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             TermSet myTermSet = myTermGroup.EnsureTermSet("CsPnpcoreTermSetEns");
@@ -327,7 +329,7 @@ namespace ZFYL
         //gavdcodeend 14
 
         //gavdcodebegin 17
-        static void SpCsPnpcoreFindTermSet(ClientContext spCtx)
+        static void SpCsPnpcoreFindTermSet(ClientContext spCtx)      //*** LEGACY CODE ***
         {
             TermSetCollection myTermSet = spCtx.Site.GetTermSetsByName(
                                                                 "CsPnpcoreTermSetEns");
@@ -336,7 +338,7 @@ namespace ZFYL
         //gavdcodeend 17
 
         //gavdcodebegin 15
-        static void SpCsPnpcoreCreateTerm(ClientContext spCtx)
+        static void SpCsPnpcoreCreateTerm(ClientContext spCtx)       //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             TermSet myTermSet = myTermGroup.EnsureTermSet("CsPnpcoreTermSetEns");
@@ -346,7 +348,7 @@ namespace ZFYL
         //gavdcodeend 15
 
         //gavdcodebegin 18
-        static void SpCsPnpcoreFindTerm(ClientContext spCtx)
+        static void SpCsPnpcoreFindTerm(ClientContext spCtx)         //*** LEGACY CODE ***
         {
             TermSetCollection myTermSet = spCtx.Site.GetTermSetsByName(
                                                                 "CsPnpcoreTermSetEns");
@@ -356,7 +358,7 @@ namespace ZFYL
         //gavdcodeend 18
 
         //gavdcodebegin 19
-        static void SpCsPnpcoreExportTermStore(ClientContext spCtx)
+        static void SpCsPnpcoreExportTermStore(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             List<string> myTermStoreExport = spCtx.Site.ExportAllTerms(true);
             foreach (string oneTerm in myTermStoreExport)
@@ -367,7 +369,7 @@ namespace ZFYL
         //gavdcodeend 19
 
         //gavdcodebegin 20
-        static void SpCsPnpcoreImportTermStore(ClientContext spCtx)
+        static void SpCsPnpcoreImportTermStore(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string[] myTerms = { "TermGroup01|TermSet01|Term01",
                                  "TermGroup01|TermSet01|Term02" };
@@ -377,7 +379,7 @@ namespace ZFYL
         //gavdcodeend 20
 
         //gavdcodebegin 21
-        static void SpCsCsomGetResultsSearch(ClientContext spCtx)
+        static void SpCsCsomGetResultsSearch(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             KeywordQuery keywordQuery = new KeywordQuery(spCtx);
             keywordQuery.QueryText = "Team";
@@ -396,7 +398,7 @@ namespace ZFYL
 
         //gavdcodebegin 22
         static void SpCsRestResultsSearchGET(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -411,7 +413,7 @@ namespace ZFYL
 
         //gavdcodebegin 23
         static void SpCsRestResultsSearchPOST(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -434,7 +436,8 @@ namespace ZFYL
         //gavdcodeend 23
 
         //gavdcodebegin 24
-        static void SpCsCsomGetAllPropertiesUserProfile(ClientContext spCtx)
+        static void SpCsCsomGetAllPropertiesUserProfile(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string myUser = "i:0#.f|membership|" +
                                         ConfigurationManager.AppSettings["spUserName"];
@@ -453,7 +456,8 @@ namespace ZFYL
         //gavdcodeend 24
 
         //gavdcodebegin 25
-        static void SpCsCsomGetAllMyPropertiesUserProfile(ClientContext spCtx)
+        static void SpCsCsomGetAllMyPropertiesUserProfile(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
             PersonProperties myUserProperties = myPeopleManager.GetMyProperties();
@@ -470,7 +474,8 @@ namespace ZFYL
         //gavdcodeend 25
 
         //gavdcodebegin 26
-        static void SpCsCsomGetPropertiesUserProfile(ClientContext spCtx)
+        static void SpCsCsomGetPropertiesUserProfile(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string myUser = "i:0#.f|membership|" +
                                         ConfigurationManager.AppSettings["spUserName"];
@@ -493,7 +498,8 @@ namespace ZFYL
         //gavdcodeend 26
 
         //gavdcodebegin 27
-        static void SpCsCsomUpdateOnePropertyUserProfile(ClientContext spCtx)
+        static void SpCsCsomUpdateOnePropertyUserProfile(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
             PersonProperties myUserProperties = myPeopleManager.GetMyProperties();
@@ -508,7 +514,8 @@ namespace ZFYL
         //gavdcodeend 27
 
         //gavdcodebegin 28
-        static void SpCsCsomUpdateOneMultPropertyUserProfile(ClientContext spCtx)
+        static void SpCsCsomUpdateOneMultPropertyUserProfile(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             PeopleManager myPeopleManager = new PeopleManager(spCtx);
             PersonProperties myUserProperties = myPeopleManager.GetMyProperties();
@@ -526,7 +533,7 @@ namespace ZFYL
 
         //gavdcodebegin 29
         static void SpCsRestGetAllPropertiesUserProfile(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -544,7 +551,7 @@ namespace ZFYL
 
         //gavdcodebegin 30
         static void SpCsRestGetAllMyPropertiesUserProfile(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             using (SPHttpClient client = new SPHttpClient(webUri, userName, password))
             {
@@ -559,7 +566,7 @@ namespace ZFYL
 
         //gavdcodebegin 31
         static void SpCsRestGetPropertiesUserProfile(Uri webUri, string userName,
-                                                                    string password)
+                                                   string password)  //*** LEGACY CODE ***
         {
             string myUser = "i%3A0%23.f%7Cmembership%7C" +
                  ConfigurationManager.AppSettings["spUserName"].Replace("@", "%40");
@@ -576,7 +583,8 @@ namespace ZFYL
         //gavdcodeend 31
 
         //gavdcodebegin 32
-        static void SpCsCsomGenerateWebSiteScript(ClientContext spCtx)
+        static void SpCsCsomGenerateWebSiteScript(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spCtx);
 
@@ -600,7 +608,7 @@ namespace ZFYL
         //gavdcodeend 32
 
         //gavdcodebegin 33
-        static void SpCsCsomAddSiteScript(ClientContext spCtx)
+        static void SpCsCsomAddSiteScript(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string myScript = System.IO.File.ReadAllText
                                             (@"C:\Temporary\TestListSiteScript.json");
@@ -621,7 +629,7 @@ namespace ZFYL
         //gavdcodeend 33
 
         //gavdcodebegin 34
-        static void SpCsCsomGetAllSiteScripts(ClientContext spCtx)
+        static void SpCsCsomGetAllSiteScripts(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spCtx);
 
@@ -633,7 +641,7 @@ namespace ZFYL
         //gavdcodeend 34
 
         //gavdcodebegin 35
-        static void SpCsCsomUpdateSiteScript(ClientContext spCtx)
+        static void SpCsCsomUpdateSiteScript(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spCtx);
 
@@ -651,7 +659,7 @@ namespace ZFYL
         //gavdcodeend 35
 
         //gavdcodebegin 36
-        static void SpCsCsomDeleteSiteScript(ClientContext spCtx)
+        static void SpCsCsomDeleteSiteScript(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Guid myId = new Guid("da06b992-aeaf-439d-a73a-08905ae3e884");
 
@@ -664,7 +672,7 @@ namespace ZFYL
         //gavdcodeend 36
 
         //gavdcodebegin 37
-        static void SpCsCsomAddSiteDesign(ClientContext spCtx)
+        static void SpCsCsomAddSiteDesign(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Guid myId = new Guid("79a5174f-0712-49c7-b6af-5a45918c55ee");
 
@@ -685,7 +693,7 @@ namespace ZFYL
         //gavdcodeend 37
 
         //gavdcodebegin 38
-        static void SpCsCsomApplySiteDesign(ClientContext spCtx)
+        static void SpCsCsomApplySiteDesign(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string mySiteUrl = "https://[domain].sharepoint.com/sites/aaa05";
             Guid myId = new Guid("abed53c3-4515-4308-8821-ffc3ec3dbcdb");
@@ -699,7 +707,7 @@ namespace ZFYL
         //gavdcodeend 38
 
         //gavdcodebegin 39
-        static void SpCsCsomGetAllSiteDesigns(ClientContext spCtx)
+        static void SpCsCsomGetAllSiteDesigns(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spCtx);
 
@@ -711,7 +719,7 @@ namespace ZFYL
         //gavdcodeend 39
 
         //gavdcodebegin 40
-        static void SpCsCsomUpdateSiteDesign(ClientContext spCtx)
+        static void SpCsCsomUpdateSiteDesign(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Tenant myTenant = new Tenant(spCtx);
 
@@ -729,7 +737,7 @@ namespace ZFYL
         //gavdcodeend 40
 
         //gavdcodebegin 41
-        static void SpCsCsomGetTasksSiteDesign(ClientContext spCtx)
+        static void SpCsCsomGetTasksSiteDesign(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
 
@@ -742,7 +750,7 @@ namespace ZFYL
         //gavdcodeend 41
 
         //gavdcodebegin 42
-        static void SpCsCsomGetRunsSiteDesign(ClientContext spCtx)
+        static void SpCsCsomGetRunsSiteDesign(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
             Guid myId = new Guid("79a5174f-0712-49c7-b6af-5a45918c55ee");
@@ -756,7 +764,8 @@ namespace ZFYL
         //gavdcodeend 42
 
         //gavdcodebegin 43
-        static void SpCsCsomGetRunStatusSiteDesign(ClientContext spCtx)
+        static void SpCsCsomGetRunStatusSiteDesign(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
             Guid myId = new Guid("79a5174f-0712-49c7-b6af-5a45918c55ee");
@@ -780,7 +789,8 @@ namespace ZFYL
         //gavdcodeend 43
 
         //gavdcodebegin 44
-        static void SpCsCsomGrantRightsSiteDesign(ClientContext spCtx)
+        static void SpCsCsomGrantRightsSiteDesign(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Guid myId = new Guid("da06b992-aeaf-439d-a73a-08905ae3e884");
             string[] myPrincipals = new string[] { "[user]@[domain].onmicrosoft.com" };
@@ -795,7 +805,7 @@ namespace ZFYL
         //gavdcodeend 44
 
         //gavdcodebegin 45
-        static void SpCsCsomDeleteSiteDesign(ClientContext spCtx)
+        static void SpCsCsomDeleteSiteDesign(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Guid myId = new Guid("abed53c3-4515-4308-8821-ffc3ec3dbcdb");
 
@@ -808,7 +818,8 @@ namespace ZFYL
         //gavdcodeend 45
 
         //gavdcodebegin 46
-        static void SpCsPnpcoreGenerateSiteTemplateXml(ClientContext spCtx)
+        static void SpCsPnpcoreGenerateSiteTemplateXml(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
                 ProvisioningTemplateCreationInformation myProvisioner = 
@@ -840,7 +851,8 @@ namespace ZFYL
         //gavdcodeend 46
 
         //gavdcodebegin 47
-        static void SpCsPnpcoreGenerateSiteListTemplate(ClientContext spCtx)
+        static void SpCsPnpcoreGenerateSiteListTemplate(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
                 ProvisioningTemplateCreationInformation myProvisioner = 
@@ -876,7 +888,8 @@ namespace ZFYL
         //gavdcodeend 47
 
         //gavdcodebegin 48
-        static void SpCsPnpcoreApplySiteTemplate(ClientContext spCtx)
+        static void SpCsPnpcoreApplySiteTemplate(
+                                               ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
             spCtx.Load(myWeb, w => w.Title);

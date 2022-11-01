@@ -263,7 +263,7 @@ Function GrPsGetAllListsInSite()
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
-	$SiteId = "3d93e562-aeb0-4316-a2b1-914aff04ad1a"
+	$SiteId = "870ae987-120f-45ed-aa6e-b4a6b7bc226e"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists"
 	
 	$myOAuth = Get-AzureTokenApplication -ClientID $ClientIDApp `
@@ -502,10 +502,10 @@ Function GrPsDeleteItem()
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
-[xml]$configFile = get-content "C:\Projects\grPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-$ClientIDApp = $configFile.appsettings.ClientIdApp
-$ClientSecretApp = $configFile.appsettings.ClientSecretApp
+$ClientIDApp = $configFile.appsettings.ClientIdWithSecret
+$ClientSecretApp = $configFile.appsettings.ClientSecret
 $TenantName = $configFile.appsettings.TenantName
 $UserName = $configFile.appsettings.UserName
 

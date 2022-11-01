@@ -54,5 +54,5 @@ export default class ToDoWp01WebPart extends
       ]
     };
   }
-}
+}  
 //gavdcodeend 02
