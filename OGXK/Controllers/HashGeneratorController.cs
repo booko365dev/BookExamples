@@ -15,6 +15,8 @@ namespace OGXK.Controllers
         [HttpGet]  
         public string Get([FromUri] string RawData)
         {
+            // Legacy code. This solutions uses the "ASP.NET Web Application (.Net Framework)"
+            // See repo UBXU for the same result using the DOT.NET Core framework
             StringBuilder dataBuilder = new StringBuilder();
 
             using (SHA256 sha256Hash = SHA256.Create())
