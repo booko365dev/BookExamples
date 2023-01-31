@@ -8,11 +8,11 @@ namespace KKJA
         {
         }
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         protected void btnGenerateGuid_Click(object sender, EventArgs e)
         {
             lblNewGuid.Text = Guid.NewGuid().ToString();
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
     }
 }

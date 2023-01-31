@@ -1,4 +1,4 @@
-﻿<!--gavdcodebegin 03-->
+﻿<!--gavdcodebegin 003-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Privacy.aspx.cs" 
     Inherits="KKJA.Privacy" %>
 
@@ -20,4 +20,4 @@
     </form>
 </body>
 </html>
-<!--gavdcodeend 03-->
+<!--gavdcodeend 003-->

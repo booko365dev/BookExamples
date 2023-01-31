@@ -18,7 +18,7 @@ using System.Security.Cryptography.X509Certificates;
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
                                                    string SiteCollUrl, LogLevel ShowLogs)
 {
@@ -52,9 +52,9 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
 
     return myContext;
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
                   string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
 {
@@ -91,9 +91,9 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
 
     return myContext;
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
                     string CertificateThumbprint, string SiteCollUrl, LogLevel ShowLogs)
 {
@@ -127,13 +127,13 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 
     return myContext;
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void PnPCoreSdkGetWebWithInteraction()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -147,9 +147,9 @@ static void PnPCoreSdkGetWebWithInteraction()
         Console.WriteLine($"The title of the web is '" + myContext.Web.Title + "'");
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void PnPCoreSdkGetListsWithAccPw()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -168,9 +168,9 @@ static void PnPCoreSdkGetListsWithAccPw()
         }
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void PnPCoreSdkGetItemsWithCertificate()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -194,7 +194,7 @@ static void PnPCoreSdkGetItemsWithCertificate()
         }
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------

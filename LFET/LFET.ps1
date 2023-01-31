@@ -1,105 +1,129 @@
 ﻿
-#gavdcodebegin 01
-Function LoginPsPowerPlatform()
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+
+#gavdcodebegin 001
+Function LoginPsPowerPlatform
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	Add-PowerAppsAccount -Username $configFile.appsettings.UserName -Password $securePW
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-Function LoginPsCLI()
+Function LoginPsCLI
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
 			   --password $configFile.appsettings.UserPw
 }
 
-#----------------------------------------------------------------------------------------
+Function LoginPsPnPPowerShellWithAccPwDefault
+{
+	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
-##==> Routines for PowerShell
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+			-argumentlist $configFile.appsettings.UserName, $securePW
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+}
 
-#gavdcodebegin 02
-Function PowerAppPsAdminEnumerateApps()
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
+
+
+##==> Routines for PowerShell Admin and Maker cmdlets
+
+#gavdcodebegin 002
+Function PapPsAdmin_EnumerateApps
 {
 	Get-AdminPowerApp
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function PowerAppPsAdminFindOneApps()
+#gavdcodebegin 003
+Function PapPsAdmin_FindOneApps
 {
-	Get-AdminPowerApp "NameApp"
+	Get-AdminPowerApp "a4978531-2218-406c-9158-0b9353334c6d"
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-Function PowerAppsPsAdminUserDetails()
+#gavdcodebegin 004
+Function PapPsAdmin_UserDetails
 {
 	Get-AdminPowerAppsUserDetails `
 		-OutputFilePath "C:\Temporary\UsersPA.json" `
 		–UserPrincipalName "user@domain.onmicrosoft.com"
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-Function PowerAppsPsAdminSetOwner()
+#gavdcodebegin 005
+Function PapPsAdmin_SetOwner
 {
 	Set-AdminPowerAppOwner `
 		–AppName "01d96b0e-f371-4ced-91c4-bc53acb5dbcf" `
 		-AppOwner "092b1237-a428-45a7-b76b-310fdd6e7246" `
 		-EnvironmentName "Default-03d561bf-4472-41e0-b2d6-ee506471e9d0"
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-Function PowerAppsPsAdminSetFeatured()
+#gavdcodebegin 006
+Function PapPsAdmin_SetFeatured
 {
 	Get-AdminPowerApp "NameApp" | Set-AdminPowerAppAsFeatured
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-Function PowerAppsPsAdminSetHero()
+#gavdcodebegin 007
+Function PapPsAdmin_SetHero
 {
 	Get-AdminPowerApp "NameApp" | Set-AdminPowerAppAsHero
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 09
-Function PowerAppsPsAdminDeleteFeatured()
+#gavdcodebegin 009
+Function PapPsAdmin_DeleteFeatured
 {
 	Get-AdminPowerApp "NameApp" | Clear-AdminPowerAppAsFeatured
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-Function PowerAppsPsAdminDeleteHero()
+#gavdcodebegin 010
+Function PapPsAdmin_DeleteHero
 {
 	Get-AdminPowerApp "NameApp" | Clear-AdminPowerAppAsHero
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 08
-Function PowerAppsPsAdminDeleteApp()
+#gavdcodebegin 008
+Function PapPsAdmin_DeleteApp
 {
 	Remove-AdminPowerApp `
 		–AppName "01d96b0e-f371-4ced-91c4-bc53acb5dbcf" `
 		-EnvironmentName "Default-03d561bf-4472-41e0-b2d6-ee506471e9d0"
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 11
-Function PowerAppsPsAdminFindRoles()
+#gavdcodebegin 011
+Function PapPsAdmin_FindRoles
 {
 	Get-AdminPowerAppRoleAssignment `
-		–UserId "959ae10e-0015-4948-b602-fbf7fccfe2a3"
+		–UserId "acc28fcb-5261-47f8-960b-715d2f98a431"
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-Function PowerAppsPsAdminAddRoles()
+#gavdcodebegin 012
+Function PapPsAdmin_AddRoles
 {
 	Set-AdminPowerAppRoleAssignment `
 		-AppName "fa014c64-efe7-4301-bea2-9034bb7b51fd" `
@@ -108,10 +132,10 @@ Function PowerAppsPsAdminAddRoles()
 		-PrincipalType User `
 		-PrincipalObjectId "959ae10e-0015-4948-b602-fbf7fccfe2a3"
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-Function PowerAppsPsAdminDeleteRoles()
+#gavdcodebegin 013
+Function PapPsAdmin_DeleteRoles
 {
 	$myRoleId = "/providers/Microsoft.PowerApps/scopes/admin/apps/" + 
 				"fa014c64-efe7-4301-bea2-9034bb7b51fd/permissions/" + 
@@ -122,81 +146,176 @@ Function PowerAppsPsAdminDeleteRoles()
 		–AppName "fa014c64-efe7-4301-bea2-9034bb7b51fd" `
 		-RoleId $myRoleId
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-Function PowerAppsPsMakerEnumerateEnvironments()
+#gavdcodebegin 035
+Function PapPsAdmin_GetDeletedApps
+{
+	Get-AdminDeletedPowerAppsList `
+						-EnvironmentName "Default-ade56059-89c0-4594-90c3-e4772a8168ca"
+}
+#gavdcodeend 035
+
+#gavdcodebegin 036
+Function PapPsAdmin_RecoverDeletedApps
+{
+	Get-AdminRecoverDeletedPowerApp `
+						-AppName "a4978531-2218-406c-9158-0b9353334c6d" `
+						-EnvironmentName "Default-ade56059-89c0-4594-90c3-e4772a8168ca"
+}
+#gavdcodeend 036
+
+#gavdcodebegin 037
+Function PapPsAdmin_GetTenantSettings
+{
+	Get-TenantSettings
+}
+#gavdcodeend 037
+
+#gavdcodebegin 038
+Function PapPsAdmin_ModifyTenantSettings
+{
+	$mySettings = Get-TenantSettings 
+	$mySettings.disableTrialEnvironmentCreationByNonAdminUsers = $true 
+	Set-TenantSettings -RequestBody $mySettings
+}
+#gavdcodeend 038
+
+#gavdcodebegin 039
+Function PapPsAdmin_GetAllEnvironments
+{
+	Get-AdminPowerAppEnvironment
+}
+#gavdcodeend 039
+
+#gavdcodebegin 040
+Function PapPsAdmin_GetOneEnvironments
+{
+	Get-AdminPowerAppEnvironment –Default
+	Get-AdminPowerAppEnvironment –EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444"
+}
+#gavdcodeend 040
+
+#gavdcodebegin 041
+Function PapPsAdmin_GetAdToken
+{
+	Get-JwtToken "https://service.powerapps.com/"
+}
+#gavdcodeend 041
+
+#gavdcodebegin 042
+Function PapPsAdmin_SelectEnvironment
+{
+	Select-CurrentEnvironment -Default
+	Select-CurrentEnvironment -EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444"
+}
+#gavdcodeend 042
+
+#gavdcodebegin 043
+Function PapPsAdmin_GetAllCustomConnectors
+{
+	Get-AdminPowerAppConnector
+}
+#gavdcodeend 043
+
+#gavdcodebegin 044
+Function PapPsMaker_GetAllConnectors
+{
+	Get-PowerAppConnector
+}
+#gavdcodeend 044
+
+#gavdcodebegin 045
+Function PapPsAdmin_DeleteCustomConnector
+{
+	Remove-AdminPowerAppConnector `
+		-EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444" `
+		-ConnectorName "shared_chapter17getmails-5f8f636b4042be0adb-5f8a8be452227400db"
+}
+#gavdcodeend 045
+
+#gavdcodebegin 046
+Function PapPsMaker_DeleteConnector
+{
+	Remove-PowerAppConnector `
+		-EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444" `
+		-ConnectorName "shared_zvanuparvaldnieks"
+}
+#gavdcodeend 046
+
+#gavdcodebegin 014
+Function PapPsMaker_EnumerateEnvironments
 {
 	Get-PowerAppEnvironment
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-Function PowerAppsPsMakerEnumerateApps()
+#gavdcodebegin 015
+Function PapPsMaker_EnumerateApps
 {
 	Get-PowerApp
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-Function PowerAppsPsMakerSetDisplayName()
+#gavdcodebegin 016
+Function PapPsMaker_SetDisplayName
 {
 	Set-PowerAppDisplayName `
 		-AppName "fa014c64-efe7-4301-bea2-9034bb7b51fd" `
 		-AppDisplayName "NameChangedApp"
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-Function PowerAppsPsMakerGetNotifications()
+#gavdcodebegin 017
+Function PapPsMaker_GetNotifications
 {
 	Get-PowerAppsNotification
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
-Function PowerAppsPsMakerPublishApp()
+#gavdcodebegin 018
+Function PapPsMaker_PublishApp
 {
 	Publish-PowerApp `
 		-AppName "fa014c64-efe7-4301-bea2-9034bb7b51fd"
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-Function PowerAppsPsMakerEnumerateVersions()
+#gavdcodebegin 019
+Function PapPsMaker_EnumerateVersions
 {
 	Get-PowerAppVersion `
 		-AppName "c9a52c61-a550-4c5f-ac2c-b3c36032a505"
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
-Function PowerAppsPsMakerRestoreVersion()
+#gavdcodebegin 020
+Function PapPsMaker_RestoreVersion
 {
 	Restore-PowerAppVersion `
 		-AppName "c9a52c61-a550-4c5f-ac2c-b3c36032a505" `
 		-AppVersionName "20191215T131114Z"
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
-Function PowerAppsPsMakerDeleteApp()
+#gavdcodebegin 021
+Function PapPsMaker_DeleteApp
 {
 	Remove-PowerApp `
 		-AppName "c9a52c61-a550-4c5f-ac2c-b3c36032a505"
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
-Function PowerAppsPsMakerFindRoles()
+#gavdcodebegin 022
+Function PapPsMaker_FindRoles
 {
 	Get-PowerAppRoleAssignment `
 		–AppName "c7965df9-a921-4a23-a21d-02ff19fca82d"
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
-Function PowerAppsPsMakerAddRoles()
+#gavdcodebegin 023
+Function PapPsMaker_AddRoles
 {
 	Set-PowerAppRoleAssignment `
 		-AppName "c7965df9-a921-4a23-a21d-02ff19fca82d" `
@@ -205,10 +324,10 @@ Function PowerAppsPsMakerAddRoles()
 		-PrincipalType User `
 		-PrincipalObjectId "959ae10e-0015-4948-b602-fbf7fccfe2a3"
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
-Function PowerAppsPsMakerDeleteRoles()
+#gavdcodebegin 024
+Function PapPsMaker_DeleteRoles
 {
 	$myRoleId = "/providers/Microsoft.PowerApps/apps/" + 
 				"c7965df9-a921-4a23-a21d-02ff19fca82d/permissions/" + 
@@ -219,14 +338,14 @@ Function PowerAppsPsMakerDeleteRoles()
 		–AppName "c7965df9-a921-4a23-a21d-02ff19fca82d" `
 		-RoleId $myRoleId
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
 #-----------------------------------------------------------------------------------------
 
 ##==> Routines for CLI
 
-#gavdcodebegin 25
-Function PowerAppsPsCliGetAllApps()
+#gavdcodebegin 025
+Function PapPsCli_GetAllApps
 {
 	LoginPsCLI
 	
@@ -234,10 +353,10 @@ Function PowerAppsPsCliGetAllApps()
 
 	m365 logout
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
-#gavdcodebegin 26
-Function PowerAppsPsCliGetAllAppsByEnvironment()
+#gavdcodebegin 026
+Function PapPsCli_GetAllAppsByEnvironment
 {
 	LoginPsCLI
 	
@@ -246,10 +365,10 @@ Function PowerAppsPsCliGetAllAppsByEnvironment()
 
 	m365 logout
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
-Function PowerAppsPsCliGetOneApp()
+#gavdcodebegin 027
+Function PapPsCli_GetOneApp
 {
 	LoginPsCLI
 	
@@ -258,10 +377,10 @@ Function PowerAppsPsCliGetOneApp()
 
 	m365 logout
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
-Function PowerAppsPsCliDeleteOneApp()
+#gavdcodebegin 028
+Function PapPsCli_DeleteOneApp
 {
 	LoginPsCLI
 	
@@ -269,10 +388,10 @@ Function PowerAppsPsCliDeleteOneApp()
 
 	m365 logout
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
-Function PowerAppsPsCliGetAllEnvironment()
+#gavdcodebegin 029
+Function PapPsCli_GetAllEnvironment
 {
 	LoginPsCLI
 	
@@ -280,10 +399,10 @@ Function PowerAppsPsCliGetAllEnvironment()
 
 	m365 logout
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
-Function PowerAppsPsCliGetOneEnvironment()
+#gavdcodebegin 030
+Function PapPsCli_GetOneEnvironment
 {
 	LoginPsCLI
 	
@@ -291,10 +410,10 @@ Function PowerAppsPsCliGetOneEnvironment()
 
 	m365 logout
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#gavdcodebegin 31
-Function PowerAppsPsCliGetAllConnectors()
+#gavdcodebegin 031
+Function PapPsCli_GetAllConnectors
 {
 	LoginPsCLI
 	
@@ -302,10 +421,10 @@ Function PowerAppsPsCliGetAllConnectors()
 
 	m365 logout
 }
-#gavdcodeend 31
+#gavdcodeend 031
 
-#gavdcodebegin 32
-Function PowerAppsPsCliExportOneConnectors()
+#gavdcodebegin 032
+Function PapPsCli_ExportOneConnectors
 {
 	LoginPsCLI
 	
@@ -315,10 +434,10 @@ Function PowerAppsPsCliExportOneConnectors()
 
 	m365 logout
 }
-#gavdcodeend 32
+#gavdcodeend 032
 
-#gavdcodebegin 33
-Function PowerAppsPsCliScaffoldSolution()
+#gavdcodebegin 033
+Function PapPsCli_ScaffoldSolution
 {
 	LoginPsCLI
 	
@@ -326,10 +445,10 @@ Function PowerAppsPsCliScaffoldSolution()
 
 	m365 logout
 }
-#gavdcodeend 33
+#gavdcodeend 033
 
-#gavdcodebegin 33
-Function PowerAppsPsCliScaffoldComponent()
+#gavdcodebegin 034
+Function PapPsCli_ScaffoldComponent
 {
 	LoginPsCLI
 	
@@ -339,48 +458,72 @@ Function PowerAppsPsCliScaffoldComponent()
 
 	m365 logout
 }
-#gavdcodeend 33
+#gavdcodeend 034
 
 #-----------------------------------------------------------------------------------------
 
+
+##==> Routines for PnPPowerShell
+
+# No cmdlets for Power Apps in the PnP PowerShell module
+
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
+
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-##==> PowerShell
+##==> PowerShell Admin and Maker cmdlets
 #LoginPsPowerPlatform
-
-#PowerAppPsAdminEnumerateApps
-#PowerAppPsAdminFindOneApps
-#PowerAppsPsAdminUserDetails
-#PowerAppsPsAdminSetOwner
-#PowerAppsPsAdminSetFeatured
-#PowerAppsPsAdminSetHero
-#PowerAppsPsAdminDeleteApp
-#PowerAppsPsAdminDeleteHero
-#PowerAppsPsAdminDeleteFeatured
-#PowerAppsPsAdminFindRoles
-#PowerAppsPsAdminAddRoles
-#PowerAppsPsAdminDeleteRoles
-#PowerAppsPsMakerEnumerateEnvironments
-#PowerAppsPsMakerEnumerateApps
-#PowerAppsPsMakerSetDisplayName
-#PowerAppsPsMakerGetNotifications
-#PowerAppsPsMakerPublishApp
-#PowerAppsPsMakerEnumerateVersions
-#PowerAppsPsMakerRestoreVersion
-#PowerAppsPsMakerDeleteApp
-#PowerAppsPsMakerFindRoles
-#PowerAppsPsMakerAddRoles
-#PowerAppsPsMakerDeleteRoles
+#PapPsAdmin_EnumerateApps
+#PapPsAdmin_FindOneApps
+#PapPsAdmin_UserDetails
+#PapPsAdmin_SetOwner
+#PapPsAdmin_SetFeatured
+#PapPsAdmin_SetHero
+#PapPsAdmin_DeleteApp
+#PapPsAdmin_DeleteHero
+#PapPsAdmin_DeleteFeatured
+#PapPsAdmin_FindRoles
+#PapPsAdmin_AddRoles
+#PapPsAdmin_DeleteRoles
+#PapPsAdmin_GetDeletedApps
+#PapPsAdmin_RecoverDeletedApps
+#PapPsAdmin_GetTenantSettings
+#PapPsAdmin_ModifyTenantSettings
+#PapPsAdmin_GetAllEnvironments
+#PapPsAdmin_GetOneEnvironments
+#PapPsAdmin_GetAdToken
+#PapPsAdmin_SelectEnvironment
+#PapPsAdmin_GetAllCustomConnectors
+#PapPsMaker_GetAllConnectors
+#PapPsAdmin_DeleteCustomConnector
+#PapPsMaker_DeleteConnector
+#PapPsMaker_EnumerateEnvironments
+#PapPsMaker_EnumerateApps
+#PapPsMaker_SetDisplayName
+#PapPsMaker_GetNotifications
+#PapPsMaker_PublishApp
+#PapPsMaker_EnumerateVersions
+#PapPsMaker_RestoreVersion
+#PapPsMaker_DeleteApp
+#PapPsMaker_FindRoles
+#PapPsMaker_AddRoles
+#PapPsMaker_DeleteRoles
 
 ##==> CLI
-#PowerAppsPsCliGetAllApps
-#PowerAppsPsCliGetAllAppsByEnvironment
-#PowerAppsPsCliGetOneApp
-#PowerAppsPsCliDeleteOneApp
-#PowerAppsPsCliGetAllEnvironment
-#PowerAppsPsCliGetOneEnvironment
-#PowerAppsPsCliGetAllConnectors
-#PowerAppsPsCliExportOneConnectors
-#PowerAppsPsCliScaffoldComponent
+#PapPsCli_GetAllApps
+#PapPsCli_GetAllAppsByEnvironment
+#PapPsCli_GetOneApp
+#PapPsCli_DeleteOneApp
+#PapPsCli_GetAllEnvironment
+#PapPsCli_GetOneEnvironment
+#PapPsCli_GetAllConnectors
+#PapPsCli_ExportOneConnectors
+#PapPsCli_ScaffoldComponent
+
+##==> PnPPowerShell
+#PapPsPnpPowerShell_
 
 Write-Host "Done"  

@@ -29,7 +29,7 @@ using System.Web;
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 SecureString usrPw = new SecureString();
 foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
     usrPw.AppendChar(oneChar);
@@ -57,13 +57,13 @@ static void SpCsCsomReadAllList(ClientContext spCtx)
         Console.WriteLine(oneList.Title + " - " + oneList.Id);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 public class AuthenticationManager : IDisposable
 {
     private static readonly HttpClient httpClient = new HttpClient();
@@ -284,6 +284,6 @@ public class AuthenticationManager : IDisposable
         GC.SuppressFinalize(this);
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
 #nullable enable
