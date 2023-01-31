@@ -8,12 +8,12 @@ namespace RBYP
         {
         }
 
-        //gavdcodebegin 04
+        //gavdcodebegin 004
         protected void btnGenerateRandomString_Click(object sender, EventArgs e)
         {
             lblRandomString.Text =
                         System.IO.Path.GetRandomFileName().Replace(".", string.Empty);
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
     }
 }

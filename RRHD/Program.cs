@@ -12,7 +12,7 @@ using PnP.Framework;
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static ClientContext LoginPnPFramework_WithAccPw()
 {
     SecureString mySecurePw = new SecureString();
@@ -30,9 +30,9 @@ static ClientContext LoginPnPFramework_WithAccPw()
 
     return rtnContext;
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static ClientContext LoginPnPFramework_WithCertificate()
 {
     AuthenticationManager myAuthManager = new
@@ -47,9 +47,9 @@ static ClientContext LoginPnPFramework_WithCertificate()
 
     return rtnContext;
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static ClientContext LoginPnPFramework_PnPManagementShell()
 {
     SecureString mySecurePw = new SecureString();
@@ -66,9 +66,9 @@ static ClientContext LoginPnPFramework_PnPManagementShell()
 
     return rtnContext;
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
 {
     // NOTE: Microsoft stopped AzureAD App access for authentication of SharePoint
@@ -81,13 +81,13 @@ static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
 
     return rtnContext;
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsPnPFrameworkExampleWithAccPw()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -105,9 +105,9 @@ static void SpCsPnPFrameworkExampleWithAccPw()
         Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsPnPFrameworkExampleWithCertificate()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithCertificate())
@@ -125,9 +125,9 @@ static void SpCsPnPFrameworkExampleWithCertificate()
         Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsPnPFrameworkExampleWithManagementShell()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_PnPManagementShell())
@@ -143,9 +143,9 @@ static void SpCsPnPFrameworkExampleWithManagementShell()
         Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsPnPFrameworkExampleWithSecret()  //*** LEGACY CODE ***
 {
     // NOTE: Microsoft stopped AzureAD App access for authentication of SharePoint
@@ -163,7 +163,7 @@ static void SpCsPnPFrameworkExampleWithSecret()  //*** LEGACY CODE ***
         Console.WriteLine(myDocuments.Id + " - " + myDocuments.Title);
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
