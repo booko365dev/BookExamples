@@ -4,7 +4,7 @@ namespace NWAL
 {
     public static class WebApiConfig
     {
-        //gavdcodebegin 06
+        //gavdcodebegin 006
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
@@ -20,6 +20,6 @@ namespace NWAL
 
             config.InitializeReceiveGenericJsonWebHooks();
         }
-        //gavdcodeend 06
+        //gavdcodeend 006
     }
 }

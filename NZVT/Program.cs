@@ -14,7 +14,7 @@ using System.Security.Cryptography.X509Certificates;
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static GraphServiceClient GetGraphClientWithInteraction(string ClientId)
 {
     string[] myScopes = new string[]
@@ -34,9 +34,9 @@ static GraphServiceClient GetGraphClientWithInteraction(string ClientId)
 
     return graphClient;
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static GraphServiceClient GetGraphClientWithAccPw(
             string TenantId, string ClientId, string Account, string Password)
 {
@@ -52,9 +52,9 @@ static GraphServiceClient GetGraphClientWithAccPw(
 
     return graphClient;
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static GraphServiceClient GetGraphClientWithSecret(
                             string TenantId, string ClientId, string ClientSecret)
 {
@@ -70,9 +70,9 @@ static GraphServiceClient GetGraphClientWithSecret(
 
     return graphClient;
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static GraphServiceClient GetGraphClientWithCertificat(
                    string TenantId, string ClientId, string CertificateThumbprint,
                    StoreName CertStoreName, StoreLocation CertStoreLocation)
@@ -92,9 +92,9 @@ static GraphServiceClient GetGraphClientWithCertificat(
 
     return graphClient;
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void GetTokenWithInteraction(string TenantId, string ClientId)
 {
     string authorityEndpoint = "https://login.microsoftonline.com/" + TenantId;
@@ -118,9 +118,9 @@ static void GetTokenWithInteraction(string TenantId, string ClientId)
     Console.WriteLine("Token for   - " + myToken.Account.Username);
     Console.WriteLine("Token value - " + myToken.AccessToken);
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void GetTokenWithAccPw(
                         string TenantId, string ClientId, string Account, string Password)
 {
@@ -148,9 +148,9 @@ static void GetTokenWithAccPw(
     Console.WriteLine("Token for   - " + myToken.Account.Username);
     Console.WriteLine("Token value - " + myToken.AccessToken);
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void GetTokenWithSecret(string TenantId, string ClientId, string ClientSecret)
 {
     string authorityEndpoint = "https://login.microsoftonline.com/" + TenantId;
@@ -174,9 +174,9 @@ static void GetTokenWithSecret(string TenantId, string ClientId, string ClientSe
 
     Console.WriteLine("Token value - " + myToken.AccessToken);
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void GetTokenWithCertificate(
                         string TenantId, string ClientId, string CertificateThumbprint)
 {
@@ -204,9 +204,9 @@ static void GetTokenWithCertificate(
 
     Console.WriteLine("Token value - " + myToken.AccessToken);
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static X509Certificate2 GetCertificateByThumbprint(
                         StoreName storeName, StoreLocation storeLoc, String thumbprint)
 {
@@ -246,13 +246,13 @@ static X509Certificate2 GetCertificateByName(
 
     return myCertificate;
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void GetGrQueryWithInteraction()
 {
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -265,9 +265,9 @@ static void GetGrQueryWithInteraction()
 
     Console.WriteLine(mySite.Name);
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void GetGrQueryWithAccPw()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -288,9 +288,9 @@ static void GetGrQueryWithAccPw()
         Console.WriteLine(oneList.Name);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void GetGrQueryWithSecret()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -311,9 +311,9 @@ static void GetGrQueryWithSecret()
         Console.WriteLine(oneItem.WebUrl);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void GetGrQueryWithCertificate()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -330,7 +330,7 @@ static void GetGrQueryWithCertificate()
 
     Console.WriteLine(myUser.DisplayName);
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------

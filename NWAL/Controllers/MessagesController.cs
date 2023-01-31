@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace NWAL.Controllers
 {
-    //gavdcodebegin 01
+    //gavdcodebegin 001
     public class MessagesController : WebHookHandler
     {
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         public MessagesController()
         {
             this.Receiver = GenericJsonWebHookReceiver.ReceiverName;
@@ -37,9 +37,9 @@ namespace NWAL.Controllers
 
             return Task.FromResult(true);
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 04
+        //gavdcodebegin 004
         static void SendMessageBack(dynamic BodyObj, bool ValidationResult,
                                     WebHookHandlerContext TheContext)
         {
@@ -52,9 +52,9 @@ namespace NWAL.Controllers
             TheContext.Response = TheContext.Request.CreateResponse();
             TheContext.Response.Content = new StringContent(jsonMessage);
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
         static bool ValidationIsOk(WebHookHandlerContext TheContext)
         {
             bool rtnBool = false;
@@ -79,6 +79,6 @@ namespace NWAL.Controllers
 
             return rtnBool;
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
     }
 }
