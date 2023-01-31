@@ -1,4 +1,4 @@
-//gavdcodebegin 01
+//gavdcodebegin 001
 import { Version } from '@microsoft/sp-core-library';
 import * as microsoftTeams from '@microsoft/teams-js';
 import {
@@ -7,7 +7,7 @@ import {
   PropertyPaneTextField
 } from '@microsoft/sp-webpart-base';
 import { escape } from '@microsoft/sp-lodash-subset';
-//gavdcodeend 01
+//gavdcodeend 001
 
 import styles from './SpFxAsTeamsTabWebPart.module.scss';
 import * as strings from 'SpFxAsTeamsTabWebPartStrings';
@@ -16,7 +16,7 @@ export interface ISpFxAsTeamsTabWebPartProps {
   description: string;
 }
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 export default class SpFxAsTeamsTabWebPart extends BaseClientSideWebPart<ISpFxAsTeamsTabWebPartProps> {
   private myTeamsContext: microsoftTeams.Context;
 
@@ -32,9 +32,9 @@ protected onInit(): Promise<any> {
   }
   return retVal;
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
   public render(): void {
 
     let webpartContext: string = '';
@@ -58,7 +58,7 @@ protected onInit(): Promise<any> {
         </div>
       </div>`;
   }
-//gavdcodeend 03
+//gavdcodeend 003
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');

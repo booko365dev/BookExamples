@@ -32,7 +32,7 @@ namespace EJON
 
         //-------------------------------------------------------------------------------
 
-        //gavdcodebegin 07
+        //gavdcodebegin 007
         static void SpCsCsomExample()  //*** LEGACY CODE ***
         {
             ClientContext spCtx = LoginCsom();
@@ -43,9 +43,9 @@ namespace EJON
 
             Console.WriteLine(rootWeb.Created.ToShortDateString());
         }
-        //gavdcodeend 07
+        //gavdcodeend 007
 
-        //gavdcodebegin 08
+        //gavdcodebegin 008
         static void SpCsPnPCoreExample()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
@@ -57,9 +57,9 @@ namespace EJON
 
             Console.WriteLine(rootWebPnp.Created.ToShortDateString());
         }
-        //gavdcodeend 08
+        //gavdcodeend 008
 
-        //gavdcodebegin 09
+        //gavdcodebegin 009
         static void SpCsRestExample01()  //*** LEGACY CODE ***
         {
             Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
@@ -75,9 +75,9 @@ namespace EJON
                 Console.WriteLine(data);
             }
         }
-        //gavdcodeend 09
+        //gavdcodeend 009
 
-        //gavdcodebegin 10
+        //gavdcodebegin 010
         static void SpCsRestExample02()  //*** LEGACY CODE ***
         {
             Uri webUri = new Uri(ConfigurationManager.AppSettings["spUrl"]);
@@ -101,11 +101,11 @@ namespace EJON
                 Console.WriteLine(data);
             }
         }
-        //gavdcodeend 10
+        //gavdcodeend 010
 
         //-------------------------------------------------------------------------------
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         static ClientContext LoginCsom()  //*** LEGACY CODE ***
         {
             ClientContext rtnContext = new ClientContext(
@@ -122,9 +122,9 @@ namespace EJON
 
             return rtnContext;
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         static ClientContext LoginPnPCore()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
@@ -138,9 +138,9 @@ namespace EJON
 
             return rtnContext;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 06
+        //gavdcodebegin 006
         static void LoginPnPCoreMFA()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
@@ -154,9 +154,9 @@ namespace EJON
             
             Console.WriteLine("Connected to the site " + myWeb.Title + " using MFA");
         }
-        //gavdcodeend 06
+        //gavdcodeend 006
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
         static void LoginPnPCoreDirectly()  //*** LEGACY CODE ***
         {
             // ATTENTION: Using the deprecated SharePointPnPCoreOnline module
@@ -174,10 +174,10 @@ namespace EJON
                 Console.WriteLine(rootWeb.Created.ToShortDateString());
             }
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
     }
 
-    //gavdcodebegin 04
+    //gavdcodebegin 004
     class SPHttpClientHandler : HttpClientHandler  //*** LEGACY CODE ***
     {
         public SPHttpClientHandler(Uri webUri, string userName, string password)
@@ -217,9 +217,9 @@ namespace EJON
         JsonVerbose,
         Xml
     }
-    //gavdcodeend 04
+    //gavdcodeend 004
 
-    //gavdcodebegin 05
+    //gavdcodebegin 005
     class SPHttpClient : HttpClient  //*** LEGACY CODE ***
     {
         public SPHttpClient(Uri webUri, string userName, string password) : base(
@@ -307,5 +307,5 @@ namespace EJON
                                                         "FormDigestValue"].ToString();
         }
     }
-    //gavdcodeend 05
+    //gavdcodeend 005
 }
