@@ -1,4 +1,4 @@
-﻿<!--gavdcodebegin 06-->
+﻿<!--gavdcodebegin 006-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="auth.aspx.cs" Inherits="Test_TeamsTabGraphToolkit.auth" %>
 
 <!DOCTYPE html>
@@ -20,4 +20,4 @@
 
 </body>
 </html>
-<!--gavdcodeend 06-->
+<!--gavdcodeend 006-->

@@ -15,7 +15,7 @@ using System.Xml;
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static Tuple<string, string> GetTokenWithAccPw()
 {
     Tuple<string, string> tplReturn = new Tuple<string, string>(string.Empty, string.Empty);
@@ -66,9 +66,9 @@ static Tuple<string, string> GetTokenWithAccPw()
 
     return tplReturn;
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static string GetRequestDigest(Tuple<string, string> AuthToken)
 {
     string strReturn = string.Empty;
@@ -111,14 +111,14 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 
     return strReturn;
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void TestSpRestGet()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -169,9 +169,9 @@ static void TestSpRestGet()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void TestSpRestPost()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -228,9 +228,9 @@ static void TestSpRestPost()
         }
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void TestSpRestUpdate()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -285,9 +285,9 @@ static void TestSpRestUpdate()
         }
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void TestSpRestDelete()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -338,7 +338,7 @@ static void TestSpRestDelete()
         }
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
 
 //---------------------------------------------------------------------------------------
