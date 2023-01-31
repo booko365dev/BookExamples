@@ -12,7 +12,7 @@ using System.Web;
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static AdAppToken GetAzureTokenApplication(string TenantName, string ClientId, 
                                                                     string ClientSecret)
 {
@@ -37,9 +37,9 @@ static AdAppToken GetAzureTokenApplication(string TenantName, string ClientId,
 
     return tokenObj;
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static AdAppToken GetAzureTokenDelegation(string TenantName, string ClientId,
                                                          string UserName, string UserPw)
 {
@@ -65,13 +65,13 @@ static AdAppToken GetAzureTokenDelegation(string TenantName, string ClientId,
 
     return tokenObj;
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void GetTeamApp()
 {
     string graphQuery =
@@ -91,9 +91,9 @@ static void GetTeamApp()
     string resultText = myClient.ExecuteAsync(myRequest).Result.Content;
     Console.WriteLine(resultText);
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void CreateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -121,7 +121,7 @@ static void CreateChannelApp()
 
     Console.WriteLine(resultText);
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
 static void GetChannelApp()
 {
@@ -145,7 +145,7 @@ static void GetChannelApp()
     Console.WriteLine(resultText);
 }
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void UpdateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -171,9 +171,9 @@ static void UpdateChannelApp()
 
     Console.WriteLine(resultText);
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void DeleteChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -195,9 +195,9 @@ static void DeleteChannelApp()
 
     Console.WriteLine(resultText);
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void GetTeamDel()
 {
     string graphQuery =
@@ -218,9 +218,9 @@ static void GetTeamDel()
     string resultText = myClient.ExecuteAsync(myRequest).Result.Content;
     Console.WriteLine(resultText);
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void CreateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -249,7 +249,7 @@ static void CreateChannelDel()
 
     Console.WriteLine(resultText);
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
 static void GetChannelDel()
 {
@@ -274,7 +274,7 @@ static void GetChannelDel()
     Console.WriteLine(resultText);
 }
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void UpdateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -301,9 +301,9 @@ static void UpdateChannelDel()
 
     Console.WriteLine(resultText);
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void DeleteChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -326,7 +326,7 @@ static void DeleteChannelDel()
 
     Console.WriteLine(resultText);
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
@@ -358,7 +358,7 @@ Console.WriteLine("Done");
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 public class AdAppToken
 {
     public string token_type { get; set; }
@@ -369,6 +369,6 @@ public class AdAppToken
     public string resource { get; set; }
     public string access_token { get; set; }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
 #nullable enable

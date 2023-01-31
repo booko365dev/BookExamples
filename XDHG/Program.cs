@@ -17,7 +17,7 @@ namespace XDHG
             Console.ReadLine();
         }
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         static RestClient LoginRestSharp() //*** LEGACY CODE *** 
         {
             //****************************************************************************
@@ -46,9 +46,9 @@ namespace XDHG
 
             return myClient;
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         static void TestRestSharpGet() //*** LEGACY CODE *** 
         {
             RestClient myClient = LoginRestSharp();
@@ -59,9 +59,9 @@ namespace XDHG
 
             string resultJSON = myClient.Execute(myRequestResult).Content;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
         static void TestRestSharepPost() //*** LEGACY CODE *** 
         {
             RestClient myClient = LoginRestSharp();
@@ -78,9 +78,9 @@ namespace XDHG
             string resultJSONU = myClient.Execute(myRequestResultU).Content;
             string resultJSOND = myClient.Execute(myRequestResultD).Content;
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
 
-        //gavdcodebegin 04
+        //gavdcodebegin 004
         static RestRequest RequestCreate(string Digest) //*** LEGACY CODE *** 
         {
             RestRequest myRequest = new RestRequest(
@@ -95,9 +95,9 @@ namespace XDHG
 
             return myRequest;
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
 
-        //gavdcodebegin 05
+        //gavdcodebegin 005
         static RestRequest RequestUpdate(string Digest) //*** LEGACY CODE *** 
         {
             RestRequest myRequest = new RestRequest(
@@ -114,9 +114,9 @@ namespace XDHG
 
             return myRequest;
         }
-        //gavdcodeend 05
+        //gavdcodeend 005
 
-        //gavdcodebegin 06
+        //gavdcodebegin 006
         static RestRequest RequestDelete(string Digest) //*** LEGACY CODE *** 
         {
             RestRequest myRequest = new RestRequest(
@@ -129,6 +129,6 @@ namespace XDHG
 
             return myRequest;
         }
-        //gavdcodeend 06
+        //gavdcodeend 006
     }
 }

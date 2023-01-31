@@ -13,7 +13,7 @@ using System.Web;
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void GetTeamApp()
 {
     string graphQuery =
@@ -34,9 +34,9 @@ static void GetTeamApp()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void GetTeamDel()
 {
     string graphQuery =
@@ -58,9 +58,9 @@ static void GetTeamDel()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void CreateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -88,9 +88,9 @@ static void CreateChannelApp()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void CreateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -119,7 +119,7 @@ static void CreateChannelDel()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
 static void GetChannelApp()
 {
@@ -166,7 +166,7 @@ static void GetChannelDel()
     Console.WriteLine(resultText.Item2);
 }
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void UpdateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -201,9 +201,9 @@ static void UpdateChannelApp()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void UpdateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -239,9 +239,9 @@ static void UpdateChannelDel()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void DeleteChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -263,9 +263,9 @@ static void DeleteChannelApp()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void DeleteChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
@@ -288,9 +288,9 @@ static void DeleteChannelDel()
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static AdAppToken GetADTokenApplication()
 {
     RestGraphClient myClient = new RestGraphClient
@@ -304,9 +304,9 @@ static AdAppToken GetADTokenApplication()
 
     return resultToken;
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static AdAppToken GetADTokenDelegation()
 {
     RestGraphClient myClient = new RestGraphClient
@@ -321,7 +321,7 @@ static AdAppToken GetADTokenDelegation()
 
     return resultToken;
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
@@ -346,7 +346,7 @@ Console.WriteLine("Done");
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 public class RestGraphClient
 {
     public string ClientID { get; set; }
@@ -509,9 +509,9 @@ public class RestGraphClient
         return null;
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 public class AdAppToken
 {
     public string token_type { get; set; }
@@ -543,6 +543,6 @@ public class HeaderConfig
     public string HeaderTitle { get; set; }
     public string HeaderValue { get; set; }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
 #nullable enable

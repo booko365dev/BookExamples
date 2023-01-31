@@ -7,17 +7,17 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-Function LoginPsPowerPlatform()
+#gavdcodebegin 001
+Function LoginPsPowerPlatform
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	Add-PowerAppsAccount -Username $configFile.appsettings.UserName -Password $securePW
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-Function LoginPsCLI()
+Function LoginPsCLI
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
@@ -43,75 +43,75 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 
 ##==> Routines for PowerShell Admin and Maker cmdlets
 
-#gavdcodebegin 02
-Function PaPsAdmin_EnumerateFlows()
+#gavdcodebegin 002
+Function PauPsAdmin_EnumerateFlows
 {
 	Get-AdminFlow
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function PaPsAdmin_OwnerRole()
+#gavdcodebegin 003
+Function PauPsAdmin_OwnerRole
 {
 	Get-AdminFlowOwnerRole `
 					–EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444" `
 					–FlowName "1ecbcc34-ec34-4220-b39e-bde8c961655e"
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-Function PaPsAdmin_UserDetails()
+#gavdcodebegin 004
+Function PauPsAdmin_UserDetails
 {
 	Get-AdminFlowUserDetails –UserId "acc28fcb-5261-47f8-960b-715d2f98a431"
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-Function PaPsAdmin_DisableFlow()
+#gavdcodebegin 005
+Function PauPsAdmin_DisableFlow
 {
 	Disable-AdminFlow `
 					–EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444" `
 					–FlowName "1ecbcc34-ec34-4220-b39e-bde8c961655e"
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-Function PaPsAdmin_EnableFlow()
+#gavdcodebegin 006
+Function PauPsAdmin_EnableFlow
 {
 	Enable-AdminFlow `
 					–EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444" `
 					–FlowName "1ecbcc34-ec34-4220-b39e-bde8c961655e"
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-Function PaPsAdmin_DeleteFlow()
+#gavdcodebegin 007
+Function PauPsAdmin_DeleteFlow
 {
 	Remove-AdminFlow `
 					–EnvironmentName "909ee029-5b74-4b2f-a9ee-b6b5158f630b" `
 					–FlowName "9824f3b9-17ad-49fb-aa39-f54edcc0fd81"
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 40
-Function PaPsAdmin_RestoreFlow()
+#gavdcodebegin 040
+Function PauPsAdmin_RestoreFlow
 {
 	Restore-AdminFlow `
 					–EnvironmentName "909ee029-5b74-4b2f-a9ee-b6b5158f630b" `
 					–FlowName "9824f3b9-17ad-49fb-aa39-f54edcc0fd81"
 }
-#gavdcodeend 40
+#gavdcodeend 040
 
-#gavdcodebegin 08
-Function PaPsAdmin_DeleteApprovalFlows()
+#gavdcodebegin 008
+Function PauPsAdmin_DeleteApprovalFlows
 {
 	Remove-AdminFlowApprovals `
 					–EnvironmentName "909ee029-5b74-4b2f-a9ee-b6b5158f630b"
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-Function PaPsAdmin_AddRoleUser()
+#gavdcodebegin 009
+Function PauPsAdmin_AddRoleUser
 {
 	Set-AdminFlowOwnerRole `
 					–EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444" `
@@ -120,10 +120,10 @@ Function PaPsAdmin_AddRoleUser()
 					-PrincipalObjectId "bd6fe5cc-462a-4a60-b9c1-2246d8b7b9fb" `
 					-RoleName CanEdit
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-Function PaPsAdmin_DeleteRoleUser()
+#gavdcodebegin 010
+Function PauPsAdmin_DeleteRoleUser
 {
 	$myRoleId = "/providers/Microsoft.ProcessSimple/environments/" + 
 				"909ee029-5b74-4b2f-a9ee-b6b5158f630b/flows/" +
@@ -135,17 +135,17 @@ Function PaPsAdmin_DeleteRoleUser()
 					–FlowName "4355d741-c54b-4372-9bb0-eb5b49285333" `
 					-RoleId $myRoleId
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-Function PaPsAdmin_DeleteUserDetails()
+#gavdcodebegin 011
+Function PauPsAdmin_DeleteUserDetails
 {
 	Remove-AdminFlowUserDetails –UserId "092b1237-a428-45a7-b76b-310fdd6e7246"
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 41
-Function PaPsAdmin_CallApi()
+#gavdcodebegin 041
+Function PauPsAdmin_CallApi
 {
 	$myApi = 
 	"https://api.met.no/weatherapi/locationforecast/2.0/classic?lat=52.353218&lon=5.0027695"
@@ -158,32 +158,32 @@ Function PaPsAdmin_CallApi()
 									-ThrowOnFailure
 	Write-Host $myResult.Content
 }
-#gavdcodeend 41
+#gavdcodeend 041
 
-#gavdcodebegin 42
-Function PaPsAdmin_GetTenantSettings()
+#gavdcodebegin 042
+Function PauPsAdmin_GetTenantSettings
 {
 	Get-TenantSettings
 }
-#gavdcodeend 42
+#gavdcodeend 042
 
-#gavdcodebegin 43
-Function PaPsAdmin_GetTenantDetails()
+#gavdcodebegin 043
+Function PauPsAdmin_GetTenantDetails
 {
 	Get-TenantDetailsFromGraph
 }
-#gavdcodeend 43
+#gavdcodeend 043
 
-#gavdcodebegin 44
-Function PaPsAdmin_GetUsersGroups()
+#gavdcodebegin 044
+Function PauPsAdmin_GetUsersGroups
 {
 	Get-UsersOrGroupsFromGraph -SearchString "Admin"
 	Get-UsersOrGroupsFromGraph -ObjectId "Admin@tenant.onmicrosoft.com"
 }
-#gavdcodeend 44
+#gavdcodeend 044
 
-#gavdcodebegin 12
-Function PaPs_RemoveFromSharePoint()
+#gavdcodebegin 012
+Function PauPs_RemoveFromSharePoint
 {
 	# It works only for SharePoint Teams sites created without Group
 	# Use PowerShell 5.x
@@ -198,68 +198,68 @@ Function PaPs_RemoveFromSharePoint()
 	#To Enable the button: 
 	#Set-SPOSite -Identity $SiteURL -DisableFlows NotDisabled
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-Function PaPsMaker_EnumarateEnvironment()
+#gavdcodebegin 013
+Function PauPsMaker_EnumarateEnvironment
 {
 	Get-FlowEnvironment
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-Function PaPsMaker_EnumarateFlows()
+#gavdcodebegin 014
+Function PauPsMaker_EnumarateFlows
 {
 	Get-Flow
 	Write-Host "-------------------------"
 	Get-Flow -EnvironmentName "c336e3a2-5a73-e274-b5ac-94dbc5a41444"
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-Function PaPsMaker_GetOneFlow()
+#gavdcodebegin 015
+Function PauPsMaker_GetOneFlow
 {
 	Get-FlowRun –FlowName "756899c1-0b22-40f0-b170-931698fd615b"
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-Function PaPsMaker_DisableFlow()
+#gavdcodebegin 016
+Function PauPsMaker_DisableFlow
 {
 	Disable-Flow –FlowName "756899c1-0b22-40f0-b170-931698fd615b"
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-Function PaPsMaker_EnableFlow()
+#gavdcodebegin 017
+Function PauPsMaker_EnableFlow
 {
 	Enable-Flow –FlowName "756899c1-0b22-40f0-b170-931698fd615b"
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
-Function PaPsMaker_DeleteFlow()
+#gavdcodebegin 018
+Function PauPsMaker_DeleteFlow
 {
 	Remove-Flow –FlowName "756899c1-0b22-40f0-b170-931698fd615b" -Confirm:$false
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-Function PaPsMaker_EnumarateFlowApprovals()
+#gavdcodebegin 019
+Function PauPsMaker_EnumarateFlowApprovals
 {
 	Get-FlowApproval –EnvironmentName "909ee029-5b74-4b2f-a9ee-b6b5158f630b"
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
-Function PaPsMaker_EnumarateFlowApprovalRequests()
+#gavdcodebegin 020
+Function PauPsMaker_EnumarateFlowApprovalRequests
 {
 	Get-FlowApprovalRequest –EnvironmentName "909ee029-5b74-4b2f-a9ee-b6b5158f630b"
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
-Function PaPsMaker_ApproveFlows()
+#gavdcodebegin 021
+Function PauPsMaker_ApproveFlows
 {
 	$myApprovals = Get-FlowApprovalRequest `
 					-EnvironmentName "909ee029-5b74-4b2f-a9ee-b6b5158f630b"
@@ -272,10 +272,10 @@ Function PaPsMaker_ApproveFlows()
 					-ApprovalRequestId $oneApproval.ApprovalRequestId
 	}
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
-Function PaPsMaker_RejectFlows()
+#gavdcodebegin 022
+Function PauPsMaker_RejectFlows
 {
 	$myApprovals = Get-FlowApprovalRequest `
 					-EnvironmentName "909ee029-5b74-4b2f-a9ee-b6b5158f630b"
@@ -288,19 +288,19 @@ Function PaPsMaker_RejectFlows()
 					-ApprovalRequestId $oneApproval.ApprovalRequestId
 	}
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
-Function PaPsMaker_OwnerRole()
+#gavdcodebegin 023
+Function PauPsMaker_OwnerRole
 {
 	Get-FlowOwnerRole `
 					–EnvironmentName "Default-03d561bf-4472-41e0-b2d6-ee506471e9d0" `
 					–FlowName "28327980-4786-4107-9f2e-80674c3cb98a"
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
-Function PaPsMaker_AddRoleUser()
+#gavdcodebegin 024
+Function PauPsMaker_AddRoleUser
 {
 	Set-FlowOwnerRole `
 					–EnvironmentName "Default-03d561bf-4472-41e0-b2d6-ee506471e9d0" `
@@ -308,10 +308,10 @@ Function PaPsMaker_AddRoleUser()
 					-PrincipalType User `
 					-PrincipalObjectId "959ae10e-0015-4948-b602-fbf7fccfe2a3"
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
-#gavdcodebegin 25
-Function PaPsMaker_DeleteRoleUser()
+#gavdcodebegin 025
+Function PauPsMaker_DeleteRoleUser
 {
 	$myRoleId = "/providers/Microsoft.ProcessSimple/environments/" + 
 				"Default-03d561bf-4472-41e0-b2d6-ee506471e9d0/flows/" + 
@@ -323,14 +323,14 @@ Function PaPsMaker_DeleteRoleUser()
 					–FlowName "28327980-4786-4107-9f2e-80674c3cb98a" `
 					-RoleId $myRoleId
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
 #-----------------------------------------------------------------------------------------
 
 ##==> Routines for CLI
 
-#gavdcodebegin 26
-Function PaPsCli_GetAllFlowsByEnvironment()
+#gavdcodebegin 026
+Function PauPsCli_GetAllFlowsByEnvironment
 {
 	LoginPsCLI
 	
@@ -339,10 +339,10 @@ Function PaPsCli_GetAllFlowsByEnvironment()
 
 	m365 logout
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
-Function PaPsCli_GetOneFlow()
+#gavdcodebegin 027
+Function PauPsCli_GetOneFlow
 {
 	LoginPsCLI
 	
@@ -352,10 +352,10 @@ Function PaPsCli_GetOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
-Function PaPsCli_ExportOneFlow()
+#gavdcodebegin 028
+Function PauPsCli_ExportOneFlow
 {
 	LoginPsCLI
 	
@@ -370,10 +370,10 @@ Function PaPsCli_ExportOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
-Function PaPsCli_DisableOneFlow()
+#gavdcodebegin 029
+Function PauPsCli_DisableOneFlow
 {
 	LoginPsCLI
 	
@@ -382,10 +382,10 @@ Function PaPsCli_DisableOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
-Function PaPsCli_EnableOneFlow()
+#gavdcodebegin 030
+Function PauPsCli_EnableOneFlow
 {
 	LoginPsCLI
 	
@@ -394,10 +394,10 @@ Function PaPsCli_EnableOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#gavdcodebegin 31
-Function PaPsCli_DeleteOneFlow()
+#gavdcodebegin 031
+Function PauPsCli_DeleteOneFlow
 {
 	LoginPsCLI
 	
@@ -406,10 +406,10 @@ Function PaPsCli_DeleteOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 31
+#gavdcodeend 031
 
-#gavdcodebegin 32
-Function PaPsCli_GetAllEnvironment()
+#gavdcodebegin 032
+Function PauPsCli_GetAllEnvironment
 {
 	LoginPsCLI
 	
@@ -417,10 +417,10 @@ Function PaPsCli_GetAllEnvironment()
 
 	m365 logout
 }
-#gavdcodeend 32
+#gavdcodeend 032
 
-#gavdcodebegin 33
-Function PaPsCli_GetOneEnvironment()
+#gavdcodebegin 033
+Function PauPsCli_GetOneEnvironment
 {
 	LoginPsCLI
 	
@@ -428,10 +428,10 @@ Function PaPsCli_GetOneEnvironment()
 
 	m365 logout
 }
-#gavdcodeend 33
+#gavdcodeend 033
 
-#gavdcodebegin 34
-Function PaPsCli_GetAllConnectors()
+#gavdcodebegin 034
+Function PauPsCli_GetAllConnectors
 {
 	LoginPsCLI
 	
@@ -439,10 +439,10 @@ Function PaPsCli_GetAllConnectors()
 
 	m365 logout
 }
-#gavdcodeend 34
+#gavdcodeend 034
 
-#gavdcodebegin 35
-Function PaPsCli_ExportOneConnectors()
+#gavdcodebegin 035
+Function PauPsCli_ExportOneConnectors
 {
 	LoginPsCLI
 	
@@ -452,10 +452,10 @@ Function PaPsCli_ExportOneConnectors()
 
 	m365 logout
 }
-#gavdcodeend 35
+#gavdcodeend 035
 
-#gavdcodebegin 36
-Function PaPsCli_GetRunsOneFlow()
+#gavdcodebegin 036
+Function PauPsCli_GetRunsOneFlow
 {
 	LoginPsCLI
 	
@@ -464,10 +464,10 @@ Function PaPsCli_GetRunsOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 36
+#gavdcodeend 036
 
-#gavdcodebegin 37
-Function PaPsCli_GetOneRunOneFlow()
+#gavdcodebegin 037
+Function PauPsCli_GetOneRunOneFlow
 {
 	LoginPsCLI
 	
@@ -477,10 +477,10 @@ Function PaPsCli_GetOneRunOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 37
+#gavdcodeend 037
 
-#gavdcodebegin 38
-Function PaPsCli_ResubmitOneRunOneFlow()
+#gavdcodebegin 038
+Function PauPsCli_ResubmitOneRunOneFlow
 {
 	LoginPsCLI
 	
@@ -490,10 +490,10 @@ Function PaPsCli_ResubmitOneRunOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 38
+#gavdcodeend 038
 
-#gavdcodebegin 39
-Function PaPsCli_CancelOneRunOneFlow()
+#gavdcodebegin 039
+Function PauPsCli_CancelOneRunOneFlow
 {
 	LoginPsCLI
 	
@@ -503,15 +503,15 @@ Function PaPsCli_CancelOneRunOneFlow()
 
 	m365 logout
 }
-#gavdcodeend 39
+#gavdcodeend 039
 
 #-----------------------------------------------------------------------------------------
 
 
 ##==> Routines for PnPPowerShell
 
-#gavdcodebegin 45
-function SpPsPnpPowerShell_GetEnvironment
+#gavdcodebegin 045
+function PauPsPnpPowerShell_GetEnvironment
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -521,10 +521,10 @@ function SpPsPnpPowerShell_GetEnvironment
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 45
+#gavdcodeend 045
 
-#gavdcodebegin 46
-function SpPsPnpPowerShell_GetAllFlowsInEnvironment
+#gavdcodebegin 046
+function PauPsPnpPowerShell_GetAllFlowsInEnvironment
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -535,10 +535,10 @@ function SpPsPnpPowerShell_GetAllFlowsInEnvironment
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 46
+#gavdcodeend 046
 
-#gavdcodebegin 47
-function SpPsPnpPowerShell_GetOneFlowInEnvironment
+#gavdcodebegin 047
+function PauPsPnpPowerShell_GetOneFlowInEnvironment
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -550,10 +550,10 @@ function SpPsPnpPowerShell_GetOneFlowInEnvironment
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 47
+#gavdcodeend 047
 
-#gavdcodebegin 48
-function SpPsPnpPowerShell_GetOneFlowRuns
+#gavdcodebegin 048
+function PauPsPnpPowerShell_GetOneFlowRuns
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -565,10 +565,10 @@ function SpPsPnpPowerShell_GetOneFlowRuns
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 48
+#gavdcodeend 048
 
-#gavdcodebegin 49
-function SpPsPnpPowerShell_DisableOneFlow
+#gavdcodebegin 049
+function PauPsPnpPowerShell_DisableOneFlow
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -580,10 +580,10 @@ function SpPsPnpPowerShell_DisableOneFlow
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 49
+#gavdcodeend 049
 
-#gavdcodebegin 50
-function SpPsPnpPowerShell_EnableOneFlow
+#gavdcodebegin 050
+function PauPsPnpPowerShell_EnableOneFlow
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -595,10 +595,10 @@ function SpPsPnpPowerShell_EnableOneFlow
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 50
+#gavdcodeend 050
 
-#gavdcodebegin 51
-function SpPsPnpPowerShell_StopOneFlow
+#gavdcodebegin 051
+function PauPsPnpPowerShell_StopOneFlow
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -612,10 +612,10 @@ function SpPsPnpPowerShell_StopOneFlow
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 51
+#gavdcodeend 051
 
-#gavdcodebegin 52
-function SpPsPnpPowerShell_RestartOneFlow
+#gavdcodebegin 052
+function PauPsPnpPowerShell_RestartOneFlow
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -629,10 +629,10 @@ function SpPsPnpPowerShell_RestartOneFlow
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 52
+#gavdcodeend 052
 
-#gavdcodebegin 53
-function SpPsPnpPowerShell_ExportOneFlow
+#gavdcodebegin 053
+function PauPsPnpPowerShell_ExportOneFlow
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -644,10 +644,10 @@ function SpPsPnpPowerShell_ExportOneFlow
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 53
+#gavdcodeend 053
 
-#gavdcodebegin 54
-function SpPsPnpPowerShell_ExportOneFlowZip
+#gavdcodebegin 054
+function PauPsPnpPowerShell_ExportOneFlowZip
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -662,10 +662,10 @@ function SpPsPnpPowerShell_ExportOneFlowZip
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 54
+#gavdcodeend 054
 
-#gavdcodebegin 55
-function SpPsPnpPowerShell_DeleteOneFlow
+#gavdcodebegin 055
+function PauPsPnpPowerShell_DeleteOneFlow
 {
 	# App Registration type: Office 365 Online 
 	# App Registration permissions: Azure: management.azure.com
@@ -677,7 +677,7 @@ function SpPsPnpPowerShell_DeleteOneFlow
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 55
+#gavdcodeend 055
 
 
 ##---------------------------------------------------------------------------------------
@@ -689,63 +689,63 @@ function SpPsPnpPowerShell_DeleteOneFlow
 ##==> PowerShell Admin and Maker cmdlets
 #LoginPsPowerPlatform
 
-#PaPsAdmin_EnumerateFlows
-#PaPsAdmin_OwnerRole
-#PaPsAdmin_UserDetails
-#PaPsAdmin_DisableFlow
-#PaPsAdmin_EnableFlow
-#PaPsAdmin_DeleteFlow
-#PaPsAdmin_RestoreFlow
-#PaPsAdmin_DeleteApprovalFlows
-#PaPsAdmin_AddRoleUser
-#PaPsAdmin_DeleteRoleUser
-#PaPsAdmin_DeleteUserDetails
-#PaPs_RemoveFromSharePoint
-#PaPsMaker_EnumarateEnvironment
-#PaPsMaker_EnumarateFlows
-#PaPsMaker_GetOneFlow
-#PaPsMaker_DisableFlow
-#PaPsMaker_EnableFlow
-#PaPsMaker_DeleteFlow
-#PaPsMaker_EnumarateFlowApprovals
-#PaPsMaker_EnumarateFlowApprovalRequests
-#PaPsMaker_ApproveFlows
-#PaPsMaker_RejectFlows
-#PaPsMaker_OwnerRole
-#PaPsMaker_AddRoleUser
-#PaPsMaker_DeleteRoleUser
-#PaPsAdmin_CallApi
-#PaPsAdmin_GetTenantDetails
-#PaPsAdmin_GetTenantSettings
-#PaPsAdmin_GetUsersGroups
+#PauPsAdmin_EnumerateFlows
+#PauPsAdmin_OwnerRole
+#PauPsAdmin_UserDetails
+#PauPsAdmin_DisableFlow
+#PauPsAdmin_EnableFlow
+#PauPsAdmin_DeleteFlow
+#PauPsAdmin_RestoreFlow
+#PauPsAdmin_DeleteApprovalFlows
+#PauPsAdmin_AddRoleUser
+#PauPsAdmin_DeleteRoleUser
+#PauPsAdmin_DeleteUserDetails
+#PauPs_RemoveFromSharePoint
+#PauPsMaker_EnumarateEnvironment
+#PauPsMaker_EnumarateFlows
+#PauPsMaker_GetOneFlow
+#PauPsMaker_DisableFlow
+#PauPsMaker_EnableFlow
+#PauPsMaker_DeleteFlow
+#PauPsMaker_EnumarateFlowApprovals
+#PauPsMaker_EnumarateFlowApprovalRequests
+#PauPsMaker_ApproveFlows
+#PauPsMaker_RejectFlows
+#PauPsMaker_OwnerRole
+#PauPsMaker_AddRoleUser
+#PauPsMaker_DeleteRoleUser
+#PauPsAdmin_CallApi
+#PauPsAdmin_GetTenantDetails
+#PauPsAdmin_GetTenantSettings
+#PauPsAdmin_GetUsersGroups
 
 ##==> CLI
-#PaPsCli_GetAllFlowsByEnvironment
-#PaPsCli_GetOneFlow
-#PaPsCli_ExportOneFlow
-#PaPsCli_DisableOneFlow
-#PaPsCli_EnableOneFlow
-#PaPsCli_DeleteOneFlow
-#PaPsCli_GetAllEnvironment
-#PaPsCli_GetOneEnvironment
-#PaPsCli_GetAllConnectors
-#PaPsCli_ExportOneConnectors
-#PaPsCli_GetRunsOneFlow
-#PaPsCli_GetOneRunOneFlow
-#PaPsCli_ResubmitOneRunOneFlow
-#PaPsCli_CancelOneRunOneFlow
+#PauPsCli_GetAllFlowsByEnvironment
+#PauPsCli_GetOneFlow
+#PauPsCli_ExportOneFlow
+#PauPsCli_DisableOneFlow
+#PauPsCli_EnableOneFlow
+#PauPsCli_DeleteOneFlow
+#PauPsCli_GetAllEnvironment
+#PauPsCli_GetOneEnvironment
+#PauPsCli_GetAllConnectors
+#PauPsCli_ExportOneConnectors
+#PauPsCli_GetRunsOneFlow
+#PauPsCli_GetOneRunOneFlow
+#PauPsCli_ResubmitOneRunOneFlow
+#PauPsCli_CancelOneRunOneFlow
 
 ##==> PnPPowerShell
-#SpPsPnpPowerShell_GetEnvironment
-#SpPsPnpPowerShell_GetAllFlowsInEnvironment
-#SpPsPnpPowerShell_GetOneFlowInEnvironment
-#SpPsPnpPowerShell_GetOneFlowRuns
-#SpPsPnpPowerShell_DisableOneFlow
-#SpPsPnpPowerShell_EnableOneFlow
-#SpPsPnpPowerShell_StopOneFlow
-#SpPsPnpPowerShell_RestartOneFlow
-#SpPsPnpPowerShell_ExportOneFlow
-#SpPsPnpPowerShell_ExportOneFlowZip
-#SpPsPnpPowerShell_DeleteOneFlow
+#PauPsPnpPowerShell_GetEnvironment
+#PauPsPnpPowerShell_GetAllFlowsInEnvironment
+#PauPsPnpPowerShell_GetOneFlowInEnvironment
+#PauPsPnpPowerShell_GetOneFlowRuns
+#PauPsPnpPowerShell_DisableOneFlow
+#PauPsPnpPowerShell_EnableOneFlow
+#PauPsPnpPowerShell_StopOneFlow
+#PauPsPnpPowerShell_RestartOneFlow
+#PauPsPnpPowerShell_ExportOneFlow
+#PauPsPnpPowerShell_ExportOneFlowZip
+#PauPsPnpPowerShell_DeleteOneFlow
 
 Write-Host "Done"  
