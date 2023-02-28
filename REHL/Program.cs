@@ -81,8 +81,8 @@ static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
-static void SpCsPnpcoreSiteIsCommunication()
+//gavdcodebegin 001
+static void SpCsPnpFramework_SiteIsCommunication()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
     {
@@ -90,10 +90,10 @@ static void SpCsPnpcoreSiteIsCommunication()
         Console.WriteLine(SiteIsCommnication);
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
-static void SpCsPnpcoreCreateOneCommunicationSiteCollection()
+//gavdcodebegin 002
+static void SpCsPnpFramework_CreateOneCommunicationSiteCollection()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
     {
@@ -112,10 +112,10 @@ static void SpCsPnpcoreCreateOneCommunicationSiteCollection()
         ClientContext spCommCtx = spPnpCtx.CreateSiteAsync(mySiteCreationProps).Result;
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
-static void SpCsPnpcoreFindWebTemplates()
+//gavdcodebegin 003
+static void SpCsPnpFramework_FindWebTemplates()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
     {
@@ -130,10 +130,10 @@ static void SpCsPnpcoreFindWebTemplates()
         }
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
-static void SpCsPnpcoreCreateOneWebInSiteCollection()
+//gavdcodebegin 004
+static void SpCsPnpFramework_CreateOneWebInSiteCollection()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
     {
@@ -145,10 +145,10 @@ static void SpCsPnpcoreCreateOneWebInSiteCollection()
                                             "STS#3", 1033, true, true);
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
-static void SpCsPnpcoreGetWebsInSiteCollection()
+//gavdcodebegin 005
+static void SpCsPnpFramework_GetWebsInSiteCollection()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
     {
@@ -162,10 +162,10 @@ static void SpCsPnpcoreGetWebsInSiteCollection()
         }
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
-static void SpCsPnpcoreWebExists()
+//gavdcodebegin 006
+static void SpCsPnpFramework_WebExists()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
     {
@@ -178,10 +178,10 @@ static void SpCsPnpcoreWebExists()
         Console.WriteLine(webExists);
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
-static void SpCsPnpcoreExportSearchSettings()
+//gavdcodebegin 007
+static void SpCsPnpFramework_ExportSearchSettings()
 {
     string fullWebUrl = ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                                     "/sites/NewCommSiteCollectionCsPnP";
@@ -204,20 +204,20 @@ static void SpCsPnpcoreExportSearchSettings()
                Microsoft.SharePoint.Client.Search.Administration.SearchObjectLevel.SPWeb);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsPnpcoreSiteIsCommunication();
-//SpCsPnpcoreCreateOneCommunicationSiteCollection();
-//SpCsPnpcoreFindWebTemplates();
-//SpCsPnpcoreCreateOneWebInSiteCollection();
-//SpCsPnpcoreGetWebsInSiteCollection();
-//SpCsPnpcoreWebExists();
-//SpCsPnpcoreExportSearchSettings();
+//SpCsPnpFramework_SiteIsCommunication();
+//SpCsPnpFramework_CreateOneCommunicationSiteCollection();
+//SpCsPnpFramework_FindWebTemplates();
+//SpCsPnpFramework_CreateOneWebInSiteCollection();
+//SpCsPnpFramework_GetWebsInSiteCollection();
+//SpCsPnpFramework_WebExists();
+//SpCsPnpFramework_ExportSearchSettings();
 
 Console.WriteLine("Done");
 

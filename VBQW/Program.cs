@@ -114,8 +114,8 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
-static void SpCsRestCreateOneCommunicationSiteCollection()
+//gavdcodebegin 001
+static void SpCsRest_CreateOneCommunicationSiteCollection()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -174,10 +174,10 @@ static void SpCsRestCreateOneCommunicationSiteCollection()
         }
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
-static void SpCsRestCreateOneSiteCollection()
+//gavdcodebegin 002
+static void SpCsRest_CreateOneSiteCollection()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -238,10 +238,10 @@ static void SpCsRestCreateOneSiteCollection()
         }
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
-static void SpCsRestCreateOneWebInSiteCollection()
+//gavdcodebegin 003
+static void SpCsRest_CreateOneWebInSiteCollection()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -298,10 +298,10 @@ static void SpCsRestCreateOneWebInSiteCollection()
         }
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
-static void SpCsRestReadAllSiteCollections()
+//gavdcodebegin 004
+static void SpCsRest_ReadAllSiteCollections()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -324,10 +324,10 @@ static void SpCsRestReadAllSiteCollections()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
-static void SpCsRestReadAllWebsInSiteCollection()
+//gavdcodebegin 005
+static void SpCsRest_ReadAllWebsInSiteCollection()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -350,10 +350,10 @@ static void SpCsRestReadAllWebsInSiteCollection()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
-static void SpCsRestUpdateOneWeb()
+//gavdcodebegin 006
+static void SpCsRest_UpdateOneWeb()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -407,10 +407,10 @@ static void SpCsRestUpdateOneWeb()
         }
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
-static void SpCsRestDeleteOneWebFromSiteCollection()
+//gavdcodebegin 007
+static void SpCsRest_DeleteOneWebFromSiteCollection()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -460,10 +460,10 @@ static void SpCsRestDeleteOneWebFromSiteCollection()
         }
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
-static void SpCsRestGetRoleDefinitionsWeb()
+//gavdcodebegin 008
+static void SpCsRest_GetRoleDefinitionsWeb()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -487,10 +487,10 @@ static void SpCsRestGetRoleDefinitionsWeb()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
-static void SpCsRestFindUserPermissionsWeb()
+//gavdcodebegin 009
+static void SpCsRest_FindUserPermissionsWeb()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -516,10 +516,10 @@ static void SpCsRestFindUserPermissionsWeb()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
-static void SpCsRestFindOtherUserPermissionsWeb()
+//gavdcodebegin 010
+static void SpCsRest_FindOtherUserPermissionsWeb()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -545,10 +545,10 @@ static void SpCsRestFindOtherUserPermissionsWeb()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
-static void SpCsRestBreakSecurityInheritanceWeb()
+//gavdcodebegin 011
+static void SpCsRest_BreakSecurityInheritanceWeb()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -595,10 +595,10 @@ static void SpCsRestBreakSecurityInheritanceWeb()
         }
     }
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
-static void SpCsRestResetSecurityInheritanceWeb()
+//gavdcodebegin 012
+static void SpCsRest_ResetSecurityInheritanceWeb()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -643,31 +643,30 @@ static void SpCsRestResetSecurityInheritanceWeb()
         }
     }
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsRestCreateOneCommunicationSiteCollection();
-//SpCsRestCreateOneSiteCollection();
-//SpCsRestCreateOneWebInSiteCollection();
-//SpCsRestReadAllSiteCollections();
-//SpCsRestReadAllWebsInSiteCollection();
-//SpCsRestUpdateOneWeb();
-//SpCsRestDeleteOneWebFromSiteCollection();
-//SpCsRestFindOtherUserPermissionsWeb();
-//SpCsRestFindUserPermissionsWeb();
-//SpCsRestGetRoleDefinitionsWeb();
-//SpCsRestBreakSecurityInheritanceWeb();
-//SpCsRestResetSecurityInheritanceWeb();
+//SpCsRest_CreateOneCommunicationSiteCollection();
+//SpCsRest_CreateOneSiteCollection();
+//SpCsRest_CreateOneWebInSiteCollection();
+//SpCsRest_ReadAllSiteCollections();
+//SpCsRest_ReadAllWebsInSiteCollection();
+//SpCsRest_UpdateOneWeb();
+//SpCsRest_DeleteOneWebFromSiteCollection();
+//SpCsRest_FindOtherUserPermissionsWeb();
+//SpCsRest_FindUserPermissionsWeb();
+//SpCsRest_GetRoleDefinitionsWeb();
+//SpCsRest_BreakSecurityInheritanceWeb();
+//SpCsRest_ResetSecurityInheritanceWeb();
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
-
 
 
 #nullable enable

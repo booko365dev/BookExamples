@@ -23,8 +23,8 @@ Function LoginPsPnPPowerShell()
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-function PsPnPSharePoint_GetTenantProps
+#gavdcodebegin 001
+function SpPsPnPSharePoint_GetTenantProps
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -32,10 +32,10 @@ function PsPnPSharePoint_GetTenantProps
 	
 	Get-PnPTenant
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
-function PsPnPSharePoint_SetTenantProps
+#gavdcodebegin 002
+function SpPsPnPSharePoint_SetTenantProps
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -43,10 +43,10 @@ function PsPnPSharePoint_SetTenantProps
 	
 	Set-PnPTenant -PreventExternalUsersFromResharing $false
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-function PsPnPSharePoint_GetTenantId
+#gavdcodebegin 003
+function SpPsPnPSharePoint_GetTenantId
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -54,10 +54,10 @@ function PsPnPSharePoint_GetTenantId
 	
 	Get-PnPTenantId
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-function PsPnPSharePoint_GetTenantInstance
+#gavdcodebegin 004
+function SpPsPnPSharePoint_GetTenantInstance
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -65,10 +65,10 @@ function PsPnPSharePoint_GetTenantInstance
 	
 	Get-PnPTenantInstance
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-function PsPnPSharePoint_GetSitesInRecycleBin
+#gavdcodebegin 005
+function SpPsPnPSharePoint_GetSitesInRecycleBin
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -80,10 +80,10 @@ function PsPnPSharePoint_GetSitesInRecycleBin
 		Write-Host $oneSiteColl.SiteId + " - " + $oneSiteColl.Url
 	}
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-function PsPnPSharePoint_RestoreSiteFromRecycleBin
+#gavdcodebegin 006
+function SpPsPnPSharePoint_RestoreSiteFromRecycleBin
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -93,10 +93,10 @@ function PsPnPSharePoint_RestoreSiteFromRecycleBin
 						-Url "https://domain.sharepoint.com/sites/TestToRecycleBin" `
 						-Force
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-function PsPnPSharePoint_ClearSitesFromRecycleBin
+#gavdcodebegin 007
+function SpPsPnPSharePoint_ClearSitesFromRecycleBin
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -106,10 +106,10 @@ function PsPnPSharePoint_ClearSitesFromRecycleBin
 						-Url "https://domain.sharepoint.com/sites/TestToRecycleBin" `
 						-Force
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-function PsPnPSharePoint_GetTenantTheme
+#gavdcodebegin 008
+function SpPsPnPSharePoint_GetTenantTheme
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -118,10 +118,10 @@ function PsPnPSharePoint_GetTenantTheme
 	Get-PnPTenantTheme
 	#Get-PnPTenantTheme -Name "myTheme"
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-function PsPnPSharePoint_AddTenantTheme
+#gavdcodebegin 009
+function SpPsPnPSharePoint_AddTenantTheme
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -137,10 +137,10 @@ function PsPnPSharePoint_AddTenantTheme
 						-IsInverted $false `
 						-Overwrite
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-function PsPnPSharePoint_DeleteTenantTheme
+#gavdcodebegin 010
+function SpPsPnPSharePoint_DeleteTenantTheme
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -148,10 +148,10 @@ function PsPnPSharePoint_DeleteTenantTheme
 	
 	Remove-PnPTenantTheme -Identity "myTheme"
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-function PsPnPSharePoint_GetTenantAppCatalog
+#gavdcodebegin 011
+function SpPsPnPSharePoint_GetTenantAppCatalog
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -159,10 +159,10 @@ function PsPnPSharePoint_GetTenantAppCatalog
 	
 	Get-PnPTenantAppCatalogUrl
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-function PsPnPSharePoint_CreateTenantAppCatalog
+#gavdcodebegin 012
+function SpPsPnPSharePoint_CreateTenantAppCatalog
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -170,10 +170,10 @@ function PsPnPSharePoint_CreateTenantAppCatalog
 	
 	Set-PnPTenantAppCatalogUrl -Url "https://domain.sharepoint.com/sites/AppCatalog"
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-function PsPnPSharePoint_ClearTenantAppCatalog
+#gavdcodebegin 013
+function SpPsPnPSharePoint_ClearTenantAppCatalog
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -181,10 +181,10 @@ function PsPnPSharePoint_ClearTenantAppCatalog
 	
 	Clear-PnPTenantAppCatalogUrl
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-function PsPnPSharePoint_IsCDNAvailable
+#gavdcodebegin 014
+function SpPsPnPSharePoint_IsCDNAvailable
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -193,10 +193,10 @@ function PsPnPSharePoint_IsCDNAvailable
 	Get-PnPTenantCdnEnabled -CdnType Public
 	#Get-PnPTenantCdnEnabled -CdnType Private
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-function PsPnPSharePoint_SetCDNAvailable
+#gavdcodebegin 015
+function SpPsPnPSharePoint_SetCDNAvailable
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -205,10 +205,10 @@ function PsPnPSharePoint_SetCDNAvailable
 	Set-PnPTenantCdnEnabled -Enable $true -CdnType Public
 	#Set-PnPTenantCdnEnabled -Enable $true -CdnType Private
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-function PsPnPSharePoint_GetCDNOrigens
+#gavdcodebegin 016
+function SpPsPnPSharePoint_GetCDNOrigens
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -217,10 +217,10 @@ function PsPnPSharePoint_GetCDNOrigens
 	Get-PnPTenantCdnOrigin -CdnType Public
 	#Get-PnPTenantCdnOrigin -CdnType Private
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-function PsPnPSharePoint_GetCDNPolicy
+#gavdcodebegin 017
+function SpPsPnPSharePoint_GetCDNPolicy
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -229,10 +229,10 @@ function PsPnPSharePoint_GetCDNPolicy
 	Get-PnPTenantCdnPolicies -CdnType Public
 	#Get-PnPTenantCdnPolicies -CdnType Private
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
-function PsPnPSharePoint_CreateCDNOrigen
+#gavdcodebegin 018
+function SpPsPnPSharePoint_CreateCDNOrigen
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -241,10 +241,10 @@ function PsPnPSharePoint_CreateCDNOrigen
 	Add-PnPTenantCdnOrigin -OriginUrl "/sites/USSales/myCDN" -CdnType Public
 	#Add-PnPTenantCdnOrigin -OriginUrl /sites/SiteColl/myCDN -CdnType Private
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-function PsPnPSharePoint_UpdateCDNPolicy
+#gavdcodebegin 019
+function SpPsPnPSharePoint_UpdateCDNPolicy
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -254,10 +254,10 @@ function PsPnPSharePoint_UpdateCDNPolicy
 						   -PolicyType ExcludeRestrictedSiteClassifications `
 						   -PolicyValue "Confidential,Restricted"
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
-function PsPnPSharePoint_DeleteCDNOrigen
+#gavdcodebegin 020
+function SpPsPnPSharePoint_DeleteCDNOrigen
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -266,7 +266,7 @@ function PsPnPSharePoint_DeleteCDNOrigen
 	Remove-PnPTenantCdnOrigin -OriginUrl "/sites/USSales/myCDN" -CdnType Public
 	#Remove-PnPTenantCdnOrigin -OriginUrl /sites/SiteColl/myCDN -CdnType Private
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
@@ -278,26 +278,26 @@ function PsPnPSharePoint_DeleteCDNOrigen
 # Connect to Office 365
 $spCtx = LoginPsPnPPowerShell
 
-#PsPnPSharePoint_GetTenantProps
-#PsPnPSharePoint_GetTenantId
-#PsPnPSharePoint_GetTenantInstance
-#PsPnPSharePoint_SetTenantProps
-#PsPnPSharePoint_GetSitesInRecycleBin
-#PsPnPSharePoint_RestoreSiteFromRecycleBin
-#PsPnPSharePoint_ClearSitesFromRecycleBin
-#PsPnPSharePoint_GetTenantTheme
-#PsPnPSharePoint_AddTenantTheme
-#PsPnPSharePoint_DeleteTenantTheme
-#PsPnPSharePoint_GetTenantAppCatalog
-#PsPnPSharePoint_CreateTenantAppCatalog
-#PsPnPSharePoint_ClearTenantAppCatalog
-#PsPnPSharePoint_IsCDNAvailable
-#PsPnPSharePoint_SetCDNAvailable
-#PsPnPSharePoint_GetCDNOrigens
-#PsPnPSharePoint_GetCDNPolicy
-#PsPnPSharePoint_CreateCDNOrigen
-#PsPnPSharePoint_UpdateCDNPolicy
-#PsPnPSharePoint_DeleteCDNOrigen
+#SpPsPnPSharePoint_GetTenantProps
+#SpPsPnPSharePoint_GetTenantId
+#SpPsPnPSharePoint_GetTenantInstance
+#SpPsPnPSharePoint_SetTenantProps
+#SpPsPnPSharePoint_GetSitesInRecycleBin
+#SpPsPnPSharePoint_RestoreSiteFromRecycleBin
+#SpPsPnPSharePoint_ClearSitesFromRecycleBin
+#SpPsPnPSharePoint_GetTenantTheme
+#SpPsPnPSharePoint_AddTenantTheme
+#SpPsPnPSharePoint_DeleteTenantTheme
+#SpPsPnPSharePoint_GetTenantAppCatalog
+#SpPsPnPSharePoint_CreateTenantAppCatalog
+#SpPsPnPSharePoint_ClearTenantAppCatalog
+#SpPsPnPSharePoint_IsCDNAvailable
+#SpPsPnPSharePoint_SetCDNAvailable
+#SpPsPnPSharePoint_GetCDNOrigens
+#SpPsPnPSharePoint_GetCDNPolicy
+#SpPsPnPSharePoint_CreateCDNOrigen
+#SpPsPnPSharePoint_UpdateCDNPolicy
+#SpPsPnPSharePoint_DeleteCDNOrigen
 
 # Disconnect from Office 365
 Disconnect-PnPOnline

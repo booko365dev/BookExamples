@@ -112,8 +112,8 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
-static void SpCsRestFindAppCatalog()
+//gavdcodebegin 001
+static void SpCsRest_FindAppCatalog()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -140,10 +140,10 @@ static void SpCsRestFindAppCatalog()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
-static void SpCsRestFindTenantProps()
+//gavdcodebegin 002
+static void SpCsRest_FindTenantProps()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -170,10 +170,10 @@ static void SpCsRestFindTenantProps()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
-static void SpCsRestFindTenantOneProp()
+//gavdcodebegin 003
+static void SpCsRest_FindTenantOneProp()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
@@ -200,16 +200,16 @@ static void SpCsRestFindTenantOneProp()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsRestFindAppCatalog();
-//SpCsRestFindTenantProps();
-//SpCsRestFindTenantOneProp();
+//SpCsRest_FindAppCatalog();
+//SpCsRest_FindTenantProps();
+//SpCsRest_FindTenantOneProp();
 
 
 //---------------------------------------------------------------------------------------

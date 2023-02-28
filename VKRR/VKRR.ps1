@@ -61,7 +61,7 @@ Function Get-AzureTokenDelegation(){
 
 #----------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 Function GrPsGetAllSites()
 {
 	# App Registration type:		Application
@@ -82,9 +82,9 @@ Function GrPsGetAllSites()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 01 
+#gavdcodeend 001 
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 Function GrPsGetOneSiteById()
 {
 	# App Registration type:		Application
@@ -106,9 +106,9 @@ Function GrPsGetOneSiteById()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 02 
+#gavdcodeend 002 
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 Function GrPsGetOneSiteByPath()
 {
 	# App Registration type:		Application
@@ -130,9 +130,9 @@ Function GrPsGetOneSiteByPath()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 03 
+#gavdcodeend 003 
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 Function GrPsGetSitesBySearch()
 {
 	# App Registration type:		Application
@@ -153,9 +153,9 @@ Function GrPsGetSitesBySearch()
 	$mailObject = ConvertFrom-Json –InputObject $myResult
 	$mailObject.value.subject
 }
-#gavdcodeend 04 
+#gavdcodeend 004 
 
-#gavdcodebegin 16
+#gavdcodebegin 016
 Function GrPsGetOneSiteAnalytics()
 {
 	# App Registration type:		Application
@@ -177,9 +177,9 @@ Function GrPsGetOneSiteAnalytics()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 16 
+#gavdcodeend 016 
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 Function GrPsGetSitesFollowed()
 {
 	# App Registration type:		Application
@@ -201,9 +201,9 @@ Function GrPsGetSitesFollowed()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 05 
+#gavdcodeend 005 
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 Function GrPsSitesUnfollow()
 {
 	# App Registration type:		Application
@@ -228,9 +228,9 @@ Function GrPsSitesUnfollow()
 
 	Write-Host $myResult
 }
-#gavdcodeend 06 
+#gavdcodeend 006 
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 Function GrPsSitesFollow()
 {
 	# App Registration type:		Application
@@ -255,7 +255,7 @@ Function GrPsSitesFollow()
 
 	Write-Host $myResult
 }
-#gavdcodeend 07 
+#gavdcodeend 007 
 
 #gavdcodebegin 08
 Function GrPsGetAllListsInSite()

@@ -16,29 +16,29 @@ namespace PHZP
         {
             ClientContext spCtx = LoginPnPCore();
 
-            //SpCsPnpcoreSiteIsCommunication(spCtx);
-            //SpCsPnpcoreCreateOneCommunicationSiteCollection();
-            //SpCsPnpcoreFindWebTemplates(spCtx);
-            //SpCsPnpcoreCreateOneWebInSiteCollection(spCtx);
-            //SpCsPnpcoreGetWebsInSiteCollection(spCtx);
-            //SpCsPnpcoreWebExists(spCtx);
-            //SpCsPnpcoreExportSearchSettings();
+            //SpCsPnpcore_SiteIsCommunication(spCtx);
+            //SpCsPnpcore_CreateOneCommunicationSiteCollection();
+            //SpCsPnpcore_FindWebTemplates(spCtx);
+            //SpCsPnpcore_CreateOneWebInSiteCollection(spCtx);
+            //SpCsPnpcore_GetWebsInSiteCollection(spCtx);
+            //SpCsPnpcore_WebExists(spCtx);
+            //SpCsPnpcore_ExportSearchSettings();
 
             Console.WriteLine("Done");
             Console.ReadLine();
         }
 
-        //gavdcodebegin 01
-        static void SpCsPnpcoreSiteIsCommunication(
+        //gavdcodebegin 001
+        static void SpCsPnpcore_SiteIsCommunication(
                                             ClientContext spCtx)  //*** LEGACY CODE ***
         {
             bool SiteIsCommnication = spCtx.Site.IsCommunicationSite();
             Console.WriteLine(SiteIsCommnication);
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
-        static void SpCsPnpcoreCreateOneCommunicationSiteCollection()//*** LEGACY CODE ***
+        //gavdcodebegin 002
+        static void SpCsPnpcore_CreateOneCommunicationSiteCollection()//*** LEGACY CODE ***
         {
             string myBaseUrl = ConfigurationManager.AppSettings["spBaseUrl"];
             ClientContext spCtx = LoginPnPCore(myBaseUrl);
@@ -55,10 +55,10 @@ namespace PHZP
 
             ClientContext spCommCtx = spCtx.CreateSiteAsync(mySiteCreationProps).Result;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 03
-        static void SpCsPnpcoreFindWebTemplates(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 003
+        static void SpCsPnpcore_FindWebTemplates(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
             WebTemplateCollection myTemplates = mySite.GetWebTemplates(1033, 0);
@@ -70,10 +70,10 @@ namespace PHZP
                 Console.WriteLine(oneTemplate.Name + " - " + oneTemplate.Title);
             }
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
 
-        //gavdcodebegin 04
-        static void SpCsPnpcoreCreateOneWebInSiteCollection(
+        //gavdcodebegin 004
+        static void SpCsPnpcore_CreateOneWebInSiteCollection(
                                             ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
@@ -83,10 +83,10 @@ namespace PHZP
                                                 "NewWebSiteModernCsPnP Description", 
                                                 "STS#3", 1033, true, true);
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
 
-        //gavdcodebegin 05
-        static void SpCsPnpcoreGetWebsInSiteCollection(
+        //gavdcodebegin 005
+        static void SpCsPnpcore_GetWebsInSiteCollection(
                                             ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
@@ -98,10 +98,10 @@ namespace PHZP
                 Console.WriteLine(oneWeb);
             }
         }
-        //gavdcodeend 05
+        //gavdcodeend 005
 
-        //gavdcodebegin 06
-        static void SpCsPnpcoreWebExists(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 006
+        static void SpCsPnpcore_WebExists(ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Site mySite = spCtx.Site;
             spCtx.Load(mySite);
@@ -111,10 +111,10 @@ namespace PHZP
             bool webExists = spCtx.WebExistsFullUrl(webFullUrl);
             Console.WriteLine(webExists);
         }
-        //gavdcodeend 06
+        //gavdcodeend 006
 
-        //gavdcodebegin 07
-        static void SpCsPnpcoreExportSearchSettings()  //*** LEGACY CODE ***
+        //gavdcodebegin 007
+        static void SpCsPnpcore_ExportSearchSettings()  //*** LEGACY CODE ***
         {
             string fullWebUrl = ConfigurationManager.AppSettings["spBaseUrl"] +
                                                 "/sites/NewCommSiteCollectionCsPnP";
@@ -123,7 +123,7 @@ namespace PHZP
             webCtx.ExportSearchSettings(@"C:\Temporary\search.xml", 
               Microsoft.SharePoint.Client.Search.Administration.SearchObjectLevel.SPWeb);
         }
-        //gavdcodeend 07
+        //gavdcodeend 007
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginPnPCore()  //*** LEGACY CODE ***

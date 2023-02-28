@@ -18,8 +18,8 @@ Function LoginPsCLI()
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-function PsCliSharePoint_GetModernSiteCollections
+#gavdcodebegin 001
+function SpPsCliM365_GetModernSiteCollections
 {
 	$spCtx = LoginPsCLI
 	
@@ -29,10 +29,10 @@ function PsCliSharePoint_GetModernSiteCollections
 
 	m365 logout
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
-function PsCliSharePoint_GetOneModernSiteCollection
+#gavdcodebegin 002
+function SpPsCliM365_GetOneModernSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -42,10 +42,10 @@ function PsCliSharePoint_GetOneModernSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-function PsCliSharePoint_GetClassicSiteCollections
+#gavdcodebegin 003
+function SpPsCliM365_GetClassicSiteCollections
 {
 	$spCtx = LoginPsCLI
 	
@@ -54,10 +54,10 @@ function PsCliSharePoint_GetClassicSiteCollections
 
 	m365 logout
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-function PsCliSharePoint_GetPropertiesOneSiteCollection
+#gavdcodebegin 004
+function SpPsCliM365_GetPropertiesOneSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -65,10 +65,10 @@ function PsCliSharePoint_GetPropertiesOneSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-function PsCliSharePoint_CreateSiteCollection
+#gavdcodebegin 005
+function SpPsCliM365_CreateSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -104,10 +104,10 @@ function PsCliSharePoint_CreateSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-function PsCliSharePoint_RenameSiteCollection
+#gavdcodebegin 006
+function SpPsCliM365_RenameSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -119,10 +119,10 @@ function PsCliSharePoint_RenameSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-function PsCliSharePoint_UpdateSiteCollection
+#gavdcodebegin 007
+function SpPsCliM365_UpdateSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -132,10 +132,10 @@ function PsCliSharePoint_UpdateSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-function PsCliSharePoint_DeleteSiteCollection
+#gavdcodebegin 008
+function SpPsCliM365_DeleteSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -146,10 +146,10 @@ function PsCliSharePoint_DeleteSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-function PsCliSharePoint_GetRecyclebonSiteCollection
+#gavdcodebegin 009
+function SpPsCliM365_GetRecyclebonSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -158,10 +158,10 @@ function PsCliSharePoint_GetRecyclebonSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-function PsCliSharePoint_GetRecyclebinQuerySiteCollection
+#gavdcodebegin 010
+function SpPsCliM365_GetRecyclebinQuerySiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -171,10 +171,10 @@ function PsCliSharePoint_GetRecyclebinQuerySiteCollection
 
 	m365 logout
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-function PsCliSharePoint_GetRecyclebinTypeSiteCollection
+#gavdcodebegin 011
+function SpPsCliM365_GetRecyclebinTypeSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -184,10 +184,10 @@ function PsCliSharePoint_GetRecyclebinTypeSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-function PsCliSharePoint_GetRecyclebinRestoreSiteCollection
+#gavdcodebegin 012
+function SpPsCliM365_GetRecyclebinRestoreSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -197,10 +197,10 @@ function PsCliSharePoint_GetRecyclebinRestoreSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-function PsCliSharePoint_SetChromeSiteCollection
+#gavdcodebegin 013
+function SpPsCliM365_SetChromeSiteCollection
 {
 	$spCtx = LoginPsCLI
 	
@@ -210,10 +210,10 @@ function PsCliSharePoint_SetChromeSiteCollection
 
 	m365 logout
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-function PsCliSharePoint_GetWebs
+#gavdcodebegin 014
+function SpPsCliM365_GetWebs
 {
 	$spCtx = LoginPsCLI
 	
@@ -222,10 +222,10 @@ function PsCliSharePoint_GetWebs
 
 	m365 logout
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-function PsCliSharePoint_GetSubWeb
+#gavdcodebegin 015
+function SpPsCliM365_GetSubWeb
 {
 	$spCtx = LoginPsCLI
 	
@@ -235,10 +235,10 @@ function PsCliSharePoint_GetSubWeb
 
 	m365 logout
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-function PsCliSharePoint_CreateSubWeb
+#gavdcodebegin 016
+function SpPsCliM365_CreateSubWeb
 {
 	$spCtx = LoginPsCLI
 	
@@ -254,10 +254,10 @@ function PsCliSharePoint_CreateSubWeb
 
 	m365 logout
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-function PsCliSharePoint_DeleteSubWeb
+#gavdcodebegin 017
+function SpPsCliM365_DeleteSubWeb
 {
 	$spCtx = LoginPsCLI
 	
@@ -268,10 +268,10 @@ function PsCliSharePoint_DeleteSubWeb
 
 	m365 logout
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
-function PsCliSharePoint_LanguagesSubWeb
+#gavdcodebegin 018
+function SpPsCliM365_LanguagesSubWeb
 {
 	$spCtx = LoginPsCLI
 	
@@ -281,10 +281,10 @@ function PsCliSharePoint_LanguagesSubWeb
 
 	m365 logout
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-function PsCliSharePoint_ReindexSubWeb
+#gavdcodebegin 019
+function SpPsCliM365_ReindexSubWeb
 {
 	$spCtx = LoginPsCLI
 	
@@ -294,7 +294,7 @@ function PsCliSharePoint_ReindexSubWeb
 
 	m365 logout
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
 
 ##---------------------------------------------------------------------------------------
@@ -304,24 +304,24 @@ function PsCliSharePoint_ReindexSubWeb
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 #------- Using the CLI for Microsoft 365 --------
-#PsCliSharePoint_GetModernSiteCollections
-#PsCliSharePoint_GetOneModernSiteCollection
-#PsCliSharePoint_GetClassicSiteCollections
-#PsCliSharePoint_GetPropertiesOneSiteCollection
-#PsCliSharePoint_CreateSiteCollection
-#PsCliSharePoint_RenameSiteCollection
-#PsCliSharePoint_UpdateSiteCollection
-#PsCliSharePoint_DeleteSiteCollection
-#PsCliSharePoint_GetRecyclebonSiteCollection
-#PsCliSharePoint_GetRecyclebinQuerySiteCollection
-#PsCliSharePoint_GetRecyclebinTypeSiteCollection
-#PsCliSharePoint_GetRecyclebinRestoreSiteCollection
-#PsCliSharePoint_SetChromeSiteCollection
-#PsCliSharePoint_GetWebs
-#PsCliSharePoint_GetSubWeb
-#PsCliSharePoint_CreateSubWeb
-#PsCliSharePoint_DeleteSubWeb
-#PsCliSharePoint_LanguagesSubWeb
-#PsCliSharePoint_ReindexSubWeb
+#SpPsCliM365_GetModernSiteCollections
+#SpPsCliM365_GetOneModernSiteCollection
+#SpPsCliM365_GetClassicSiteCollections
+#SpPsCliM365_GetPropertiesOneSiteCollection
+#SpPsCliM365_CreateSiteCollection
+#SpPsCliM365_RenameSiteCollection
+#SpPsCliM365_UpdateSiteCollection
+#SpPsCliM365_DeleteSiteCollection
+#SpPsCliM365_GetRecyclebonSiteCollection
+#SpPsCliM365_GetRecyclebinQuerySiteCollection
+#SpPsCliM365_GetRecyclebinTypeSiteCollection
+#SpPsCliM365_GetRecyclebinRestoreSiteCollection
+#SpPsCliM365_SetChromeSiteCollection
+#SpPsCliM365_GetWebs
+#SpPsCliM365_GetSubWeb
+#SpPsCliM365_CreateSubWeb
+#SpPsCliM365_DeleteSubWeb
+#SpPsCliM365_LanguagesSubWeb
+#SpPsCliM365_ReindexSubWeb
 
 Write-Host "Done" 

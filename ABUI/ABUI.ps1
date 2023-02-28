@@ -145,8 +145,8 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 
 # Using Classic Authentication, this is Legacy code, and cannot be used anymore
 
-#gavdcodebegin 01
-Function SpPsRestCreateOneCommunicationSiteCollection  #*** LEGACY CODE *** 
+#gavdcodebegin 001
+Function SpPsRest_CreateOneCommunicationSiteCollection  #*** LEGACY CODE *** 
 {
 	$endpointUrl = $webBaseUrl + "/_api/sitepages/communicationsite/create"
 	$myPayload = 
@@ -171,10 +171,10 @@ Function SpPsRestCreateOneCommunicationSiteCollection  #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 01 
+#gavdcodeend 001 
 
-#gavdcodebegin 02
-Function SpPsRestCreateOneSiteCollection   #*** LEGACY CODE *** 
+#gavdcodebegin 002
+Function SpPsRest_CreateOneSiteCollection   #*** LEGACY CODE *** 
 {
 	$endpointUrl = $webBaseUrl + "/_api/SPSiteManager/create"
 	$myPayload = 
@@ -199,10 +199,10 @@ Function SpPsRestCreateOneSiteCollection   #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function SpPsRestCreateOneWebInSiteCollection   #*** LEGACY CODE *** 
+#gavdcodebegin 003
+Function SpPsRest_CreateOneWebInSiteCollection   #*** LEGACY CODE *** 
 {
 	$endpointUrl = $webUrl + "/_api/web/webs/add"
 	$myPayload = @{
@@ -221,10 +221,10 @@ Function SpPsRestCreateOneWebInSiteCollection   #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-Function SpPsRestReadAllSiteCollections   #*** LEGACY CODE *** 
+#gavdcodebegin 004
+Function SpPsRest_ReadAllSiteCollections   #*** LEGACY CODE *** 
 {
     $endpointUrl = $webBaseUrl +
                     "/_api/search/query?querytext='contentclass:sts_site'"
@@ -235,20 +235,20 @@ Function SpPsRestReadAllSiteCollections   #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-Function SpPsRestReadAllWebsInSiteCollection   #*** LEGACY CODE *** 
+#gavdcodebegin 005
+Function SpPsRest_ReadAllWebsInSiteCollection   #*** LEGACY CODE *** 
 {
 	$endpointUrl = $webUrl + "/_api/web/webs"
 	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName -Password `
 						$password -Metadata $myPayload 
     $data | ConvertTo-Json
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-Function SpPsRestUpdateOneWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 006
+Function SpPsRest_UpdateOneWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
     $myPayload = @{
@@ -264,10 +264,10 @@ Function SpPsRestUpdateOneWeb   #*** LEGACY CODE ***
 						-XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-Function SpPsRestDeleteOneWebFromSiteCollection   #*** LEGACY CODE *** 
+#gavdcodebegin 007
+Function SpPsRest_DeleteOneWebFromSiteCollection   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
     $endpointUrl = $subWebUrl + "/_api/web";
@@ -279,10 +279,10 @@ Function SpPsRestDeleteOneWebFromSiteCollection   #*** LEGACY CODE ***
 						-XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-Function SpPsRestGetRoleDefinitionsWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 008
+Function SpPsRest_GetRoleDefinitionsWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
     $endpointUrl = $subWebUrl + "/_api/web/roledefinitions"
@@ -293,10 +293,10 @@ Function SpPsRestGetRoleDefinitionsWeb   #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-Function SpPsRestFindUserPermissionsWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 009
+Function SpPsRest_FindUserPermissionsWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
     $endpointUrl = $subWebUrl + "/_api/web/" +
@@ -309,10 +309,10 @@ Function SpPsRestFindUserPermissionsWeb   #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-Function SpPsRestFindOtherUserPermissionsWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 010
+Function SpPsRest_FindOtherUserPermissionsWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
     $endpointUrl = $subWebUrl + "/_api/web/" +
@@ -325,10 +325,10 @@ Function SpPsRestFindOtherUserPermissionsWeb   #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-Function SpPsRestBreakSecurityInheritanceWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 011
+Function SpPsRest_BreakSecurityInheritanceWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
     $endpointUrl = $subWebUrl + "/_api/web" +
@@ -342,10 +342,10 @@ Function SpPsRestBreakSecurityInheritanceWeb   #*** LEGACY CODE ***
 						-XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-Function SpPsRestResetSecurityInheritanceWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 012
+Function SpPsRest_ResetSecurityInheritanceWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
     $endpointUrl = $subWebUrl + "/_api/web/resetroleinheritance"
@@ -356,10 +356,10 @@ Function SpPsRestResetSecurityInheritanceWeb   #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue
 	$data | ConvertTo-Json
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-Function SpPsRestAddUserToSecurityRoleInWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 013
+Function SpPsRest_AddUserToSecurityRoleInWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
 
@@ -392,10 +392,10 @@ Function SpPsRestAddUserToSecurityRoleInWeb   #*** LEGACY CODE ***
 							-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-Function SpPsRestUpdateUserSecurityRoleInWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 014
+Function SpPsRest_UpdateUserSecurityRoleInWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
 
@@ -428,10 +428,10 @@ Function SpPsRestUpdateUserSecurityRoleInWeb   #*** LEGACY CODE ***
 						-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-Function SpPsRestDeleteUserFromSecurityRoleInWeb   #*** LEGACY CODE *** 
+#gavdcodebegin 015
+Function SpPsRest_DeleteUserFromSecurityRoleInWeb   #*** LEGACY CODE *** 
 {
     $subWebUrl = $webUrl + "/NewWebSiteModernPsRest"
 
@@ -454,14 +454,14 @@ Function SpPsRestDeleteUserFromSecurityRoleInWeb   #*** LEGACY CODE ***
 						-ETag "*" -XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
 #----------------------------------------------------------------------------------------
 
 # Using Azure AD Authentication through Connect-PnPOnline and an Account/PW App Registration
 
 #gavdcodebegin 101
-Function SpPsRestCreateOneCommunicationSiteCollectionAD
+Function SpPsRest_CreateOneCommunicationSiteCollectionAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -498,7 +498,7 @@ Function SpPsRestCreateOneCommunicationSiteCollectionAD
 #gavdcodeend 101 
 
 #gavdcodebegin 102
-Function SpPsRestCreateOneSiteCollectionAD 
+Function SpPsRest_CreateOneSiteCollectionAD 
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -533,7 +533,7 @@ Function SpPsRestCreateOneSiteCollectionAD
 #gavdcodeend 102
 
 #gavdcodebegin 103
-Function SpPsRestCreateOneWebInSiteCollectionAD 
+Function SpPsRest_CreateOneWebInSiteCollectionAD 
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -564,7 +564,7 @@ Function SpPsRestCreateOneWebInSiteCollectionAD
 #gavdcodeend 103
 
 #gavdcodebegin 104
-Function SpPsRestReadAllSiteCollectionsAD
+Function SpPsRest_ReadAllSiteCollectionsAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -584,7 +584,7 @@ Function SpPsRestReadAllSiteCollectionsAD
 #gavdcodeend 104
 
 #gavdcodebegin 105
-Function SpPsRestReadAllWebsInSiteCollectionAD
+Function SpPsRest_ReadAllWebsInSiteCollectionAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -603,7 +603,7 @@ Function SpPsRestReadAllWebsInSiteCollectionAD
 #gavdcodeend 105
 
 #gavdcodebegin 106
-Function SpPsRestUpdateOneWebAD
+Function SpPsRest_UpdateOneWebAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -630,7 +630,7 @@ Function SpPsRestUpdateOneWebAD
 #gavdcodeend 106
 
 #gavdcodebegin 107
-Function SpPsRestDeleteOneWebFromSiteCollectionAD
+Function SpPsRest_DeleteOneWebFromSiteCollectionAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -650,7 +650,7 @@ Function SpPsRestDeleteOneWebFromSiteCollectionAD
 #gavdcodeend 107
 
 #gavdcodebegin 108
-Function SpPsRestGetRoleDefinitionsSiteAD
+Function SpPsRest_GetRoleDefinitionsSiteAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -669,7 +669,7 @@ Function SpPsRestGetRoleDefinitionsSiteAD
 #gavdcodeend 108
 
 #gavdcodebegin 109
-Function SpPsRestFindUserPermissionsSiteAD 
+Function SpPsRest_FindUserPermissionsSiteAD 
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -690,7 +690,7 @@ Function SpPsRestFindUserPermissionsSiteAD
 #gavdcodeend 109
 
 #gavdcodebegin 110
-Function SpPsRestFindOtherUserPermissionsSiteAD
+Function SpPsRest_FindOtherUserPermissionsSiteAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -712,7 +712,7 @@ Function SpPsRestFindOtherUserPermissionsSiteAD
 #gavdcodeend 110
 
 #gavdcodebegin 111
-Function SpPsRestBreakSecurityInheritanceWebAD
+Function SpPsRest_BreakSecurityInheritanceWebAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -734,7 +734,7 @@ Function SpPsRestBreakSecurityInheritanceWebAD
 #gavdcodeend 111
 
 #gavdcodebegin 112
-Function SpPsRestResetSecurityInheritanceWebAD
+Function SpPsRest_ResetSecurityInheritanceWebAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -754,7 +754,7 @@ Function SpPsRestResetSecurityInheritanceWebAD
 #gavdcodeend 112
 
 #gavdcodebegin 113
-Function SpPsRestAddUserToSecurityRoleInWebAD 
+Function SpPsRest_AddUserToSecurityRoleInWebAD 
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -802,7 +802,7 @@ Function SpPsRestAddUserToSecurityRoleInWebAD
 #gavdcodeend 113
 
 #gavdcodebegin 114
-Function SpPsRestUpdateUserSecurityRoleInWebAD
+Function SpPsRest_UpdateUserSecurityRoleInWebAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -850,7 +850,7 @@ Function SpPsRestUpdateUserSecurityRoleInWebAD
 #gavdcodeend 114
 
 #gavdcodebegin 115
-Function SpPsRestDeleteUserFromSecurityRoleInWebAD
+Function SpPsRest_DeleteUserFromSecurityRoleInWebAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -895,37 +895,37 @@ Function SpPsRestDeleteUserFromSecurityRoleInWebAD
 #$webBaseUrl = $configFile.appsettings.SiteBaseUrl
 #$userName = $configFile.appsettings.UserName
 #$password = $configFile.appsettings.UserPw
-#SpPsRestCreateOneCommunicationSiteCollection
-#SpPsRestCreateOneSiteCollection
-#SpPsRestCreateOneWebInSiteCollection
-#SpPsRestReadAllSiteCollections
-#SpPsRestReadAllWebsInSiteCollection
-#SpPsRestUpdateOneWeb
-#SpPsRestDeleteOneWebFromSiteCollection
-#SpPsRestGetRoleDefinitionsWeb
-#SpPsRestFindUserPermissionsWeb
-#SpPsRestFindOtherUserPermissionsWeb
-#SpPsRestBreakSecurityInheritanceWeb
-#SpPsRestResetSecurityInheritanceWeb
-#SpPsRestAddUserToSecurityRoleInWeb
-#SpPsRestUpdateUserSecurityRoleInWeb
-#SpPsRestDeleteUserFromSecurityRoleInWeb
+#SpPsRest_CreateOneCommunicationSiteCollection
+#SpPsRest_CreateOneSiteCollection
+#SpPsRest_CreateOneWebInSiteCollection
+#SpPsRest_ReadAllSiteCollections
+#SpPsRest_ReadAllWebsInSiteCollection
+#SpPsRest_UpdateOneWeb
+#SpPsRest_DeleteOneWebFromSiteCollection
+#SpPsRest_GetRoleDefinitionsWeb
+#SpPsRest_FindUserPermissionsWeb
+#SpPsRest_FindOtherUserPermissionsWeb
+#SpPsRest_BreakSecurityInheritanceWeb
+#SpPsRest_ResetSecurityInheritanceWeb
+#SpPsRest_AddUserToSecurityRoleInWeb
+#SpPsRest_UpdateUserSecurityRoleInWeb
+#SpPsRest_DeleteUserFromSecurityRoleInWeb
 
 ## Using Azure AD Authentication
-#SpPsRestCreateOneCommunicationSiteCollectionAD
-#SpPsRestCreateOneSiteCollectionAD
-#SpPsRestCreateOneWebInSiteCollectionAD
-#SpPsRestReadAllSiteCollectionsAD
-#SpPsRestReadAllWebsInSiteCollectionAD
-#SpPsRestUpdateOneWebAD
-#SpPsRestDeleteOneWebFromSiteCollectionAD
-#SpPsRestGetRoleDefinitionsSiteAD
-#SpPsRestFindUserPermissionsSiteAD
-#SpPsRestFindOtherUserPermissionsSiteAD
-#SpPsRestBreakSecurityInheritanceWebAD
-#SpPsRestResetSecurityInheritanceWebAD
-#SpPsRestAddUserToSecurityRoleInWebAD
-#SpPsRestUpdateUserSecurityRoleInWebAD
-#SpPsRestDeleteUserFromSecurityRoleInWebAD
+#SpPsRest_CreateOneCommunicationSiteCollectionAD
+#SpPsRest_CreateOneSiteCollectionAD
+#SpPsRest_CreateOneWebInSiteCollectionAD
+#SpPsRest_ReadAllSiteCollectionsAD
+#SpPsRest_ReadAllWebsInSiteCollectionAD
+#SpPsRest_UpdateOneWebAD
+#SpPsRest_DeleteOneWebFromSiteCollectionAD
+#SpPsRest_GetRoleDefinitionsSiteAD
+#SpPsRest_FindUserPermissionsSiteAD
+#SpPsRest_FindOtherUserPermissionsSiteAD
+#SpPsRest_BreakSecurityInheritanceWebAD
+#SpPsRest_ResetSecurityInheritanceWebAD
+#SpPsRest_AddUserToSecurityRoleInWebAD
+#SpPsRest_UpdateUserSecurityRoleInWebAD
+#SpPsRest_DeleteUserFromSecurityRoleInWebAD
 
 Write-Host "Done" 

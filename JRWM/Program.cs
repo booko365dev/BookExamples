@@ -126,8 +126,8 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
-static void PnPCoreSdkCreateCommunicationSiteColl()
+//gavdcodebegin 001
+static void SpCsPnpCoreSdk_CreateCommunicationSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -153,10 +153,10 @@ static void PnPCoreSdkCreateCommunicationSiteColl()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
-static void PnPCoreSdkCreateTeamNoGroupSiteColl()
+//gavdcodebegin 002
+static void SpCsPnpCoreSdk_CreateTeamNoGroupSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -182,10 +182,10 @@ static void PnPCoreSdkCreateTeamNoGroupSiteColl()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
-static void PnPCoreSdkCreateTeamClassicSiteColl()
+//gavdcodebegin 003
+static void SpCsPnpCoreSdk_CreateTeamClassicSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -212,10 +212,10 @@ static void PnPCoreSdkCreateTeamClassicSiteColl()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
-static void PnPCoreSdkGetAllSiteColls()
+//gavdcodebegin 004
+static void SpCsPnpCoreSdk_GetAllSiteColls()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -237,10 +237,10 @@ static void PnPCoreSdkGetAllSiteColls()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
-static void PnPCoreSdkGetAllSiteCollsWithDetails()
+//gavdcodebegin 005
+static void SpCsPnpCoreSdk_GetAllSiteCollsWithDetails()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -262,10 +262,10 @@ static void PnPCoreSdkGetAllSiteCollsWithDetails()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
-static void PnPCoreSdkGetOneSiteColl()
+//gavdcodebegin 006
+static void SpCsPnpCoreSdk_GetOneSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -284,10 +284,10 @@ static void PnPCoreSdkGetOneSiteColl()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
-static void PnPCoreSdkGetAllWebsInSiteColl()
+//gavdcodebegin 007
+static void SpCsPnpCoreSdk_GetAllWebsInSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -309,10 +309,10 @@ static void PnPCoreSdkGetAllWebsInSiteColl()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
-static void PnPCoreSdkGetSiteCollProperties()
+//gavdcodebegin 008
+static void SpCsPnpCoreSdk_GetSiteCollProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -342,10 +342,10 @@ static void PnPCoreSdkGetSiteCollProperties()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
-static void PnPCoreSdkChangeOneSiteCollProperty()
+//gavdcodebegin 009
+static void SpCsPnpCoreSdk_ChangeOneSiteCollProperty()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -364,10 +364,10 @@ static void PnPCoreSdkChangeOneSiteCollProperty()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
-static void PnPCoreSdkConnectSiteCollToGroup()
+//gavdcodebegin 010
+static void SpCsPnpCoreSdk_ConnectSiteCollToGroup()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -388,10 +388,10 @@ static void PnPCoreSdkConnectSiteCollToGroup()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
-static void PnPCoreSdkDeleteSiteColl()
+//gavdcodebegin 011
+static void SpCsPnpCoreSdk_DeleteSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -412,10 +412,10 @@ static void PnPCoreSdkDeleteSiteColl()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 11
-static void PnPCoreSdkGetDeletedSiteColls()
+//gavdcodebegin 012
+static void SpCsPnpCoreSdk_GetDeletedSiteColls()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -437,10 +437,10 @@ static void PnPCoreSdkGetDeletedSiteColls()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 11
+//gavdcodeend 012
 
-//gavdcodebegin 12
-static void PnPCoreSdkGetRestoredSiteColl()
+//gavdcodebegin 013
+static void SpCsPnpCoreSdk_GetRestoredSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -458,26 +458,26 @@ static void PnPCoreSdkGetRestoredSiteColl()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 12
+//gavdcodeend 013
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//PnPCoreSdkCreateCommunicationSiteColl();
-//PnPCoreSdkCreateTeamNoGroupSiteColl();
-//PnPCoreSdkCreateTeamClassicSiteColl();
-//PnPCoreSdkGetAllSiteColls();
-//PnPCoreSdkGetAllSiteCollsWithDetails();
-//PnPCoreSdkGetOneSiteColl();
-//PnPCoreSdkGetAllWebsInSiteColl();
-//PnPCoreSdkGetSiteCollProperties();
-//PnPCoreSdkChangeOneSiteCollProperty();
-//PnPCoreSdkConnectSiteCollToGroup();
-//PnPCoreSdkDeleteSiteColl();
-//PnPCoreSdkGetDeletedSiteColls();
-//PnPCoreSdkGetRestoredSiteColl();
+//SpCsPnpCoreSdk_CreateCommunicationSiteColl();
+//SpCsPnpCoreSdk_CreateTeamNoGroupSiteColl();
+//SpCsPnpCoreSdk_CreateTeamClassicSiteColl();
+//SpCsPnpCoreSdk_GetAllSiteColls();
+//SpCsPnpCoreSdk_GetAllSiteCollsWithDetails();
+//SpCsPnpCoreSdk_GetOneSiteColl();
+//SpCsPnpCoreSdk_GetAllWebsInSiteColl();
+//SpCsPnpCoreSdk_GetSiteCollProperties();
+//SpCsPnpCoreSdk_ChangeOneSiteCollProperty();
+//SpCsPnpCoreSdk_ConnectSiteCollToGroup();
+//SpCsPnpCoreSdk_DeleteSiteColl();
+//SpCsPnpCoreSdk_GetDeletedSiteColls();
+//SpCsPnpCoreSdk_GetRestoredSiteColl();
 
 
 //---------------------------------------------------------------------------------------

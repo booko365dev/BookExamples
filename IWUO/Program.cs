@@ -24,8 +24,8 @@ using System.Web;
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
-static void SpCsCsomCreateOneSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 001
+static void SpCsCsom_CreateOneSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     string myUser = ConfigurationManager.AppSettings["UserName"];
@@ -51,10 +51,10 @@ static void SpCsCsomCreateOneSiteCollection(ClientContext spAdminCtx)
         spAdminCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
-static void SpCsCsomFindWebTemplates(ClientContext spAdminCtx)
+//gavdcodebegin 002
+static void SpCsCsom_FindWebTemplates(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     SPOTenantWebTemplateCollection myTemplates =
@@ -67,10 +67,10 @@ static void SpCsCsomFindWebTemplates(ClientContext spAdminCtx)
         Console.WriteLine(oneTemplate.Name + " - " + oneTemplate.Title);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
-static void SpCsCsomReadAllSiteCollections(ClientContext spAdminCtx)
+//gavdcodebegin 003
+static void SpCsCsom_ReadAllSiteCollections(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.GetSiteProperties(0, true);
@@ -84,10 +84,10 @@ static void SpCsCsomReadAllSiteCollections(ClientContext spAdminCtx)
         Console.WriteLine(oneSiteColl.Title + " - " + oneSiteColl.Url);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
-static void SpCsCsomRemoveSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 004
+static void SpCsCsom_RemoveSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.RemoveSite(
@@ -96,10 +96,10 @@ static void SpCsCsomRemoveSiteCollection(ClientContext spAdminCtx)
 
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
-static void SpCsCsomRestoreSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 005
+static void SpCsCsom_RestoreSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.RestoreDeletedSite(
@@ -108,10 +108,10 @@ static void SpCsCsomRestoreSiteCollection(ClientContext spAdminCtx)
 
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
-static void SpCsCsomRemoveDeletedSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 006
+static void SpCsCsom_RemoveDeletedSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.RemoveDeletedSite(
@@ -120,10 +120,10 @@ static void SpCsCsomRemoveDeletedSiteCollection(ClientContext spAdminCtx)
 
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
-static void SpCsCsomCreateGroupForSite(ClientContext spAdminCtx)
+//gavdcodebegin 007
+static void SpCsCsom_CreateGroupForSite(ClientContext spAdminCtx)
 {
     string[] myOwners = new string[] { "user@domain.onmicrosoft.com" };
     GroupCreationParams myGroupParams = new GroupCreationParams(spAdminCtx);
@@ -140,10 +140,10 @@ static void SpCsCsomCreateGroupForSite(ClientContext spAdminCtx)
 
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
-static void SpCsCsomSetAdministratorSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 008
+static void SpCsCsom_SetAdministratorSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.SetSiteAdmin(
@@ -154,10 +154,10 @@ static void SpCsCsomSetAdministratorSiteCollection(ClientContext spAdminCtx)
 
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
-static void SpCsCsomRegisterAsHubSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 009
+static void SpCsCsom_RegisterAsHubSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.RegisterHubSite(
@@ -166,10 +166,10 @@ static void SpCsCsomRegisterAsHubSiteCollection(ClientContext spAdminCtx)
 
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
-static void SpCsCsomUnregisterAsHubSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 010
+static void SpCsCsom_UnregisterAsHubSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.UnregisterHubSite(
@@ -178,10 +178,10 @@ static void SpCsCsomUnregisterAsHubSiteCollection(ClientContext spAdminCtx)
 
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
-static void SpCsCsomGetHubSiteCollectionProperties(ClientContext spAdminCtx)
+//gavdcodebegin 011
+static void SpCsCsom_GetHubSiteCollectionProperties(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     HubSiteProperties myProps = myTenant.GetHubSitePropertiesByUrl(
@@ -193,10 +193,10 @@ static void SpCsCsomGetHubSiteCollectionProperties(ClientContext spAdminCtx)
 
     Console.WriteLine(myProps.Title);
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
-static void SpCsCsomUpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
+//gavdcodebegin 012
+static void SpCsCsom_UpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     HubSiteProperties myProps = myTenant.GetHubSitePropertiesByUrl(
@@ -214,10 +214,10 @@ static void SpCsCsomUpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
 
     Console.WriteLine(myProps.Title);
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
-static void SpCsCsomAddSiteToHubSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 013
+static void SpCsCsom_AddSiteToHubSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.ConnectSiteToHubSite(
@@ -227,10 +227,10 @@ static void SpCsCsomAddSiteToHubSiteCollection(ClientContext spAdminCtx)
                                              "/sites/NewHubSiteCollCsCsom");
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
-static void SpCsCsomremoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
+//gavdcodebegin 014
+static void SpCsCsom_RemoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
 {
     Tenant myTenant = new Tenant(spAdminCtx);
     myTenant.DisconnectSiteFromHubSite(
@@ -238,10 +238,10 @@ static void SpCsCsomremoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
                                      "/sites/NewSiteForHub");
     spAdminCtx.ExecuteQuery();
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
-static void SpCsCsomCreateOneWebInSiteCollection(ClientContext spCtx)
+//gavdcodebegin 015
+static void SpCsCsom_CreateOneWebInSiteCollection(ClientContext spCtx)
 {
     Site mySite = spCtx.Site;
 
@@ -258,10 +258,10 @@ static void SpCsCsomCreateOneWebInSiteCollection(ClientContext spCtx)
     Web myWeb = mySite.RootWeb.Webs.Add(myWebCreationInfo);
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
-static void SpCsCsomGetWebsInSiteCollection(ClientContext spCtx)
+//gavdcodebegin 016
+static void SpCsCsom_GetWebsInSiteCollection(ClientContext spCtx)
 {
     Site mySite = spCtx.Site;
 
@@ -274,10 +274,10 @@ static void SpCsCsomGetWebsInSiteCollection(ClientContext spCtx)
         Console.WriteLine(oneWeb.Title + " - " + oneWeb.Url + " - " + oneWeb.Id);
     }
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
-static void SpCsCsomGetOneWebInSiteCollection()
+//gavdcodebegin 017
+static void SpCsCsom_GetOneWebInSiteCollection()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -301,10 +301,10 @@ static void SpCsCsomGetOneWebInSiteCollection()
         Console.WriteLine(myWeb.Title + " - " + myWeb.Url + " - " + myWeb.Id);
     }
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
-static void SpCsCsomUpdateOneWebInSiteCollection()
+//gavdcodebegin 018
+static void SpCsCsom_UpdateOneWebInSiteCollection()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -327,10 +327,10 @@ static void SpCsCsomUpdateOneWebInSiteCollection()
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
-static void SpCsCsomDeleteOneWebInSiteCollection()
+//gavdcodebegin 019
+static void SpCsCsom_DeleteOneWebInSiteCollection()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -352,10 +352,10 @@ static void SpCsCsomDeleteOneWebInSiteCollection()
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
-static void SpCsCsomBreakSecurityInheritanceWeb()
+//gavdcodebegin 020
+static void SpCsCsom_BreakSecurityInheritanceWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -384,10 +384,10 @@ static void SpCsCsomBreakSecurityInheritanceWeb()
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 21
-static void SpCsCsomResetSecurityInheritanceWeb()
+//gavdcodebegin 021
+static void SpCsCsom_ResetSecurityInheritanceWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -416,10 +416,10 @@ static void SpCsCsomResetSecurityInheritanceWeb()
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
-static void SpCsCsomAddUserToSecurityRoleInWeb()
+//gavdcodebegin 022
+static void SpCsCsom_AddUserToSecurityRoleInWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -447,10 +447,10 @@ static void SpCsCsomAddUserToSecurityRoleInWeb()
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 23
-static void SpCsCsomUpdateUserSecurityRoleInWeb()
+//gavdcodebegin 023
+static void SpCsCsom_UpdateUserSecurityRoleInWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -481,10 +481,10 @@ static void SpCsCsomUpdateUserSecurityRoleInWeb()
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
-static void SpCsCsomDeleteUserFromSecurityRoleInWeb()
+//gavdcodebegin 024
+static void SpCsCsom_DeleteUserFromSecurityRoleInWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
@@ -510,14 +510,14 @@ static void SpCsCsomDeleteUserFromSecurityRoleInWeb()
         spCtx.Dispose();
     }
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-////--> Working with Site Collections
+////--> Working with Site Collections 
 //SecureString usrPw = new SecureString();
 //foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
 //    usrPw.AppendChar(oneChar);
@@ -530,20 +530,20 @@ static void SpCsCsomDeleteUserFromSecurityRoleInWeb()
 //            usrPw,
 //            ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 //{
-//SpCsCsomCreateOneSiteCollection(spAdminCtx);
-//SpCsCsomCreateGroupForSite(spAdminCtx);
-//SpCsCsomFindWebTemplates(spAdminCtx);
-//SpCsCsomReadAllSiteCollections(spAdminCtx);
-//SpCsCsomRemoveSiteCollection(spAdminCtx);
-//SpCsCsomRestoreSiteCollection(spAdminCtx);
-//SpCsCsomRemoveDeletedSiteCollection(spAdminCtx);
-//SpCsCsomSetAdministratorSiteCollection(spAdminCtx);
-//SpCsCsomRegisterAsHubSiteCollection(spAdminCtx);
-//SpCsCsomUnregisterAsHubSiteCollection(spAdminCtx);
-//SpCsCsomGetHubSiteCollectionProperties(spAdminCtx);
-//SpCsCsomUpdateHubSiteCollectionProperties(spAdminCtx);
-//SpCsCsomAddSiteToHubSiteCollection(spAdminCtx);
-//SpCsCsomremoveSiteFromHubSiteCollection(spAdminCtx);
+//SpCsCsom_CreateOneSiteCollection(spAdminCtx);
+//SpCsCsom_CreateGroupForSite(spAdminCtx);
+//SpCsCsom_FindWebTemplates(spAdminCtx);
+//SpCsCsom_ReadAllSiteCollections(spAdminCtx);
+//SpCsCsom_RemoveSiteCollection(spAdminCtx);
+//SpCsCsom_RestoreSiteCollection(spAdminCtx);
+//SpCsCsom_RemoveDeletedSiteCollection(spAdminCtx);
+//SpCsCsom_SetAdministratorSiteCollection(spAdminCtx);
+//SpCsCsom_RegisterAsHubSiteCollection(spAdminCtx);
+//SpCsCsom_UnregisterAsHubSiteCollection(spAdminCtx);
+//SpCsCsom_GetHubSiteCollectionProperties(spAdminCtx);
+//SpCsCsom_UpdateHubSiteCollectionProperties(spAdminCtx);
+//SpCsCsom_AddSiteToHubSiteCollection(spAdminCtx);
+//SpCsCsom_removeSiteFromHubSiteCollection(spAdminCtx);
 
 //Console.WriteLine("Done");
 //}
@@ -561,17 +561,17 @@ static void SpCsCsomDeleteUserFromSecurityRoleInWeb()
 //            usrPw,
 //            ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 //{
-//SpCsCsomCreateOneWebInSiteCollection(spCtx);
-//SpCsCsomGetWebsInSiteCollection(spCtx);
-//SpCsCsomGetOneWebInSiteCollection();
-//SpCsCsomUpdateOneWebInSiteCollection();
-//SpCsCsomDeleteOneWebInSiteCollection();
-//SpCsCsomBreakSecurityInheritanceWeb();
-//SpCsCsomResetSecurityInheritanceWeb();
-//SpCsCsomAddUserToSecurityRoleInWeb();
-//SpCsCsomUpdateUserSecurityRoleInWeb();
-//SpCsCsomDeleteUserFromSecurityRoleInWeb();
-//SpCsCsomDeleteUserFromSecurityRoleInWeb();
+//SpCsCsom_CreateOneWebInSiteCollection(spCtx);
+//SpCsCsom_GetWebsInSiteCollection(spCtx);
+//SpCsCsom_GetOneWebInSiteCollection();
+//SpCsCsom_UpdateOneWebInSiteCollection();
+//SpCsCsom_DeleteOneWebInSiteCollection();
+//SpCsCsom_BreakSecurityInheritanceWeb();
+//SpCsCsom_ResetSecurityInheritanceWeb();
+//SpCsCsom_AddUserToSecurityRoleInWeb();
+//SpCsCsom_UpdateUserSecurityRoleInWeb();
+//SpCsCsom_DeleteUserFromSecurityRoleInWeb();
+//SpCsCsom_DeleteUserFromSecurityRoleInWeb();
 
 //    Console.WriteLine("Done");
 //}

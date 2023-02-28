@@ -24,8 +24,8 @@ using System.Web;
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
-static void SpCsCsomGetPropertiesTenant(ClientContext spCtx)
+//gavdcodebegin 001
+static void SpCsCsom_GetPropertiesTenant(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
 
@@ -34,10 +34,10 @@ static void SpCsCsomGetPropertiesTenant(ClientContext spCtx)
         Console.WriteLine(oneProperty.Name);
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
-static void SpCsCsomGetValuePropertyTenant(ClientContext spCtx)
+//gavdcodebegin 002
+static void SpCsCsom_GetValuePropertyTenant(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
 
@@ -47,10 +47,10 @@ static void SpCsCsomGetValuePropertyTenant(ClientContext spCtx)
     bool myAccessDevices = myTenant.BlockAccessOnUnmanagedDevices;
     Console.WriteLine(myAccessDevices);
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
-static void SpCsCsomUpdateValuePropertyTenant(ClientContext spCtx)
+//gavdcodebegin 003
+static void SpCsCsom_UpdateValuePropertyTenant(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
 
@@ -58,7 +58,7 @@ static void SpCsCsomUpdateValuePropertyTenant(ClientContext spCtx)
     myTenant.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
 
 //---------------------------------------------------------------------------------------
@@ -77,9 +77,9 @@ using (ClientContext spCtx = authenticationManager.GetContext(
             usrPw,
             ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 {
-    //SpCsCsomGetPropertiesTenant(spCtx);
-    //SpCsCsomGetValuePropertyTenant(spCtx);
-    //SpCsCsomUpdateValuePropertyTenant(spCtx);
+    //SpCsCsom_GetPropertiesTenant(spCtx);
+    //SpCsCsom_GetValuePropertyTenant(spCtx);
+    //SpCsCsom_UpdateValuePropertyTenant(spCtx);
 
     Console.WriteLine("Done");
 }

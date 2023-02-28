@@ -59,8 +59,8 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
-static void PnPCoreSdkGetAdminUrls()
+//gavdcodebegin 001
+static void SpCsPnPCoreSdk_GetAdminUrls()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -78,10 +78,10 @@ static void PnPCoreSdkGetAdminUrls()
         Console.WriteLine(myPortalUrl + " - " + myAdminCenterUrl + " - " + myHostUrl);
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
-static void PnPCoreSdkGetTenantProperties()
+//gavdcodebegin 002
+static void SpCsPnPCoreSdk_GetTenantProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -107,10 +107,10 @@ static void PnPCoreSdkGetTenantProperties()
         }
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
-static void PnPCoreSdkUpdateTenantProperty()
+//gavdcodebegin 003
+static void SpCsPnPCoreSdk_UpdateTenantProperty()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -131,10 +131,10 @@ static void PnPCoreSdkUpdateTenantProperty()
         }
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
-static void PnPCoreSdkGetTenantUsers()
+//gavdcodebegin 004
+static void SpCsPnPCoreSdk_GetTenantUsers()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -154,10 +154,10 @@ static void PnPCoreSdkGetTenantUsers()
         }
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
-static void PnPCoreSdkUserIsTenantAdmin()
+//gavdcodebegin 005
+static void SpCsPnPCoreSdk_UserIsTenantAdmin()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -173,10 +173,10 @@ static void PnPCoreSdkUserIsTenantAdmin()
         Console.WriteLine(myUserName + " is Admin = " + myUserIsAdmin.ToString());
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
-static void PnPCoreSdkHasTenantAppCatalog()
+//gavdcodebegin 006
+static void SpCsPnPCoreSdk_HasTenantAppCatalog()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -192,10 +192,10 @@ static void PnPCoreSdkHasTenantAppCatalog()
         Console.WriteLine("Tenant has AppCatalog = " + myTenantHasAppCat.ToString());
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
-static void PnPCoreSdkAppCatalogUrl()
+//gavdcodebegin 007
+static void SpCsPnPCoreSdk_AppCatalogUrl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -211,10 +211,10 @@ static void PnPCoreSdkAppCatalogUrl()
         Console.WriteLine("Tenant AppCatalog URL = " + myTenantAppCatUrl.ToString());
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
-static void PnPCoreSdkGetAppCatalogs()
+//gavdcodebegin 008
+static void SpCsPnPCoreSdk_GetAppCatalogs()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -234,20 +234,20 @@ static void PnPCoreSdkGetAppCatalogs()
         }
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//PnPCoreSdkGetAdminUrls();
-//PnPCoreSdkGetTenantProperties();
-//PnPCoreSdkUpdateTenantProperty();
-//PnPCoreSdkGetTenantUsers();
-//PnPCoreSdkUserIsTenantAdmin();
-//PnPCoreSdkHasTenantAppCatalog();
-//PnPCoreSdkAppCatalogUrl();
-PnPCoreSdkGetAppCatalogs();
+//SpCsPnPCoreSdk_GetAdminUrls();
+//SpCsPnPCoreSdk_GetTenantProperties();
+//SpCsPnPCoreSdk_UpdateTenantProperty();
+//SpCsPnPCoreSdk_GetTenantUsers();
+//SpCsPnPCoreSdk_UserIsTenantAdmin();
+//SpCsPnPCoreSdk_HasTenantAppCatalog();
+//SpCsPnPCoreSdk_AppCatalogUrl();
+SpCsPnPCoreSdk_GetAppCatalogs();
 
 Console.WriteLine("Done");
 

@@ -69,8 +69,8 @@ Function LoginPsPnPPowerShellWithCertificateBase64
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-function SpPsPnpCreateOneSiteCollection
+#gavdcodebegin 001
+function SpPsPnpPowerShell_CreateOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -85,10 +85,10 @@ function SpPsPnpCreateOneSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
-function SpPsPnpCreateOneSiteCollection01
+#gavdcodebegin 002
+function SpPsPnpPowerShell_CreateOneSiteCollection01
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -104,10 +104,10 @@ function SpPsPnpCreateOneSiteCollection01
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-function SpPsPnpGetAllSiteCollections
+#gavdcodebegin 003
+function SpPsPnpPowerShell_GetAllSiteCollections
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -118,10 +118,10 @@ function SpPsPnpGetAllSiteCollections
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-function SpPsPnpGetOneSiteCollection
+#gavdcodebegin 004
+function SpPsPnpPowerShell_GetOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -132,10 +132,10 @@ function SpPsPnpGetOneSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-function SpPsPnpGetAllSiteCollectionsFiltered
+#gavdcodebegin 005
+function SpPsPnpPowerShell_GetAllSiteCollectionsFiltered
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -146,10 +146,10 @@ function SpPsPnpGetAllSiteCollectionsFiltered
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-function SpPsPnpGetHubSiteCollection
+#gavdcodebegin 006
+function SpPsPnpPowerShell_GetHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -160,10 +160,10 @@ function SpPsPnpGetHubSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-function SpPsPnpUpdateOneSiteCollection
+#gavdcodebegin 007
+function SpPsPnpPowerShell_UpdateOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -176,10 +176,10 @@ function SpPsPnpUpdateOneSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-function SpPsPnpUpdateOneSiteCollection01
+#gavdcodebegin 008
+function SpPsPnpPowerShell_UpdateOneSiteCollection01
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -192,10 +192,10 @@ function SpPsPnpUpdateOneSiteCollection01
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-function SpPsPnpDeleteOneSiteCollection
+#gavdcodebegin 009
+function SpPsPnpPowerShell_DeleteOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -208,10 +208,10 @@ function SpPsPnpDeleteOneSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-function SpPsPnpRegisterHubSiteCollection
+#gavdcodebegin 010
+function SpPsPnpPowerShell_RegisterHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -224,10 +224,10 @@ function SpPsPnpRegisterHubSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-function SpPsPnpUnregisterHubSiteCollection
+#gavdcodebegin 011
+function SpPsPnpPowerShell_UnregisterHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -240,10 +240,10 @@ function SpPsPnpUnregisterHubSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-function SpPsPnpAddSiteToHubSiteCollection
+#gavdcodebegin 012
+function SpPsPnpPowerShell_AddSiteToHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -257,10 +257,10 @@ function SpPsPnpAddSiteToHubSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-function SpPsPnpRemoveSiteFromHubSiteCollection
+#gavdcodebegin 013
+function SpPsPnpPowerShell_RemoveSiteFromHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -273,10 +273,10 @@ function SpPsPnpRemoveSiteFromHubSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-function SpPsPnpGetAdminsInSiteCollection
+#gavdcodebegin 014
+function SpPsPnpPowerShell_GetAdminsInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -289,10 +289,10 @@ function SpPsPnpGetAdminsInSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-function SpPsPnpAddAdminsToSiteCollection
+#gavdcodebegin 015
+function SpPsPnpPowerShell_AddAdminsToSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -305,10 +305,10 @@ function SpPsPnpAddAdminsToSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-function SpPsPnpRemoveAdminsFromSiteCollection
+#gavdcodebegin 016
+function SpPsPnpPowerShell_RemoveAdminsFromSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -321,10 +321,10 @@ function SpPsPnpRemoveAdminsFromSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-function SpPsPnpCreateWebInSiteCollection
+#gavdcodebegin 017
+function SpPsPnpPowerShell_CreateWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
@@ -339,10 +339,10 @@ function SpPsPnpCreateWebInSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
-function SpPsPnpGetOneWebInSiteCollection
+#gavdcodebegin 018
+function SpPsPnpPowerShell_GetOneWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -353,10 +353,10 @@ function SpPsPnpGetOneWebInSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-function SpPsPnpGetWebsInSiteCollection
+#gavdcodebegin 019
+function SpPsPnpPowerShell_GetWebsInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -367,10 +367,10 @@ function SpPsPnpGetWebsInSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
-function SpPsPnpUpdateOneWebInSiteCollection
+#gavdcodebegin 020
+function SpPsPnpPowerShell_UpdateOneWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -383,10 +383,10 @@ function SpPsPnpUpdateOneWebInSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
-Function SpPsPnpAddPermissionsInWebInSiteCollection
+#gavdcodebegin 021
+Function SpPsPnpPowerShell_AddPermissionsInWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -399,10 +399,10 @@ Function SpPsPnpAddPermissionsInWebInSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
-Function SpPsPnpRemoveOneWebFromSiteCollection
+#gavdcodebegin 022
+Function SpPsPnpPowerShell_RemoveOneWebFromSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
@@ -413,7 +413,7 @@ Function SpPsPnpRemoveOneWebFromSiteCollection
 
 	Disconnect-PnPOnline
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
@@ -422,27 +422,27 @@ Function SpPsPnpRemoveOneWebFromSiteCollection
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 #------- Using PnP PowerShell --------
-#SpPsPnpCreateOneSiteCollection
-#SpPsPnpCreateOneSiteCollection01
-#SpPsPnpGetAllSiteCollections
-#SpPsPnpGetOneSiteCollection
-#SpPsPnpGetAllSiteCollectionsFiltered
-#SpPsPnpGetHubSiteCollection
-#SpPsPnpUpdateOneSiteCollection
-#SpPsPnpUpdateOneSiteCollection01
-#SpPsPnpDeleteOneSiteCollection
-#SpPsPnpRegisterHubSiteCollection
-#SpPsPnpUnregisterHubSiteCollection
-#SpPsPnpAddSiteToHubSiteCollection
-#SpPsPnpRemoveSiteFromHubSiteCollection
-#SpPsPnpGetAdminsInSiteCollection
-#SpPsPnpAddAdminsToSiteCollection
-#SpPsPnpRemoveAdminsFromSiteCollection
-#SpPsPnpCreateWebInSiteCollection
-#SpPsPnpGetOneWebInSiteCollection
-#SpPsPnpGetWebsInSiteCollection
-#SpPsPnpUpdateOneWebInSiteCollection
-#SpPsPnpAddPermissionsInWebInSiteCollection
-#SpPsPnpRemoveOneWebFromSiteCollection
+#SpPsPnpPowerShell_CreateOneSiteCollection
+#SpPsPnpPowerShell_CreateOneSiteCollection01
+#SpPsPnpPowerShell_GetAllSiteCollections
+#SpPsPnpPowerShell_GetOneSiteCollection
+#SpPsPnpPowerShell_GetAllSiteCollectionsFiltered
+#SpPsPnpPowerShell_GetHubSiteCollection
+#SpPsPnpPowerShell_UpdateOneSiteCollection
+#SpPsPnpPowerShell_UpdateOneSiteCollection01
+#SpPsPnpPowerShell_DeleteOneSiteCollection
+#SpPsPnpPowerShell_RegisterHubSiteCollection
+#SpPsPnpPowerShell_UnregisterHubSiteCollection
+#SpPsPnpPowerShell_AddSiteToHubSiteCollection
+#SpPsPnpPowerShell_RemoveSiteFromHubSiteCollection
+#SpPsPnpPowerShell_GetAdminsInSiteCollection
+#SpPsPnpPowerShell_AddAdminsToSiteCollection
+#SpPsPnpPowerShell_RemoveAdminsFromSiteCollection
+#SpPsPnpPowerShell_CreateWebInSiteCollection
+#SpPsPnpPowerShell_GetOneWebInSiteCollection
+#SpPsPnpPowerShell_GetWebsInSiteCollection
+#SpPsPnpPowerShell_UpdateOneWebInSiteCollection
+#SpPsPnpPowerShell_AddPermissionsInWebInSiteCollection
+#SpPsPnpPowerShell_RemoveOneWebFromSiteCollection
 
 Write-Host "Done" 

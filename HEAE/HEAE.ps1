@@ -120,8 +120,8 @@ Function GrPsLoginGraphSDKCheckAvailableRights
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-Function GrPsLoginGraphSDK_GetSiteCollections
+#gavdcodebegin 001
+Function SpPsGraphSdk_GetSiteCollections
 {
 	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
 
@@ -134,10 +134,10 @@ Function GrPsLoginGraphSDK_GetSiteCollections
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
-Function GrPsLoginGraphSDK_GetOneSiteCollection
+#gavdcodebegin 002
+Function SpPsGraphSdk_GetOneSiteCollection
 {
 	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
 
@@ -151,10 +151,10 @@ Function GrPsLoginGraphSDK_GetOneSiteCollection
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function GrPsLoginGraphSDK_GetWebs
+#gavdcodebegin 003
+Function SpPsGraphSdk_GetWebs
 {
 	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
 
@@ -167,7 +167,7 @@ Function GrPsLoginGraphSDK_GetWebs
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
@@ -175,9 +175,9 @@ Function GrPsLoginGraphSDK_GetWebs
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
-#GrPsLoginGraphSDK_GetSiteCollections
-#GrPsLoginGraphSDK_GetOneSiteCollection
-#GrPsLoginGraphSDK_GetWebs
+#SpPsGraphSdk_GetSiteCollections
+#SpPsGraphSdk_GetOneSiteCollection
+#SpPsGraphSdk_GetWebs
 
 Write-Host "Done" 
 

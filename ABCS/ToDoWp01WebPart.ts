@@ -1,4 +1,4 @@
-//gavdcodebegin 02
+//gavdcodebegin 002
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
@@ -55,4 +55,4 @@ export default class ToDoWp01WebPart extends
     };
   }
 }  
-//gavdcodeend 02
+//gavdcodeend 002

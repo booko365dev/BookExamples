@@ -18,97 +18,97 @@ Function LoginPsCLI()
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-function PsCliSharePoint_GetTenantProperties
+#gavdcodebegin 001
+function SpPsCliM365_GetTenantProperties
 {
 	m365 spo tenant settings list
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
-function PsCliSharePoint_UpdateTenantProperties
+#gavdcodebegin 002
+function SpPsCliM365_UpdateTenantProperties
 {
 	m365 spo tenant settings set --OneDriveForGuestsEnabled false
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-function PsCliSharePoint_GetRecycleBin
+#gavdcodebegin 003
+function SpPsCliM365_GetRecycleBin
 {
 	m365 spo tenant recyclebinitem list
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-function PsCliSharePoint_GetRecycleBinQuery
+#gavdcodebegin 004
+function SpPsCliM365_GetRecycleBinQuery
 {
 	m365 spo tenant recyclebinitem list --query "[?Status == 'Recycled']"
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-function PsCliSharePoint_RestoreRecycleBin
+#gavdcodebegin 005
+function SpPsCliM365_RestoreRecycleBin
 {
 	m365 spo tenant recyclebinitem restore `
 					--url "https://domain.sharepoint.com/sites/MySite" `
 					--wait
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-function PsCliSharePoint_DeleteFromRecycleBin
+#gavdcodebegin 006
+function SpPsCliM365_DeleteFromRecycleBin
 {
 	m365 spo tenant recyclebinitem remove `
 					--url "https://domain.sharepoint.com/sites/MySite" `
 					--confirm
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-function PsCliSharePoint_GetAllTenantThemes
+#gavdcodebegin 007
+function SpPsCliM365_GetAllTenantThemes
 {
 	m365 spo theme list
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-function PsCliSharePoint_GetOneTenantTheme
+#gavdcodebegin 008
+function SpPsCliM365_GetOneTenantTheme
 {
 	m365 spo theme get --name "myTheme"
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-function PsCliSharePoint_CreateTenantTheme
+#gavdcodebegin 009
+function SpPsCliM365_CreateTenantTheme
 {
 	m365 spo theme set --name "myTheme01" --theme "C:\Temporary\myThemeColors.json"
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-function PsCliSharePoint_ApplyTenantTheme
+#gavdcodebegin 010
+function SpPsCliM365_ApplyTenantTheme
 {
 	m365 spo theme apply --name "myTheme" `
 						 --webUrl "https://domain.sharepoint.com/sites/MySite"
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-function PsCliSharePoint_DeleteTenantTheme
+#gavdcodebegin 011
+function SpPsCliM365_DeleteTenantTheme
 {
 	m365 spo theme remove --name Contoso-Blue --confirm
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-function PsCliSharePoint_GetAppCatalog
+#gavdcodebegin 012
+function SpPsCliM365_GetAppCatalog
 {
 	m365 spo tenant appcatalogurl get
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-function PsCliSharePoint_CreateAppCatalog
+#gavdcodebegin 013
+function SpPsCliM365_CreateAppCatalog
 {
 	m365 spo tenant appcatalog add `
 				--url https://domain.sharepoint.com/sites/AppCatalog `
@@ -116,59 +116,59 @@ function PsCliSharePoint_CreateAppCatalog
 				--timeZone 4 `
 				--wait
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-function PsCliSharePoint_GetCdn
+#gavdcodebegin 014
+function SpPsCliM365_GetCdn
 {
 	m365 spo cdn get --type Public
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-function PsCliSharePoint_SetCdn
+#gavdcodebegin 015
+function SpPsCliM365_SetCdn
 {
 	m365 spo cdn set --type Public --enabled true
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-function PsCliSharePoint_GetCdnOrigens
+#gavdcodebegin 016
+function SpPsCliM365_GetCdnOrigens
 {
 	m365 spo cdn origin list --type Public
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-function PsCliSharePoint_CreateCdnOrigen
+#gavdcodebegin 017
+function SpPsCliM365_CreateCdnOrigen
 {
 	m365 spo cdn origin add --type Public --origin "*/sites/USSales/myCDN"
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
-function PsCliSharePoint_DeleteCdnOrigen
+#gavdcodebegin 018
+function SpPsCliM365_DeleteCdnOrigen
 {
 	m365 spo cdn origin remove --type Public --origin "*/sites/USSales/myCDN"
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-function PsCliSharePoint_GetCdnPolicy
+#gavdcodebegin 019
+function SpPsCliM365_GetCdnPolicy
 {
 	m365 spo cdn policy list --type Private
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
-function PsCliSharePoint_SetCdnPolicy
+#gavdcodebegin 020
+function SpPsCliM365_SetCdnPolicy
 {
 	m365 spo cdn policy set `
 			--type Public `
 			--policy IncludeFileExtensions `
 			--value "CSS,EOT,GIF,ICO,JPEG,JPG,JS,MAP,PNG,SVG,TTF,WOFF,JSON"
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
 
 ##---------------------------------------------------------------------------------------
@@ -181,26 +181,26 @@ function PsCliSharePoint_SetCdnPolicy
 # Connect to Office 365
 $spCtx = LoginPsCLI
 
-#PsCliSharePoint_GetTenantProperties
-#PsCliSharePoint_UpdateTenantProperties
-#PsCliSharePoint_GetRecycleBin
-#PsCliSharePoint_GetRecycleBinQuery
-#PsCliSharePoint_RestoreRecycleBin
-#PsCliSharePoint_DeleteFromRecycleBin
-#PsCliSharePoint_GetAllTenantThemes
-#PsCliSharePoint_GetOneTenantTheme
-#PsCliSharePoint_CreateTenantTheme
-#PsCliSharePoint_ApplyTenantTheme
-#PsCliSharePoint_DeleteTenantTheme
-#PsCliSharePoint_GetAppCatalog
-#PsCliSharePoint_CreateAppCatalog
-#PsCliSharePoint_GetCdn
-#PsCliSharePoint_SetCdn
-#PsCliSharePoint_GetCdnOrigens
-#PsCliSharePoint_CreateCdnOrigen
-#PsCliSharePoint_DeleteCdnOrigen
-#PsCliSharePoint_GetCdnPolicy
-#PsCliSharePoint_SetCdnPolicy
+#SpPsCliM365_GetTenantProperties
+#SpPsCliM365_UpdateTenantProperties
+#SpPsCliM365_GetRecycleBin
+#SpPsCliM365_GetRecycleBinQuery
+#SpPsCliM365_RestoreRecycleBin
+#SpPsCliM365_DeleteFromRecycleBin
+#SpPsCliM365_GetAllTenantThemes
+#SpPsCliM365_GetOneTenantTheme
+#SpPsCliM365_CreateTenantTheme
+#SpPsCliM365_ApplyTenantTheme
+#SpPsCliM365_DeleteTenantTheme
+#SpPsCliM365_GetAppCatalog
+#SpPsCliM365_CreateAppCatalog
+#SpPsCliM365_GetCdn
+#SpPsCliM365_SetCdn
+#SpPsCliM365_GetCdnOrigens
+#SpPsCliM365_CreateCdnOrigen
+#SpPsCliM365_DeleteCdnOrigen
+#SpPsCliM365_GetCdnPolicy
+#SpPsCliM365_SetCdnPolicy
 
 # Disconnect from Office 365
 m365 logout
