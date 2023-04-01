@@ -69,7 +69,7 @@ Function LoginPsPnPPowerShellWithCertificateBase64
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 function SpPsPnpPowerShell_CreateOneListItem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -80,9 +80,9 @@ function SpPsPnpPowerShell_CreateOneListItem
 	Add-PnPListItem -List "TestList" -Values @{"Title" = "NewListItemPsPnp"}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 function SpPsPnpPowerShell_UploadOneDocument
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -94,9 +94,9 @@ function SpPsPnpPowerShell_UploadOneDocument
 	Add-PnPFile -Path $fileFullPath -Folder "TestLibrary"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 function SpPsPnpPowerShell_UploadSeveralDocuments
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -113,9 +113,9 @@ function SpPsPnpPowerShell_UploadSeveralDocuments
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 function SpPsPnpPowerShell_DownloadOneDocument
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -129,9 +129,9 @@ function SpPsPnpPowerShell_DownloadOneDocument
 				-AsFile
 	Disconnect-PnPOnline
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 function SpPsPnpPowerShell_ReadAllListItems
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -142,9 +142,9 @@ function SpPsPnpPowerShell_ReadAllListItems
 	Get-PnPListItem -List "TestList"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 function SpPsPnpPowerShell_ReadOneListItem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -155,9 +155,9 @@ function SpPsPnpPowerShell_ReadOneListItem
 	Get-PnPListItem -List "TestList" -Id 4
 	Disconnect-PnPOnline
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 function SpPsPnpPowerShell_FindOneLibraryDocument
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -168,9 +168,9 @@ function SpPsPnpPowerShell_FindOneLibraryDocument
 	Find-PnPFile -List "TestLibrary" -Match *.docx
 	Disconnect-PnPOnline
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 function SpPsPnpPowerShell_CopyOneLibraryDocument
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -182,9 +182,9 @@ function SpPsPnpPowerShell_CopyOneLibraryDocument
 						-TargetUrl "OtherTestLibrary/TestDocument01.docx"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 function SpPsPnpPowerShell_MoveOneLibraryDocument
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -200,9 +200,9 @@ function SpPsPnpPowerShell_MoveOneLibraryDocument
 				-TargetUrl ($WebUrlRel + "/OtherTestLibrary/TestDocument01.docx")
 	Disconnect-PnPOnline
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 function SpPsPnpPowerShell_UpdateOneListItem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -214,9 +214,9 @@ function SpPsPnpPowerShell_UpdateOneListItem
 			-Values @{"Title" = "NewListItemPsPnpUpdated"}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 13
+#gavdcodebegin 013
 function SpPsPnpPowerShell_RenameOneLibraryDocument
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -232,9 +232,9 @@ function SpPsPnpPowerShell_RenameOneLibraryDocument
 				-TargetFileName "TestDocument01_Renamed.docx"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 function SpPsPnpPowerShell_DeleteOneListItem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -245,9 +245,9 @@ function SpPsPnpPowerShell_DeleteOneListItem
 	Remove-PnPListItem -List "TestList" -Identity "4" -Force -Recycle
 	Disconnect-PnPOnline
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 function SpPsPnpPowerShell_DeleteToRecycleOneListItem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -258,9 +258,9 @@ function SpPsPnpPowerShell_DeleteToRecycleOneListItem
 	Move-PnPListItemToRecycleBin -List "TestList" -Identity "5" -Force
 	Disconnect-PnPOnline
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 function SpPsPnpPowerShell_DeleteOneLibraryDoc
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -276,9 +276,9 @@ function SpPsPnpPowerShell_DeleteOneLibraryDoc
 							($WebUrlRel + "/TestLibrary/TestDocument01.docx") -Recycle
 	Disconnect-PnPOnline
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
+#gavdcodebegin 015
 function SpPsPnpPowerShell_ResetVersionOneLibraryDoc
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -294,9 +294,9 @@ function SpPsPnpPowerShell_ResetVersionOneLibraryDoc
 							($WebUrlRel + "/TestLibrary/TestDocument01.docx")
 	Disconnect-PnPOnline
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
+#gavdcodebegin 016
 function SpPsPnpPowerShell_CheckOutOneLibraryDoc
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -311,9 +311,9 @@ function SpPsPnpPowerShell_CheckOutOneLibraryDoc
 	Set-PnPFileCheckedOut -Url ($WebUrlRel + "/TestLibrary/TestDocument01.docx")
 	Disconnect-PnPOnline
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
+#gavdcodebegin 017
 function SpPsPnpPowerShell_CheckInOneLibraryDoc
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -329,9 +329,9 @@ function SpPsPnpPowerShell_CheckInOneLibraryDoc
 			-CheckinType MinorCheckin -Comment "Changed by PowerShell"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
+#gavdcodebegin 018
 function SpPsPnpPowerShell_AddUserToSecurityRole
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -343,9 +343,9 @@ function SpPsPnpPowerShell_AddUserToSecurityRole
 				-User $configFile.appsettings.UserName -AddRole 'Read'
 	Disconnect-PnPOnline
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
+#gavdcodebegin 019
 function SpPsPnpPowerShell_RemoveUserFromSecurityRole
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -357,9 +357,9 @@ function SpPsPnpPowerShell_RemoveUserFromSecurityRole
 				-User $configFile.appsettings.UserName -RemoveRole 'Read'
 	Disconnect-PnPOnline
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
+#gavdcodebegin 020
 function SpPsPnpPowerShell_ResetSecurityInheritance
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -370,9 +370,9 @@ function SpPsPnpPowerShell_ResetSecurityInheritance
 	Set-PnPListItemPermission -List 'TestLibrary' -Identity 4 -InheritPermissions
 	Disconnect-PnPOnline
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
+#gavdcodebegin 021
 function SpPsPnpPowerShell_AddFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -383,9 +383,9 @@ function SpPsPnpPowerShell_AddFolder
 	Add-PnPFolder -Name "PnPPowerShellFolder" -Folder "TestLibrary"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
+#gavdcodebegin 022
 function SpPsPnpPowerShell_ResolveFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -396,9 +396,9 @@ function SpPsPnpPowerShell_ResolveFolder
 	Resolve-PnPFolder -SiteRelativePath "TestLibrary/PnPPowerShellFolder"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
+#gavdcodebegin 023
 function SpPsPnpPowerShell_GetFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -409,9 +409,9 @@ function SpPsPnpPowerShell_GetFolder
 	Get-PnPFolder -Url "TestLibrary/PnPPowerShellFolder"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
+#gavdcodebegin 024
 function SpPsPnpPowerShell_GetFolderItem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -422,9 +422,9 @@ function SpPsPnpPowerShell_GetFolderItem
 	Get-PnPFolder -Url "TestLibrary/PnPPowerShellFolder"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
-#gavdcodebegin 25
+#gavdcodebegin 025
 function SpPsPnpPowerShell_RenameFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -436,9 +436,9 @@ function SpPsPnpPowerShell_RenameFolder
 					 -TargetFolderName "PnPPowerShellFolderRenamed"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
-#gavdcodebegin 26
+#gavdcodebegin 026
 function SpPsPnpPowerShell_MoveFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -450,9 +450,9 @@ function SpPsPnpPowerShell_MoveFolder
 				   -TargetFolder "OtherTestLibrary"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
+#gavdcodebegin 027
 function SpPsPnpPowerShell_RemoveFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -465,9 +465,9 @@ function SpPsPnpPowerShell_RemoveFolder
 					 -Recycle
 	Disconnect-PnPOnline
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
+#gavdcodebegin 028
 function SpPsPnpPowerShell_AddRightsFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -481,9 +481,9 @@ function SpPsPnpPowerShell_AddRightsFolder
 							-AddRole "Contribute"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
+#gavdcodebegin 029
 function SpPsPnpPowerShell_RemoveRightsFolder
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -497,9 +497,9 @@ function SpPsPnpPowerShell_RemoveRightsFolder
 							-RemoveRole "Contribute"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
+#gavdcodebegin 030
 function SpPsPnpPowerShell_ReadAllAttachments
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -514,9 +514,9 @@ function SpPsPnpPowerShell_ReadAllAttachments
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#gavdcodebegin 31
+#gavdcodebegin 031
 function SpPsPnpPowerShell_DownloadAllAttachments
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -536,12 +536,14 @@ function SpPsPnpPowerShell_DownloadAllAttachments
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 31
+#gavdcodeend 031
 
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
+
+# *** Latest Source Code Index: 31 ***
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 

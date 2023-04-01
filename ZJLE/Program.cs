@@ -32,48 +32,53 @@ namespace ZJLE
             Console.ReadLine();
         }
 
-        //gavdcodebegin 01
-        static void SpCsPnpcore_CreateOneList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 001
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_CreateOneList(ClientContext spCtx)
         {
             ListTemplateType myTemplate = ListTemplateType.GenericList;
             string listName = "NewListPnPCore";
             bool enableVersioning = false;
             List newList = spCtx.Web.CreateList(myTemplate, listName, enableVersioning);
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
-        static void SpCsPnpcore_ReadOneList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 002
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_ReadOneList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.GetListByTitle("NewListPnPCore");
 
             Console.WriteLine("List title - " + myList.Title);
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 03
-        static void SpCsPnpcore_ListExists(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 003
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_ListExists(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             bool blnListExists = myWeb.ListExists("NewListPnPCore");
 
             Console.WriteLine("List exists - " + blnListExists);
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
 
-        //gavdcodebegin 04
-        static void SpCsPnpcore_AddUserToSecurityRoleInList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 004
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_AddUserToSecurityRoleInList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.GetListByTitle("NewListPnPCore");
 
             myList.SetListPermission(BuiltInIdentity.Everyone, RoleType.Editor);
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
 
-        //gavdcodebegin 05
-        static void SpCsPnpcore_AddOneFieldToList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 005
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_AddOneFieldToList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -92,10 +97,11 @@ namespace ZJLE
                 "Type='Note' Required='FALSE' Name='NewFieldPnPCoreXml' />";
             myList.CreateField(fieldXml);
         }
-        //gavdcodeend 05
+        //gavdcodeend 005
 
-        //gavdcodebegin 06
-        static void SpCsPnpcore_ReadFilteredFieldsFromList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 006
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_ReadFilteredFieldsFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -109,10 +115,11 @@ namespace ZJLE
                 Console.WriteLine(oneField.Title + " - " + oneField.TypeAsString);
             }
         }
-        //gavdcodeend 06
+        //gavdcodeend 006
 
-        //gavdcodebegin 07
-        static void SpCsPnpcore_ReadOneFieldFromList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 007
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_ReadOneFieldFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -122,10 +129,11 @@ namespace ZJLE
 
             Console.WriteLine(myField.InternalName + " - " + myField.TypeAsString);
         }
-        //gavdcodeend 07
+        //gavdcodeend 007
 
-        //gavdcodebegin 08
-        static void SpCsPnpcore_GetContentTypeList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 008
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_GetContentTypeList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -133,28 +141,31 @@ namespace ZJLE
 
             Console.WriteLine(myContentType.Description);
         }
-        //gavdcodeend 08
+        //gavdcodeend 008
 
-        //gavdcodebegin 09
-        static void SpCsPnpcore_AddContentTypeToList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 009
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_AddContentTypeToList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
             myList.AddContentTypeToListByName("Comment");
         }
-        //gavdcodeend 09
+        //gavdcodeend 009
 
-        //gavdcodebegin 10
-        static void SpCsPnpcore_RemoveContentTypeFromList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 010
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_RemoveContentTypeFromList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
             myList.RemoveContentTypeByName("Comment");
         }
-        //gavdcodeend 10
+        //gavdcodeend 010
 
-        //gavdcodebegin 11
-        static void SpCsPnpcore_GetViewList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 011
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_GetViewList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
@@ -162,16 +173,17 @@ namespace ZJLE
 
             Console.WriteLine(myView.ListViewXml);
         }
-        //gavdcodeend 11
+        //gavdcodeend 011
 
-        //gavdcodebegin 12
-        static void SpCsPnpcore_AddViewToList(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 012
+        //*** LEGACY CODE ***
+        static void SpCsPnpcore_AddViewToList(ClientContext spCtx)
         {
             Web myWeb = spCtx.Web;
             List myList = myWeb.Lists.GetByTitle("NewListPnPCore");
             myList.CreateView("NewView", ViewType.Html, null, 30, false);
         }
-        //gavdcodeend 12
+        //gavdcodeend 012
 
         //----------------------------------------------------------------------------------------
         static ClientContext LoginPnPCore()  //*** LEGACY CODE ***

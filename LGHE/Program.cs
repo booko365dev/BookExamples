@@ -114,7 +114,7 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsRest_CreateOneListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -139,21 +139,21 @@ static void SpCsRest_CreateOneListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                         .ReadAsStringAsync().Result;
                                 }).Result;
 
             var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                 .Deserialize<JsonElement>(resultStr);
             JsonElement myError;
             bool hasError = resultObj.TryGetProperty("error", out myError);
 
@@ -168,9 +168,9 @@ static void SpCsRest_CreateOneListItem()
         }
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsRest_UploadOneDocument()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -200,21 +200,21 @@ static void SpCsRest_UploadOneDocument()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                         .ReadAsStringAsync().Result;
                                 }).Result;
 
             var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                 .Deserialize<JsonElement>(resultStr);
             JsonElement myError;
             bool hasError = resultObj.TryGetProperty("error", out myError);
 
@@ -229,9 +229,9 @@ static void SpCsRest_UploadOneDocument()
         }
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsRest_DownloadOneDocumentt()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -239,7 +239,7 @@ static void SpCsRest_DownloadOneDocumentt()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string webUrlRel = new Uri(ConfigurationManager.AppSettings["SiteCollUrl"]).
-                                                                            AbsolutePath;
+                                                                         AbsolutePath;
 
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                     "/_api/web/getfilebyserverrelativeurl(" +
@@ -248,9 +248,9 @@ static void SpCsRest_DownloadOneDocumentt()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -270,9 +270,9 @@ static void SpCsRest_DownloadOneDocumentt()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsRest_ReadAllListsItems()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -284,9 +284,9 @@ static void SpCsRest_ReadAllListsItems()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -299,7 +299,7 @@ static void SpCsRest_ReadAllListsItems()
         {
             string strError = resultObj["odata.error"].code.Value;
             Console.WriteLine("Error found - " +
-                                            resultObj["odata.error"].message.value.Value);
+                                         resultObj["odata.error"].message.value.Value);
         }
         catch
         {
@@ -323,9 +323,9 @@ static void SpCsRest_ReadAllListsItems()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsRest_ReadOneListsItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -338,9 +338,9 @@ static void SpCsRest_ReadOneListsItem()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -356,9 +356,9 @@ static void SpCsRest_ReadOneListsItem()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsRest_ReadAllLibraryDocs()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -366,14 +366,14 @@ static void SpCsRest_ReadAllLibraryDocs()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                                "/_api/lists/getbytitle('TestLibrary')" +
-                                                "/items?$select=Title,Id";
+                                              "/_api/lists/getbytitle('TestLibrary')" +
+                                              "/items?$select=Title,Id";
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -386,7 +386,7 @@ static void SpCsRest_ReadAllLibraryDocs()
         {
             string strError = resultObj["odata.error"].code.Value;
             Console.WriteLine("Error found - " +
-                                            resultObj["odata.error"].message.value.Value);
+                                         resultObj["odata.error"].message.value.Value);
         }
         catch
         {
@@ -410,9 +410,9 @@ static void SpCsRest_ReadAllLibraryDocs()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsRest_ReadOneLibraryDoc()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -420,14 +420,14 @@ static void SpCsRest_ReadOneLibraryDoc()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                                "/_api/lists/getbytitle('TestLibrary')" +
-                                                "/items(10)?$select=Title,Id";
+                                              "/_api/lists/getbytitle('TestLibrary')" +
+                                              "/items(10)?$select=Title,Id";
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -443,9 +443,9 @@ static void SpCsRest_ReadOneLibraryDoc()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsRest_UpdateOneListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -453,7 +453,7 @@ static void SpCsRest_UpdateOneListItem()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                        "/_api/lists/getbytitle('TestList')/items(13)";
+                                      "/_api/lists/getbytitle('TestList')/items(13)";
 
         object myPayloadObj = new
         {
@@ -470,11 +470,11 @@ static void SpCsRest_UpdateOneListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                                  "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                                  "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
                                      "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
@@ -484,13 +484,13 @@ static void SpCsRest_UpdateOneListItem()
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                  .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -500,9 +500,9 @@ static void SpCsRest_UpdateOneListItem()
         }
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsRest_UpdateOneLibraryDoc()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -510,7 +510,7 @@ static void SpCsRest_UpdateOneLibraryDoc()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                        "/_api/lists/getbytitle('TestLibrary')/items(10)";
+                                     "/_api/lists/getbytitle('TestLibrary')/items(10)";
 
         object myPayloadObj = new
         {
@@ -527,27 +527,27 @@ static void SpCsRest_UpdateOneLibraryDoc()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                                  "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                                  "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "IF-MATCH", "*");
+                                  "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-HTTP-Method", "MERGE");
+                                  "X-HTTP-Method", "MERGE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                         .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -557,9 +557,9 @@ static void SpCsRest_UpdateOneLibraryDoc()
         }
     }
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsRest_DeleteOneListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -580,27 +580,27 @@ static void SpCsRest_DeleteOneListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -610,9 +610,9 @@ static void SpCsRest_DeleteOneListItem()
         }
     }
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsRest_DeleteOneLibraryDoc()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -620,7 +620,7 @@ static void SpCsRest_DeleteOneLibraryDoc()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                        "/_api/lists/getbytitle('TestLibrary')/items(20)";
+                                     "/_api/lists/getbytitle('TestLibrary')/items(20)";
 
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
@@ -633,15 +633,15 @@ static void SpCsRest_DeleteOneLibraryDoc()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
@@ -653,7 +653,7 @@ static void SpCsRest_DeleteOneLibraryDoc()
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -663,9 +663,9 @@ static void SpCsRest_DeleteOneLibraryDoc()
         }
     }
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsRest_BreakSecurityInheritanceListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -688,15 +688,15 @@ static void SpCsRest_BreakSecurityInheritanceListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
@@ -709,9 +709,9 @@ static void SpCsRest_BreakSecurityInheritanceListItem()
         }
     }
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsRest_ResetSecurityInheritanceListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -733,15 +733,15 @@ static void SpCsRest_ResetSecurityInheritanceListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
@@ -754,9 +754,9 @@ static void SpCsRest_ResetSecurityInheritanceListItem()
         }
     }
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsRest_AddUserToSecurityRoleInListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -771,9 +771,9 @@ static void SpCsRest_AddUserToSecurityRoleInListItem()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                       "Accept", "application/json; odata = verbose"); // Output as XML
+                      "Accept", "application/json; odata = verbose"); // Output as XML
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -790,13 +790,13 @@ static void SpCsRest_AddUserToSecurityRoleInListItem()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-          "/_api/web/roledefinitions?$select=Id&$filter=startswith(Name,'Full Control')";
+         "/_api/web/roledefinitions?$select=Id&$filter=startswith(Name,'Full Control')";
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                           "Accept", "application/json; odata=verbose"); // Output as XML
+                         "Accept", "application/json; odata=verbose"); // Output as XML
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -827,30 +827,30 @@ static void SpCsRest_AddUserToSecurityRoleInListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                                  "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                                  "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "IF-MATCH", "*");
+                                  "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-HTTP-Method", "MERGE");
+                                  "X-HTTP-Method", "MERGE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                         .ReadAsStringAsync().Result;
                                 }).Result;
 
             Console.WriteLine("Done");
         }
     }
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsRest_UpdateUserSecurityRoleInListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -865,9 +865,9 @@ static void SpCsRest_UpdateUserSecurityRoleInListItem()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                       "Accept", "application/json; odata = verbose"); // Output as XML
+                     "Accept", "application/json; odata = verbose"); // Output as XML
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -884,13 +884,13 @@ static void SpCsRest_UpdateUserSecurityRoleInListItem()
     if (myTokenWithAccPw.Item1.ToLower() == "ok")
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                        "/_api/web/roledefinitions/getbyname('Edit')/Id";
+                                     "/_api/web/roledefinitions/getbyname('Edit')/Id";
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                           "Accept", "application/json; odata=verbose"); // Output as XML
+                        "Accept", "application/json; odata=verbose"); // Output as XML
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -921,30 +921,30 @@ static void SpCsRest_UpdateUserSecurityRoleInListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                                  "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                                  "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "IF-MATCH", "*");
+                                  "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-HTTP-Method", "MERGE");
+                                  "X-HTTP-Method", "MERGE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                         .ReadAsStringAsync().Result;
                                 }).Result;
 
             Console.WriteLine("Done");
         }
     }
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsRest_DeleteUserFromSecurityRoleInListItem()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -959,9 +959,9 @@ static void SpCsRest_DeleteUserFromSecurityRoleInListItem()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                       "Accept", "application/json; odata = verbose"); // Output as XML
+                    "Accept", "application/json; odata = verbose"); // Output as XML
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -991,27 +991,27 @@ static void SpCsRest_DeleteUserFromSecurityRoleInListItem()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                                  "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                                  "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "IF-MATCH", "*");
+                                  "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-HTTP-Method", "DELETE");
+                                  "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                         .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -1021,9 +1021,9 @@ static void SpCsRest_DeleteUserFromSecurityRoleInListItem()
         }
     }
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 static void SpCsRest_CreateOneFolderInLibrary()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1049,21 +1049,21 @@ static void SpCsRest_CreateOneFolderInLibrary()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                  .Deserialize<JsonElement>(resultStr);
             JsonElement myError;
             bool hasError = resultObj.TryGetProperty("error", out myError);
 
@@ -1078,9 +1078,9 @@ static void SpCsRest_CreateOneFolderInLibrary()
         }
     }
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 static void SpCsRest_CreateOneFolderInList()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1108,17 +1108,17 @@ static void SpCsRest_CreateOneFolderInList()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             JObject resultObjA = JObject.Parse(resultStr);
@@ -1149,27 +1149,27 @@ static void SpCsRest_CreateOneFolderInList()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                        "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                        "Accept", "application/json;odata=verbose");
+                                   "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                        "X-RequestDigest", GetRequestDigest(null));
+                                   "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                        "IF-MATCH", "*");
+                                   "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                        "X-HTTP-Method", "MERGE");
+                                   "X-HTTP-Method", "MERGE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -1179,9 +1179,9 @@ static void SpCsRest_CreateOneFolderInList()
         }
     }
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 static void SpCsRest_ReadAllFoldersInLibrary()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1195,9 +1195,9 @@ static void SpCsRest_ReadAllFoldersInLibrary()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -1211,9 +1211,9 @@ static void SpCsRest_ReadAllFoldersInLibrary()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 static void SpCsRest_ReadAllFoldersInList()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1227,9 +1227,9 @@ static void SpCsRest_ReadAllFoldersInList()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -1243,9 +1243,9 @@ static void SpCsRest_ReadAllFoldersInList()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 static void SpCsRest_RenameOneFolderInLibrary()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1273,27 +1273,27 @@ static void SpCsRest_RenameOneFolderInLibrary()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                                  "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                                  "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "IF-MATCH", "*");
+                                  "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-HTTP-Method", "MERGE");
+                                  "X-HTTP-Method", "MERGE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -1303,9 +1303,9 @@ static void SpCsRest_RenameOneFolderInLibrary()
         }
     }
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 27
+//gavdcodebegin 027
 static void SpCsRest_RenameOneFolderInList()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1333,27 +1333,27 @@ static void SpCsRest_RenameOneFolderInList()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                                  "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                                  "X-RequestDigest", GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "IF-MATCH", "*");
+                                  "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-HTTP-Method", "MERGE");
+                                  "X-HTTP-Method", "MERGE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -1363,9 +1363,9 @@ static void SpCsRest_RenameOneFolderInList()
         }
     }
 }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 static void SpCsRest_DeleteOneFolderInLibrary()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1388,27 +1388,27 @@ static void SpCsRest_DeleteOneFolderInLibrary()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -1418,9 +1418,9 @@ static void SpCsRest_DeleteOneFolderInLibrary()
         }
     }
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 28
+//gavdcodebegin 028
 static void SpCsRest_DeleteOneFolderInList()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1443,27 +1443,27 @@ static void SpCsRest_DeleteOneFolderInList()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -1473,9 +1473,9 @@ static void SpCsRest_DeleteOneFolderInList()
         }
     }
 }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 static void SpCsRest_CreateOneAttachment()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1498,21 +1498,21 @@ static void SpCsRest_CreateOneAttachment()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                  .Deserialize<JsonElement>(resultStr);
             JsonElement myError;
             bool hasError = resultObj.TryGetProperty("error", out myError);
 
@@ -1527,9 +1527,9 @@ static void SpCsRest_CreateOneAttachment()
         }
     }
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 static void SpCsRest_ReadAllAttachments()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1542,9 +1542,9 @@ static void SpCsRest_ReadAllAttachments()
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -1558,9 +1558,9 @@ static void SpCsRest_ReadAllAttachments()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 23
+//gavdcodebegin 023
 static void SpCsRest_DownloadOneAttachmentByFileName()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1571,15 +1571,15 @@ static void SpCsRest_DownloadOneAttachmentByFileName()
         string myFilesPath = @"C:\Temporary\";
 
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                      "/_api/lists/GetByTitle('TestList')" +
-                                      "/items(13)/AttachmentFiles('" + myFileName + "')" +
-                                      "/$value";
+                                   "/_api/lists/GetByTitle('TestList')" +
+                                   "/items(13)/AttachmentFiles('" + myFileName + "')" +
+                                   "/$value";
 
         HttpClient myHttpClient = new HttpClient();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                 "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
         {
@@ -1599,9 +1599,9 @@ static void SpCsRest_DownloadOneAttachmentByFileName()
         Console.WriteLine(myTokenWithAccPw.Item2);
     }
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 static void TestSpRSpCsRest_DeleteOneAttachmentByFileName()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -1610,8 +1610,8 @@ static void TestSpRSpCsRest_DeleteOneAttachmentByFileName()
     {
         string myFileName = "TestText.txt";
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
-                                        "/_api/lists/GetByTitle('TestList')" +
-                                      "/items(13)/AttachmentFiles('" + myFileName + "')";
+                                    "/_api/lists/GetByTitle('TestList')" +
+                                    "/items(13)/AttachmentFiles('" + myFileName + "')";
 
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
@@ -1624,27 +1624,27 @@ static void TestSpRSpCsRest_DeleteOneAttachmentByFileName()
         {
             HttpClient myHttpClient = new HttpClient();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                                "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                          .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                   .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -1654,12 +1654,14 @@ static void TestSpRSpCsRest_DeleteOneAttachmentByFileName()
         }
     }
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
+
+// *** Latest Source Code Index: 28 ***
 
 //SpCsRest_CreateOneListItem();
 //SpCsRest_UploadOneDocument();

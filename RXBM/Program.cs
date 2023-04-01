@@ -128,7 +128,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsPnPCoreSdk_GetItemsDocuments()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -144,7 +144,8 @@ static void SpCsPnPCoreSdk_GetItemsDocuments()
 
         foreach (IListItem oneItem in myList.Items.AsRequested())
         {
-            string itemTitle = (oneItem["Title"] != null) ? oneItem["Title"].ToString(): "";
+            string itemTitle = (oneItem["Title"] != null) ? 
+                                        oneItem["Title"].ToString(): "";
             Console.WriteLine(itemTitle + " - " + 
                               oneItem["ID"].ToString() + " - " +
                               oneItem["FileSystemObjectType"].ToString());
@@ -153,9 +154,9 @@ static void SpCsPnPCoreSdk_GetItemsDocuments()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsPnPCoreSdk_GetItemsByCaml()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -194,9 +195,9 @@ static void SpCsPnPCoreSdk_GetItemsByCaml()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsPnPCoreSdk_GetOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -220,9 +221,9 @@ static void SpCsPnPCoreSdk_GetOneItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsPnPCoreSdk_GetOneDocumentByRelative()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -242,9 +243,9 @@ static void SpCsPnPCoreSdk_GetOneDocumentByRelative()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsPnPCoreSdk_GetOneDocumentByFind()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -267,9 +268,9 @@ static void SpCsPnPCoreSdk_GetOneDocumentByFind()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsPnPCoreSdk_CreateOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -293,9 +294,9 @@ static void SpCsPnPCoreSdk_CreateOneItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsPnPCoreSdk_CreateMultipleItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -323,9 +324,9 @@ static void SpCsPnPCoreSdk_CreateMultipleItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsPnPCoreSdk_UploadOneDocument()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -350,9 +351,9 @@ static void SpCsPnPCoreSdk_UploadOneDocument()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsPnPCoreSdk_DownloadOneDocument()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -384,9 +385,9 @@ static void SpCsPnPCoreSdk_DownloadOneDocument()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsPnPCoreSdk_UpdateOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -400,7 +401,7 @@ static void SpCsPnPCoreSdk_UpdateOneItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
         myItem["ColumnText"] = "This is an update";
 
         myItem.Update();
@@ -410,9 +411,9 @@ static void SpCsPnPCoreSdk_UpdateOneItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsPnPCoreSdk_UpdateOneDocumentByRelative()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -435,9 +436,9 @@ static void SpCsPnPCoreSdk_UpdateOneDocumentByRelative()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsPnPCoreSdk_DeleteOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -451,16 +452,16 @@ static void SpCsPnPCoreSdk_DeleteOneItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
 
         myItem.Delete();
     }
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsPnPCoreSdk_DeleteAllItems()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -483,9 +484,9 @@ static void SpCsPnPCoreSdk_DeleteAllItems()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsPnPCoreSdk_DeleteOneDocumentByRelative()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -505,9 +506,9 @@ static void SpCsPnPCoreSdk_DeleteOneDocumentByRelative()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsPnPCoreSdk_GetFolders()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -533,9 +534,9 @@ static void SpCsPnPCoreSdk_GetFolders()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsPnPCoreSdk_GetOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -557,9 +558,9 @@ static void SpCsPnPCoreSdk_GetOneFolder()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 static void SpCsPnPCoreSdk_EnsureOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -580,9 +581,9 @@ static void SpCsPnPCoreSdk_EnsureOneFolder()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 static void SpCsPnPCoreSdk_AddOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -601,9 +602,9 @@ static void SpCsPnPCoreSdk_AddOneFolder()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 static void SpCsPnPCoreSdk_UploadOneFileToOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -626,9 +627,9 @@ static void SpCsPnPCoreSdk_UploadOneFileToOneFolder()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 static void SpCsPnPCoreSdk_DownloadOneFileFromOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -641,7 +642,8 @@ static void SpCsPnPCoreSdk_DownloadOneFileFromOneFolder()
                                     myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         string filePath = @"C:\Temporary\TestText.txt";
-        string fileUrl = $"{myContext.Uri.PathAndQuery}/TestLibrary/NewFolder/TestText.txt";
+        string fileUrl = 
+                    $"{myContext.Uri.PathAndQuery}/TestLibrary/NewFolder/TestText.txt";
 
         IFile myFile = myContext.Web.GetFileByServerRelativeUrl(fileUrl);
 
@@ -660,9 +662,9 @@ static void SpCsPnPCoreSdk_DownloadOneFileFromOneFolder()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 static void SpCsPnPCoreSdk_DeleteOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -684,9 +686,9 @@ static void SpCsPnPCoreSdk_DeleteOneFolder()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 static void SpCsPnPCoreSdk_AddAttachmentsToItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -700,7 +702,7 @@ static void SpCsPnPCoreSdk_AddAttachmentsToItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
 
         IAttachment addedAttachment = myItem.AttachmentFiles.Add("TestText.txt", 
                 System.IO.File.OpenRead(@"C:\Temporary\TestText.txt"));
@@ -708,9 +710,9 @@ static void SpCsPnPCoreSdk_AddAttachmentsToItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 23
+//gavdcodebegin 023
 static void SpCsPnPCoreSdk_GetAttachmentsInItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -724,7 +726,7 @@ static void SpCsPnPCoreSdk_GetAttachmentsInItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
         IAttachmentCollection myAttachments = myItem.AttachmentFiles;
 
         foreach(IAttachment oneAttachment in myAttachments)
@@ -735,9 +737,9 @@ static void SpCsPnPCoreSdk_GetAttachmentsInItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 static void SpCsPnPCoreSdk_UpdateAttachmentsInItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -751,7 +753,7 @@ static void SpCsPnPCoreSdk_UpdateAttachmentsInItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                            .FirstOrDefault(p => p.Title == "ItemOne");
         IAttachmentCollection myAttachments = myItem.AttachmentFiles;
 
         foreach (IAttachment oneAttachment in myAttachments)
@@ -765,9 +767,9 @@ static void SpCsPnPCoreSdk_UpdateAttachmentsInItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 static void SpCsPnPCoreSdk_BreakeInheritanceItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -781,7 +783,7 @@ static void SpCsPnPCoreSdk_BreakeInheritanceItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
 
         if (myItem != null)
         {
@@ -791,9 +793,9 @@ static void SpCsPnPCoreSdk_BreakeInheritanceItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 static async void SpCsPnPCoreSdk_HasInheritanceItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -807,7 +809,7 @@ static async void SpCsPnPCoreSdk_HasInheritanceItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
         myItem.EnsureProperties(hur => hur.HasUniqueRoleAssignments);
 
         Console.WriteLine(myItem.HasUniqueRoleAssignments.ToString());
@@ -815,9 +817,9 @@ static async void SpCsPnPCoreSdk_HasInheritanceItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 27
+//gavdcodebegin 027
 static void SpCsPnPCoreSdk_RestoreInheritanceItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -831,7 +833,7 @@ static void SpCsPnPCoreSdk_RestoreInheritanceItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
 
         if (myItem != null)
         {
@@ -841,9 +843,9 @@ static void SpCsPnPCoreSdk_RestoreInheritanceItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 28
+//gavdcodebegin 028
 static void SpCsPnPCoreSdk_GetAllSecurityRolesItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -857,7 +859,7 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesItem()
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
 
         foreach (IRoleAssignment oneRole in myItem.RoleAssignments)
         {
@@ -873,9 +875,9 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 29
+//gavdcodebegin 029
 static void SpCsPnPCoreSdk_AddSecurityRoleToItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -890,7 +892,7 @@ static void SpCsPnPCoreSdk_AddSecurityRoleToItem()
         ISharePointUser myUser = myContext.Web.GetCurrentUser();
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
 
         myItem.AddRoleDefinitions(myUser.Id, new string[] { "Read", "Edit" });
         myItem.Update();
@@ -898,9 +900,9 @@ static void SpCsPnPCoreSdk_AddSecurityRoleToItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 29
+//gavdcodeend 029
 
-//gavdcodebegin 30
+//gavdcodebegin 030
 static void SpCsPnPCoreSdk_DeleteSecurityRoleFromItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -915,7 +917,7 @@ static void SpCsPnPCoreSdk_DeleteSecurityRoleFromItem()
         ISharePointUser myUser = myContext.Web.GetCurrentUser();
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                             .FirstOrDefault(p => p.Title == "ItemOne");
 
         myItem.RemoveRoleDefinitions(myUser.Id, new string[] { "Read" });
         myItem.Update();
@@ -923,12 +925,14 @@ static void SpCsPnPCoreSdk_DeleteSecurityRoleFromItem()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 30
+//gavdcodeend 030
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
+
+// *** Latest Source Code Index: 30 ***
 
 //SpCsPnPCoreSdk_GetItemsDocuments();
 //SpCsPnPCoreSdk_GetItemsByCaml();

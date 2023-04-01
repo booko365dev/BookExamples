@@ -18,7 +18,7 @@ Function LoginPsCLI
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 function SpPsCliM365_CreateListWithParameters
 {
 	$spCtx = LoginPsCLI
@@ -29,9 +29,9 @@ function SpPsCliM365_CreateListWithParameters
 
 	m365 logout
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 function SpPsCliM365_CreateListWithSchema
 {
 	$spCtx = LoginPsCLI
@@ -54,9 +54,9 @@ function SpPsCliM365_CreateListWithSchema
 	
 	m365 logout
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 function SpPsCliM365_GetAllLists
 {
 	$spCtx = LoginPsCLI
@@ -65,9 +65,9 @@ function SpPsCliM365_GetAllLists
 	
 	m365 logout
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 function SpPsCliM365_GetOneList
 {
 	$spCtx = LoginPsCLI
@@ -82,9 +82,9 @@ function SpPsCliM365_GetOneList
 	
 	m365 logout
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 function SpPsCliM365_UpdateOneList
 {
 	$spCtx = LoginPsCLI
@@ -95,9 +95,9 @@ function SpPsCliM365_UpdateOneList
 	
 	m365 logout
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 function SpPsCliM365_DeleteOneList
 {
 	$spCtx = LoginPsCLI
@@ -107,9 +107,9 @@ function SpPsCliM365_DeleteOneList
 	
 	m365 logout
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 function SpPsCliM365_GetAllFieldsInList
 {
 	$spCtx = LoginPsCLI
@@ -119,9 +119,9 @@ function SpPsCliM365_GetAllFieldsInList
 	
 	m365 logout
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 function SpPsCliM365_GetOneFieldInList
 {
 	$spCtx = LoginPsCLI
@@ -132,14 +132,15 @@ function SpPsCliM365_GetOneFieldInList
 
 	m365 logout
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 function SpPsCliM365_CreateOneFieldInList
 {
 	$spCtx = LoginPsCLI
 
-	$fieldXml = "<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
+	$fieldXml = `
+			"<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
 	m365 spo field add --listTitle "NewListPsCli" `
 					   --xml $fieldXml `
 					   --webUrl $configFile.appsettings.SiteCollUrl `
@@ -147,9 +148,9 @@ function SpPsCliM365_CreateOneFieldInList
 
 	m365 logout
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 function SpPsCliM365_UpdateOneFieldInList
 {
 	$spCtx = LoginPsCLI
@@ -161,9 +162,9 @@ function SpPsCliM365_UpdateOneFieldInList
 
 	m365 logout
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 function SpPsCliM365_DeleteOneFieldFromList
 {
 	$spCtx = LoginPsCLI
@@ -175,9 +176,9 @@ function SpPsCliM365_DeleteOneFieldFromList
 
 	m365 logout
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 function SpPsCliM365_BreakInheritanceList
 {
 	$spCtx = LoginPsCLI
@@ -188,9 +189,9 @@ function SpPsCliM365_BreakInheritanceList
 
 	m365 logout
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
+#gavdcodebegin 013
 function SpPsCliM365_RestoreInheritanceList
 {
 	$spCtx = LoginPsCLI
@@ -200,9 +201,9 @@ function SpPsCliM365_RestoreInheritanceList
 
 	m365 logout
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 function SpPsCliM365_GetAllRoledefinition
 {
 	$spCtx = LoginPsCLI
@@ -211,7 +212,7 @@ function SpPsCliM365_GetAllRoledefinition
 
 	m365 logout
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
 
 ##---------------------------------------------------------------------------------------

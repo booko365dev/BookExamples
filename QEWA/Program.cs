@@ -129,7 +129,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 //---------------------------------------------------------------------------------------
 
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsPnPCoreSdk_GetAllLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -151,9 +151,9 @@ static void SpCsPnPCoreSdk_GetAllLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsPnPCoreSdk_GetOneList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -167,20 +167,20 @@ static void SpCsPnPCoreSdk_GetOneList()
     {
         IList myOneList = myContext.Web.Lists.GetByTitle("Documents");
         //IList myOneList = myContext.Web.Lists.Where(
-        //                              lst => lst.Title == "Documents").FirstOrDefault();
+        //                           lst => lst.Title == "Documents").FirstOrDefault();
         //IList myOneList = myContext.Web.Lists.GetById(
-        //                              new Guid("32243fc3-33dc-4b56-bec5-3166206c26ad"));
+        //                           new Guid("32243fc3-33dc-4b56-bec5-3166206c26ad"));
         //IList myOneList = myContext.Web.Lists.GetByServerRelativeUrl(
-        //                              $"{myContext.Uri.PathAndQuery}/Shared Documents");
+        //                           $"{myContext.Uri.PathAndQuery}/Shared Documents");
 
         Console.WriteLine(myOneList.Id);
     }
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsPnPCoreSdk_GetOneListProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -201,9 +201,9 @@ static void SpCsPnPCoreSdk_GetOneListProperties()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsPnPCoreSdk_CreateList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -223,9 +223,9 @@ static void SpCsPnPCoreSdk_CreateList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsPnPCoreSdk_UpdateList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -246,9 +246,9 @@ static void SpCsPnPCoreSdk_UpdateList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsPnPCoreSdk_RecycleList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -266,9 +266,9 @@ static void SpCsPnPCoreSdk_RecycleList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsPnPCoreSdk_DeleteList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -286,9 +286,9 @@ static void SpCsPnPCoreSdk_DeleteList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsPnPCoreSdk_GetAllFieldsInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -311,9 +311,9 @@ static void SpCsPnPCoreSdk_GetAllFieldsInLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsPnPCoreSdk_GetPropertiesFieldsInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -341,9 +341,9 @@ static void SpCsPnPCoreSdk_GetPropertiesFieldsInLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsPnPCoreSdk_CreateFieldByXmlToLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -356,7 +356,7 @@ static void SpCsPnPCoreSdk_CreateFieldByXmlToLists()
                                     myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         string myFieldXml = 
-            @"<Field Type=""Text"" Name=""myTextField"" DisplayName=""My Text Field""/>";
+          @"<Field Type=""Text"" Name=""myTextField"" DisplayName=""My Text Field""/>";
 
         IField myListField = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
                                 Fields.AddFieldAsXml(myFieldXml, true);
@@ -366,9 +366,9 @@ static void SpCsPnPCoreSdk_CreateFieldByXmlToLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsPnPCoreSdk_CreateFieldByApiToLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -394,9 +394,9 @@ static void SpCsPnPCoreSdk_CreateFieldByApiToLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsPnPCoreSdk_UpdateFieldInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -420,9 +420,9 @@ static void SpCsPnPCoreSdk_UpdateFieldInLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsPnPCoreSdk_DeleteFieldFromLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -445,9 +445,9 @@ static void SpCsPnPCoreSdk_DeleteFieldFromLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsPnPCoreSdk_GetAllViewsInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -470,9 +470,9 @@ static void SpCsPnPCoreSdk_GetAllViewsInLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsPnPCoreSdk_CreateViewForLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -499,9 +499,9 @@ static void SpCsPnPCoreSdk_CreateViewForLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsPnPCoreSdk_UpdateViewForLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -525,9 +525,9 @@ static void SpCsPnPCoreSdk_UpdateViewForLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 static void SpCsPnPCoreSdk_DeleteViewFromLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -550,9 +550,9 @@ static void SpCsPnPCoreSdk_DeleteViewFromLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 static void SpCsPnPCoreSdk_GetAllContentTypesLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -575,9 +575,9 @@ static void SpCsPnPCoreSdk_GetAllContentTypesLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 static void SpCsPnPCoreSdk_EnableContentTypesListProperty()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -601,9 +601,9 @@ static void SpCsPnPCoreSdk_EnableContentTypesListProperty()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 static void SpCsPnPCoreSdk_CreateContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -627,9 +627,9 @@ static void SpCsPnPCoreSdk_CreateContentTypeList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 static void SpCsPnPCoreSdk_UpdateContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -641,8 +641,9 @@ static void SpCsPnPCoreSdk_UpdateContentTypeList()
     using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
                                     myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        IContentType myListContentType = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
-            ContentTypes.Where(ct => ct.Name == "MySiteContentType").FirstOrDefault();
+        IContentType myListContentType = myContext.Web.Lists
+            .GetByTitle("NewListPnPCoreSDK").ContentTypes
+            .Where(ct => ct.Name == "MySiteContentType").FirstOrDefault();
 
         if (myListContentType != null)
         {
@@ -653,9 +654,9 @@ static void SpCsPnPCoreSdk_UpdateContentTypeList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 static void SpCsPnPCoreSdk_AddFieldToContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -667,14 +668,15 @@ static void SpCsPnPCoreSdk_AddFieldToContentTypeList()
     using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
                                     myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        IContentType myListContentType = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
-            ContentTypes.Where(ct => ct.Name == "MyListContentType").FirstOrDefault();
+        IContentType myListContentType = myContext.Web.Lists
+            .GetByTitle("NewListPnPCoreSDK").ContentTypes
+            .Where(ct => ct.Name == "MyListContentType").FirstOrDefault();
 
         if (myListContentType != null)
         {
             IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
             IField myField = myList.Fields.Where(
-                            fld => fld.InternalName == "OneTextField").FirstOrDefault();
+                           fld => fld.InternalName == "OneTextField").FirstOrDefault();
 
             myListContentType.FieldLinks.Add(myField, required: true);
         }
@@ -682,9 +684,9 @@ static void SpCsPnPCoreSdk_AddFieldToContentTypeList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 23
+//gavdcodebegin 023
 static void SpCsPnPCoreSdk_DeleteContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -694,10 +696,11 @@ static void SpCsPnPCoreSdk_DeleteContentTypeList()
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
     using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+                                   myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        IContentType myListContentType = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
-            ContentTypes.Where(ct => ct.Name == "MyListContentType").FirstOrDefault();
+        IContentType myListContentType = myContext.Web.Lists
+            .GetByTitle("NewListPnPCoreSDK").ContentTypes
+            .Where(ct => ct.Name == "MyListContentType").FirstOrDefault();
 
         if (myListContentType != null)
         {
@@ -707,9 +710,9 @@ static void SpCsPnPCoreSdk_DeleteContentTypeList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 static void SpCsPnPCoreSdk_BreakeInheritanceList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -731,9 +734,9 @@ static void SpCsPnPCoreSdk_BreakeInheritanceList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 static async void SpCsPnPCoreSdk_HasInheritanceList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -753,9 +756,9 @@ static async void SpCsPnPCoreSdk_HasInheritanceList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 static void SpCsPnPCoreSdk_RestoreInheritanceList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -777,9 +780,9 @@ static void SpCsPnPCoreSdk_RestoreInheritanceList()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 27
+//gavdcodebegin 027
 static void SpCsPnPCoreSdk_GetAllSecurityRolesLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -807,9 +810,9 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 28
+//gavdcodebegin 028
 static void SpCsPnPCoreSdk_AddSecurityRoleToLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -830,9 +833,9 @@ static void SpCsPnPCoreSdk_AddSecurityRoleToLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 29
+//gavdcodebegin 029
 static void SpCsPnPCoreSdk_DeleteSecurityRoleFromLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -853,7 +856,7 @@ static void SpCsPnPCoreSdk_DeleteSecurityRoleFromLists()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 29
+//gavdcodeend 029
 
 
 //---------------------------------------------------------------------------------------

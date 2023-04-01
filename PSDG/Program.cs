@@ -81,7 +81,7 @@ static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsPnpFramework_CreateOneList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -92,9 +92,9 @@ static void SpCsPnpFramework_CreateOneList()
         List newList = spPnpCtx.Web.CreateList(myTemplate, listName, enableVersioning);
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsPnpFramework_ReadOneList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -105,9 +105,9 @@ static void SpCsPnpFramework_ReadOneList()
         Console.WriteLine("List title - " + myList.Title);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsPnpFramework_ListExists()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -118,9 +118,9 @@ static void SpCsPnpFramework_ListExists()
         Console.WriteLine("List exists - " + blnListExists);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsPnpFramework_AddUserToSecurityRoleInList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -131,9 +131,9 @@ static void SpCsPnpFramework_AddUserToSecurityRoleInList()
         myList.SetListPermission(BuiltInIdentity.Everyone, RoleType.Editor);
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsPnpFramework_AddOneFieldToList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -156,9 +156,9 @@ static void SpCsPnpFramework_AddOneFieldToList()
         myList.CreateField(fieldXml);
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsPnpFramework_ReadFilteredFieldsFromList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -176,9 +176,9 @@ static void SpCsPnpFramework_ReadFilteredFieldsFromList()
         }
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsPnpFramework_ReadOneFieldFromList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -192,9 +192,9 @@ static void SpCsPnpFramework_ReadOneFieldFromList()
         Console.WriteLine(myField.InternalName + " - " + myField.TypeAsString);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsPnpFramework_GetContentTypeList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -206,9 +206,9 @@ static void SpCsPnpFramework_GetContentTypeList()
         Console.WriteLine(myContentType.Description);
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsPnpFramework_AddContentTypeToList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -218,9 +218,9 @@ static void SpCsPnpFramework_AddContentTypeToList()
         myList.AddContentTypeToListByName("Comment");
     }
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsPnpFramework_RemoveContentTypeFromList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -230,9 +230,9 @@ static void SpCsPnpFramework_RemoveContentTypeFromList()
         myList.RemoveContentTypeByName("Comment");
     }
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsPnpFramework_GetViewList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -244,9 +244,9 @@ static void SpCsPnpFramework_GetViewList()
         Console.WriteLine(myView.ListViewXml);
     }
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsPnpFramework_AddViewToList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -256,9 +256,9 @@ static void SpCsPnpFramework_AddViewToList()
         myList.CreateView("NewView", ViewType.Html, null, 30, false);
     }
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsPnpFramework_BreakRoleInheritanceList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -269,9 +269,9 @@ static void SpCsPnpFramework_BreakRoleInheritanceList()
         myList.BreakRoleInheritance(true, false);
     }
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsPnpFramework_RestoreRoleInheritanceList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -282,9 +282,9 @@ static void SpCsPnpFramework_RestoreRoleInheritanceList()
         myList.ResetRoleInheritance();
     }
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsPnpFramework_UpdateList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -296,9 +296,9 @@ static void SpCsPnpFramework_UpdateList()
         myList.Update();
     }
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsPnpFramework_DeleteList()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -310,7 +310,7 @@ static void SpCsPnpFramework_DeleteList()
         myWeb.Update();
     }
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
 
 //---------------------------------------------------------------------------------------

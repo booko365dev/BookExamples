@@ -1,5 +1,6 @@
 ﻿ 
-Function Get-AzureTokenApplication(){
+Function Get-AzureTokenApplication
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -27,7 +28,8 @@ Function Get-AzureTokenApplication(){
 	return $myOAuth
 }
 
-Function Get-AzureTokenDelegation(){
+Function Get-AzureTokenDelegation
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -62,7 +64,7 @@ Function Get-AzureTokenDelegation(){
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function GrPsGetAllSites()
+Function GrPs_GetAllSites
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -85,7 +87,7 @@ Function GrPsGetAllSites()
 #gavdcodeend 001 
 
 #gavdcodebegin 002
-Function GrPsGetOneSiteById()
+Function GrPs_GetOneSiteById
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -109,7 +111,7 @@ Function GrPsGetOneSiteById()
 #gavdcodeend 002 
 
 #gavdcodebegin 003
-Function GrPsGetOneSiteByPath()
+Function GrPs_GetOneSiteByPath
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -133,7 +135,7 @@ Function GrPsGetOneSiteByPath()
 #gavdcodeend 003 
 
 #gavdcodebegin 004
-Function GrPsGetSitesBySearch()
+Function GrPs_GetSitesBySearch
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -156,7 +158,7 @@ Function GrPsGetSitesBySearch()
 #gavdcodeend 004 
 
 #gavdcodebegin 016
-Function GrPsGetOneSiteAnalytics()
+Function GrPs_GetOneSiteAnalytics
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -180,7 +182,7 @@ Function GrPsGetOneSiteAnalytics()
 #gavdcodeend 016 
 
 #gavdcodebegin 005
-Function GrPsGetSitesFollowed()
+Function GrPs_GetSitesFollowed
 {
 	# App Registration type:		Application
 	# App Registration permissions: Files.Read.All, Files.ReadWrite.All, Sites.Read.All,	
@@ -204,7 +206,7 @@ Function GrPsGetSitesFollowed()
 #gavdcodeend 005 
 
 #gavdcodebegin 006
-Function GrPsSitesUnfollow()
+Function GrPs_SitesUnfollow
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.FullControl.All
@@ -231,7 +233,7 @@ Function GrPsSitesUnfollow()
 #gavdcodeend 006 
 
 #gavdcodebegin 007
-Function GrPsSitesFollow()
+Function GrPs_SitesFollow()
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.FullControl.All
@@ -257,8 +259,8 @@ Function GrPsSitesFollow()
 }
 #gavdcodeend 007 
 
-#gavdcodebegin 08
-Function GrPsGetAllListsInSite()
+#gavdcodebegin 008
+Function GrPs_GetAllListsInSite
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -279,10 +281,10 @@ Function GrPsGetAllListsInSite()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 08 
+#gavdcodeend 008 
 
-#gavdcodebegin 09
-Function GrPsGetOneListInSite()
+#gavdcodebegin 009
+Function GrPs_GetOneListInSite
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -304,10 +306,10 @@ Function GrPsGetOneListInSite()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 09 
+#gavdcodeend 009 
 
-#gavdcodebegin 10
-Function GrPsCreateList()
+#gavdcodebegin 010
+Function GrPs_CreateList
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.FullControl.All
@@ -331,10 +333,10 @@ Function GrPsCreateList()
 
 	Write-Host $myResult
 }
-#gavdcodeend 10 
+#gavdcodeend 010 
 
-#gavdcodebegin 11
-Function GrPsGetAllItemsInList()
+#gavdcodebegin 011
+Function GrPs_GetAllItemsInList
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -357,10 +359,10 @@ Function GrPsGetAllItemsInList()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 11 
+#gavdcodeend 011 
 
-#gavdcodebegin 12
-Function GrPsGetOneItemInList()
+#gavdcodebegin 012
+Function GrPs_GetOneItemInList
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -384,10 +386,10 @@ Function GrPsGetOneItemInList()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 12 
+#gavdcodeend 012 
 
-#gavdcodebegin 17
-Function GrPsGetOneItemAnalytics()
+#gavdcodebegin 017
+Function GrPs_GetOneItemAnalytics
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
@@ -411,10 +413,10 @@ Function GrPsGetOneItemAnalytics()
 	$myObject = ConvertFrom-Json –InputObject $myResult
 	$myObject.value.subject
 }
-#gavdcodeend 17 
+#gavdcodeend 017 
 
-#gavdcodebegin 13
-Function GrPsCreateItem()
+#gavdcodebegin 013
+Function GrPs_CreateItem
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.FullControl.All
@@ -439,10 +441,10 @@ Function GrPsCreateItem()
 
 	Write-Host $myResult
 }
-#gavdcodeend 13 
+#gavdcodeend 013 
 
-#gavdcodebegin 14
-Function GrPsUpdateItem()
+#gavdcodebegin 014
+Function GrPs_UpdateItem
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.FullControl.All
@@ -468,10 +470,10 @@ Function GrPsUpdateItem()
 
 	Write-Host $myResult
 }
-#gavdcodeend 14 
+#gavdcodeend 014 
 
-#gavdcodebegin 15
-Function GrPsDeleteItem()
+#gavdcodebegin 015
+Function GrPs_DeleteItem
 {
 	# App Registration type:		Application
 	# App Registration permissions: Sites.FullControl.All
@@ -497,11 +499,14 @@ Function GrPsDeleteItem()
 
 	Write-Host $myResult
 }
-#gavdcodeend 15 
+#gavdcodeend 015 
 
 #----------------------------------------------------------------------------------------
 
 ## Running the Functions
+
+# *** Latest Source Code Index: 17 ***
+
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 $ClientIDApp = $configFile.appsettings.ClientIdWithSecret
@@ -509,22 +514,22 @@ $ClientSecretApp = $configFile.appsettings.ClientSecret
 $TenantName = $configFile.appsettings.TenantName
 $UserName = $configFile.appsettings.UserName
 
-#GrPsGetAllSites 
-#GrPsGetOneSiteById
-#GrPsGetOneSiteByPath
-#GrPsGetSitesBySearch
-#GrPsGetOneSiteAnalytics
-#GrPsGetSitesFollowed
-#GrPsSitesUnfollow
-#GrPsSitesFollow
-#GrPsGetAllListsInSite
-#GrPsGetOneListInSite
-#GrPsCreateList
-#GrPsGetAllItemsInList
-#GrPsGetOneItemInList
-#GrPsGetOneItemAnalytics
-#GrPsCreateItem
-#GrPsUpdateItem
-#GrPsDeleteItem
+#GrPs_GetAllSites 
+#GrPs_GetOneSiteById
+#GrPs_GetOneSiteByPath
+#GrPs_GetSitesBySearch
+#GrPs_GetOneSiteAnalytics
+#GrPs_GetSitesFollowed
+#GrPs_SitesUnfollow
+#GrPs_SitesFollow
+#GrPs_GetAllListsInSite
+#GrPs_GetOneListInSite
+#GrPs_CreateList
+#GrPs_GetAllItemsInList
+#GrPs_GetOneItemInList
+#GrPs_GetOneItemAnalytics
+#GrPs_CreateItem
+#GrPs_UpdateItem
+#GrPs_DeleteItem
 
 Write-Host "Done" 

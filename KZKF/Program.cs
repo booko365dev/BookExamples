@@ -24,7 +24,7 @@ using System.Web;
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsCsom_CreateOneList(ClientContext spCtx)
 {
     ListCreationInformation myListCreationInfo = new ListCreationInformation();
@@ -37,9 +37,9 @@ static void SpCsCsom_CreateOneList(ClientContext spCtx)
     newList.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsCsom_ReadAllList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -53,9 +53,9 @@ static void SpCsCsom_ReadAllList(ClientContext spCtx)
         Console.WriteLine(oneList.Title + " - " + oneList.Id);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsCsom_ReadOneList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -65,9 +65,9 @@ static void SpCsCsom_ReadOneList(ClientContext spCtx)
 
     Console.WriteLine("List description - " + myList.Description);
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsCsom_UpdateOneList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -79,9 +79,9 @@ static void SpCsCsom_UpdateOneList(ClientContext spCtx)
 
     Console.WriteLine("List description - " + myList.Description);
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsCsom_DeleteOneList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -89,7 +89,7 @@ static void SpCsCsom_DeleteOneList(ClientContext spCtx)
     myList.DeleteObject();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
 //gavdcodebegin 06
 static void SpCsCsom_AddOneFieldToList(ClientContext spCtx)
@@ -104,7 +104,7 @@ static void SpCsCsom_AddOneFieldToList(ClientContext spCtx)
 }
 //gavdcodeend 06
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsCsom_ReadAllFieldsFromList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -119,9 +119,9 @@ static void SpCsCsom_ReadAllFieldsFromList(ClientContext spCtx)
         Console.WriteLine(oneField.Title + " - " + oneField.TypeAsString);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsCsom_ReadOneFieldFromList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -132,9 +132,9 @@ static void SpCsCsom_ReadOneFieldFromList(ClientContext spCtx)
 
     Console.WriteLine(myField.Id + " - " + myField.TypeAsString);
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsCsom_UpdateOneFieldInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -152,9 +152,9 @@ static void SpCsCsom_UpdateOneFieldInList(ClientContext spCtx)
 
     Console.WriteLine(myField.Description);
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsCsom_DeleteOneFieldFromList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -163,9 +163,9 @@ static void SpCsCsom_DeleteOneFieldFromList(ClientContext spCtx)
     myField.DeleteObject();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsCsom_BreakSecurityInheritanceList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -180,9 +180,9 @@ static void SpCsCsom_BreakSecurityInheritanceList(ClientContext spCtx)
     myList.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsCsom_AddUserToSecurityRoleInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -196,9 +196,9 @@ static void SpCsCsom_AddUserToSecurityRoleInList(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsCsom_UpdateUserSecurityRoleInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -215,9 +215,9 @@ static void SpCsCsom_UpdateUserSecurityRoleInList(ClientContext spCtx)
     myRoleAssignment.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsCsom_DeleteUserFromSecurityRoleInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -228,9 +228,9 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInList(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsCsom_ResetSecurityInheritanceList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -245,9 +245,9 @@ static void SpCsCsom_ResetSecurityInheritanceList(ClientContext spCtx)
     myList.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsCsom_FieldCreateText(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -262,7 +262,7 @@ static void SpCsCsom_FieldCreateText(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
 //gavdcodebegin 17
 static void SpCsCsom_ReadAllSiteColumns(ClientContext spCtx)

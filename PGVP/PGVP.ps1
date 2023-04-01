@@ -18,7 +18,7 @@ Function LoginPsCLI
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 function SpPsCliM365_CreateListItem
 {
 	$spCtx = LoginPsCLI
@@ -30,9 +30,9 @@ function SpPsCliM365_CreateListItem
 
 	m365 logout
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 function SpPsCliM365_GetAllListItemsInList
 {
 	$spCtx = LoginPsCLI
@@ -42,9 +42,9 @@ function SpPsCliM365_GetAllListItemsInList
 	
 	m365 logout
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 function SpPsCliM365_GetAllListItemsInListSelectFields
 {
 	$spCtx = LoginPsCLI
@@ -55,9 +55,9 @@ function SpPsCliM365_GetAllListItemsInListSelectFields
 	
 	m365 logout
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 function SpPsCliM365_GetOneListItem
 {
 	$spCtx = LoginPsCLI
@@ -68,9 +68,9 @@ function SpPsCliM365_GetOneListItem
 	
 	m365 logout
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 function SpPsCliM365_GetOneListItemSelectFields
 {
 	$spCtx = LoginPsCLI
@@ -82,9 +82,9 @@ function SpPsCliM365_GetOneListItemSelectFields
 	
 	m365 logout
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 function SpPsCliM365_GetOneListItemByCAML
 {
 	$spCtx = LoginPsCLI
@@ -106,9 +106,9 @@ function SpPsCliM365_GetOneListItemByCAML
 	
 	m365 logout
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 function SpPsCliM365_GetOneListItemByFilter
 {
 	$spCtx = LoginPsCLI
@@ -121,9 +121,9 @@ function SpPsCliM365_GetOneListItemByFilter
 	
 	m365 logout
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 function SpPsCliM365_UpdateOneListItem
 {
 	$spCtx = LoginPsCLI
@@ -136,9 +136,9 @@ function SpPsCliM365_UpdateOneListItem
 
 	m365 logout
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 function SpPsCliM365_DeleteOneListItem
 {
 	$spCtx = LoginPsCLI
@@ -150,9 +150,9 @@ function SpPsCliM365_DeleteOneListItem
 
 	m365 logout
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 function SpPsCliM365_UploadOneDocument
 {
 	$spCtx = LoginPsCLI
@@ -163,9 +163,9 @@ function SpPsCliM365_UploadOneDocument
 
 	m365 logout
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 function SpPsCliM365_UploadOneDocumentByRelativePath
 {
 	$spCtx = LoginPsCLI
@@ -176,9 +176,9 @@ function SpPsCliM365_UploadOneDocumentByRelativePath
 
 	m365 logout
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 function SpPsCliM365_UploadOneDocumentAndChangeFieldValue
 {
 	$spCtx = LoginPsCLI
@@ -190,9 +190,9 @@ function SpPsCliM365_UploadOneDocumentAndChangeFieldValue
 
 	m365 logout
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
+#gavdcodebegin 013
 function SpPsCliM365_GetAllDocumentsInLibrary
 {
 	$spCtx = LoginPsCLI
@@ -202,9 +202,9 @@ function SpPsCliM365_GetAllDocumentsInLibrary
 
 	m365 logout
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 function SpPsCliM365_GetOneDocumentProperties
 {
 	$spCtx = LoginPsCLI
@@ -214,9 +214,9 @@ function SpPsCliM365_GetOneDocumentProperties
 
 	m365 logout
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
+#gavdcodebegin 015
 function SpPsCliM365_GetOneDocumentPropertiesAsListItem
 {
 	$spCtx = LoginPsCLI
@@ -227,9 +227,9 @@ function SpPsCliM365_GetOneDocumentPropertiesAsListItem
 
 	m365 logout
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
+#gavdcodebegin 016
 function SpPsCliM365_GetOneDocumentPropertiesAsString
 {
 	$spCtx = LoginPsCLI
@@ -240,9 +240,9 @@ function SpPsCliM365_GetOneDocumentPropertiesAsString
 
 	m365 logout
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
+#gavdcodebegin 017
 function SpPsCliM365_DownloadOneDocument
 {
 	$spCtx = LoginPsCLI
@@ -254,9 +254,9 @@ function SpPsCliM365_DownloadOneDocument
 
 	m365 logout
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
+#gavdcodebegin 018
 function SpPsCliM365_UpdateOneDocument
 {
 	$spCtx = LoginPsCLI
@@ -268,9 +268,9 @@ function SpPsCliM365_UpdateOneDocument
 
 	m365 logout
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
+#gavdcodebegin 019
 function SpPsCliM365_CopyOneDocument
 {
 	$spCtx = LoginPsCLI
@@ -281,9 +281,9 @@ function SpPsCliM365_CopyOneDocument
 
 	m365 logout
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
+#gavdcodebegin 020
 function SpPsCliM365_MoveOneDocument
 {
 	$spCtx = LoginPsCLI
@@ -294,9 +294,9 @@ function SpPsCliM365_MoveOneDocument
 
 	m365 logout
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
+#gavdcodebegin 021
 function SpPsCliM365_DeleteOneDocument
 {
 	$spCtx = LoginPsCLI
@@ -306,9 +306,9 @@ function SpPsCliM365_DeleteOneDocument
 
 	m365 logout
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
+#gavdcodebegin 022
 function SpPsCliM365_CreateFolderInLibrary
 {
 	$spCtx = LoginPsCLI
@@ -319,9 +319,9 @@ function SpPsCliM365_CreateFolderInLibrary
 
 	m365 logout
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
+#gavdcodebegin 023
 function SpPsCliM365_GetFoldersInLibrary
 {
 	$spCtx = LoginPsCLI
@@ -331,9 +331,9 @@ function SpPsCliM365_GetFoldersInLibrary
 
 	m365 logout
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
+#gavdcodebegin 024
 function SpPsCliM365_GetOneFolderInLibrary
 {
 	$spCtx = LoginPsCLI
@@ -343,9 +343,9 @@ function SpPsCliM365_GetOneFolderInLibrary
 
 	m365 logout
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
-#gavdcodebegin 25
+#gavdcodebegin 025
 function SpPsCliM365_RenameOneFolderInLibrary
 {
 	$spCtx = LoginPsCLI
@@ -356,9 +356,9 @@ function SpPsCliM365_RenameOneFolderInLibrary
 
 	m365 logout
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
-#gavdcodebegin 26
+#gavdcodebegin 026
 function SpPsCliM365_CopyOneFolderToOtherLibrary
 {
 	$spCtx = LoginPsCLI
@@ -369,9 +369,9 @@ function SpPsCliM365_CopyOneFolderToOtherLibrary
 
 	m365 logout
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
+#gavdcodebegin 027
 function SpPsCliM365_MoveOneFolderToOtherLibrary
 {
 	$spCtx = LoginPsCLI
@@ -382,9 +382,9 @@ function SpPsCliM365_MoveOneFolderToOtherLibrary
 
 	m365 logout
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
+#gavdcodebegin 028
 function SpPsCliM365_DeleteOneFolderFromLibrary
 {
 	$spCtx = LoginPsCLI
@@ -394,9 +394,9 @@ function SpPsCliM365_DeleteOneFolderFromLibrary
 
 	m365 logout
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
+#gavdcodebegin 029
 function SpPsCliM365_GetAttachementsInItem
 {
 	$spCtx = LoginPsCLI
@@ -407,9 +407,9 @@ function SpPsCliM365_GetAttachementsInItem
 
 	m365 logout
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
+#gavdcodebegin 030
 function SpPsCliM365_BreakInheritanceItem
 {
 	$spCtx = LoginPsCLI
@@ -420,9 +420,9 @@ function SpPsCliM365_BreakInheritanceItem
 
 	m365 logout
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#gavdcodebegin 31
+#gavdcodebegin 031
 function SpPsCliM365_RestoreInheritanceItem
 {
 	$spCtx = LoginPsCLI
@@ -433,12 +433,14 @@ function SpPsCliM365_RestoreInheritanceItem
 
 	m365 logout
 }
-#gavdcodeend 31
+#gavdcodeend 031
 
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
+
+# *** Latest Source Code Index: 31 ***
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
