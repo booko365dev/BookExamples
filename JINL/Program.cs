@@ -79,7 +79,7 @@ static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsPnPFramework_CreatePropertyBag()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -91,9 +91,9 @@ static void SpCsPnPFramework_CreatePropertyBag()
         myList.SetPropertyBagValue("myKey", "myValueString");
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsPnPFramework_ReadPropertyBag()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -106,9 +106,9 @@ static void SpCsPnPFramework_ReadPropertyBag()
         Console.WriteLine(myKeyValue);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsPnPFramework_PropertyBagExists()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -121,9 +121,9 @@ static void SpCsPnPFramework_PropertyBagExists()
         Console.WriteLine(myKeyExists.ToString());
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsPnPFramework_PropertyBagIndex()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -142,9 +142,9 @@ static void SpCsPnPFramework_PropertyBagIndex()
         }
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsPnPFramework_DeletePropertyBag()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -156,9 +156,9 @@ static void SpCsPnPFramework_DeletePropertyBag()
         myList.RemovePropertyBagValue("myKey");
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsPnPFramework_DownloadFile()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -173,9 +173,9 @@ static void SpCsPnPFramework_DownloadFile()
         spPnpCtx.Web.SaveFileToLocal(pathRelative, pathLocal, fileName);
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsPnPFramework_DownloadFileAsString()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -189,9 +189,9 @@ static void SpCsPnPFramework_DownloadFileAsString()
         Console.WriteLine(myFileAsText);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsPnPFramework_FindFiles()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -207,9 +207,9 @@ static void SpCsPnPFramework_FindFiles()
         }
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsPnPFramework_RequireUpload()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -226,9 +226,9 @@ static void SpCsPnPFramework_RequireUpload()
         Console.WriteLine("Require Upload " + requireUpload.ToString());
     }
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsPnPFramework_ResetVersion()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -242,9 +242,9 @@ static void SpCsPnPFramework_ResetVersion()
                                     CheckinType.MinorCheckIn, "Done by PnPCore");
     }
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsPnPFramework_CreateFolder()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -256,9 +256,9 @@ static void SpCsPnPFramework_CreateFolder()
         Folder myFolder = myList.RootFolder.CreateFolder("PnPFrameworkFolder");
     }
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsPnPFramework_EnsureFolder()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -270,9 +270,9 @@ static void SpCsPnPFramework_EnsureFolder()
         Folder myFolder = myList.RootFolder.EnsureFolder("PnPFrameworkEnsureFolder");
     }
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsPnPFramework_CreateSubFolder()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -285,9 +285,9 @@ static void SpCsPnPFramework_CreateSubFolder()
         Folder mySubFolder = myFolder.EnsureFolder("PnPFrameworkSubFolder");
     }
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsPnPFramework_FolderExistsBool()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -300,9 +300,9 @@ static void SpCsPnPFramework_FolderExistsBool()
         Console.WriteLine("Folder exists - " + fldExists.ToString());
     }
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsPnPFramework_FolderExistsFolder()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -315,9 +315,9 @@ static void SpCsPnPFramework_FolderExistsFolder()
         Console.WriteLine("Folder exists - " + fldExists.ServerRelativeUrl);
     }
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsPnPFramework_FolderExistsWeb()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -332,9 +332,9 @@ static void SpCsPnPFramework_FolderExistsWeb()
         Console.WriteLine("Folder exists - " + fldExists.ToString());
     }
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 static void SpCsPnPFramework_CreateSubFolderFromFolder()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -347,9 +347,9 @@ static void SpCsPnPFramework_CreateSubFolderFromFolder()
         Folder mySubFolder = myFolder.CreateFolder("PnPFrameworkSubFolder02");
     }
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 static void SpCsPnPFramework_UploadFileToFolder()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -365,9 +365,9 @@ static void SpCsPnPFramework_UploadFileToFolder()
                                         myFolder.UploadFile(fileName, pathLocal, true);
     }
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 static void SpCsPnPFramework_DownloadFileToFolder()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -390,9 +390,9 @@ static void SpCsPnPFramework_DownloadFileToFolder()
         }
     }
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 static void SpCsPnPFramework_CreateItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -408,9 +408,9 @@ static void SpCsPnPFramework_CreateItem()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 static void SpCsPnPFramework_EnumerateItems()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -428,9 +428,9 @@ static void SpCsPnPFramework_EnumerateItems()
         }
     }
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 static void SpCsPnPFramework_UpdateOneItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -445,9 +445,9 @@ static void SpCsPnPFramework_UpdateOneItem()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 23
+//gavdcodebegin 023
 static void SpCsPnPFramework_DeleteOneItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -461,9 +461,9 @@ static void SpCsPnPFramework_DeleteOneItem()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 static void SpCsPnPFramework_UploadOneDocument()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -482,16 +482,17 @@ static void SpCsPnPFramework_UploadOneDocument()
                 ContentStream = myFileStream,
                 Url = fileName
             };
-            Microsoft.SharePoint.Client.File newFile = myList.RootFolder.Files.Add(myFileCreationInfo);
+            Microsoft.SharePoint.Client.File newFile = 
+                                    myList.RootFolder.Files.Add(myFileCreationInfo);
 
             spPnpCtx.Load(newFile);
             spPnpCtx.ExecuteQuery();
         }
     }
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 static void SpCsPnPFramework_CreateOneAttachment()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -514,9 +515,9 @@ static void SpCsPnPFramework_CreateOneAttachment()
         }
     }
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 static void SpCsPnPFramework_ReadAllAttachments()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -537,9 +538,9 @@ static void SpCsPnPFramework_ReadAllAttachments()
         }
     }
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 27
+//gavdcodebegin 027
 static void SpCsPnPFramework_DownloadAllAttachments()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -576,9 +577,9 @@ static void SpCsPnPFramework_DownloadAllAttachments()
         }
     }
 }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 28
+//gavdcodebegin 028
 static void SpCsPnPFramework_DeleteAllAttachments()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -601,9 +602,9 @@ static void SpCsPnPFramework_DeleteAllAttachments()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 29
+//gavdcodebegin 029
 static void SpCsPnPFramework_BreakSecurityInheritanceListItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -623,9 +624,9 @@ static void SpCsPnPFramework_BreakSecurityInheritanceListItem()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 29
+//gavdcodeend 029
 
-//gavdcodebegin 30
+//gavdcodebegin 030
 static void SpCsPnPFramework_ResetSecurityInheritanceListItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -645,9 +646,9 @@ static void SpCsPnPFramework_ResetSecurityInheritanceListItem()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 30
+//gavdcodeend 030
 
-//gavdcodebegin 31
+//gavdcodebegin 031
 static void SpCsPnPFramework_AddUserToSecurityRoleInListItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -667,9 +668,9 @@ static void SpCsPnPFramework_AddUserToSecurityRoleInListItem()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 31
+//gavdcodeend 031
 
-//gavdcodebegin 32
+//gavdcodebegin 032
 static void SpCsPnPFramework_UpdateUserSecurityRoleInListItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -693,9 +694,9 @@ static void SpCsPnPFramework_UpdateUserSecurityRoleInListItem()
         spPnpCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 32
+//gavdcodeend 032
 
-//gavdcodebegin 33
+//gavdcodebegin 033
 static void SpCsPnPFramework_DeleteUserFromSecurityRoleInListItem()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -713,11 +714,13 @@ static void SpCsPnPFramework_DeleteUserFromSecurityRoleInListItem()
         spPnpCtx.Dispose();
     }
 }
-//gavdcodeend 33
+//gavdcodeend 033
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
+
+// *** Latest Source Code Index: 33 ***
 
 //SpCsPnPFramework_CreatePropertyBag();
 //SpCsPnPFramework_ReadPropertyBag();

@@ -69,7 +69,7 @@ Function LoginPsPnPPowerShellWithCertificateBase64
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 function SpPsPnpPowerShell_CreateOneList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -80,9 +80,9 @@ function SpPsPnpPowerShell_CreateOneList
 	New-PnPList -Title "NewListPsPnp" -Template GenericList
 	Disconnect-PnPOnline
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 function SpPsPnpPowerShell_ReadAllList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -98,9 +98,9 @@ function SpPsPnpPowerShell_ReadAllList
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 function SpPsPnpPowerShell_ReadOneList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -113,9 +113,9 @@ function SpPsPnpPowerShell_ReadOneList
 	Write-Host "List Description -" $myList.Description
 	Disconnect-PnPOnline
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 function SpPsPnpPowerShell_UpdateOneList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -126,9 +126,9 @@ function SpPsPnpPowerShell_UpdateOneList
 	Set-PnPList -Identity "NewListPsPnp" -Description "New List Description"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 function SpPsPnpPowerShell_DeleteOneList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -139,9 +139,9 @@ function SpPsPnpPowerShell_DeleteOneList
 	 Remove-PnPList -Identity "NewListPsPnp" -Force
 	Disconnect-PnPOnline
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 function SpPsPnpPowerShell_AddOneFieldToList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -149,13 +149,14 @@ function SpPsPnpPowerShell_AddOneFieldToList
 	#								Delegated AllSites.ReadWrite
 	
 	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
-	$fieldXml = "<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
+	$fieldXml = `
+			"<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
 	Add-PnPFieldFromXml -List "NewListPsPnp" -FieldXml $fieldXml
 	Disconnect-PnPOnline
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 function SpPsPnpPowerShell_ReadAllFieldsFromList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -171,9 +172,9 @@ function SpPsPnpPowerShell_ReadAllFieldsFromList
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 function SpPsPnpPowerShell_ReadOneFieldFromList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -186,9 +187,9 @@ function SpPsPnpPowerShell_ReadOneFieldFromList
 	Write-Host $myField.Id "-" $myField.TypeAsString
 	Disconnect-PnPOnline
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 function SpPsPnpPowerShell_UpdateOneFieldInList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -200,9 +201,9 @@ function SpPsPnpPowerShell_UpdateOneFieldInList
 									-Values @{Description="New Field Description"}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 function SpPsPnpPowerShell_DeleteOneFieldFromList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -213,9 +214,9 @@ function SpPsPnpPowerShell_DeleteOneFieldFromList
 	Remove-PnPField -List "NewListPsPnp" -Identity "MyMultilineField" -Force
 	Disconnect-PnPOnline
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 function SpPsPnpPowerShell_BreakInheritanceList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -226,9 +227,9 @@ function SpPsPnpPowerShell_BreakInheritanceList
 	Set-PnPList -Identity "NewListPsPnp" -BreakRoleInheritance
 	Disconnect-PnPOnline
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 function SpPsPnpPowerShell_RestoreInheritanceList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -239,9 +240,9 @@ function SpPsPnpPowerShell_RestoreInheritanceList
 	Set-PnPList -Identity "NewListPsPnp" -ResetRoleInheritance
 	Disconnect-PnPOnline
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
+#gavdcodebegin 013
 function SpPsPnpPowerShell_GetPermissionsList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -251,14 +252,14 @@ function SpPsPnpPowerShell_GetPermissionsList
 	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
 	Get-PnPListPermissions -Identity "NewListPsPnp" -PrincipalId 11
 	#Get-PnPListPermissions -Identity "NewListPsPnp" `
-	#			-PrincipalId (Get-PnPUser | ? Email -eq "user@domain.OnMicrosoft.com").Id
+	#		-PrincipalId (Get-PnPUser | ? Email -eq "user@domain.OnMicrosoft.com").Id
 	#Get-PnPListPermissions -Identity "NewListPsPnp" `
-	#			-PrincipalId (Get-PnPGroup -Identity "myGroup Members").Id
+	#		-PrincipalId (Get-PnPGroup -Identity "myGroup Members").Id
 	Disconnect-PnPOnline
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 function SpPsPnpPowerShell_AddPermissionsToList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -271,9 +272,9 @@ function SpPsPnpPowerShell_AddPermissionsToList
 						  -AddRole "Full Control"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
+#gavdcodebegin 015
 function SpPsPnpPowerShell_DeletePermissionsFromList
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -286,7 +287,7 @@ function SpPsPnpPowerShell_DeletePermissionsFromList
 						  -RemoveRole "Full Control"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
 
 ##---------------------------------------------------------------------------------------

@@ -1,4 +1,5 @@
-﻿Function Invoke-RestSPO() {  #*** LEGACY CODE ***
+﻿Function Invoke-RestSPO 
+{  #*** LEGACY CODE ***
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -104,7 +105,8 @@
 	}
 }
  
-Function Get-SPOContextInfo(){  #*** LEGACY CODE ***
+Function Get-SPOContextInfo
+{  #*** LEGACY CODE ***
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$WebUrl,
@@ -120,7 +122,8 @@ Function Get-SPOContextInfo(){  #*** LEGACY CODE ***
 	Invoke-RestSPO $Url Post $UserName $Password
 }
 
-Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) {
+Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) 
+{
 	  #*** LEGACY CODE ***
     $buffer = New-Object Byte[] 8192 
     $bytesRead = 0
@@ -144,8 +147,8 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 
 # Using Basic Authentication, this is Legacy code, and cannot be used anymore
 
-#gavdcodebegin 01
-Function SpPsRest_CreateOneList()  #*** LEGACY CODE ***
+#gavdcodebegin 001
+Function SpPsRest_CreateOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists"
 	$myPayload = @{ 
@@ -164,10 +167,10 @@ Function SpPsRest_CreateOneList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 01 
+#gavdcodeend 001 
 
-#gavdcodebegin 02
-Function SpPsRest_ReadAllLists()  #*** LEGACY CODE ***
+#gavdcodebegin 002
+Function SpPsRest_ReadAllLists  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists?$select=Title,Id"
 	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
@@ -175,10 +178,10 @@ Function SpPsRest_ReadAllLists()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function SpPsRest_ReadOneList()  #*** LEGACY CODE ***
+#gavdcodebegin 003
+Function SpPsRest_ReadOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
 	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
@@ -186,10 +189,10 @@ Function SpPsRest_ReadOneList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-Function SpPsRest_UpdateOneList()  #*** LEGACY CODE ***
+#gavdcodebegin 004
+Function SpPsRest_UpdateOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
 	$myPayload = @{ 
@@ -205,10 +208,10 @@ Function SpPsRest_UpdateOneList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-Function SpPsRest_DeleteOneList()  #*** LEGACY CODE ***
+#gavdcodebegin 005
+Function SpPsRest_DeleteOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
 	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
@@ -220,10 +223,10 @@ Function SpPsRest_DeleteOneList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-Function SpPsRest_AddOneFieldToList()  #*** LEGACY CODE ***
+#gavdcodebegin 006
+Function SpPsRest_AddOneFieldToList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
 	$myPayload = @{ 
@@ -239,10 +242,10 @@ Function SpPsRest_AddOneFieldToList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-Function SpPsRest_ReadAllFieldsFromList()  #*** LEGACY CODE ***
+#gavdcodebegin 007
+Function SpPsRest_ReadAllFieldsFromList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
 	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
@@ -250,10 +253,10 @@ Function SpPsRest_ReadAllFieldsFromList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-Function SpPsRest_ReadOneFieldFromList()  #*** LEGACY CODE ***
+#gavdcodebegin 008
+Function SpPsRest_ReadOneFieldFromList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
 					                                "getbytitle('MyMultilineField')"
@@ -262,10 +265,10 @@ Function SpPsRest_ReadOneFieldFromList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-Function SpPsRest_UpdateOneFieldInList()  #*** LEGACY CODE ***
+#gavdcodebegin 009
+Function SpPsRest_UpdateOneFieldInList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
 													"getbytitle('MyMultilineField')"
@@ -282,10 +285,10 @@ Function SpPsRest_UpdateOneFieldInList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-Function SpPsRest_DeleteOneFieldFromList()  #*** LEGACY CODE ***
+#gavdcodebegin 010
+Function SpPsRest_DeleteOneFieldFromList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
 													"getbytitle('MyMultilineField')"
@@ -298,10 +301,10 @@ Function SpPsRest_DeleteOneFieldFromList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-Function SpPsRest_BreakSecurityInheritanceList()  #*** LEGACY CODE ***
+#gavdcodebegin 011
+Function SpPsRest_BreakSecurityInheritanceList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
 				"breakroleinheritance(copyRoleAssignments=false, clearSubscopes=true)"
@@ -314,10 +317,10 @@ Function SpPsRest_BreakSecurityInheritanceList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-Function SpPsRest_ResetSecurityInheritanceList()  #*** LEGACY CODE ***
+#gavdcodebegin 012
+Function SpPsRest_ResetSecurityInheritanceList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
 				"resetroleinheritance"
@@ -329,10 +332,10 @@ Function SpPsRest_ResetSecurityInheritanceList()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-Function SpPsRest_AddUserToSecurityRoleInList()  #*** LEGACY CODE ***
+#gavdcodebegin 013
+Function SpPsRest_AddUserToSecurityRoleInList  #*** LEGACY CODE ***
 {
 	# Inheritance MUST be broken
     # Find the User
@@ -362,10 +365,10 @@ Function SpPsRest_AddUserToSecurityRoleInList()  #*** LEGACY CODE ***
 							-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-Function SpPsRest_UpdateUserSecurityRoleInList()  #*** LEGACY CODE ***
+#gavdcodebegin 014
+Function SpPsRest_UpdateUserSecurityRoleInList  #*** LEGACY CODE ***
 {
 	# Inheritance MUST be broken
     # Find the User
@@ -395,10 +398,10 @@ Function SpPsRest_UpdateUserSecurityRoleInList()  #*** LEGACY CODE ***
 						-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-Function SpPsRest_DeleteUserFromSecurityRoleInList()  #*** LEGACY CODE ***
+#gavdcodebegin 015
+Function SpPsRest_DeleteUserFromSecurityRoleInList  #*** LEGACY CODE ***
 {
     # Find the User
 	$endpointUrl = $WebUrl + "/_api/web/siteusers?$select=Id&" +
@@ -419,7 +422,7 @@ Function SpPsRest_DeleteUserFromSecurityRoleInList()  #*** LEGACY CODE ***
 						-ETag "*" -XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
 #----------------------------------------------------------------------------------------
 

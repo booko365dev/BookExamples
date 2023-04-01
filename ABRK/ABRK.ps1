@@ -120,10 +120,11 @@ Function GrPsLoginGraphSDKCheckAvailableRights
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 Function SpPsGraphSdk_GetAllLists
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -134,12 +135,13 @@ Function SpPsGraphSdk_GetAllLists
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 Function SpPsGraphSdk_GetOneList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -151,12 +153,13 @@ Function SpPsGraphSdk_GetOneList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 Function SpPsGraphSdk_CreateOneList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -169,12 +172,13 @@ Function SpPsGraphSdk_CreateOneList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 Function SpPsGraphSdk_UpdateOneList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -187,12 +191,13 @@ Function SpPsGraphSdk_UpdateOneList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 Function SpPsGraphSdk_DeleteOneList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -204,12 +209,13 @@ Function SpPsGraphSdk_DeleteOneList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 Function SpPsGraphSdk_GetAllFieldsList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -221,12 +227,13 @@ Function SpPsGraphSdk_GetAllFieldsList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 Function SpPsGraphSdk_GetOneFieldList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -239,12 +246,13 @@ Function SpPsGraphSdk_GetOneFieldList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 Function SpPsGraphSdk_CreateOneFieldList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -260,12 +268,13 @@ Function SpPsGraphSdk_CreateOneFieldList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 Function SpPsGraphSdk_UpdateOneFieldList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -279,12 +288,13 @@ Function SpPsGraphSdk_UpdateOneFieldList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 Function SpPsGraphSdk_DeleteOneFieldList
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
 	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
@@ -297,7 +307,7 @@ Function SpPsGraphSdk_DeleteOneFieldList
 
 	Disconnect-MgGraph
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
 
 ##---------------------------------------------------------------------------------------

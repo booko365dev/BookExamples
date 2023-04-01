@@ -1,4 +1,5 @@
-﻿Function Invoke-RestSPO() {  #*** LEGACY CODE ***
+﻿Function Invoke-RestSPO 
+{  #*** LEGACY CODE ***
 	Param (
 		[Parameter(Mandatory=$True)]
 		[String]$Url,
@@ -104,7 +105,8 @@
 	}
 }
  
-Function Get-SPOContextInfo(){  #*** LEGACY CODE ***
+Function Get-SPOContextInfo
+{  #*** LEGACY CODE ***
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$WebUrl,
@@ -120,7 +122,8 @@ Function Get-SPOContextInfo(){  #*** LEGACY CODE ***
 	Invoke-RestSPO $Url Post $UserName $Password
 }
 
-Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) {
+Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination) 
+{
 	  #*** LEGACY CODE ***
     $buffer = New-Object Byte[] 8192 
     $bytesRead = 0
@@ -144,8 +147,8 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 
 # Using Basic Authentication, this is Legacy code, and cannot be used anymore
 
-#gavdcodebegin 01
-Function SpPsRestCreateOneListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 001
+Function SpPsRest_CreateOneListItem  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestList')/items"
 	$myPayload = @{ 
@@ -160,10 +163,10 @@ Function SpPsRestCreateOneListItem()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 01 
+#gavdcodeend 001 
 
-#gavdcodebegin 02
-Function SpPsRestUploadOneDocument()  #*** LEGACY CODE ***
+#gavdcodebegin 002
+Function SpPsRest_UploadOneDocument  #*** LEGACY CODE ***
 {
 	$FileInfo = New-Object System.IO.FileInfo("C:\Temporary\TestDocument01.docx")
 	$WebUri = [System.Uri]$WebUrl
@@ -179,10 +182,10 @@ Function SpPsRestUploadOneDocument()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function SpPsRestDownloadOneDocument()  #*** LEGACY CODE ***
+#gavdcodebegin 003
+Function SpPsRest_DownloadOneDocument  #*** LEGACY CODE ***
 {
 	$WebUri = [System.Uri]$WebUrl
 	$WebUrlRel = $WebUri.AbsolutePath
@@ -195,10 +198,10 @@ Function SpPsRestDownloadOneDocument()  #*** LEGACY CODE ***
 	$downloadFilePath = [System.IO.Path]::Combine("C:\Temporary", $fileName)
 	[System.IO.File]::WriteAllBytes($downloadFilePath, $fileContent)
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-Function SpPsRestReadAllListItems()  #*** LEGACY CODE ***
+#gavdcodebegin 004
+Function SpPsRest_ReadAllListItems  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestList')/items?" + 
 																	"$select=Title,Id"
@@ -209,10 +212,10 @@ Function SpPsRestReadAllListItems()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-Function SpPsRestReadOneListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 005
+Function SpPsRest_ReadOneListItem  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestList')/items(26)?" + 
 																	"$select=Title,Id"
@@ -223,10 +226,10 @@ Function SpPsRestReadOneListItem()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-Function SpPsRestReadAllLibraryDocs()  #*** LEGACY CODE ***
+#gavdcodebegin 006
+Function SpPsRest_ReadAllLibraryDocs  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestLibrary')/items?" + 
 																	"$select=Title,Id"
@@ -237,10 +240,10 @@ Function SpPsRestReadAllLibraryDocs()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-Function SpPsRestReadOneLibraryDoc()  #*** LEGACY CODE ***
+#gavdcodebegin 007
+Function SpPsRest_ReadOneLibraryDoc  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists/getbytitle('TestLibrary')/items(25)?" + 
 																	"$select=Title,Id"
@@ -251,10 +254,10 @@ Function SpPsRestReadOneLibraryDoc()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-Function SpPsRestUpdateOneListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 008
+Function SpPsRest_UpdateOneListItem  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/items(26)"
 	$myPayload = @{ 
@@ -270,10 +273,10 @@ Function SpPsRestUpdateOneListItem()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-Function SpPsRestUpdateOneLibraryDoc()  #*** LEGACY CODE ***
+#gavdcodebegin 009
+Function SpPsRest_UpdateOneLibraryDoc  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestLibrary')/items(25)"
 	$myPayload = @{ 
@@ -289,10 +292,10 @@ Function SpPsRestUpdateOneLibraryDoc()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-Function SpPsRestDeleteOneListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 010
+Function SpPsRest_DeleteOneListItem  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/items(26)"
 	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
@@ -303,10 +306,10 @@ Function SpPsRestDeleteOneListItem()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
-Function SpPsRestDeleteOneLibraryDoc()  #*** LEGACY CODE ***
+#gavdcodebegin 011
+Function SpPsRest_DeleteOneLibraryDoc  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestLibrary')/items(25)"
 	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
@@ -317,10 +320,10 @@ Function SpPsRestDeleteOneLibraryDoc()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-Function SpPsRestBreakSecurityInheritanceListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 012
+Function SpPsRest_BreakSecurityInheritanceListItem  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/" +
 						"items(27)/breakroleinheritance(copyRoleAssignments=false," +
@@ -333,10 +336,10 @@ Function SpPsRestBreakSecurityInheritanceListItem()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-Function SpPsRestResetSecurityInheritanceListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 013
+Function SpPsRest_ResetSecurityInheritanceListItem  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('TestList')/" +
 						"items(27)/resetroleinheritance"
@@ -347,10 +350,10 @@ Function SpPsRestResetSecurityInheritanceListItem()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-Function SpPsRestAddUserToSecurityRoleInListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 014
+Function SpPsRest_AddUserToSecurityRoleInListItem  #*** LEGACY CODE ***
 {
 	# Inheritance MUST be broken
     # Find the User
@@ -381,10 +384,10 @@ Function SpPsRestAddUserToSecurityRoleInListItem()  #*** LEGACY CODE ***
 							-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-Function SpPsRestUpdateUserSecurityRoleInListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 015
+Function SpPsRest_UpdateUserSecurityRoleInListItem  #*** LEGACY CODE ***
 {
 	# Inheritance MUST be broken
     # Find the User
@@ -415,10 +418,10 @@ Function SpPsRestUpdateUserSecurityRoleInListItem()  #*** LEGACY CODE ***
 						-ETag "*" -XHTTPMethod "MERGE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-Function SpPsRestDeleteUserFromSecurityRoleInListItem()  #*** LEGACY CODE ***
+#gavdcodebegin 016
+Function SpPsRest_DeleteUserFromSecurityRoleInListItem  #*** LEGACY CODE ***
 {
     # Find the User
 	$endpointUrl = $WebUrl + "/_api/web/siteusers?$select=Id&" +
@@ -439,10 +442,10 @@ Function SpPsRestDeleteUserFromSecurityRoleInListItem()  #*** LEGACY CODE ***
 						-ETag "*" -XHTTPMethod "DELETE"
 	$data | ConvertTo-Json
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-Function SpPsRestCreateOneFolder()  #*** LEGACY CODE ***
+#gavdcodebegin 017
+Function SpPsRest_CreateOneFolder  #*** LEGACY CODE ***
 {
     $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
 
@@ -459,10 +462,10 @@ Function SpPsRestCreateOneFolder()  #*** LEGACY CODE ***
     
 	$data | ConvertTo-Json
 }
-#gavdcodeend 17 
+#gavdcodeend 017 
 
-#gavdcodebegin 18
-Function SpPsRestReadAllFolders()  #*** LEGACY CODE ***
+#gavdcodebegin 018
+Function SpPsRest_ReadAllFolders  #*** LEGACY CODE ***
 {
     $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
 
@@ -475,10 +478,10 @@ Function SpPsRestReadAllFolders()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-Function SpPsRestRenameOneFolder()  #*** LEGACY CODE ***
+#gavdcodebegin 019
+Function SpPsRest_RenameOneFolder  #*** LEGACY CODE ***
 {
     $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
 
@@ -498,10 +501,10 @@ Function SpPsRestRenameOneFolder()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 19 
+#gavdcodeend 019 
 
-#gavdcodebegin 20
-Function SpPsRestDeleteOneFolder()  #*** LEGACY CODE ***
+#gavdcodebegin 020
+Function SpPsRest_DeleteOneFolder  #*** LEGACY CODE ***
 {
     $myServerRelativeUrl = "/sites/[SiteName]/[LibraryName]/RestFolderPS"
 
@@ -515,10 +518,10 @@ Function SpPsRestDeleteOneFolder()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 20 
+#gavdcodeend 020 
 
-#gavdcodebegin 21
-Function SpPsRestCreateOneAttachment()  #*** LEGACY CODE ***
+#gavdcodebegin 021
+Function SpPsRest_CreateOneAttachment  #*** LEGACY CODE ***
 {
 	$FileInfo = New-Object System.IO.FileInfo("C:\Temporary\Test.csv")
 	$FileContent = [System.IO.File]::ReadAllBytes($FileInfo.FullName)
@@ -533,10 +536,10 @@ Function SpPsRestCreateOneAttachment()  #*** LEGACY CODE ***
     
 	$data | ConvertTo-Json
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
-Function SpPsRestReadAllAttachments()  #*** LEGACY CODE ***
+#gavdcodebegin 022
+Function SpPsRest_ReadAllAttachments  #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/lists/GetByTitle('TestList')" + `
                                                         "/items(3)/AttachmentFiles"
@@ -547,10 +550,10 @@ Function SpPsRestReadAllAttachments()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
-Function SpPsRestDownloadOneAttachmentByFileName()  #*** LEGACY CODE ***
+#gavdcodebegin 023
+Function SpPsRest_DownloadOneAttachmentByFileName  #*** LEGACY CODE ***
 {
 	$myFileName = "Test.csv"
 
@@ -563,10 +566,10 @@ Function SpPsRestDownloadOneAttachmentByFileName()  #*** LEGACY CODE ***
 	$downloadFilePath = [System.IO.Path]::Combine("C:\Temporary", $fileName)
 	[System.IO.File]::WriteAllBytes($downloadFilePath, $fileContent)
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
-Function SpPsRestDeleteOneAttachmentByFileName()  #*** LEGACY CODE ***
+#gavdcodebegin 024
+Function SpPsRest_DeleteOneAttachmentByFileName  #*** LEGACY CODE ***
 {
 	$myFileName = "Test.csv"
 
@@ -580,14 +583,14 @@ Function SpPsRestDeleteOneAttachmentByFileName()  #*** LEGACY CODE ***
 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
 #----------------------------------------------------------------------------------------
 
 # Using Azure AD Authentication through Connect-PnPOnline and an Account/PW App Registration
 
 #gavdcodebegin 101
-Function SpPsRestCreateOneListItemAD
+Function SpPsRest_CreateOneListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -612,7 +615,7 @@ Function SpPsRestCreateOneListItemAD
 #gavdcodeend 101 
 
 #gavdcodebegin 102
-Function SpPsRestUploadOneDocumentAD
+Function SpPsRest_UploadOneDocumentAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -639,7 +642,7 @@ Function SpPsRestUploadOneDocumentAD
 #gavdcodeend 102
 
 #gavdcodebegin 103
-Function SpPsRestDownloadOneDocumentAD
+Function SpPsRest_DownloadOneDocumentAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -665,7 +668,7 @@ Function SpPsRestDownloadOneDocumentAD
 #gavdcodeend 103
 
 #gavdcodebegin 104
-Function SpPsRestReadAllListItemsAD
+Function SpPsRest_ReadAllListItemsAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -686,7 +689,7 @@ Function SpPsRestReadAllListItemsAD
 #gavdcodeend 104
 
 #gavdcodebegin 105
-Function SpPsRestReadOneListItemAD
+Function SpPsRest_ReadOneListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -707,7 +710,7 @@ Function SpPsRestReadOneListItemAD
 #gavdcodeend 105
 
 #gavdcodebegin 106
-Function SpPsRestReadAllLibraryDocsAD
+Function SpPsRest_ReadAllLibraryDocsAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -728,7 +731,7 @@ Function SpPsRestReadAllLibraryDocsAD
 #gavdcodeend 106
 
 #gavdcodebegin 107
-Function SpPsRestReadOneLibraryDocAD
+Function SpPsRest_ReadOneLibraryDocAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -749,7 +752,7 @@ Function SpPsRestReadOneLibraryDocAD
 #gavdcodeend 107
 
 #gavdcodebegin 108
-Function SpPsRestUpdateOneListItemAD
+Function SpPsRest_UpdateOneListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -775,7 +778,7 @@ Function SpPsRestUpdateOneListItemAD
 #gavdcodeend 108
 
 #gavdcodebegin 109
-Function SpPsRestUpdateOneLibraryDocAD
+Function SpPsRest_UpdateOneLibraryDocAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -801,7 +804,7 @@ Function SpPsRestUpdateOneLibraryDocAD
 #gavdcodeend 109
 
 #gavdcodebegin 110
-Function SpPsRestDeleteOneListItemAD
+Function SpPsRest_DeleteOneListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -822,7 +825,7 @@ Function SpPsRestDeleteOneListItemAD
 #gavdcodeend 110
 
 #gavdcodebegin 111
-Function SpPsRestDeleteOneLibraryDocAD
+Function SpPsRest_DeleteOneLibraryDocAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -843,7 +846,7 @@ Function SpPsRestDeleteOneLibraryDocAD
 #gavdcodeend 111
 
 #gavdcodebegin 112
-Function SpPsRestBreakSecurityInheritanceListItemAD
+Function SpPsRest_BreakSecurityInheritanceListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -865,7 +868,7 @@ Function SpPsRestBreakSecurityInheritanceListItemAD
 #gavdcodeend 112
 
 #gavdcodebegin 113
-Function SpPsRestResetSecurityInheritanceListItemAD
+Function SpPsRest_ResetSecurityInheritanceListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -886,7 +889,7 @@ Function SpPsRestResetSecurityInheritanceListItemAD
 #gavdcodeend 113
 
 #gavdcodebegin 114
-Function SpPsRestAddUserToSecurityRoleInListItemAD
+Function SpPsRest_AddUserToSecurityRoleInListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -938,7 +941,7 @@ Function SpPsRestAddUserToSecurityRoleInListItemAD
 #gavdcodeend 114
 
 #gavdcodebegin 115
-Function SpPsRestUpdateUserSecurityRoleInListItemAD
+Function SpPsRest_UpdateUserSecurityRoleInListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -990,7 +993,7 @@ Function SpPsRestUpdateUserSecurityRoleInListItemAD
 #gavdcodeend 115
 
 #gavdcodebegin 116
-Function SpPsRestDeleteUserFromSecurityRoleInListItemAD
+Function SpPsRest_DeleteUserFromSecurityRoleInListItemAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1026,7 +1029,7 @@ Function SpPsRestDeleteUserFromSecurityRoleInListItemAD
 #gavdcodeend 116
 
 #gavdcodebegin 117
-Function SpPsRestCreateOneFolderAD
+Function SpPsRest_CreateOneFolderAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1052,7 +1055,7 @@ Function SpPsRestCreateOneFolderAD
 #gavdcodeend 117 
 
 #gavdcodebegin 118
-Function SpPsRestReadAllFoldersAD
+Function SpPsRest_ReadAllFoldersAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1075,7 +1078,7 @@ Function SpPsRestReadAllFoldersAD
 #gavdcodeend 118
 
 #gavdcodebegin 119
-Function SpPsRestRenameOneFolderAD
+Function SpPsRest_RenameOneFolderAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1105,7 +1108,7 @@ Function SpPsRestRenameOneFolderAD
 #gavdcodeend 119 
 
 #gavdcodebegin 120
-Function SpPsRestDeleteOneFolderAD
+Function SpPsRest_DeleteOneFolderAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1130,7 +1133,7 @@ Function SpPsRestDeleteOneFolderAD
 #gavdcodeend 120 
 
 #gavdcodebegin 121
-Function SpPsRestCreateOneAttachmentAD
+Function SpPsRest_CreateOneAttachmentAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1139,8 +1142,8 @@ Function SpPsRestCreateOneAttachmentAD
 	$FileContent = [System.IO.File]::ReadAllBytes($FileInfo.FullName)
 
     $endpointUrl = $configFile.appsettings.SiteCollUrl + `
-						"/_api/lists/GetByTitle('TestList')" + `
-                        "/items(3)/AttachmentFiles/add(FileName='" + $FileInfo.Name + "')"
+					  "/_api/lists/GetByTitle('TestList')" + `
+                      "/items(3)/AttachmentFiles/add(FileName='" + $FileInfo.Name + "')"
 	$myPayload = $FileContent
 
 	$myHeader = @{ 'Authorization' = "Bearer $($myOAuth)"; `
@@ -1156,7 +1159,7 @@ Function SpPsRestCreateOneAttachmentAD
 #gavdcodeend 121
 
 #gavdcodebegin 122
-Function SpPsRestReadAllAttachmentsAD
+Function SpPsRest_ReadAllAttachmentsAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1177,7 +1180,7 @@ Function SpPsRestReadAllAttachmentsAD
 #gavdcodeend 122
 
 #gavdcodebegin 123
-Function SpPsRestDownloadOneAttachmentByFileNameAD
+Function SpPsRest_DownloadOneAttachmentByFileNameAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1203,7 +1206,7 @@ Function SpPsRestDownloadOneAttachmentByFileNameAD
 #gavdcodeend 123
 
 #gavdcodebegin 124
-Function SpPsRestDeleteOneAttachmentByFileNameAD
+Function SpPsRest_DeleteOneAttachmentByFileNameAD
 {
 	LoginPsPnPPowerShellWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
@@ -1238,55 +1241,55 @@ Function SpPsRestDeleteOneAttachmentByFileNameAD
 #$webUrl = $configFile.appsettings.spUrl
 #$userName = $configFile.appsettings.spUserName
 #$password = $configFile.appsettings.spUserPw
-#SpPsRestCreateOneListItem
-#SpPsRestUploadOneDocument
-#SpPsRestDownloadOneDocument
-#SpPsRestReadAllListItems
-#SpPsRestReadOneListItem
-#SpPsRestReadAllLibraryDocs
-#SpPsRestReadOneLibraryDoc
-#SpPsRestUpdateOneListItem
-#SpPsRestUpdateOneLibraryDoc
-#SpPsRestDeleteOneListItem
-#SpPsRestDeleteOneLibraryDoc
-#SpPsRestBreakSecurityInheritanceListItem
-#SpPsRestResetSecurityInheritanceListItem
-#SpPsRestAddUserToSecurityRoleInListItem
-#SpPsRestUpdateUserSecurityRoleInListItem
-#SpPsRestDeleteUserFromSecurityRoleInListItem
-#SpPsRestCreateOneFolder
-#SpPsRestReadAllFolders
-#SpPsRestRenameOneFolder
-#SpPsRestDeleteOneFolder
-#SpPsRestCreateOneAttachment
-#SpPsRestReadAllAttachments
-#SpPsRestDownloadOneAttachmentByFileName
-#SpPsRestDeleteOneAttachmentByFileName
+#SpPsRest_CreateOneListItem
+#SpPsRest_UploadOneDocument
+#SpPsRest_DownloadOneDocument
+#SpPsRest_ReadAllListItems
+#SpPsRest_ReadOneListItem
+#SpPsRest_ReadAllLibraryDocs
+#SpPsRest_ReadOneLibraryDoc
+#SpPsRest_UpdateOneListItem
+#SpPsRest_UpdateOneLibraryDoc
+#SpPsRest_DeleteOneListItem
+#SpPsRest_DeleteOneLibraryDoc
+#SpPsRest_BreakSecurityInheritanceListItem
+#SpPsRest_ResetSecurityInheritanceListItem
+#SpPsRest_AddUserToSecurityRoleInListItem
+#SpPsRest_UpdateUserSecurityRoleInListItem
+#SpPsRest_DeleteUserFromSecurityRoleInListItem
+#SpPsRest_CreateOneFolder
+#SpPsRest_ReadAllFolders
+#SpPsRest_RenameOneFolder
+#SpPsRest_DeleteOneFolder
+#SpPsRest_CreateOneAttachment
+#SpPsRest_ReadAllAttachments
+#SpPsRest_DownloadOneAttachmentByFileName
+#SpPsRest_DeleteOneAttachmentByFileName
 
 ## Using Azure AD Authentication
-#SpPsRestCreateOneListItemAD
-#SpPsRestUploadOneDocumentAD
-#SpPsRestDownloadOneDocumentAD
-#SpPsRestReadAllListItemsAD
-#SpPsRestReadOneListItemAD
-#SpPsRestReadAllLibraryDocsAD
-#SpPsRestReadOneLibraryDocAD
-#SpPsRestUpdateOneListItemAD
-#SpPsRestUpdateOneLibraryDocAD
-#SpPsRestDeleteOneListItemAD
-#SpPsRestDeleteOneLibraryDocAD
-#SpPsRestBreakSecurityInheritanceListItemAD
-#SpPsRestResetSecurityInheritanceListItemAD
-#SpPsRestAddUserToSecurityRoleInListItemAD
-#SpPsRestUpdateUserSecurityRoleInListItemAD
-#SpPsRestDeleteUserFromSecurityRoleInListItemAD
-#SpPsRestCreateOneFolderAD
-#SpPsRestReadAllFoldersAD
-#SpPsRestRenameOneFolderAD
-#SpPsRestDeleteOneFolderAD
-#SpPsRestCreateOneAttachmentAD
-#SpPsRestReadAllAttachmentsAD
-#SpPsRestDownloadOneAttachmentByFileNameAD
-#SpPsRestDeleteOneAttachmentByFileNameAD
+#SpPsRest_CreateOneListItemAD
+#SpPsRest_UploadOneDocumentAD
+#SpPsRest_DownloadOneDocumentAD
+#SpPsRest_ReadAllListItemsAD
+#SpPsRest_ReadOneListItemAD
+#SpPsRest_ReadAllLibraryDocsAD
+#SpPsRest_ReadOneLibraryDocAD
+#SpPsRest_UpdateOneListItemAD
+#SpPsRest_UpdateOneLibraryDocAD
+#SpPsRest_DeleteOneListItemAD
+#SpPsRest_DeleteOneLibraryDocAD
+#SpPsRest_BreakSecurityInheritanceListItemAD
+#SpPsRest_ResetSecurityInheritanceListItemAD
+#SpPsRest_AddUserToSecurityRoleInListItemAD
+#SpPsRest_UpdateUserSecurityRoleInListItemAD
+#SpPsRest_DeleteUserFromSecurityRoleInListItemAD
+#SpPsRest_CreateOneFolderAD
+#SpPsRest_ReadAllFoldersAD
+#SpPsRest_RenameOneFolderAD
+#SpPsRest_DeleteOneFolderAD
+#SpPsRest_CreateOneAttachmentAD
+#SpPsRest_ReadAllAttachmentsAD
+#SpPsRest_DownloadOneAttachmentByFileNameAD
+#SpPsRest_DeleteOneAttachmentByFileNameAD
 
 Write-Host "Done" 

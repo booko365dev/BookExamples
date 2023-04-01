@@ -29,6 +29,8 @@ using System.Web;
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
+// *** Latest Source Code Index: 33 ***
+
 SecureString usrPw = new SecureString();
 foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
     usrPw.AppendChar(oneChar);
@@ -78,7 +80,7 @@ using (ClientContext spCtx = authenticationManager.GetContext(
     Console.WriteLine("Done");
 }
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsCsom_CreateOneItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -91,9 +93,9 @@ static void SpCsCsom_CreateOneItem(ClientContext spCtx)
     newListItem.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsCsom_CreateMultipleItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -109,9 +111,9 @@ static void SpCsCsom_CreateMultipleItem(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsCsom_UploadOneDocument(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -132,9 +134,9 @@ static void SpCsCsom_UploadOneDocument(ClientContext spCtx)
     spCtx.Load(uploadFile);
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 static void SpCsCsom_UploadOneDocumentFileStream(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -158,9 +160,9 @@ static void SpCsCsom_UploadOneDocumentFileStream(ClientContext spCtx)
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsCsom_UploadMultipleDocs(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -188,9 +190,9 @@ static void SpCsCsom_UploadMultipleDocs(ClientContext spCtx)
         }
     }
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsCsom_DownloadOneDoc(ClientContext spCtx)
 {
     //// Using File ID and File GetByUrl
@@ -202,7 +204,7 @@ static void SpCsCsom_DownloadOneDoc(ClientContext spCtx)
     //spCtx.ExecuteQuery();
     //string fileRef = myListItem.File.ServerRelativeUrl;
     //Microsoft.SharePoint.Client.File filetoDownload = 
-    //                                            myList.RootFolder.Files.GetByUrl(fileRef);
+    //                                myList.RootFolder.Files.GetByUrl(fileRef);
 
     //// Using full File URL
     //string fileUrl = "https://domain.sharepoint.com/sites/sitcoll/library/file.txt";
@@ -226,9 +228,9 @@ static void SpCsCsom_DownloadOneDoc(ClientContext spCtx)
         fileStream.Value.CopyTo(outputFileStream);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsCsom_DownloadMultipleDocs(ClientContext spCtx)
 {
     string filePath = @"C:\Temporary";
@@ -245,7 +247,7 @@ static void SpCsCsom_DownloadMultipleDocs(ClientContext spCtx)
     {
         string fileRef = oneFile.ServerRelativeUrl;
         Microsoft.SharePoint.Client.File filetoDownload =
-                                               myList.RootFolder.Files.GetByUrl(fileRef);
+                                             myList.RootFolder.Files.GetByUrl(fileRef);
         spCtx.Load(filetoDownload);
         spCtx.ExecuteQuery();
 
@@ -260,9 +262,9 @@ static void SpCsCsom_DownloadMultipleDocs(ClientContext spCtx)
         }
     }
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsCsom_ReadAllListItems(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -276,9 +278,9 @@ static void SpCsCsom_ReadAllListItems(ClientContext spCtx)
         Console.WriteLine(oneItem["Title"] + " - " + oneItem.Id);
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsCsom_ReadOneListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -310,9 +312,9 @@ static void SpCsCsom_ReadOneListItem(ClientContext spCtx)
 
     Console.WriteLine("Item Title - " + allItems[0]["Title"]);
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsCsom_ReadAllLibraryDocs(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -326,9 +328,9 @@ static void SpCsCsom_ReadAllLibraryDocs(ClientContext spCtx)
         Console.WriteLine(oneItem["FileLeafRef"] + " - " + oneItem.Id);
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsCsom_ReadOneLibraryDoc(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -360,9 +362,9 @@ static void SpCsCsom_ReadOneLibraryDoc(ClientContext spCtx)
 
     Console.WriteLine("Item Title - " + allItems[0]["FileLeafRef"]);
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsCsom_UpdateOneListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -375,9 +377,9 @@ static void SpCsCsom_UpdateOneListItem(ClientContext spCtx)
 
     Console.WriteLine("Item Title - " + myListItem["Title"]);
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsCsom_UpdateOneLibraryDoc(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -390,9 +392,9 @@ static void SpCsCsom_UpdateOneLibraryDoc(ClientContext spCtx)
 
     Console.WriteLine("Item Title - " + myListItem["FileLeafRef"]);
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsCsom_DeleteOneListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -400,9 +402,9 @@ static void SpCsCsom_DeleteOneListItem(ClientContext spCtx)
     myListItem.DeleteObject();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsCsom_DeleteAllListItems(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -419,9 +421,9 @@ static void SpCsCsom_DeleteAllListItems(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsCsom_DeleteOneLibraryDoc(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -429,9 +431,9 @@ static void SpCsCsom_DeleteOneLibraryDoc(ClientContext spCtx)
     myListItem.DeleteObject();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsCsom_DeleteAllLibraryDocs(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -448,9 +450,9 @@ static void SpCsCsom_DeleteAllLibraryDocs(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 23
+//gavdcodebegin 023
 static void SpCsCsom_CreateFolderInLibrary(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -464,9 +466,9 @@ static void SpCsCsom_CreateFolderInLibrary(ClientContext spCtx)
     spCtx.ExecuteQuery();
     spCtx.Dispose();
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 static void SpCsCsom_CreateFolderWithInfo(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -482,9 +484,9 @@ static void SpCsCsom_CreateFolderWithInfo(ClientContext spCtx)
     spCtx.ExecuteQuery();
     spCtx.Dispose();
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 static void SpCsCsom_AddItemInFolder(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -503,9 +505,9 @@ static void SpCsCsom_AddItemInFolder(ClientContext spCtx)
     spCtx.ExecuteQuery();
     spCtx.Dispose();
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 static void SpCsCsom_UploadOneDocumentInFolder(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -530,9 +532,9 @@ static void SpCsCsom_UploadOneDocumentInFolder(ClientContext spCtx)
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 27
+//gavdcodebegin 027
 static void SpCsCsom_ReadAllFolders(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -548,9 +550,9 @@ static void SpCsCsom_ReadAllFolders(ClientContext spCtx)
         Console.WriteLine(oneFolder.Name + " - " + oneFolder.ServerRelativeUrl);
     }
 }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 28
+//gavdcodebegin 028
 static void SpCsCsom_ReadAllItemsInFolder(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -566,9 +568,9 @@ static void SpCsCsom_ReadAllItemsInFolder(ClientContext spCtx)
         Console.WriteLine(oneItem["Title"] + " - " + oneItem.Id);
     }
 }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 29
+//gavdcodebegin 029
 static void SpCsCsom_DeleteOneFolder(ClientContext spCtx)
 {
     string folderRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfo";
@@ -577,9 +579,9 @@ static void SpCsCsom_DeleteOneFolder(ClientContext spCtx)
     myFolder.DeleteObject();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 29
+//gavdcodeend 029
 
-//gavdcodebegin 30
+//gavdcodebegin 030
 static void SpCsCsom_CreateOneAttachment(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -597,9 +599,9 @@ static void SpCsCsom_CreateOneAttachment(ClientContext spCtx)
         spCtx.ExecuteQuery();
     }
 }
-//gavdcodeend 30
+//gavdcodeend 030
 
-//gavdcodebegin 31
+//gavdcodebegin 031
 static void SpCsCsom_ReadAllAttachments(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -615,9 +617,9 @@ static void SpCsCsom_ReadAllAttachments(ClientContext spCtx)
         Console.WriteLine("File Name - " + oneAttachment.FileName);
     }
 }
-//gavdcodeend 31
+//gavdcodeend 031
 
-//gavdcodebegin 32
+//gavdcodebegin 032
 static void SpCsCsom_DownloadAllAttachments(ClientContext spCtx)
 {
     string filePath = @"C:\Temporary";
@@ -635,7 +637,7 @@ static void SpCsCsom_DownloadAllAttachments(ClientContext spCtx)
     {
         string fileRef = oneAttachment.ServerRelativeUrl;
         Microsoft.SharePoint.Client.File filetoDownload =
-                                               myList.RootFolder.Files.GetByUrl(fileRef);
+                                           myList.RootFolder.Files.GetByUrl(fileRef);
         spCtx.Load(filetoDownload);
         spCtx.ExecuteQuery();
 
@@ -650,9 +652,9 @@ static void SpCsCsom_DownloadAllAttachments(ClientContext spCtx)
         }
     }
 }
-//gavdcodeend 32
+//gavdcodeend 032
 
-//gavdcodebegin 33
+//gavdcodebegin 033
 static void SpCsCsom_DeleteAllAttachments(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -670,9 +672,9 @@ static void SpCsCsom_DeleteAllAttachments(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 33
+//gavdcodeend 033
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 static void SpCsCsom_BreakSecurityInheritanceListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -687,9 +689,9 @@ static void SpCsCsom_BreakSecurityInheritanceListItem(ClientContext spCtx)
     myListItem.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 static void SpCsCsom_ResetSecurityInheritanceListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
@@ -704,9 +706,9 @@ static void SpCsCsom_ResetSecurityInheritanceListItem(ClientContext spCtx)
     myListItem.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 static void SpCsCsom_AddUserToSecurityRoleInListItem(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -721,9 +723,9 @@ static void SpCsCsom_AddUserToSecurityRoleInListItem(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 static void SpCsCsom_UpdateUserSecurityRoleInListItem(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -742,9 +744,9 @@ static void SpCsCsom_UpdateUserSecurityRoleInListItem(ClientContext spCtx)
     myRoleAssignment.Update();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 static void SpCsCsom_DeleteUserFromSecurityRoleInListItem(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
@@ -757,7 +759,7 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInListItem(ClientContext spCtx)
     spCtx.ExecuteQuery();
     spCtx.Dispose();
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------

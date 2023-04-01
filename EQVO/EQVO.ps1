@@ -14,7 +14,7 @@ Function LoginPsCsom()
 }
 #-----------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 Function SpPsCsom_CreateOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -30,9 +30,9 @@ Function SpPsCsom_CreateOneList($spCtx)
 	$newList.Update()
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 Function SpPsCsom_ReadAllList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -45,9 +45,9 @@ Function SpPsCsom_ReadAllList($spCtx)
 		Write-Host $oneList.Title + " - " + $oneList.Id
 	}
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 Function SpPsCsom_ReadOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -57,9 +57,9 @@ Function SpPsCsom_ReadOneList($spCtx)
 
 	Write-Host "List description -" $myList.Description
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 Function SpPsCsom_UpdateOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -71,9 +71,9 @@ Function SpPsCsom_UpdateOneList($spCtx)
 
 	Write-Host "List description -" $myList.Description
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 Function SpPsCsom_DeleteOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -81,9 +81,9 @@ Function SpPsCsom_DeleteOneList($spCtx)
 	$myList.DeleteObject()
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 Function SpPsCsom_AddOneFieldToList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -94,9 +94,9 @@ Function SpPsCsom_AddOneFieldToList($spCtx)
 						  [Microsoft.SharePoint.Client.AddFieldOptions]::DefaultValue)
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 Function SpPsCsom_ReadAllFieldsFromList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -110,9 +110,9 @@ Function SpPsCsom_ReadAllFieldsFromList($spCtx)
 		Write-Host $oneField.Title "-" $oneField.TypeAsString
 	}
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 Function SpPsCsom_ReadOneFieldFromList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -123,9 +123,9 @@ Function SpPsCsom_ReadOneFieldFromList($spCtx)
 
 	Write-Host $myField.Id "-" $myField.TypeAsString
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 Function SpPsCsom_UpdateOneFieldInList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -141,9 +141,9 @@ Function SpPsCsom_UpdateOneFieldInList($spCtx)
 
 	Write-Host $myField.Description
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 Function SpPsCsom_DeleteOneFieldFromList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -152,9 +152,9 @@ Function SpPsCsom_DeleteOneFieldFromList($spCtx)
 	$myField.DeleteObject()
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 Function SpPsCsom_RetrieveProperties() 
 {
 	param(
@@ -169,19 +169,19 @@ Function SpPsCsom_RetrieveProperties()
 
    $myParam = [System.Linq.Expressions.Expression]::Parameter(($myType), $myType.Name)
    $myExpr = [System.Linq.Expressions.Expression]::Lambda(
-			[System.Linq.Expressions.Expression]::Convert(
-			[System.Linq.Expressions.Expression]::PropertyOrField($myParam, $PropertyName),
-			[System.Object]
-			),
-			$($myParam)
+		[System.Linq.Expressions.Expression]::Convert(
+		[System.Linq.Expressions.Expression]::PropertyOrField($myParam, $PropertyName),
+		[System.Object]
+		),
+		$($myParam)
    )
    $myExprArray = [System.Array]::CreateInstance($myExpr.GetType(), 1)
    $myExprArray.SetValue($myExpr, 0)
    $myCltLoad.Invoke($myCtx, @($Object, $myExprArray))
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 Function SpPsCsom_BreakSecurityInheritanceList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -199,9 +199,9 @@ Function SpPsCsom_BreakSecurityInheritanceList($spCtx)
 	$myList.Update()
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 13
+#gavdcodebegin 013
 Function SpPsCsom_ResetSecurityInheritanceList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -219,9 +219,9 @@ Function SpPsCsom_ResetSecurityInheritanceList($spCtx)
 	$myList.Update()
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 Function SpPsCsomAddUserToSecurityRoleInList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -236,9 +236,9 @@ Function SpPsCsomAddUserToSecurityRoleInList($spCtx)
 
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
+#gavdcodebegin 015
 Function SpPsCsom_UpdateUserSecurityRoleInList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -256,9 +256,9 @@ Function SpPsCsom_UpdateUserSecurityRoleInList($spCtx)
 	$myRoleAssignment.Update()
 	$spCtx.ExecuteQuery()
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
+#gavdcodebegin 016
 Function SpPsCsom_DeleteUserFromSecurityRoleInList($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -270,9 +270,9 @@ Function SpPsCsom_DeleteUserFromSecurityRoleInList($spCtx)
 	$spCtx.ExecuteQuery()
 	$spCtx.Dispose()
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
+#gavdcodebegin 017
 Function SpPsCsom_ColumnIndex($spCtx)
 {
 	$myWeb = $spCtx.Web
@@ -287,7 +287,7 @@ Function SpPsCsom_ColumnIndex($spCtx)
 
 	Write-Host $myField.Description
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
 #-----------------------------------------------------------------------------------------
 

@@ -1,7 +1,15 @@
 ﻿
-# Functions to login in Azure
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
 
-Function Get-AzureTokenApplication(){
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+
+Function Get-AzureTokenApplication
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -29,7 +37,8 @@ Function Get-AzureTokenApplication(){
 	return $myOAuth
 }
 
-Function Get-AzureTokenDelegation(){
+Function Get-AzureTokenDelegation
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -61,29 +70,34 @@ Function Get-AzureTokenDelegation(){
 	return $myOAuth
 }
 
-#----------------------------------------------------------------------------------------
-
-Function LoginPsCLI()
+Function LoginPsCLI
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
 			   --password $configFile.appsettings.UserPw
 }
 
-#----------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-Function TodoPsGraphGetAllListsMe()
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
+
+
+##==> Graph
+
+#gavdcodebegin 001
+Function ToDoPsGraph_GetAllListsMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -94,20 +108,22 @@ Function TodoPsGraphGetAllListsMe()
 	$listObject = ConvertFrom-Json –InputObject $myResult
 	$listObject.value.subject
 }
-#gavdcodeend 01 
+#gavdcodeend 001 
 
-#gavdcodebegin 02
-Function TodoPsGraphGetAllListsUser()
+#gavdcodebegin 002
+Function ToDoPsGraph_GetAllListsUser
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$Url = "https://graph.microsoft.com/v1.0/users/" + $UserName + "/todo/lists"
+	$Url = "https://graph.microsoft.com/v1.0/users/" + `
+										$configFile.appsettings.UserName + "/todo/lists"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -118,22 +134,23 @@ Function TodoPsGraphGetAllListsUser()
 	$listObject = ConvertFrom-Json –InputObject $myResult
 	$listObject.value.subject
 }
-#gavdcodeend 02 
+#gavdcodeend 002 
 
-#gavdcodebegin 03
-Function TodoPsGraphCreateOneListMe()
+#gavdcodebegin 003
+Function ToDoPsGraph_CreateOneListMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'displayName':'ListFromPowerShell' }"
+	$myBody = "{ 'displayName':'ListCreatedWithGraph' }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -142,22 +159,23 @@ Function TodoPsGraphCreateOneListMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 03 
+#gavdcodeend 003 
 
-#gavdcodebegin 04
-Function TodoPsGraphGetOneListMe()
+#gavdcodebegin 004
+Function ToDoPsGraph_GetOneListMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5KAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -168,24 +186,25 @@ Function TodoPsGraphGetOneListMe()
 	$listObject = ConvertFrom-Json –InputObject $myResult
 	$listObject.value.subject
 }
-#gavdcodeend 04 
+#gavdcodeend 004 
 
-#gavdcodebegin 05
-Function TodoPsGraphUpdateOneListMe()
+#gavdcodebegin 005
+Function ToDoPsGraph_UpdateOneListMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5KAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'displayName':'ListFromPowerShellUpdated' }"
+	$myBody = "{ 'displayName':'ListUpdatedWithGraph' }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -194,43 +213,45 @@ Function TodoPsGraphUpdateOneListMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 05 
+#gavdcodeend 005 
 
-#gavdcodebegin 06
-Function TodoPsGraphDeleteOneListMe()
+#gavdcodebegin 006
+Function ToDoPsGraph_DeleteOneListMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5KAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId
 
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete
 }
-#gavdcodeend 06 
+#gavdcodeend 006 
 
-#gavdcodebegin 07
-Function TodoPsGraphGetAllTasksInOneListMe()
+#gavdcodebegin 007
+Function ToDoPsGraph_GetAllTasksInOneListMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + "/tasks"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -241,26 +262,27 @@ Function TodoPsGraphGetAllTasksInOneListMe()
 	$tasksObject = ConvertFrom-Json –InputObject $myResult
 	$tasksObject.value.subject
 }
-#gavdcodeend 07 
+#gavdcodeend 007 
 
-#gavdcodebegin 08
-Function TodoPsGraphGetOneTaskMe()
+#gavdcodebegin 008
+Function ToDoPsGraph_GetOneTaskMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABEgEEZAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw0JdAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 																	"/tasks/" + $taskId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -271,24 +293,27 @@ Function TodoPsGraphGetOneTaskMe()
 	$taskObject = ConvertFrom-Json –InputObject $myResult
 	$taskObject.value.subject
 }
-#gavdcodeend 08 
+#gavdcodeend 008 
 
-#gavdcodebegin 09
-Function TodoPsGraphCreateOneTaskMe()
+#gavdcodebegin 009
+Function ToDoPsGraph_CreateOneTaskMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + "/tasks"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'title':'TaskOne', `
+	$myBody = "{ 'title':'TaskCreatedWithGraph', `
+				 'categories': ['Important'], `
+				 'status': 'inProgress', `
 				 'body': {
 					'content':'This is the body', `
 					'contentType':'text' }}"
@@ -300,28 +325,29 @@ Function TodoPsGraphCreateOneTaskMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 09 
+#gavdcodeend 009 
 
-#gavdcodebegin 10
-Function TodoPsGraphUpdateOneTaskMe()
+#gavdcodebegin 010
+Function ToDoPsGraph_UpdateOneTaskMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABHPwyKAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw0JeAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 																	"/tasks/" + $taskId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'title':'TaskOneUpdated', `
+	$myBody = "{ 'title':'TaskUpdatedWithGraph', `
 				 'body': {
 					'content':'This is the body updated', `
 					'contentType':'text' }}"
@@ -333,53 +359,55 @@ Function TodoPsGraphUpdateOneTaskMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 10 
+#gavdcodeend 010 
 
-#gavdcodebegin 11
-Function TodoPsGraphDeleteOneTaskMe()
+#gavdcodebegin 011
+Function ToDoPsGraph_DeleteOneTaskMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABHPwyKAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOnAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw0JeAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 																	"/tasks/" + $taskId
 
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete
 }
-#gavdcodeend 11 
+#gavdcodeend 011 
 
-#gavdcodebegin 12
-Function TodoPsGraphCreateOneLinkedResourceMe()
+#gavdcodebegin 012
+Function ToDoPsGraph_CreateOneLinkedResourceMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + "/tasks"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'title':'Task With linkedResource', `
+	$myBody = "{ 'title':'LinkedResourceCreatedWithGraph', `
 				 'linkedResources': [{
 					'webUrl':'https://guitaca.com', `
 					'applicationName':'Guitaca', `
-					'displayName':'Blog in Guitaca Publishers', `
+					'displayName':'Guitaca Publishers site', `
 				    'externalId': 'myExternalId' }]}"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
@@ -389,26 +417,27 @@ Function TodoPsGraphCreateOneLinkedResourceMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 12 
+#gavdcodeend 012 
 
-#gavdcodebegin 13
-Function TodoPsGraphGetAllLinkedResourcesInOneTaskMe()
+#gavdcodebegin 013
+Function ToDoPsGraph_GetAllLinkedResourcesInOneTaskMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABHox4hAAA%3D"
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw0pIAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 																	"/tasks/" + $taskId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -419,27 +448,28 @@ Function TodoPsGraphGetAllLinkedResourcesInOneTaskMe()
 	$tasksObject = ConvertFrom-Json –InputObject $myResult
 	$tasksObject.value.subject
 }
-#gavdcodeend 13 
+#gavdcodeend 013 
 
-#gavdcodebegin 14
-Function TodoPsGraphGetOneLinkedResourceInOneTaskMe()
+#gavdcodebegin 014
+Function ToDoPsGraph_GetOneLinkedResourceInOneTaskMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABHox4hAAA%3D"
-	$linkedResourceId = "880db57c-d2c9-4fcd-a9bf-f6171ea9a390"
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw0pIAAA="
+	$linkedResourceId = "844b2936-0c58-416f-b42c-9aba1bd3ab0a"
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 							"/tasks/" + $taskId + "/linkedResources/" + $linkedResourceId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -450,29 +480,30 @@ Function TodoPsGraphGetOneLinkedResourceInOneTaskMe()
 	$taskObject = ConvertFrom-Json –InputObject $myResult
 	$taskObject.value.subject
 }
-#gavdcodeend 14 
+#gavdcodeend 014 
 
-#gavdcodebegin 15
-Function TodoPsGraphUpdateOneLinkedResourceMe()
+#gavdcodebegin 015
+Function ToDoPsGraph_UpdateOneLinkedResourceMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABHox4hAAA%3D"
-	$linkedResourceId = "880db57c-d2c9-4fcd-a9bf-f6171ea9a390"
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw0pIAAA="
+	$linkedResourceId = "844b2936-0c58-416f-b42c-9aba1bd3ab0a"
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 							"/tasks/" + $taskId + "/linkedResources/" + $linkedResourceId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'displayName':'Blog in Guitaca Publishers updated' }"
+	$myBody = "{ 'displayName':'Guitaca Publishers site Updated' }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -481,53 +512,55 @@ Function TodoPsGraphUpdateOneLinkedResourceMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 15 
+#gavdcodeend 015 
 
-#gavdcodebegin 16
-Function TodoPsGraphDeleteOneLinkedResourceMe()
+#gavdcodebegin 016
+Function ToDoPsGraph_DeleteOneLinkedResourceMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABHox4hAAA%3D"
-	$linkedResourceId = "880db57c-d2c9-4fcd-a9bf-f6171ea9a390"
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOoAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw0pIAAA="
+	$linkedResourceId = "844b2936-0c58-416f-b42c-9aba1bd3ab0a"
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 							"/tasks/" + $taskId + "/linkedResources/" + $linkedResourceId
 
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete
 }
-#gavdcodeend 16 
+#gavdcodeend 016 
 
-#gavdcodebegin 17
-Function TodoPsGraphCreateOneListWithExtensionMe()
+#gavdcodebegin 017
+Function ToDoPsGraph_CreateOneListWithExtensionMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'displayName':'ListFromPowerShell With Extension',
+	$myBody = "{ 'displayName':'ListExtensionCreatedWithGraph',
 				  'extensions': [{
 					  '@odata.type':'microsoft.graph.openTypeExtension',
 					  'extensionName':'Com.Guitaca.MessageList',
 					  'companyName':'Guitaca Publishers',
-					  'expirationDate':'2035-12-30T01:00:00.000Z',
+					  'expirationDate':'2055-12-30T01:00:00.000Z',
 					  'myValue':123 }]}"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
@@ -537,24 +570,25 @@ Function TodoPsGraphCreateOneListWithExtensionMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 17 
+#gavdcodeend 017 
 
-#gavdcodebegin 18
-Function TodoPsGraphGetOneListExtensionMe()
+#gavdcodebegin 018
+Function ToDoPsGraph_GetOneListExtensionMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABHo0nDAAA%3D"
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
 	$extensionName = "Com.Guitaca.MessageList"
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 														"/extensions/" + $extensionName
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -565,24 +599,25 @@ Function TodoPsGraphGetOneListExtensionMe()
 	$listObject = ConvertFrom-Json –InputObject $myResult
 	$listObject.value.subject
 }
-#gavdcodeend 18 
+#gavdcodeend 018 
 
-#gavdcodebegin 19
-Function TodoPsGraphCreateOneTaskWithExtensionMe()
+#gavdcodebegin 019
+Function ToDoPsGraph_CreateOneTaskWithExtensionMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + ` 
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA="
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + "/tasks"
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
-	$myBody = "{ 'title':'Task With Extension', 
+	$myBody = "{ 'title':'TaskExtensionCreatedWithGraph', 
 				 'body': {
 					'content':'This is the body', 
 					'contentType':'text' }, 
@@ -600,27 +635,28 @@ Function TodoPsGraphCreateOneTaskWithExtensionMe()
 
 	Write-Host $myResult
 }
-#gavdcodeend 19 
+#gavdcodeend 019 
 
-#gavdcodebegin 20
-Function TodoPsGraphGetOneTaskExtensionMe()
+#gavdcodebegin 020
+Function ToDoPsGraph_GetOneTaskExtensionMe
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
 
-	$listId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgAuAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLAQD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAA%3D"
-	$taskId = "AAMkAGFjYmFkODk2LTE0ZTEtNGFhOC04YWEzLWVlOTJmN2U2MzM0NgBGAAAAAAAXIQ2" + `
-				"MI48_TqhxzHlnbwlLBwD-ny0YZ9qbRaGixdDNLZGSAABEf-5JAAD-ny0YZ9qbRaGi" + `
-				"xdDNLZGSAABHox4iAAA%3D"
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IyAAA%3D"
 	$extensionName = "Com.Guitaca.MessageTask"
 	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
 									"/tasks/" + $taskId + "/extensions/" + $extensionName
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $ClientIDDel `
-										-TenantName $TenantName `
-										-UserName $UserName `
-										-UserPw $UserPw
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -631,20 +667,399 @@ Function TodoPsGraphGetOneTaskExtensionMe()
 	$taskObject = ConvertFrom-Json –InputObject $myResult
 	$taskObject.value.subject
 }
-#gavdcodeend 20 
+#gavdcodeend 020 
 
-#gavdcodebegin 21
-Function TodoPsCliGetAllLists(){
+#gavdcodebegin 031
+Function ToDoPsGraph_GetAllAttachmentsInTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+									"/tasks/" + $taskId + "/attachments"
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$taskObject = ConvertFrom-Json –InputObject $myResult
+	$taskObject.value.subject
+}
+#gavdcodeend 031
+
+#gavdcodebegin 032
+Function ToDoPsGraph_GetOneAttachmentInTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$attachmentId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAABEgAQANItUM24OuhJqMFkZ" + `
+							"BSxfy8="
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+									"/tasks/" + $taskId + "/attachments/" + $attachmentId
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$taskObject = ConvertFrom-Json –InputObject $myResult
+	$taskObject.value.subject
+}
+#gavdcodeend 032
+
+#gavdcodebegin 033
+Function ToDoPsGraph_UploadAttachmentSmallToTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.ReadWrite
+
+	$fileInfo = New-Object System.IO.FileInfo("C:\Temporary\TestDocument01.docx")
+	$fileName = $fileInfo.Name
+	$fileContentB64 = [System.IO.File]::ReadAllBytes($fileInfo.FullName)
+	$fileContent = [System.Convert]::ToBase64String($fileContentB64)
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+									"/tasks/" + $taskId + "/attachments"
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+
+	$myBody = "{ '@odata.type':'#microsoft.graph.taskFileAttachment', 
+				 'name':'" + $fileName + "', 
+				 'contentBytes':'" + $fileContent + "' }"
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
+												-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 033
+
+#gavdcodebegin 034
+Function ToDoPsGraph_UploadAttachmentLargeToTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.ReadWrite
+
+	$fileInfo = New-Object System.IO.FileInfo("C:\Temporary\TestDocument01.docx")
+	$fileName = $fileInfo.Name
+	$fileSize = $fileInfo.Length
+	$fileContentB64 = [System.IO.File]::ReadAllBytes($fileInfo.FullName)
+	$fileContent = [System.Convert]::ToBase64String($fileContentB64)
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+								"/tasks/" + $taskId + "/attachments/createUploadSession"
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+
+	# Get an upload session
+	$UrlSess = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+									"/tasks/" + $taskId + "/attachments"
+	$myBodySess = "{ 'attachmentInfo': { 
+				     'attachmentType':'file', 
+				     'name':'" + $fileName + "',
+				     'size':" + $fileSize + " }}"
+	$myContentTypeSess = "application/json"
+	$myHeaderSess = @{'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)"}
+	
+	$myResultSess = Invoke-WebRequest -Headers $myHeaderSess -Uri $UrlSess -Method Post `
+									  -Body $myBodySess -ContentType $myContentTypeSess
+
+	Write-Host $myResultSess
+
+	# Make a loop to upload each chunk of range
+	$UrlUpl = $myResultSess.uploadUrl
+	$myBodyUpl = "{ '" + $fileContent + "' }}"
+	$myContentTypeUpl = "application/octet-stream"
+	$myHeaderUpl = @{'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)"
+				  'Content-Length' = $($fileInfo.Length)
+				  'Content-Range' = "bytes 0-$($fileInfo.Length)/$($fileInfo.Length)" }
+	
+	$myResultUpl = Invoke-WebRequest -Headers $myHeaderUpl -Uri $UrlUpl -Method Put `
+									-Body $myBodyUpl -ContentType $myContentTypeUpl
+
+	Write-Host $myResultUpl
+}
+#gavdcodeend 034
+
+#gavdcodebegin 035
+Function ToDoPsGraph_DeleteOneSessionMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$sessionId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAABEgAQANItUM24OuhJqMFkZ" + `
+							"BSxfy8="
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+							"/tasks/" + $taskId + "/attachmentSessions/" + $sessionId
+
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete
+}
+#gavdcodeend 035
+
+#gavdcodebegin 036
+Function ToDoPsGraph_DeleteOneAttachmentsFromTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$attachmentId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAABEgAQANItUM24OuhJqMFkZ" + `
+							"BSxfy8="
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+									"/tasks/" + $taskId + "/attachments/" + $attachmentId
+
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete
+}
+#gavdcodeend 036
+
+#gavdcodebegin 037
+Function ToDoPsGraph_GetAllStepsInTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+									"/tasks/" + $taskId + "/checklistItems"
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$taskObject = ConvertFrom-Json –InputObject $myResult
+	$taskObject.value.subject
+}
+#gavdcodeend 037
+
+#gavdcodebegin 038
+Function ToDoPsGraph_GetOneStepInTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.Read, Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$stepId = "5a6d2d5c-35a8-43e7-a188-82863b7c1c03"
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+								"/tasks/" + $taskId + "/checklistItems/" + $stepId
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$taskObject = ConvertFrom-Json –InputObject $myResult
+	$taskObject.value.subject
+}
+#gavdcodeend 038
+
+#gavdcodebegin 039
+Function ToDoPsGraph_CreateStepInTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+									"/tasks/" + $taskId + "/checklistItems"
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+
+	$myBody = "{ 'displayName':'Step created with Graph' }"
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
+												-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 039
+
+#gavdcodebegin 040
+Function ToDoPsGraph_UpdateOneStepInTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$stepId = "f6a2337f-96ef-4cb1-b6e6-5c97d57bc0b7"
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+								"/tasks/" + $taskId + "/checklistItems/" + $stepId
+	
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myBody = "{ 'displayName':'Step updated with Graph',
+				 'isChecked':'True' }"
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Patch `
+												-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 040
+
+#gavdcodebegin 041
+Function ToDoPsGraph_DeleteOneStepFromTaskMe
+{
+	# App Registration type:		Delegation
+	# App Registration permissions: Tasks.ReadWrite
+
+	$listId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAAA="
+	$taskId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
+							"cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAACKwqOpAA" + `
+							"C1vtBLB-F9SJ2ZDb7Xo-OrAACKw1IzAAA="
+	$stepId = "f6a2337f-96ef-4cb1-b6e6-5c97d57bc0b7"
+	$Url = "https://graph.microsoft.com/v1.0/me/todo/lists/" + $listId + `
+								"/tasks/" + $taskId + "/checklistItems/" + $stepId
+
+	$myOAuth = Get-AzureTokenDelegation `
+								-ClientID $configFile.appsettings.ClientIdWithAccPw `
+								-TenantName $configFile.appsettings.TenantName `
+								-UserName $configFile.appsettings.UserName `
+								-UserPw $configFile.appsettings.UserPw
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete
+}
+#gavdcodeend 041
+
+#-----------------------------------------------------------------------------------------
+
+##==> CLI
+
+#gavdcodebegin 021
+Function ToDoPsCli_GetAllLists
+{
 	LoginPsCLI
 	
 	m365 todo list list
 
 	m365 logout
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
-Function TodoPsCliGetListsByQuery(){
+#gavdcodebegin 022
+Function ToDoPsCli_GetListsByQuery
+{
 	LoginPsCLI
 	
 	m365 todo list list --output json `
@@ -652,20 +1067,22 @@ Function TodoPsCliGetListsByQuery(){
 
 	m365 logout
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
-Function TodoPsCliAddOneList(){
+#gavdcodebegin 023
+Function ToDoPsCli_AddOneList
+{
 	LoginPsCLI
 	
 	m365 todo list add --name "ToDoCreatedWithCLI"
 
 	m365 logout
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
-Function TodoPsCliUpdateOneList(){
+#gavdcodebegin 024
+Function ToDoPsCli_UpdateOneList
+{
 	LoginPsCLI
 	
 	m365 todo list set --name "ToDoCreatedWithCLI" `
@@ -673,10 +1090,11 @@ Function TodoPsCliUpdateOneList(){
 
 	m365 logout
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
-#gavdcodebegin 25
-Function TodoPsCliDeleteOneList(){
+#gavdcodebegin 025
+Function ToDoPsCli_DeleteOneList
+{
 	LoginPsCLI
 	
 	m365 todo list remove --name "ToDoUpdatedWithCLI" `
@@ -684,20 +1102,22 @@ Function TodoPsCliDeleteOneList(){
 
 	m365 logout
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
-#gavdcodebegin 26
-Function TodoPsCliGetAllTasks(){
+#gavdcodebegin 026
+Function ToDoPsCli_GetAllTasks
+{
 	LoginPsCLI
 	
 	m365 todo task list --listName "ToDoCreatedWithCLI"
 
 	m365 logout
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
-Function TodoPsCliGetTasksByQuery(){
+#gavdcodebegin 027
+Function ToDoPsCli_GetTasksByQuery
+{
 	LoginPsCLI
 	
 	m365 todo task list --listName "ToDoCreatedWithCLI" `
@@ -706,10 +1126,11 @@ Function TodoPsCliGetTasksByQuery(){
 
 	m365 logout
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
-Function TodoPsCliAddOneTask(){
+#gavdcodebegin 028
+Function ToDoPsCli_AddOneTask
+{
 	LoginPsCLI
 	
 	m365 todo task add --listName "ToDoCreatedWithCLI" `
@@ -717,79 +1138,89 @@ Function TodoPsCliAddOneTask(){
 
 	m365 logout
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
-Function TodoPsCliUpdateOneTask(){
+#gavdcodebegin 029
+Function ToDoPsCli_UpdateOneTask
+{
 	LoginPsCLI
 	
 	m365 todo task set --listName "ToDoCreatedWithCLI" `
-					   --id "AAMkAGRiNjdkMjA5LTNkOWMtNDkxMS...A1yrhXAAA=" `
+					   --id "AAMkAGE0ODQ3NTc1LT ... 1vtBLB-F9SJ2ZDb7Xo-OrAACMOMRsAAA=" `
 					   --title "ToDoTaskUpdatedWithCLI" `
 					   --status "deferred"
 
 	m365 logout
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
-Function TodoPsCliDeleteOneTask(){
+#gavdcodebegin 030
+Function ToDoPsCli_DeleteOneTask
+{
 	LoginPsCLI
 	
 	m365 todo task remove --listName "ToDoCreatedWithCLI" `
-						  --id "AAMkAGRiNjdkMjA5LTNkOWMtNDkxMS...A1yrhXAAA=" `
+						  --id "AAMkAGE0ODQ3NTc1LT ... 1vtBLB-F9SJ2ZDb7Xo-OrAACMRsAAA=" `
 						  --confirm
 
 	m365 logout
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#----------------------------------------------------------------------------------------
 
-## Running the Functions
-[xml]$configFile = get-content "C:\Projects\grPs.values.config"
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
 
-#------------------------ Using Microsoft Graph PowerShell for Teams
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-#$ClientIDApp = $configFile.appsettings.ClientIdApp
-#$ClientSecretApp = $configFile.appsettings.ClientSecretApp
-#$ClientIDDel = $configFile.appsettings.ClientIdDel
-#$TenantName = $configFile.appsettings.TenantName
-#$UserName = $configFile.appsettings.UserName
-#$UserPw = $configFile.appsettings.UserPw
+# *** Latest Source Code Index: 41 ***
 
-#TodoPsGraphGetAllListsMe
-#TodoPsGraphGetAllListsUser
-#TodoPsGraphCreateOneListMe
-#TodoPsGraphGetOneListMe
-#TodoPsGraphUpdateOneListMe
-#TodoPsGraphDeleteOneListMe
-#TodoPsGraphGetAllTasksInOneListMe
-#TodoPsGraphGetOneTaskMe
-#TodoPsGraphCreateOneTaskMe
-#TodoPsGraphUpdateOneTaskMe
-#TodoPsGraphDeleteOneTaskMe
-#TodoPsGraphCreateOneLinkedResourceMe
-#TodoPsGraphGetAllLinkedResourcesInOneTaskMe
-#TodoPsGraphGetOneLinkedResourceInOneTaskMe
-#TodoPsGraphUpdateOneLinkedResourceMe
-#TodoPsGraphDeleteOneLinkedResourceMe
-#TodoPsGraphCreateOneListWithExtensionMe
-#TodoPsGraphGetOneListExtensionMe
-#TodoPsGraphCreateOneTaskWithExtensionMe
-#TodoPsGraphGetOneTaskExtensionMe
+#------------------------ Using Microsoft Graph PowerShell
 
-#------------------------ Using Microsoft PnP CLI for Teams
+#ToDoPsGraph_GetAllListsMe
+#ToDoPsGraph_GetAllListsUser
+#ToDoPsGraph_CreateOneListMe
+#ToDoPsGraph_GetOneListMe
+#ToDoPsGraph_UpdateOneListMe
+#ToDoPsGraph_DeleteOneListMe
+#ToDoPsGraph_GetAllTasksInOneListMe
+#ToDoPsGraph_GetOneTaskMe
+#ToDoPsGraph_CreateOneTaskMe
+#ToDoPsGraph_UpdateOneTaskMe
+#ToDoPsGraph_DeleteOneTaskMe
+#ToDoPsGraph_CreateOneLinkedResourceMe
+#ToDoPsGraph_GetAllLinkedResourcesInOneTaskMe
+#ToDoPsGraph_GetOneLinkedResourceInOneTaskMe
+#ToDoPsGraph_UpdateOneLinkedResourceMe
+#ToDoPsGraph_DeleteOneLinkedResourceMe
+#ToDoPsGraph_CreateOneListWithExtensionMe
+#ToDoPsGraph_GetOneListExtensionMe
+#ToDoPsGraph_CreateOneTaskWithExtensionMe
+#ToDoPsGraph_GetOneTaskExtensionMe
+#ToDoPsGraph_GetAllAttachmentsInTaskMe
+#ToDoPsGraph_GetOneAttachmentInTaskMe
+#ToDoPsGraph_UploadAttachmentSmallToTaskMe
+#ToDoPsGraph_UploadAttachmentLargeToTaskMe
+#ToDoPsGraph_DeleteOneSessionMe
+#ToDoPsGraph_DeleteOneAttachmentsFromTaskMe
+#ToDoPsGraph_GetAllStepsInTaskMe
+#ToDoPsGraph_GetOneStepInTaskMe
+#ToDoPsGraph_CreateStepInTaskMe
+#ToDoPsGraph_UpdateOneStepInTaskMe
+#ToDoPsGraph_DeleteOneStepFromTaskMe
 
-#TodoPsCliGetAllLists
-#TodoPsCliGetListsByQuery
-#TodoPsCliAddOneList
-#TodoPsCliUpdateOneList
-#TodoPsCliDeleteOneList
-#TodoPsCliGetAllTasks
-#TodoPsCliGetTasksByQuery
-#TodoPsCliAddOneTask
-#TodoPsCliUpdateOneTask
-#TodoPsCliDeleteOneTask
+#------------------------ Using PnP CLI
+
+#ToDoPsCli_GetAllLists
+#ToDoPsCli_GetListsByQuery
+#ToDoPsCli_AddOneList
+#ToDoPsCli_UpdateOneList
+#ToDoPsCli_DeleteOneList
+#ToDoPsCli_GetAllTasks
+#ToDoPsCli_GetTasksByQuery
+#ToDoPsCli_AddOneTask
+#ToDoPsCli_UpdateOneTask
+#ToDoPsCli_DeleteOneTask
 
 Write-Host "Done" 
