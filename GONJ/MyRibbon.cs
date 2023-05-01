@@ -11,7 +11,7 @@ namespace GONJ
 
         }
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         private void BtnAddPicture_Click(object sender, RibbonControlEventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -24,9 +24,9 @@ namespace GONJ
                                                             fileDialog.FileName);
             }
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         private void BtnAddTable_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.ActiveDocument.Tables.Add(
@@ -36,9 +36,9 @@ namespace GONJ
             Globals.ThisAddIn.Application.ActiveDocument.Tables[1].Range.Font.Size = 12;
             Globals.ThisAddIn.Application.ActiveDocument.Tables[1].Rows.Borders.Enable = 1;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
         private void BtnSaveAsPdf_Click(object sender, RibbonControlEventArgs e)
         {
             SaveFileDialog exportDialog = new SaveFileDialog();
@@ -52,15 +52,15 @@ namespace GONJ
                             OpenAfterExport: true);
             }
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
 
-        //gavdcodebegin 04
+        //gavdcodebegin 004
         private void BtnGetTime_Click(object sender, RibbonControlEventArgs e)
         {
             FormTime newForm = new FormTime();
             newForm.Show();
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
 
     }
 }

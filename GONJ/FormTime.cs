@@ -17,11 +17,11 @@ namespace GONJ
             InitializeComponent();
         }
 
-        //gavdcodebegin 05
+        //gavdcodebegin 005
         private void FormTime_Load(object sender, EventArgs e)
         {
             lblTime.Text = DateTime.Now.ToLongTimeString();
         }
-        //gavdcodeend 05
+        //gavdcodeend 005
     }
 }

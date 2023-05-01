@@ -5,7 +5,7 @@ namespace ARLC
 {
     public partial class ThisAddIn
     {
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.Application.DocumentBeforeSave +=
@@ -25,7 +25,7 @@ namespace ARLC
                     Environment.NewLine +
                     "To Whom It May Concern," + Environment.NewLine;
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
         #region VSTO generated code
 
