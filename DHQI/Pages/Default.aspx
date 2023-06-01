@@ -8,7 +8,7 @@
 
 <%-- The markup and script in the following Content element will be placed in the <head> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
-<!--gavdcodebegin 01-->
+<!--gavdcodebegin 001-->
     <script type="text/javascript" src="../Scripts/jquery-1.9.1.min.js"></script>
     <SharePoint:ScriptLink name="sp.js" runat="server" OnDemand="true" 
                            LoadAfterUI="true" Localizable="false" />
@@ -19,7 +19,7 @@
 
     <!-- Add your JavaScript to the following file -->
     <script type="text/javascript" src="../Scripts/App.js"></script>
-<!--gavdcodeend 01-->
+<!--gavdcodeend 001-->
 </asp:Content>
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
@@ -29,7 +29,7 @@
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
-<!--gavdcodebegin 02-->
+<!--gavdcodebegin 002-->
     <div>
         <p id="message">
             <!-- The following content will be replaced with the user name when you 
@@ -37,9 +37,9 @@
             initializing...
         </p>
     </div>
-<!--gavdcodeend 02-->
+<!--gavdcodeend 002-->
 
-<!--gavdcodebegin 04-->
+<!--gavdcodebegin 004-->
     <div>
         <p>
             <asp:HyperLink runat="server" 
@@ -49,5 +49,5 @@
                            Text="My New List" />
         </p>
     </div>
-<!--gavdcodeend 04-->
+<!--gavdcodeend 004-->
 </asp:Content>

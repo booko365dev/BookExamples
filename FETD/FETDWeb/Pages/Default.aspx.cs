@@ -26,7 +26,7 @@ namespace FETDWeb
             }
         }
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         protected void Page_Load(object sender, EventArgs e)
         {
             var spContext = 
@@ -49,6 +49,6 @@ namespace FETDWeb
             }
             Response.Write(myString);
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
     }
 }

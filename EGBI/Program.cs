@@ -89,7 +89,7 @@ using (ClientContext spCtx = authenticationManager.GetContext(
 }
 
 // --- CSOM Term Store
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsCsom_FindTermStore(ClientContext spCtx)
 {
     TaxonomySession myTaxSession = TaxonomySession.GetTaxonomySession(spCtx);
@@ -101,9 +101,9 @@ static void SpCsCsom_FindTermStore(ClientContext spCtx)
         Console.WriteLine(oneTermStore.Name);
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsCsom_CreateTermGroup(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -115,9 +115,9 @@ static void SpCsCsom_CreateTermGroup(ClientContext spCtx)
                                             "CsCsomTermGroup", Guid.NewGuid());
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsCsom_FindTermGroups(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -132,9 +132,9 @@ static void SpCsCsom_FindTermGroups(ClientContext spCtx)
         Console.WriteLine(oneGroup.Name);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsCsom_CreateTermSet(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -147,9 +147,9 @@ static void SpCsCsom_CreateTermSet(ClientContext spCtx)
                                         "CsCsomTermSet", Guid.NewGuid(), 1033);
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsCsom_FindTermSets(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -166,9 +166,9 @@ static void SpCsCsom_FindTermSets(ClientContext spCtx)
         Console.WriteLine(oneTermSet.Name);
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsCsom_CreateTerm(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -181,9 +181,9 @@ static void SpCsCsom_CreateTerm(ClientContext spCtx)
     Term myTerm = myTermSet.CreateTerm("CsCsomTerm", 1033, Guid.NewGuid());
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsCsom_FindTerms(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -201,9 +201,9 @@ static void SpCsCsom_FindTerms(ClientContext spCtx)
         Console.WriteLine(oneTerm.Name);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsCsom_FindOneTerm(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -219,9 +219,9 @@ static void SpCsCsom_FindOneTerm(ClientContext spCtx)
 
     Console.WriteLine(myTerm.Name);
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsCsom_UpdateOneTerm(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -235,9 +235,9 @@ static void SpCsCsom_UpdateOneTerm(ClientContext spCtx)
     myTerm.Name = "CsCsomTerm_Updated";
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsCsom_DeleteOneTerm(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -251,9 +251,9 @@ static void SpCsCsom_DeleteOneTerm(ClientContext spCtx)
     myTerm.DeleteObject();
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsCsom_FindTermSetAndTermById(ClientContext spCtx)
 {
     string termStoreName = "Taxonomy_A16ApXAPRyrML/PibplHbA==";
@@ -271,10 +271,10 @@ static void SpCsCsom_FindTermSetAndTermById(ClientContext spCtx)
 
     Console.WriteLine(myTermSet.Name + " - " + myTerm.Name);
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
 // --- Search
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsCsom_GetResultsSearch(ClientContext spCtx)
 {
     KeywordQuery keywordQuery = new KeywordQuery(spCtx);
@@ -290,10 +290,10 @@ static void SpCsCsom_GetResultsSearch(ClientContext spCtx)
                                 resultRow["Path"] + " - " + resultRow["Write"]);
     }
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
 // --- User Profile
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsCsom_GetAllPropertiesUserProfile(ClientContext spCtx)
 {
     string myUser = "i:0#.f|membership|" +
@@ -310,9 +310,9 @@ static void SpCsCsom_GetAllPropertiesUserProfile(ClientContext spCtx)
                                                 oneProperty.Value.ToString());
     }
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsCsom_GetAllMyPropertiesUserProfile(ClientContext spCtx)
 {
     PeopleManager myPeopleManager = new PeopleManager(spCtx);
@@ -327,9 +327,9 @@ static void SpCsCsom_GetAllMyPropertiesUserProfile(ClientContext spCtx)
                                                 oneProperty.Value.ToString());
     }
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsCsom_GetPropertiesUserProfile(ClientContext spCtx)
 {
     string myUser = "i:0#.f|membership|" +
@@ -350,9 +350,9 @@ static void SpCsCsom_GetPropertiesUserProfile(ClientContext spCtx)
         Console.WriteLine(oneValue);
     }
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsCsom_UpdateOnePropertyUserProfile(ClientContext spCtx)
 {
     PeopleManager myPeopleManager = new PeopleManager(spCtx);
@@ -365,9 +365,9 @@ static void SpCsCsom_UpdateOnePropertyUserProfile(ClientContext spCtx)
             myUserProperties.AccountName, "AboutMe", newValue);
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 static void SpCsCsom_UpdateOneMultPropertyUserProfile(ClientContext spCtx)
 {
     PeopleManager myPeopleManager = new PeopleManager(spCtx);
@@ -382,10 +382,10 @@ static void SpCsCsom_UpdateOneMultPropertyUserProfile(ClientContext spCtx)
                             myUserProperties.AccountName, "SPS-Skills", mySkills);
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
 // -- Site Scripts
-//gavdcodebegin 18
+//gavdcodebegin 018
 static void SpCsCsom_GenerateWebSiteScript(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
@@ -409,9 +409,9 @@ static void SpCsCsom_GenerateWebSiteScript(ClientContext spCtx)
 
     Console.WriteLine(response.Value.JSON);
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 static void SpCsCsom_AddSiteScript(ClientContext spCtx)
 {
     string myScript = System.IO.File.ReadAllText
@@ -430,9 +430,9 @@ static void SpCsCsom_AddSiteScript(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 static void SpCsCsom_GetAllSiteScripts(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
@@ -441,9 +441,9 @@ static void SpCsCsom_GetAllSiteScripts(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 static void SpCsCsom_UpdateSiteScript(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
@@ -458,9 +458,9 @@ static void SpCsCsom_UpdateSiteScript(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 static void SpCsCsom_DeleteSiteScript(ClientContext spCtx)
 {
     Guid myId = new Guid("da06b992-aeaf-439d-a73a-08905ae3e884");
@@ -471,10 +471,10 @@ static void SpCsCsom_DeleteSiteScript(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
 // -- Site Templates
-//gavdcodebegin 23
+//gavdcodebegin 023
 static void SpCsCsom_AddSiteTemplate(ClientContext spCtx)
 {
     Guid myId = new Guid("79a5174f-0712-49c7-b6af-5a45918c55ee");
@@ -493,9 +493,9 @@ static void SpCsCsom_AddSiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 static void SpCsCsom_ApplySiteTemplate(ClientContext spCtx)
 {
     string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
@@ -507,9 +507,9 @@ static void SpCsCsom_ApplySiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 static void SpCsCsom_GetAllSiteTemplates(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
@@ -518,9 +518,9 @@ static void SpCsCsom_GetAllSiteTemplates(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 static void SpCsCsom_UpdateSiteTemplate(ClientContext spCtx)
 {
     Tenant myTenant = new Tenant(spCtx);
@@ -535,9 +535,9 @@ static void SpCsCsom_UpdateSiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 27
+//gavdcodebegin 027
 static void SpCsCsom_GetTasksSiteTemplate(ClientContext spCtx)
 {
     string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
@@ -548,9 +548,9 @@ static void SpCsCsom_GetTasksSiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 28
+//gavdcodebegin 028
 static void SpCsCsom_GetRunsSiteTemplate(ClientContext spCtx)
 {
     string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
@@ -562,9 +562,9 @@ static void SpCsCsom_GetRunsSiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 29
+//gavdcodebegin 029
 static void SpCsCsom_GetRunStatusSiteTemplate(ClientContext spCtx)
 {
     string mySiteUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca";
@@ -586,9 +586,9 @@ static void SpCsCsom_GetRunStatusSiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 29
+//gavdcodeend 029
 
-//gavdcodebegin 30
+//gavdcodebegin 030
 static void SpCsCsom_GrantRightsSiteTemplate(ClientContext spCtx)
 {
     Guid myId = new Guid("da06b992-aeaf-439d-a73a-08905ae3e884");
@@ -601,9 +601,9 @@ static void SpCsCsom_GrantRightsSiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 30
+//gavdcodeend 030
 
-//gavdcodebegin 31
+//gavdcodebegin 031
 static void SpCsCsom_DeleteSiteTemplate(ClientContext spCtx)
 {
     Guid myId = new Guid("abed53c3-4515-4308-8821-ffc3ec3dbcdb");
@@ -614,7 +614,7 @@ static void SpCsCsom_DeleteSiteTemplate(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 31
+//gavdcodeend 031
 
 
 //---------------------------------------------------------------------------------------

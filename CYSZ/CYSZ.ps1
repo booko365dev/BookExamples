@@ -70,7 +70,7 @@ Function LoginPsPnPPowerShell_CertificateBase64
 ##---------------------------------------------------------------------------------------
 
 #---- Term Store ----
-#gavdcodebegin 01
+#gavdcodebegin 001
 function SpPsPnpPowerShell_FindTermStore
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -82,9 +82,9 @@ function SpPsPnpPowerShell_FindTermStore
 	Write-Host $myTaxSession.TermStores[0].Name
 	Disconnect-PnPOnline
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 function SpPsPnpPowerShell_CreateTermGroup
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -96,9 +96,9 @@ function SpPsPnpPowerShell_CreateTermGroup
 	Write-Host $myTermGroup.Id
 	Disconnect-PnPOnline
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 function SpPsPnpPowerShell_FindTermGroup
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -112,9 +112,9 @@ function SpPsPnpPowerShell_FindTermGroup
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 function SpPsPnpPowerShell_CreateTermSet
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -126,9 +126,9 @@ function SpPsPnpPowerShell_CreateTermSet
 								-TermGroup "PsPnpTermGroup"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 function SpPsPnpPowerShell_FindTermSet
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -142,9 +142,9 @@ function SpPsPnpPowerShell_FindTermSet
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 function SpPsPnpPowerShell_CreateTerm
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -158,9 +158,9 @@ function SpPsPnpPowerShell_CreateTerm
 	Write-Host $myTerm.Id
 	Disconnect-PnPOnline
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 function SpPsPnpPowerShell_FindTerm
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -175,9 +175,9 @@ function SpPsPnpPowerShell_FindTerm
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 function SpPsPnpPowerShell_DeleteTermGroup
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -188,9 +188,9 @@ function SpPsPnpPowerShell_DeleteTermGroup
 	Remove-PnPTermGroup -GroupName "PsPnpTermGroup"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 function SpPsPnpPowerShell_ExportTaxonomy
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -202,9 +202,9 @@ function SpPsPnpPowerShell_ExportTaxonomy
 					   -TermSet "7d40eadb-c320-4320-8eb0-da725c8a426f"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 function SpPsPnpPowerShell_ImportTaxonomy
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -215,9 +215,9 @@ function SpPsPnpPowerShell_ImportTaxonomy
 	Import-PnPTaxonomy -Path "C:\Temporary\tax.txt"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 function SpPsPnpPowerShell_ExportTermGroup
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -228,9 +228,9 @@ function SpPsPnpPowerShell_ExportTermGroup
 	Export-PnPTermGroupToXml -Out "C:\Temporary\group.xml" -Identity "PsCsomTermGroup"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 function SpPsPnpPowerShell_ImportTermGroup
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -241,10 +241,10 @@ function SpPsPnpPowerShell_ImportTermGroup
 	Import-PnPTermGroupToXml -Path "C:\Temporary\tax.txt"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
 #---- Search ----
-#gavdcodebegin 13
+#gavdcodebegin 013
 function SpPsPnpPowerShell_Search
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -258,9 +258,9 @@ function SpPsPnpPowerShell_Search
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 function SpPsPnpPowerShell_SearchSiteColls
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -271,9 +271,9 @@ function SpPsPnpPowerShell_SearchSiteColls
 	Get-PnPSiteSearchQueryResults
 	Disconnect-PnPOnline
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
+#gavdcodebegin 015
 function SpPsPnpPowerShell_SearchCrawl
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -284,10 +284,10 @@ function SpPsPnpPowerShell_SearchCrawl
 	Get-PnPSearchCrawlLog
 	Disconnect-PnPOnline
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
 #---- User Profile ----
-#gavdcodebegin 16
+#gavdcodebegin 016
 function SpPsPnpPowerShell_FindUserProfileProperties
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -298,9 +298,9 @@ function SpPsPnpPowerShell_FindUserProfileProperties
 	Get-PnPUserProfileProperty -Account $configFile.appsettings.UserName
 	Disconnect-PnPOnline
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
+#gavdcodebegin 017
 function SpPsPnpPowerShell_UpdateUserProfileProperties
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -313,10 +313,10 @@ function SpPsPnpPowerShell_UpdateUserProfileProperties
 							   -Value "I am the administrator"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
 #---- Modern Pages ----
-#gavdcodebegin 18
+#gavdcodebegin 018
 function SpPsPnpPowerShell_CreateModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -329,9 +329,9 @@ function SpPsPnpPowerShell_CreateModernPage
 				-LayoutType Article
 	Disconnect-PnPOnline
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
+#gavdcodebegin 019
 function SpPsPnpPowerShell_CreateNewsModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -345,9 +345,9 @@ function SpPsPnpPowerShell_CreateNewsModernPage
 				 -PromoteAs NewsArticle
 	Disconnect-PnPOnline
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
+#gavdcodebegin 020
 function SpPsPnpPowerShell_CreateModernPageAsTemplate
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -361,9 +361,9 @@ function SpPsPnpPowerShell_CreateModernPageAsTemplate
 				-PromoteAs Template
 	Disconnect-PnPOnline
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
+#gavdcodebegin 021
 function SpPsPnpPowerShell_ModernPageToNewsPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -375,9 +375,9 @@ function SpPsPnpPowerShell_ModernPageToNewsPage
 				-PromoteAs NewsArticle
 	Disconnect-PnPOnline
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
+#gavdcodebegin 022
 function SpPsPnpPowerShell_GetModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -392,9 +392,9 @@ function SpPsPnpPowerShell_GetModernPage
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
+#gavdcodebegin 023
 function SpPsPnpPowerShell_AddSectionInModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -407,9 +407,9 @@ function SpPsPnpPowerShell_AddSectionInModernPage
 					   -SectionTemplate "TwoColumnLeft"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
+#gavdcodebegin 024
 function SpPsPnpPowerShell_AddTextWebPartInModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -423,9 +423,9 @@ function SpPsPnpPowerShell_AddTextWebPartInModernPage
 						-Section 1 -Column 1 -Order 1
 	Disconnect-PnPOnline
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
-#gavdcodebegin 25
+#gavdcodebegin 025
 function SpPsPnpPowerShell_AddHeroWebPartInModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -439,9 +439,9 @@ function SpPsPnpPowerShell_AddHeroWebPartInModernPage
 					   -Section 1 -Column 1 -Order 1
 	Disconnect-PnPOnline
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
-#gavdcodebegin 26
+#gavdcodebegin 026
 function SpPsPnpPowerShell_AddNewsWebPartInModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -456,9 +456,9 @@ function SpPsPnpPowerShell_AddNewsWebPartInModernPage
 					   -WebPartProperties @{layoutId="GridNews";title="News"}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
+#gavdcodebegin 027
 function SpPsPnpPowerShell_RemoveOneWebPartFromModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -470,9 +470,9 @@ function SpPsPnpPowerShell_RemoveOneWebPartFromModernPage
 	$myPage.Sections[0].Controls.RemoveAt(1)
 	Disconnect-PnPOnline
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
+#gavdcodebegin 028
 function SpPsPnpPowerShell_RemoveOneSectionFromModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -484,9 +484,9 @@ function SpPsPnpPowerShell_RemoveOneSectionFromModernPage
 	$myPage.Sections.RemoveAt(0)
 	Disconnect-PnPOnline
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
+#gavdcodebegin 029
 function SpPsPnpPowerShell_SaveAndPublishModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -499,9 +499,9 @@ function SpPsPnpPowerShell_SaveAndPublishModernPage
 	$myPage.Publish()
 	Disconnect-PnPOnline
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
+#gavdcodebegin 030
 function SpPsPnpPowerShell_PublishModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -513,9 +513,9 @@ function SpPsPnpPowerShell_PublishModernPage
 	Set-PnPPage -Identity $myPage -Publish
 	Disconnect-PnPOnline
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#gavdcodebegin 31
+#gavdcodebegin 031
 function SpPsPnpPowerShell_UpdateModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -529,9 +529,9 @@ function SpPsPnpPowerShell_UpdateModernPage
 				-HeaderType None
 	Disconnect-PnPOnline
 }
-#gavdcodeend 31
+#gavdcodeend 031
 
-#gavdcodebegin 32
+#gavdcodebegin 032
 function SpPsPnpPowerShell_UpdateTextWebPartInModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -556,9 +556,9 @@ function SpPsPnpPowerShell_UpdateTextWebPartInModernPage
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 32
+#gavdcodeend 032
 
-#gavdcodebegin 33
+#gavdcodebegin 033
 function SpPsPnpPowerShell_UpdateWebPartInModernPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -583,9 +583,9 @@ function SpPsPnpPowerShell_UpdateWebPartInModernPage
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 33
+#gavdcodeend 033
 
-#gavdcodebegin 34
+#gavdcodebegin 034
 function SpPsPnpPowerShell_PromotePageToNewsPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -601,9 +601,9 @@ function SpPsPnpPowerShell_PromotePageToNewsPage
 						"Created" = "2022-10-28T07:00:00Z"}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 34
+#gavdcodeend 034
 
-#gavdcodebegin 35
+#gavdcodebegin 035
 function SpPsPnpPowerShell_UpdatePage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -620,9 +620,9 @@ function SpPsPnpPowerShell_UpdatePage
 					-Values @{"CanvasContent1" = $newString}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 35
+#gavdcodeend 035
 
-#gavdcodebegin 36
+#gavdcodebegin 036
 function SpPsPnpPowerShell_GetAllPropertiesPage
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -637,10 +637,10 @@ function SpPsPnpPowerShell_GetAllPropertiesPage
 	}
 	Disconnect-PnPOnline
 }
-#gavdcodeend 36
+#gavdcodeend 036
 
 #---- Provisioning ----
-#gavdcodebegin 37
+#gavdcodebegin 037
 function SpPsPnpPowerShell_GenerateSiteTemplateXml
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -651,9 +651,9 @@ function SpPsPnpPowerShell_GenerateSiteTemplateXml
 	Get-PnPSiteTemplate -Out "C:\Temporary\TestProvisioningSite.xml"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 37
+#gavdcodeend 037
 
-#gavdcodebegin 38
+#gavdcodebegin 038
 function SpPsPnpPowerShell_GenerateListsTemplate
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -666,9 +666,9 @@ function SpPsPnpPowerShell_GenerateListsTemplate
 												"7B8f0d6e79-406c-48a9-834e-af0c56489bbe"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 38
+#gavdcodeend 038
 
-#gavdcodebegin 39
+#gavdcodebegin 039
 function SpPsPnpPowerShell_GenerateTermGroupsTemplate
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -680,9 +680,9 @@ function SpPsPnpPowerShell_GenerateTermGroupsTemplate
 						-IncludeAllTermGroups
 	Disconnect-PnPOnline
 }
-#gavdcodeend 39
+#gavdcodeend 039
 
-#gavdcodebegin 40
+#gavdcodebegin 040
 function SpPsPnpPowerShell_GenerateSiteTemplatePnP
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -693,9 +693,9 @@ function SpPsPnpPowerShell_GenerateSiteTemplatePnP
 	Get-PnPSiteTemplate -Out "C:\Temporary\TestProvisioningSite.pnp"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 40
+#gavdcodeend 040
 
-#gavdcodebegin 41
+#gavdcodebegin 041
 function SpPsPnpPowerShell_ApplySiteTemplate
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -706,9 +706,9 @@ function SpPsPnpPowerShell_ApplySiteTemplate
 	Invoke-PnPSiteTemplate -Path "C:\Temporary\TestProvisioningSite.xml"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 41
+#gavdcodeend 041
 
-#gavdcodebegin 42
+#gavdcodebegin 042
 function SpPsPnpPowerShell_GenerateTenantTemplateXml
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -721,9 +721,9 @@ function SpPsPnpPowerShell_GenerateTenantTemplateXml
 						  #-Configuration "C:\Temporary\TestConfiguration.xml"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 42
+#gavdcodeend 042
 
-#gavdcodebegin 43
+#gavdcodebegin 043
 function SpPsPnpPowerShell_ApplyTenantTemplate
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -734,9 +734,9 @@ function SpPsPnpPowerShell_ApplyTenantTemplate
 	Invoke-PnPTenantTemplate -Path "C:\Temporary\TestProvisioningTenant.xml"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 43
+#gavdcodeend 043
 
-#gavdcodebegin 44
+#gavdcodebegin 044
 function SpPsPnpPowerShell_GenerateSiteTemplateWithConfig
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -748,9 +748,9 @@ function SpPsPnpPowerShell_GenerateSiteTemplateWithConfig
 						-Configuration "C:\Temporary\TestConfiguration.xml"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 44
+#gavdcodeend 044
 
-#gavdcodebegin 45
+#gavdcodebegin 045
 function SpPsPnpPowerShell_GenerateSiteTemplateInMem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -762,9 +762,9 @@ function SpPsPnpPowerShell_GenerateSiteTemplateInMem
 	$myTemplate | ConvertTo-Json
 	Disconnect-PnPOnline
 }
-#gavdcodeend 45
+#gavdcodeend 045
 
-#gavdcodebegin 46
+#gavdcodebegin 046
 function SpPsPnpPowerShell_GenerateSiteTemplateInMemFromFile
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -776,9 +776,9 @@ function SpPsPnpPowerShell_GenerateSiteTemplateInMemFromFile
 	$myTemplate | ConvertTo-Json
 	Disconnect-PnPOnline
 }
-#gavdcodeend 46
+#gavdcodeend 046
 
-#gavdcodebegin 47
+#gavdcodebegin 047
 function SpPsPnpPowerShell_GenerateSiteTemplateInMemFromScratch
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -790,9 +790,9 @@ function SpPsPnpPowerShell_GenerateSiteTemplateInMemFromScratch
 	$myTemplate | ConvertTo-Json
 	Disconnect-PnPOnline
 }
-#gavdcodeend 47
+#gavdcodeend 047
 
-#gavdcodebegin 48
+#gavdcodebegin 048
 function SpPsPnpPowerShell_SaveSiteTemplateInMemFromScratch
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -805,9 +805,9 @@ function SpPsPnpPowerShell_SaveSiteTemplateInMemFromScratch
 						 -InputInstance $myTemplate
 	Disconnect-PnPOnline
 }
-#gavdcodeend 48
+#gavdcodeend 048
 
-#gavdcodebegin 49
+#gavdcodebegin 049
 function SpPsPnpPowerShell_ModifySiteTemplateInMem
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -821,9 +821,9 @@ function SpPsPnpPowerShell_ModifySiteTemplateInMem
 	$myTemplate | ConvertTo-Json
 	Disconnect-PnPOnline
 }
-#gavdcodeend 49
+#gavdcodeend 049
 
-#gavdcodebegin 50
+#gavdcodebegin 050
 function SpPsPnpPowerShell_GenerateSiteTemplateInMemFromFilePnP
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -835,9 +835,9 @@ function SpPsPnpPowerShell_GenerateSiteTemplateInMemFromFilePnP
 	$myTemplate | ConvertTo-Json
 	Disconnect-PnPOnline
 }
-#gavdcodeend 50
+#gavdcodeend 050
 
-#gavdcodebegin 51
+#gavdcodebegin 051
 function SpPsPnpPowerShell_AddFileSiteTemplateInMemFromFilePnP
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -850,9 +850,9 @@ function SpPsPnpPowerShell_AddFileSiteTemplateInMemFromFilePnP
 							  -Folder "SiteAssets"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 51
+#gavdcodeend 051
 
-#gavdcodebegin 52
+#gavdcodebegin 052
 function SpPsPnpPowerShell_RemoveFileSiteTemplateInMemFromFilePnP
 {
 	# App Registration type: Office 365 SharePoint Online 
@@ -864,7 +864,7 @@ function SpPsPnpPowerShell_RemoveFileSiteTemplateInMemFromFilePnP
 								   -File "MyStyles.css"
 	Disconnect-PnPOnline
 }
-#gavdcodeend 52
+#gavdcodeend 052
 
 
 ##---------------------------------------------------------------------------------------

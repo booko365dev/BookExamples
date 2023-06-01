@@ -6,7 +6,7 @@ namespace CNPM
 {
     public partial class ThisAddIn
     {
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.Application.WorkbookBeforeSave +=
@@ -39,7 +39,7 @@ namespace CNPM
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
         #region VSTO generated code
 
