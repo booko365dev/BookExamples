@@ -128,7 +128,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 
 // Term Store
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsPnPCoreSdk_GetTermStore()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -153,9 +153,9 @@ static void SpCsPnPCoreSdk_GetTermStore()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsPnPCoreSdk_CreateTermGroup()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -173,9 +173,9 @@ static void SpCsPnPCoreSdk_CreateTermGroup()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsPnPCoreSdk_FindTermGroups()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -208,9 +208,9 @@ static void SpCsPnPCoreSdk_FindTermGroups()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsPnPCoreSdk_UpdateTermGroup()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -230,9 +230,9 @@ static void SpCsPnPCoreSdk_UpdateTermGroup()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsPnPCoreSdk_DeleteTermGroup()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -251,9 +251,9 @@ static void SpCsPnPCoreSdk_DeleteTermGroup()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsPnPCoreSdk_CreateTermSet()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -273,9 +273,9 @@ static void SpCsPnPCoreSdk_CreateTermSet()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsPnPCoreSdk_FindTermSets()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -307,9 +307,9 @@ static void SpCsPnPCoreSdk_FindTermSets()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsPnPCoreSdk_UpdateTermSet()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -331,9 +331,9 @@ static void SpCsPnPCoreSdk_UpdateTermSet()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsPnPCoreSdk_DeleteTermSet()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -354,9 +354,9 @@ static void SpCsPnPCoreSdk_DeleteTermSet()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 static void SpCsPnPCoreSdk_CreateTerm()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -377,9 +377,9 @@ static void SpCsPnPCoreSdk_CreateTerm()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 static void SpCsPnPCoreSdk_FindTerms()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -412,9 +412,9 @@ static void SpCsPnPCoreSdk_FindTerms()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 static void SpCsPnPCoreSdk_CreateSubTerm()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -436,9 +436,9 @@ static void SpCsPnPCoreSdk_CreateSubTerm()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 static void SpCsPnPCoreSdk_FindSubTerms()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -465,9 +465,9 @@ static void SpCsPnPCoreSdk_FindSubTerms()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 static void SpCsPnPCoreSdk_UpdateTerm()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -491,9 +491,9 @@ static void SpCsPnPCoreSdk_UpdateTerm()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 static void SpCsPnPCoreSdk_DeleteTerm()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -516,12 +516,12 @@ static void SpCsPnPCoreSdk_DeleteTerm()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
 //----------------------------------------------------------------------------------------
 // Search
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 static void SpCsPnPCoreSdk_Search()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -553,9 +553,9 @@ static void SpCsPnPCoreSdk_Search()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 static void SpCsPnPCoreSdk_SearchSorting()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -592,9 +592,9 @@ static void SpCsPnPCoreSdk_SearchSorting()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 static void SpCsPnPCoreSdk_SearchRefiners()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -640,9 +640,9 @@ static void SpCsPnPCoreSdk_SearchRefiners()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 static void SpCsPnPCoreSdk_SearchExportConfig()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -661,9 +661,9 @@ static void SpCsPnPCoreSdk_SearchExportConfig()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 static void SpCsPnPCoreSdk_SearchImportConfig()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -684,12 +684,12 @@ static void SpCsPnPCoreSdk_SearchImportConfig()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
 //----------------------------------------------------------------------------------------
 // User Profile
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 static void SpCsPnPCoreSdk_GetMyProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -713,9 +713,9 @@ static void SpCsPnPCoreSdk_GetMyProperties()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 static void SpCsPnPCoreSdk_GetSomeMyProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -735,9 +735,9 @@ static void SpCsPnPCoreSdk_GetSomeMyProperties()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 23
+//gavdcodebegin 023
 static void SpCsPnPCoreSdk_GetOneUserProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -758,9 +758,9 @@ static void SpCsPnPCoreSdk_GetOneUserProperties()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 static void SpCsPnPCoreSdk_GetOnePropertyOneUserProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -780,9 +780,9 @@ static void SpCsPnPCoreSdk_GetOnePropertyOneUserProperties()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 static void SpCsPnPCoreSdk_ModifyOneSingleProperty()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -801,9 +801,9 @@ static void SpCsPnPCoreSdk_ModifyOneSingleProperty()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 static void SpCsPnPCoreSdk_ModifyOneMultivalueProperty()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -823,14 +823,14 @@ static void SpCsPnPCoreSdk_ModifyOneMultivalueProperty()
 
     Console.WriteLine("Done");
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-// CSOM Term Store
+// CSOM Term Store 
 //SpCsPnPCoreSdk_GetTermStore();
 //SpCsPnPCoreSdk_CreateTermGroup();
 //SpCsPnPCoreSdk_FindTermGroups();

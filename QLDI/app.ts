@@ -1,12 +1,12 @@
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 function main(workbook: ExcelScript.Workbook) {
     let mySheet = workbook.getActiveWorksheet();
     console.log(mySheet.getName())
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("Sheet1");
     let wsCollection = workbook.getWorksheets();
@@ -15,34 +15,34 @@ function main(workbook: ExcelScript.Workbook) {
     let wsFirst = workbook.getFirstWorksheet();
     let wsLast = workbook.getLastWorksheet();
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 function main(workbook: ExcelScript.Workbook) {
     let wsCollection = workbook.getWorksheets();
     console.log(wsCollection.length);
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 function main(workbook: ExcelScript.Workbook) {
     let wsCollection = workbook.getWorksheets();
     for (let items = 0; items < wsCollection.length; items++) {
         console.log(wsCollection[items].getName());
     };
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 function main(workbook: ExcelScript.Workbook) {
     let wsCollection = workbook.getWorksheets();
     wsCollection.forEach(item => {
         console.log(item.getName());
     });
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("Sheet1");
     if (wsByName != undefined) {
@@ -52,16 +52,16 @@ function main(workbook: ExcelScript.Workbook) {
         console.log("Worksheet not found");
     };
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 function main(workbook: ExcelScript.Workbook) {
     workbook.addWorksheet();
     workbook.addWorksheet("MyWorksheet");
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("Sheet1");
     let wsNewSheet01 = wsByName.copy();
@@ -69,27 +69,27 @@ function main(workbook: ExcelScript.Workbook) {
     let wsNewSheet02 = wsByName.copy(ExcelScript.WorksheetPositionType.after,
                                                                         wsForPosition);
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 function main(workbook: ExcelScript.Workbook) {
     let wsByPosition = workbook.getWorksheets()[0];
     console.log(wsByPosition.getName());
     wsByPosition.setName("SheetNewName");
     console.log(wsByPosition.getName());
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
-//gavdcodebegin 10
+//gavdcodebegin 010
 function main(workbook: ExcelScript.Workbook) {
     let wsByPosition = workbook.getWorksheets()[0];
     console.log(wsByPosition.getPosition());
     wsByPosition.setPosition(1);
     console.log(wsByPosition.getPosition());
 }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 11
+//gavdcodebegin 011
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
     console.log(wsByName.getVisibility());
@@ -100,17 +100,17 @@ function main(workbook: ExcelScript.Workbook) {
     wsByName.setVisibility(ExcelScript.SheetVisibility.visible);
     console.log(wsByName.getVisibility());
 }
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
     let isProtected = wsByName.getProtection().getProtected()
     console.log(isProtected);
 }
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
     console.log(wsByName.getProtection().getOptions().allowAutoFilter);
@@ -128,25 +128,25 @@ function main(workbook: ExcelScript.Workbook) {
     console.log(wsByName.getProtection().getOptions().allowSort);
     console.log(wsByName.getProtection().getOptions().selectionMode);
 }
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
     wsByName.getProtection().protect();
     wsByName.getProtection().unprotect();
 }
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
     wsByName.getProtection().protect({}, "myPW");
     wsByName.getProtection().unprotect("myPW");
 }
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 16
+//gavdcodebegin 016
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
     wsByName.getProtection().protect({
@@ -165,16 +165,16 @@ function main(workbook: ExcelScript.Workbook) {
         allowSort: false
     });
 }
-//gavdcodeend 16
+//gavdcodeend 016
 
-//gavdcodebegin 17
+//gavdcodebegin 017
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
     wsByName.activate();
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -186,18 +186,18 @@ function main(workbook: ExcelScript.Workbook) {
 
     console.log(wsByName.getRange("A1:D4").getValues());
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     console.log(wsByName.getRange("A1:D4").getValues());
     console.log(wsByName.getRange("B2").getValues());
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -205,9 +205,9 @@ function main(workbook: ExcelScript.Workbook) {
 
     console.log(wsByName.getRange("A1:D4").getValues());
 }
-//gavdcodeend 20
+//gavdcodeend 020
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -216,9 +216,9 @@ function main(workbook: ExcelScript.Workbook) {
 
     console.log(wsByName.getRange("A1:D4").getValues());
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 22
+//gavdcodebegin 022
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -227,18 +227,18 @@ function main(workbook: ExcelScript.Workbook) {
 
     console.log(wsByName.getRange("A1:D4").getValues());
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
-//gavdcodebegin 23
+//gavdcodebegin 023
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     console.log(wsByName.getRange("A1:D4").getRowCount());
     console.log(wsByName.getRange("A1:D4").getColumnCount());
 }
-//gavdcodeend 23
+//gavdcodeend 023
 
-//gavdcodebegin 24
+//gavdcodebegin 024
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -250,60 +250,60 @@ function main(workbook: ExcelScript.Workbook) {
 
     console.log('B1 - Formula: ${b1Value.getFormula()} - Value: ${b1Value.getValue()}');
 }
-//gavdcodeend 24
+//gavdcodeend 024
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 function main(workbook: ExcelScript.Workbook) {
     let fileName = workbook.getName();
     console.log(fileName);
 }
-//gavdcodeend 25
+//gavdcodeend 025
 
-//gavdcodebegin 26
+//gavdcodebegin 026
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     let myRange = wsByName.getRange("A1:D4")
     let newTable = wsByName.addTable(myRange, true);
 }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 27
+//gavdcodebegin 027
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     console.log(wsByName.getTables());
 }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 28
+//gavdcodebegin 028
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     let myTable = wsByName.getTables()[0];
     myTable.setName("TableOne");
 }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 29
+//gavdcodebegin 029
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     let myTable = wsByName.getTables()[0];
     myTable.addRow(2, [11, 22, 33, 44]);
 }
-//gavdcodeend 29
+//gavdcodeend 029
 
-//gavdcodebegin 30
+//gavdcodebegin 030
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     let myTable = wsByName.getTables()[0];
     myTable.addColumn(1, [55, 66, 77, 88, 99], 'zz');
 }
-//gavdcodeend 30
+//gavdcodeend 030
 
-//gavdcodebegin 31
+//gavdcodebegin 031
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -314,9 +314,9 @@ function main(workbook: ExcelScript.Workbook) {
     console.log(myTable.getColumnByName('b'));
     console.log(myTable.getRowCount());
 }
-//gavdcodeend 31
+//gavdcodeend 031
 
-//gavdcodebegin 32
+//gavdcodebegin 032
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -324,17 +324,17 @@ function main(workbook: ExcelScript.Workbook) {
     myTable.getColumn('zz').delete();
     myTable.deleteRowsAt(2, 1);
 }
-//gavdcodeend 32
+//gavdcodeend 032
 
-//gavdcodebegin 33
+//gavdcodebegin 033
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     let myChart = wsByName.addChart(ExcelScript.ChartType.columnClustered, selectedSheet.getRange("B7:D8"));
 }
-//gavdcodeend 33
+//gavdcodeend 033
 
-//gavdcodebegin 34
+//gavdcodebegin 034
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
@@ -344,21 +344,21 @@ function main(workbook: ExcelScript.Workbook) {
     myChart.getTitle().setTextOrientation(180);
     myChart.Name("MyChart");
 }
-//gavdcodeend 34
+//gavdcodeend 034
 
-//gavdcodebegin 35
+//gavdcodebegin 035
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     let myChart = wsByName.getChart("MyChart");
     myChart.delete();
 }
-//gavdcodeend 35
+//gavdcodeend 035
 
-//gavdcodebegin 36
+//gavdcodebegin 036
 function main(workbook: ExcelScript.Workbook) {
     let wsByName = workbook.getWorksheet("MyWorksheet");
 
     console.log(wsByName.getCharts());
 }
-//gavdcodeend 36
+//gavdcodeend 036

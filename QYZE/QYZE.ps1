@@ -170,7 +170,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 
 #----------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
+#gavdcodebegin 001
 Function SpPsCsom_FindTermStore($spCtx)
 {
     $myTaxSession = [Microsoft.SharePoint.Client.Taxonomy.TaxonomySession]::`
@@ -182,9 +182,9 @@ Function SpPsCsom_FindTermStore($spCtx)
         Write-Host($oneTermStore.Name)
     }
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 Function SpPsCsom_CreateTermGroup($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -197,9 +197,9 @@ Function SpPsCsom_CreateTermGroup($spCtx)
     $myTermGroup = $myTermStore.CreateGroup("PsCsomTermGroup", $myNewGuid)
     $spCtx.ExecuteQuery()
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 Function SpPsCsom_FindTermGroups($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -214,9 +214,9 @@ Function SpPsCsom_FindTermGroups($spCtx)
         Write-Host($oneGroup.Name)
     }
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 Function SpPsCsom_CreateTermSet($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -230,9 +230,9 @@ Function SpPsCsom_CreateTermSet($spCtx)
     $myTermSet = $myTermGroup.CreateTermSet("PsCsomTermSet", $myNewGuid, 1033)
     $spCtx.ExecuteQuery()
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 Function SpPsCsom_FindTermSets($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -249,9 +249,9 @@ Function SpPsCsom_FindTermSets($spCtx)
         Write-Host($oneTermSet.Name)
     }
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 Function SpPsCsom_CreateTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -266,9 +266,9 @@ Function SpPsCsom_CreateTerm($spCtx)
     $myTerm = $myTermSet.CreateTerm("PsCsomTerm", 1033, $myNewGuid)
     $spCtx.ExecuteQuery()
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 Function SpPsCsom_FindTerms($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -286,9 +286,9 @@ Function SpPsCsom_FindTerms($spCtx)
         Write-Host($oneTerm.Name)
     }
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 Function SpPsCsom_FindOneTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -305,9 +305,9 @@ Function SpPsCsom_FindOneTerm($spCtx)
 
     Write-Host($myTerm.Name)
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 Function SpPsCsom_UpdateOneTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -322,9 +322,9 @@ Function SpPsCsom_UpdateOneTerm($spCtx)
     $myTerm.Name = "PsCsomTerm_Updated"
     $spCtx.ExecuteQuery()
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 Function SpPsCsom_DeleteOneTerm($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -339,9 +339,9 @@ Function SpPsCsom_DeleteOneTerm($spCtx)
     $myTerm.DeleteObject()
     $spCtx.ExecuteQuery()
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 Function SpPsCsom_FindTermSetAndTermById($spCtx)
 {
     $termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ=="
@@ -358,65 +358,65 @@ Function SpPsCsom_FindTermSetAndTermById($spCtx)
 
     Write-Host($myTermSet.Name + " - " + $myTerm.Name)
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
-Function SpPsPnp_FindTermStore()  #*** LEGACY CODE ***
+#gavdcodebegin 012
+Function SpPsPnp_FindTermStore  #*** LEGACY CODE ***
 {
 	$myTaxSession = Get-PnPTaxonomySession
 	Write-Host $myTaxSession.TermStores[0].Name
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
-#gavdcodebegin 13
-Function SpPsPnp_CreateTermGroup()  #*** LEGACY CODE ***
+#gavdcodebegin 013
+Function SpPsPnp_CreateTermGroup  #*** LEGACY CODE ***
 {
 	$myTermGroup = New-PnPTermGroup -Name "PsPnpTermGroup"
 	Write-Host $myTermGroup.Id
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
-Function SpPsPnp_FindTermGroup()  #*** LEGACY CODE ***
+#gavdcodebegin 014
+Function SpPsPnp_FindTermGroup  #*** LEGACY CODE ***
 {
 	$myTermGroups = Get-PnPTermGroup
 	foreach ($oneGroup in $myTermGroups) {
 		Write-Host $oneGroup.Id
 	}
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
-Function SpPsPnp_CreateTermSet()  #*** LEGACY CODE ***
+#gavdcodebegin 015
+Function SpPsPnp_CreateTermSet  #*** LEGACY CODE ***
 {
 	$myTermSet = New-PnPTermSet -Name "PsPnpTermSet" `
 								-TermGroup "PsPnpTermGroup"
 	Write-Host $myTermSet.Id
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
-Function SpPsPnp_FindTermSet()  #*** LEGACY CODE ***
+#gavdcodebegin 016
+Function SpPsPnp_FindTermSet  #*** LEGACY CODE ***
 {
 	$myTermSets = Get-PnPTermSet -TermGroup "PsPnpTermGroup"
 	foreach ($oneSet in $myTermSets) {
 		Write-Host $oneSet.Id
 	}
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
-Function SpPsPnp_CreateTerm()  #*** LEGACY CODE ***
+#gavdcodebegin 017
+Function SpPsPnp_CreateTerm  #*** LEGACY CODE ***
 {
 	$myTerm = New-PnPTerm -Name "PsPnpTerm" `
 						  -TermGroup "PsPnpTermGroup" `
 						  -TermSet "PsPnpTermSet"
 	Write-Host $myTerm.Id
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
-Function SpPsPnp_FindTerm()  #*** LEGACY CODE ***
+#gavdcodebegin 018
+Function SpPsPnp_FindTerm  #*** LEGACY CODE ***
 {
 	$myTerms = Get-PnPTerm -TermGroup "PsPnpTermGroup" `
 						   -TermSet "PsPnpTermSet"
@@ -424,45 +424,45 @@ Function SpPsPnp_FindTerm()  #*** LEGACY CODE ***
 		Write-Host $oneTerm.Id
 	}
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
-Function SpPsPnpDeleteTermGroup()  #*** LEGACY CODE ***
+#gavdcodebegin 019
+Function SpPsPnpDeleteTermGroup  #*** LEGACY CODE ***
 {
 	Remove-PnPTermGroup -GroupName "PsPnpTermGroup"
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
-Function SpPsPnp_ExportTaxonomy()  #*** LEGACY CODE ***
+#gavdcodebegin 020
+Function SpPsPnp_ExportTaxonomy  #*** LEGACY CODE ***
 {
 	Export-PnPTaxonomy -Path "C:\Temporary\tax.txt" `
 					   -TermSet "529c954a-0235-4202-a739-9b871055427c"
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
-Function SpPsPnp_ImportTaxonomy()  #*** LEGACY CODE ***
+#gavdcodebegin 021
+Function SpPsPnp_ImportTaxonomy  #*** LEGACY CODE ***
 {
 	Import-PnPTaxonomy -Path "C:\Temporary\tax.txt"
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
-Function SpPsPnp_ExportTermGroup()  #*** LEGACY CODE ***
+#gavdcodebegin 022
+Function SpPsPnp_ExportTermGroup  #*** LEGACY CODE ***
 {
 	Export-PnPTermGroupToXml -Out "C:\Temporary\group.xml" -Identity "PsCsomTermGroup"
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
-Function SpPsPnpImportTermGroup()  #*** LEGACY CODE ***
+#gavdcodebegin 023
+Function SpPsPnpImportTermGroup  #*** LEGACY CODE ***
 {
 	Import-PnPTermGroupToXml -Path "C:\Temporary\tax.txt"
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
+#gavdcodebegin 024
 Function SpPsCsom_GetResultsSearch($spCtx)
 {
 	$keywordQuery = 
@@ -478,10 +478,10 @@ Function SpPsCsom_GetResultsSearch($spCtx)
                                 $resultRow["Path"] + " - " + $resultRow["Write"])
     }
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
-#gavdcodebegin 25
-Function SpPsRest_ResultsSearchGET()    #*** LEGACY CODE ***
+#gavdcodebegin 025
+Function SpPsRest_ResultsSearchGET    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/search/query?querytext='team'"
 	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
@@ -491,10 +491,10 @@ Function SpPsRest_ResultsSearchGET()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
-#gavdcodebegin 26
-Function SpPsRest_ResultsSearchPOST()    #*** LEGACY CODE ***
+#gavdcodebegin 026
+Function SpPsRest_ResultsSearchPOST    #*** LEGACY CODE ***
 {
 	$endpointUrl = $webUrl + "/_api/search/query"
 	$myPayload = @{
@@ -511,30 +511,30 @@ Function SpPsRest_ResultsSearchPOST()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
-Function SpPsPnp_Search()    #*** LEGACY CODE ***
+#gavdcodebegin 027
+Function SpPsPnp_Search    #*** LEGACY CODE ***
 {
 	Submit-PnPSearchQuery -Query "team"
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
-Function SpPsPnp_SearchSiteColls()    #*** LEGACY CODE ***
+#gavdcodebegin 028
+Function SpPsPnp_SearchSiteColls    #*** LEGACY CODE ***
 {
 	Get-PnPSiteSearchQueryResults
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
-Function SpPsPnpSearchCrawl()    #*** LEGACY CODE ***
+#gavdcodebegin 029
+Function SpPsPnpSearchCrawl    #*** LEGACY CODE ***
 {
 	Get-PnPSearchCrawlLog
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
+#gavdcodebegin 030
 Function SpPsCsom_GetAllPropertiesUserProfile($spCtx)
 {
     $myUser = "i:0#.f|membership|" + $configFile.appsettings.UserName
@@ -549,9 +549,9 @@ Function SpPsCsom_GetAllPropertiesUserProfile($spCtx)
         Write-Host($oneKey + " - " + $myProfProp[$oneKey])
     }
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#gavdcodebegin 31
+#gavdcodebegin 031
 Function SpCsCsom_GetAllMyPropertiesUserProfile($spCtx)
 {
     $myPeopleManager = New-Object `
@@ -565,9 +565,9 @@ Function SpCsCsom_GetAllMyPropertiesUserProfile($spCtx)
         Write-Host($oneKey + " - " + $myProfProp[$oneKey])
     }
 }
-#gavdcodeend 31
+#gavdcodeend 031
 
-#gavdcodebegin 32
+#gavdcodebegin 032
 Function SpPsCsom_GetPropertiesUserProfile($spCtx)
 {
     $myUser = "i:0#.f|membership|" + $configFile.appsettings.UserName
@@ -587,9 +587,9 @@ Function SpPsCsom_GetPropertiesUserProfile($spCtx)
         Write-Host($oneValue)
     }
 }
-#gavdcodeend 32
+#gavdcodeend 032
 
-#gavdcodebegin 33
+#gavdcodebegin 033
 Function SpPsCsomUpdateOnePropertyUserProfile($spCtx)
 {
     $myPeopleManager = New-Object `
@@ -603,9 +603,9 @@ Function SpPsCsomUpdateOnePropertyUserProfile($spCtx)
             $myUserProperties.AccountName, "AboutMe", $newValue)
     $spCtx.ExecuteQuery()
 }
-#gavdcodeend 33
+#gavdcodeend 033
 
-#gavdcodebegin 34
+#gavdcodebegin 034
 Function SpPsCsom_UpdateOneMultPropertyUserProfile($spCtx)
 {
     $myPeopleManager = New-Object `
@@ -621,26 +621,26 @@ Function SpPsCsom_UpdateOneMultPropertyUserProfile($spCtx)
                             $myUserProperties.AccountName, "SPS-Skills", $mySkills)
     $spCtx.ExecuteQuery()
 }
-#gavdcodeend 34
+#gavdcodeend 034
 
-#gavdcodebegin 35
-Function SpPsPnp_FindUserProfileProperties()    #*** LEGACY CODE ***
+#gavdcodebegin 035
+Function SpPsPnp_FindUserProfileProperties    #*** LEGACY CODE ***
 {
 	Get-PnPUserProfileProperty -Account $configFile.appsettings.UserName
 }
-#gavdcodeend 35
+#gavdcodeend 035
 
-#gavdcodebegin 36
-Function SpPsPnp_UpdateUserProfileProperties()    #*** LEGACY CODE ***
+#gavdcodebegin 036
+Function SpPsPnp_UpdateUserProfileProperties    #*** LEGACY CODE ***
 {
 	Set-PnPUserProfileProperty -Account $configFile.appsettings.UserName `
 							   -Property "AboutMe" `
 							   -Value "I am not the administrator"
 }
-#gavdcodeend 36
+#gavdcodeend 036
 
-#gavdcodebegin 37
-Function SpPsRest_GetAllPropertiesUserProfile()    #*** LEGACY CODE ***
+#gavdcodebegin 037
+Function SpPsRest_GetAllPropertiesUserProfile    #*** LEGACY CODE ***
 {
     $myUser = "i%3A0%23.f%7Cmembership%7C" + `
                      $configFile.appsettings.UserName.Replace("@", "%40");
@@ -653,10 +653,10 @@ Function SpPsRest_GetAllPropertiesUserProfile()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
-#gavdcodeend 37
+#gavdcodeend 037
 
-#gavdcodebegin 38
-Function SpPsRest_GetAllMyPropertiesUserProfile()    #*** LEGACY CODE ***
+#gavdcodebegin 038
+Function SpPsRest_GetAllMyPropertiesUserProfile    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/sp.userprofiles.peoplemanager/getmyproperties"
 	$contextInfo = Get-SPOContextInfo -WebUrl $webUrl -UserName $userName `
@@ -666,10 +666,10 @@ Function SpPsRest_GetAllMyPropertiesUserProfile()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
-#gavdcodeend 38
+#gavdcodeend 038
 
-#gavdcodebegin 39
-Function SpPsRest_GetPropertiesUserProfile()    #*** LEGACY CODE ***
+#gavdcodebegin 039
+Function SpPsRest_GetPropertiesUserProfile    #*** LEGACY CODE ***
 {
     $myUser = "i%3A0%23.f%7Cmembership%7C" + `
                      $configFile.appsettings.UserName#.Replace("@", "%40");
@@ -683,17 +683,17 @@ Function SpPsRest_GetPropertiesUserProfile()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
     $data | ConvertTo-Json
 }
-#gavdcodeend 39
+#gavdcodeend 039
 
-#gavdcodebegin 40
+#gavdcodebegin 040
 Function SpPsSpo_GenerateListSiteScript
 {
 	$mySourceListUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca/Lists/TestList"
 	Get-SPOSiteScriptFromList -ListUrl $mySourceListUrl
 }
-#gavdcodeend 40
+#gavdcodeend 040
 
-#gavdcodebegin 41
+#gavdcodebegin 041
 Function SpPsSpo_GenerateWebSiteScript
 {
 	$mySourceWebUrl = "https://[domain].sharepoint.com/sites/Test_Guitaca"
@@ -705,9 +705,9 @@ Function SpPsSpo_GenerateWebSiteScript
 							 -IncludeLinksToExportedItems `
 							 -IncludedLists ("Shared Documents", "Lists/TestList")
 }
-#gavdcodeend 41
+#gavdcodeend 041
 
-#gavdcodebegin 42
+#gavdcodebegin 042
 Function SpPsSpo_AddSiteScript
 {
 	$myScript = Get-Content "C:\Temporary\TestListSiteScript.json" -Raw
@@ -715,24 +715,24 @@ Function SpPsSpo_AddSiteScript
 					  -Content $myScript `
 					  -Description "Creates a Custom List using SPO"
 }
-#gavdcodeend 42
+#gavdcodeend 042
 
-#gavdcodebegin 43
+#gavdcodebegin 043
 Function SpPsSpo_GetAllSiteScripts
 {
 	Get-SPOSiteScript
 }
-#gavdcodeend 43
+#gavdcodeend 043
 
-#gavdcodebegin 44
+#gavdcodebegin 044
 Function SpPsSpo_GetOneSiteScript
 {
 	$myScriptId = "83a75409-c005-4125-b7b1-f8b288bb3374"
 	Get-SPOSiteScript -Identity $myScriptId
 }
-#gavdcodeend 44
+#gavdcodeend 044
 
-#gavdcodebegin 45
+#gavdcodebegin 045
 Function SpPsSpo_UpdateSiteScript
 {
 	$myScriptId = "83a75409-c005-4125-b7b1-f8b288bb3374"
@@ -742,18 +742,18 @@ Function SpPsSpo_UpdateSiteScript
 					  -Content $myScript `
 					  -Description "Creates a Custom List updated"
 }
-#gavdcodeend 45
+#gavdcodeend 045
 
-#gavdcodebegin 46
+#gavdcodebegin 046
 Function SpPsSpo_DeleteOneSiteScript
 {
 	$myScriptId = "83a75409-c005-4125-b7b1-f8b288bb3374"
 	Remove-SPOSiteScript -Identity $myScriptId
 }
-#gavdcodeend 46
+#gavdcodeend 046
 
-#gavdcodebegin 47
-Function SpPsRest_GenerateListSiteScript()    #*** LEGACY CODE ***
+#gavdcodebegin 047
+Function SpPsRest_GenerateListSiteScript    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -768,10 +768,10 @@ Function SpPsRest_GenerateListSiteScript()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 47
+#gavdcodeend 047
 
-#gavdcodebegin 48
-Function SpPsRest_GenerateWebSiteScript()    #*** LEGACY CODE ***
+#gavdcodebegin 048
+Function SpPsRest_GenerateWebSiteScript    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -799,10 +799,10 @@ Function SpPsRest_GenerateWebSiteScript()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 48
+#gavdcodeend 048
 
-#gavdcodebegin 49
-Function SpPsRest_AddSiteScript()    #*** LEGACY CODE ***
+#gavdcodebegin 049
+Function SpPsRest_AddSiteScript    #*** LEGACY CODE ***
 {
 	$myPayload = '
 		{
@@ -889,10 +889,10 @@ Function SpPsRest_AddSiteScript()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 49
+#gavdcodeend 049
 
-#gavdcodebegin 50
-Function SpPsRest_GetAllSiteScripts()    #*** LEGACY CODE ***
+#gavdcodebegin 050
+Function SpPsRest_GetAllSiteScripts    #*** LEGACY CODE ***
 {
 	$endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -905,10 +905,10 @@ Function SpPsRest_GetAllSiteScripts()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 50
+#gavdcodeend 050
 
-#gavdcodebegin 51
-Function SpPsRest_GetOneSiteScript()    #*** LEGACY CODE ***
+#gavdcodebegin 051
+Function SpPsRest_GetOneSiteScript    #*** LEGACY CODE ***
 {
 	$endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -924,10 +924,10 @@ Function SpPsRest_GetOneSiteScript()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 51
+#gavdcodeend 051
 
-#gavdcodebegin 52
-Function SpPsRest_UpdateSiteScript()    #*** LEGACY CODE ***
+#gavdcodebegin 052
+Function SpPsRest_UpdateSiteScript    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -949,10 +949,10 @@ Function SpPsRest_UpdateSiteScript()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 52
+#gavdcodeend 052
 
-#gavdcodebegin 53
-Function SpPsRest_DeleteSiteScript()    #*** LEGACY CODE ***
+#gavdcodebegin 053
+Function SpPsRest_DeleteSiteScript    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -969,9 +969,9 @@ Function SpPsRest_DeleteSiteScript()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 53
+#gavdcodeend 053
 
-#gavdcodebegin 54
+#gavdcodebegin 054
 Function SpPsSpo_AddSiteTemplate
 {
 	Add-SPOSiteDesign -Title "Custom List From Site Design SPO" `
@@ -979,25 +979,25 @@ Function SpPsSpo_AddSiteTemplate
 					  -SiteScripts "79a5174f-0712-49c7-b6af-5a45918c55ee" `
 					  -Description "Creates a Custom List in a site using SPO Site Design"
 }
-#gavdcodeend 54
+#gavdcodeend 054
 
-#gavdcodebegin 55
+#gavdcodebegin 055
 Function SpPsSpo_GetAllSiteTemplates
 {
 	Get-SPOSiteDesign
 }
-#gavdcodeend 55
+#gavdcodeend 055
 
-#gavdcodebegin 56
+#gavdcodebegin 056
 Function SpPsSpo_GetOneSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
 
 	Get-SPOSiteDesign -Identity $myDesignId
 }
-#gavdcodeend 56
+#gavdcodeend 056
 
-#gavdcodebegin 57
+#gavdcodebegin 057
 Function SpPsSpo_GetRunsSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
@@ -1005,9 +1005,9 @@ Function SpPsSpo_GetRunsSiteTemplate
 
 	Get-SPOSiteDesignRun -SiteDesignId $myDesignId -WebUrl $mySiteUrl
 }
-#gavdcodeend 57
+#gavdcodeend 057
 
-#gavdcodebegin 58
+#gavdcodebegin 058
 Function SpPsSpo_GetRunStatusSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
@@ -1016,18 +1016,18 @@ Function SpPsSpo_GetRunStatusSiteTemplate
 	$myRuns = Get-SPOSiteDesignRun -SiteDesignId $myDesignId -WebUrl $mySiteUrl
 	Get-SPOSiteDesignRunStatus -Run $myRuns
 }
-#gavdcodeend 58
+#gavdcodeend 058
 
-#gavdcodebegin 59
+#gavdcodebegin 059
 Function SpPsSpo_DeleteSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
 	
 	Remove-SPOSiteDesign -Identity $myDesignId
 }
-#gavdcodeend 59
+#gavdcodeend 059
 
-#gavdcodebegin 60
+#gavdcodebegin 060
 Function SpPsSpo_InvokeSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
@@ -1035,9 +1035,9 @@ Function SpPsSpo_InvokeSiteTemplate
 
 	Invoke-SPOSiteDesign -Identity $myDesignId -WebUrl $mySiteUrl
 }
-#gavdcodeend 60
+#gavdcodeend 060
 
-#gavdcodebegin 61
+#gavdcodebegin 061
 Function SpPsSpo_AddTaskSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
@@ -1045,9 +1045,9 @@ Function SpPsSpo_AddTaskSiteTemplate
 
 	Add-SPOSiteDesignTask -SiteDesignId $myDesignId -WebUrl $mySiteUrl
 }
-#gavdcodeend 61
+#gavdcodeend 061
 
-#gavdcodebegin 62
+#gavdcodebegin 062
 Function SpPsSpo_GetTaskSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
@@ -1055,18 +1055,18 @@ Function SpPsSpo_GetTaskSiteTemplate
 
 	Get-SPOSiteDesignTask -Identity $myDesignId -WebUrl $mySiteUrl
 }
-#gavdcodeend 62
+#gavdcodeend 062
 
-#gavdcodebegin 63
+#gavdcodebegin 063
 Function SpPsSpoDeleteTaskSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
 
 	Remove-SPOSiteDesignTask -Identity $myDesignId
 }
-#gavdcodeend 63
+#gavdcodeend 063
 
-#gavdcodebegin 64
+#gavdcodebegin 064
 Function SpPsSpo_GrantRightsSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
@@ -1075,18 +1075,18 @@ Function SpPsSpo_GrantRightsSiteTemplate
 							  -Principals "[user]@[domain].onmicrosoft.com" `
 							  -Rights View
 }
-#gavdcodeend 64
+#gavdcodeend 064
 
-#gavdcodebegin 65
+#gavdcodebegin 065
 Function SpPsSpo_GetRightsSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
 
 	Get-SPOSiteDesignRights -Identity $myDesignId
 }
-#gavdcodeend 65
+#gavdcodeend 065
 
-#gavdcodebegin 66
+#gavdcodebegin 066
 Function SpPsSpo_DeleteRightsSiteTemplate
 {
 	$myDesignId = "f155ed5e-d8f9-4ba6-9385-b5f702502540"
@@ -1094,10 +1094,10 @@ Function SpPsSpo_DeleteRightsSiteTemplate
 	Revoke-SPOSiteDesignRights -Identity $myDesignId `
 							   -Principals "[user]@[domain].onmicrosoft.com" `
 }
-#gavdcodeend 66
+#gavdcodeend 066
 
-#gavdcodebegin 67
-Function SpPsRest_AddSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 067
+Function SpPsRest_AddSiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1121,10 +1121,10 @@ Function SpPsRest_AddSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 67
+#gavdcodeend 067
 
-#gavdcodebegin 68
-Function SpPsRest_GetAllSiteTemplates()    #*** LEGACY CODE ***
+#gavdcodebegin 068
+Function SpPsRest_GetAllSiteTemplates    #*** LEGACY CODE ***
 {
 	$endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1137,10 +1137,10 @@ Function SpPsRest_GetAllSiteTemplates()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 68
+#gavdcodeend 068
 
-#gavdcodebegin 69
-Function SpPsRest_GetOneSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 069
+Function SpPsRest_GetOneSiteTemplate    #*** LEGACY CODE ***
 {
 	$endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1156,10 +1156,10 @@ Function SpPsRest_GetOneSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 69
+#gavdcodeend 069
 
-#gavdcodebegin 70
-Function SpPsRest_UpdateSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 070
+Function SpPsRest_UpdateSiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1182,10 +1182,10 @@ Function SpPsRest_UpdateSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 70
+#gavdcodeend 070
 
-#gavdcodebegin 71
-Function SpPsRest_DeleteSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 071
+Function SpPsRest_DeleteSiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1202,10 +1202,10 @@ Function SpPsRest_DeleteSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 71
+#gavdcodeend 071
 
-#gavdcodebegin 72
-Function SpPsRest_ApplySiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 072
+Function SpPsRest_ApplySiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1223,10 +1223,10 @@ Function SpPsRest_ApplySiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 72
+#gavdcodeend 072
 
-#gavdcodebegin 73
-Function SpPsRest_ApplyToSiteSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 073
+Function SpPsRest_ApplyToSiteSiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1243,10 +1243,10 @@ Function SpPsRest_ApplyToSiteSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 73
+#gavdcodeend 073
 
-#gavdcodebegin 74
-Function SpPsRest_GetRigthsSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 074
+Function SpPsRest_GetRigthsSiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1263,10 +1263,10 @@ Function SpPsRest_GetRigthsSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 74
+#gavdcodeend 074
 
-#gavdcodebegin 75
-Function SpPsRest_GrantRightsSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 075
+Function SpPsRest_GrantRightsSiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1285,10 +1285,10 @@ Function SpPsRest_GrantRightsSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 75
+#gavdcodeend 075
 
-#gavdcodebegin 76
-Function SpPsRest_DeleteRightsSiteTemplate()    #*** LEGACY CODE ***
+#gavdcodebegin 076
+Function SpPsRest_DeleteRightsSiteTemplate    #*** LEGACY CODE ***
 {
     $endpointUrl = $webUrl + "/_api/" + 
 			"Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility." + 
@@ -1306,111 +1306,111 @@ Function SpPsRest_DeleteRightsSiteTemplate()    #*** LEGACY CODE ***
 						$contextInfo.GetContextWebInformation.FormDigestValue 
 	$data | ConvertTo-Json
 }
-#gavdcodeend 76
+#gavdcodeend 076
 
-#gavdcodebegin 77
+#gavdcodebegin 077
 Function SpPsPnp_GenerateSiteTemplateXml    #*** LEGACY CODE ***
 {
 	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSite.xml"
 }
-#gavdcodeend 77
+#gavdcodeend 077
 
-#gavdcodebegin 78
+#gavdcodebegin 078
 Function SpPsPnp_GenerateListsTemplate    #*** LEGACY CODE ***
 {
 	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningLists.xml" `
 								-ListsToExtract "MyCustomList",`
 												"7B8f0d6e79-406c-48a9-834e-af0c56489bbe"
 }
-#gavdcodeend 78
+#gavdcodeend 078
 
-#gavdcodebegin 79
+#gavdcodebegin 079
 Function SpPsPnp_GenerateTemplateTermGroups    #*** LEGACY CODE ***
 {
 	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningTermGroups.xml" `
 								-IncludeAllTermGroups
 }
-#gavdcodeend 79
+#gavdcodeend 079
 
-#gavdcodebegin 80
+#gavdcodebegin 080
 Function SpPsPnp_GenerateSiteTemplatePnP    #*** LEGACY CODE ***
 {
 	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSite.pnp"
 }
-#gavdcodeend 80
+#gavdcodeend 080
 
-#gavdcodebegin 81
+#gavdcodebegin 081
 Function SpPsPnpApplySiteTemplate    #*** LEGACY CODE ***
 {
 	Apply-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.xml"
 }
-#gavdcodeend 81
+#gavdcodeend 081
 
-#gavdcodebegin 82
+#gavdcodebegin 082
 Function SpPsPnpTenantTemplateConnect    #*** LEGACY CODE ***
 {
 	Connect-PnPOnline -Graph
 }
-#gavdcodeend 82
+#gavdcodeend 082
 
-#gavdcodebegin 83
+#gavdcodebegin 083
 Function SpPsPnp_GenerateTenantTemplateXml    #*** LEGACY CODE ***
 {
 	Get-PnPTenantTemplate -Out "C:\Temporary\TestProvisioningTenant.xml" `
 						  -SiteUrl "https://[domain].sharepoint.com/sites/Test_Guitaca" `
 						  -Configuration "C:\Temporary\TestConfiguration.xml"
 }
-#gavdcodeend 83
+#gavdcodeend 083
 
-#gavdcodebegin 84
+#gavdcodebegin 084
 Function SpPsPnp_ApplyTenantTemplate    #*** LEGACY CODE ***
 {
 	Apply-PnPTenantTemplate -Path "C:\Temporary\TestProvisioningTenant.xml"
 }
-#gavdcodeend 84
+#gavdcodeend 084
 
-#gavdcodebegin 85
+#gavdcodebegin 085
 Function SpPsPnp_GenerateSiteTemplateWithConfig    #*** LEGACY CODE ***
 {
 	Get-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSiteWithConfig.xml" `
 						  -Configuration "C:\Temporary\TestConfiguration.xml"
 }
-#gavdcodeend 85
+#gavdcodeend 085
 
-#gavdcodebegin 86
+#gavdcodebegin 086
 Function SpPsPnp_GenerateSiteTemplateInMem    #*** LEGACY CODE ***
 {
 	$myTemplate = PnPProvisioningTemplate -OutputInstance
 	$myTemplate | ConvertTo-Json
 }
-#gavdcodeend 86
+#gavdcodeend 086
 
-#gavdcodebegin 87
+#gavdcodebegin 087
 Function SpPsPnp_GenerateSiteTemplateInMemFromFile    #*** LEGACY CODE ***
 {
 	$myTemplate = Read-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.xml"
 	$myTemplate | ConvertTo-Json
 }
-#gavdcodeend 87
+#gavdcodeend 087
 
-#gavdcodebegin 88
+#gavdcodebegin 088
 Function SpPsPnp_GenerateSiteTemplateInMemFromScratch    #*** LEGACY CODE ***
 {
 	$myTemplate = New-PnPProvisioningTemplate
 	$myTemplate | ConvertTo-Json
 }
-#gavdcodeend 88
+#gavdcodeend 088
 
-#gavdcodebegin 89
+#gavdcodebegin 089
 Function SpPsPnp_SaveSiteTemplateInMemFromScratch    #*** LEGACY CODE ***
 {
 	$myTemplate = New-PnPProvisioningTemplate
 	Save-PnPProvisioningTemplate -Out "C:\Temporary\TestProvisioningSiteInMem.xml" `
 								 -InputInstance $myTemplate
 }
-#gavdcodeend 89
+#gavdcodeend 089
 
-#gavdcodebegin 90
+#gavdcodebegin 090
 Function SpPsPnp_ModifySiteTemplateInMem    #*** LEGACY CODE ***
 {
 	$myTemplate = Read-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.xml"
@@ -1418,32 +1418,32 @@ Function SpPsPnp_ModifySiteTemplateInMem    #*** LEGACY CODE ***
 	$myTemplate.Security.AdditionalOwners.Clear()
 	$myTemplate | ConvertTo-Json
 }
-#gavdcodeend 90
+#gavdcodeend 090
 
-#gavdcodebegin 91
+#gavdcodebegin 091
 Function SpPsPnp_GenerateSiteTemplateInMemFromFilePnP    #*** LEGACY CODE ***
 {
 	$myTemplate = Read-PnPProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.pnp"
 	$myTemplate | ConvertTo-Json
 }
-#gavdcodeend 91
+#gavdcodeend 091
 
-#gavdcodebegin 92
+#gavdcodebegin 092
 Function SpPsPnp_AddFileSiteTemplateInMemFromFilePnP    #*** LEGACY CODE ***
 {
 	Add-PnPFileToProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.pnp" `
 									  -Source "C:\Temporary\MyStyles.css" `
 								      -Folder "SiteAssets"
 }
-#gavdcodeend 92
+#gavdcodeend 092
 
-#gavdcodebegin 93
+#gavdcodebegin 093
 Function SpPsPnp_RemoveFileSiteTemplateInMemFromFilePnP    #*** LEGACY CODE ***
 {
 	Remove-PnPFileFromProvisioningTemplate -Path "C:\Temporary\TestProvisioningSite.pnp" `
 										   -File "MyStyles.css"
 }
-#gavdcodeend 93
+#gavdcodeend 093
 
 #-----------------------------------------------------------------------------------------
 

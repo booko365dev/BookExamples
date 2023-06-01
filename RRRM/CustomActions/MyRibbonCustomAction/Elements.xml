@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!--gavdcodebegin 01-->
+<!--gavdcodebegin 001-->
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <CustomAction Id="b6ff59b1-4c74-4725-a2d5-c184284eeae9.MyRibbonCustomAction"
                 RegistrationType="List"
@@ -33,4 +33,4 @@
     </CommandUIExtension >
   </CustomAction>
 </Elements>
-<!--gavdcodeend 01-->
+<!--gavdcodeend 001-->
