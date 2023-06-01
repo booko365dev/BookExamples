@@ -31,7 +31,7 @@
         })();
     </script>
 </head>
-<!--gavdcodebegin 01-->
+<!--gavdcodebegin 001-->
 <body>
     <div id="content">
         <p>String property value: <span id="strProperty"></span></p>
@@ -53,5 +53,5 @@
         document.getElementById("strProperty").innerText = strProperty;
     </script>
 </body>
-<!--gavdcodeend 01-->
+<!--gavdcodeend 001-->
 </html>

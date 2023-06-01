@@ -38,15 +38,15 @@ namespace ZFYL
 
             // PnPCore Term Store
             //ClientContext spCtxPnp = LoginPnPCore();
-            //SpCsPnpcoreCreateTermGroup(spCtxPnp);
-            //SpCsPnpcoreCreateTermGroupEnsure(spCtxPnp);
-            //SpCsPnpcoreCreateTermSetEnsure(spCtxPnp);
-            //SpCsPnpcoreCreateTerm(spCtxPnp);
-            //SpCsPnpcoreFindTermGroup(spCtxPnp);
-            //SpCsPnpcoreFindTermSet(spCtxPnp);
-            //SpCsPnpcoreFindTerm(spCtxPnp);
-            //SpCsPnpcoreExportTermStore(spCtxPnp);
-            //SpCsPnpcoreImportTermStore(spCtxPnp);
+            //SpCsPnpcore_CreateTermGroup(spCtxPnp);
+            //SpCsPnpcore_CreateTermGroupEnsure(spCtxPnp);
+            //SpCsPnpcore_CreateTermSetEnsure(spCtxPnp);
+            //SpCsPnpcore_CreateTerm(spCtxPnp);
+            //SpCsPnpcore_FindTermGroup(spCtxPnp);
+            //SpCsPnpcore_FindTermSet(spCtxPnp);
+            //SpCsPnpcore_FindTerm(spCtxPnp);
+            //SpCsPnpcore_ExportTermStore(spCtxPnp);
+            //SpCsPnpcore_ImportTermStore(spCtxPnp);
 
             // CSOM Search
             //ClientContext spCtx = LoginCsom();
@@ -97,9 +97,9 @@ namespace ZFYL
 
             // PnPCore Provisioning
             //ClientContext spCtxPnp = LoginPnPCore();
-            //SpCsPnpcoreGenerateSiteTemplateXml(spCtxPnp);
-            //SpCsPnpcoreGenerateSiteListTemplate(spCtxPnp);
-            //SpCsPnpcoreApplySiteTemplate(spCtxPnp);
+            //SpCsPnpcore_GenerateSiteTemplateXml(spCtxPnp);
+            //SpCsPnpcore_GenerateSiteListTemplate(spCtxPnp);
+            //SpCsPnpcore_ApplySiteTemplate(spCtxPnp);
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -289,8 +289,8 @@ namespace ZFYL
         }
         //gavdcodeend 11
 
-        //gavdcodebegin 12
-        static void SpCsPnpcoreCreateTermGroup(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 012
+        static void SpCsPnpcore_CreateTermGroup(ClientContext spCtx) //*** LEGACY CODE ***
         {
             string termStoreName = "Taxonomy_hVIOdhme2obc+5zqZXqqUQ==";
 
@@ -299,66 +299,66 @@ namespace ZFYL
 
             TermGroup myTermGroup = myTermStore.CreateTermGroup("CsPnpcoreTermGroup");
         }
-        //gavdcodeend 12
+        //gavdcodeend 012
 
-        //gavdcodebegin 13
-        static void SpCsPnpcoreCreateTermGroupEnsure
-                                              (ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 013
+        static void SpCsPnpcore_CreateTermGroupEnsure
+                                              (ClientContext spCtx) //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             Console.WriteLine(myTermGroup.Id);
         }
-        //gavdcodeend 13
+        //gavdcodeend 013
 
-        //gavdcodebegin 16
-        static void SpCsPnpcoreFindTermGroup(ClientContext spCtx)    //*** LEGACY CODE ***
+        //gavdcodebegin 016
+        static void SpCsPnpcore_FindTermGroup(ClientContext spCtx)   //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.GetTermGroupByName("CsPnpcoreTermGroupEns");
             Console.WriteLine(myTermGroup.Id);
         }
-        //gavdcodeend 16
+        //gavdcodeend 016
 
-        //gavdcodebegin 14
-        static void SpCsPnpcoreCreateTermSetEnsure
-                                              (ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 014
+        static void SpCsPnpcore_CreateTermSetEnsure
+                                              (ClientContext spCtx) //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             TermSet myTermSet = myTermGroup.EnsureTermSet("CsPnpcoreTermSetEns");
             Console.WriteLine(myTermSet.Id);
         }
-        //gavdcodeend 14
+        //gavdcodeend 014
 
-        //gavdcodebegin 17
-        static void SpCsPnpcoreFindTermSet(ClientContext spCtx)      //*** LEGACY CODE ***
+        //gavdcodebegin 017
+        static void SpCsPnpcore_FindTermSet(ClientContext spCtx)     //*** LEGACY CODE ***
         {
             TermSetCollection myTermSet = spCtx.Site.GetTermSetsByName(
                                                                 "CsPnpcoreTermSetEns");
             Console.WriteLine(myTermSet[0].Id);
         }
-        //gavdcodeend 17
+        //gavdcodeend 017
 
-        //gavdcodebegin 15
-        static void SpCsPnpcoreCreateTerm(ClientContext spCtx)       //*** LEGACY CODE ***
+        //gavdcodebegin 015
+        static void SpCsPnpcore_CreateTerm(ClientContext spCtx)      //*** LEGACY CODE ***
         {
             TermGroup myTermGroup = spCtx.Site.EnsureTermGroup("CsPnpcoreTermGroupEns");
             TermSet myTermSet = myTermGroup.EnsureTermSet("CsPnpcoreTermSetEns");
             Term myTerm = spCtx.Site.AddTermToTermset(myTermSet.Id, "CsPnpcoreTerm");
             Console.WriteLine(myTerm.Id);
         }
-        //gavdcodeend 15
+        //gavdcodeend 015
 
-        //gavdcodebegin 18
-        static void SpCsPnpcoreFindTerm(ClientContext spCtx)         //*** LEGACY CODE ***
+        //gavdcodebegin 018
+        static void SpCsPnpcore_FindTerm(ClientContext spCtx)        //*** LEGACY CODE ***
         {
             TermSetCollection myTermSet = spCtx.Site.GetTermSetsByName(
                                                                 "CsPnpcoreTermSetEns");
             Term myTerm = spCtx.Site.GetTermByName(myTermSet[0].Id, "CsPnpcoreTerm");
             Console.WriteLine(myTerm.Id);
         }
-        //gavdcodeend 18
+        //gavdcodeend 018
 
-        //gavdcodebegin 19
-        static void SpCsPnpcoreExportTermStore(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 019
+        static void SpCsPnpcore_ExportTermStore(ClientContext spCtx) //*** LEGACY CODE ***
         {
             List<string> myTermStoreExport = spCtx.Site.ExportAllTerms(true);
             foreach (string oneTerm in myTermStoreExport)
@@ -366,17 +366,17 @@ namespace ZFYL
                 Console.WriteLine(oneTerm);
             }
         }
-        //gavdcodeend 19
+        //gavdcodeend 019
 
-        //gavdcodebegin 20
-        static void SpCsPnpcoreImportTermStore(ClientContext spCtx)  //*** LEGACY CODE ***
+        //gavdcodebegin 020
+        static void SpCsPnpcore_ImportTermStore(ClientContext spCtx) //*** LEGACY CODE ***
         {
             string[] myTerms = { "TermGroup01|TermSet01|Term01",
                                  "TermGroup01|TermSet01|Term02" };
 
             spCtx.Site.ImportTerms(myTerms, 1033);
         }
-        //gavdcodeend 20
+        //gavdcodeend 020
 
         //gavdcodebegin 21
         static void SpCsCsomGetResultsSearch(ClientContext spCtx)  //*** LEGACY CODE ***
@@ -817,8 +817,8 @@ namespace ZFYL
         }
         //gavdcodeend 45
 
-        //gavdcodebegin 46
-        static void SpCsPnpcoreGenerateSiteTemplateXml(
+        //gavdcodebegin 046
+        static void SpCsPnpcore_GenerateSiteTemplateXml(
                                                ClientContext spCtx)  //*** LEGACY CODE ***
         {
             OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
@@ -848,10 +848,10 @@ namespace ZFYL
                     Xml.XMLFileSystemTemplateProvider(@"C:\Temporary", "");
             myXmlProvider.SaveAs(myTemplate, "TestProvisioningSite.xml");
         }
-        //gavdcodeend 46
+        //gavdcodeend 046
 
-        //gavdcodebegin 47
-        static void SpCsPnpcoreGenerateSiteListTemplate(
+        //gavdcodebegin 047
+        static void SpCsPnpcore_GenerateSiteListTemplate(
                                                ClientContext spCtx)  //*** LEGACY CODE ***
         {
             OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.
@@ -885,10 +885,10 @@ namespace ZFYL
                     Xml.XMLFileSystemTemplateProvider(@"C:\Temporary", "");
             myXmlProvider.SaveAs(myTemplate, "TestProvisioningLists.xml");
         }
-        //gavdcodeend 47
+        //gavdcodeend 047
 
-        //gavdcodebegin 48
-        static void SpCsPnpcoreApplySiteTemplate(
+        //gavdcodebegin 048
+        static void SpCsPnpcore_ApplySiteTemplate(
                                                ClientContext spCtx)  //*** LEGACY CODE ***
         {
             Web myWeb = spCtx.Web;
@@ -904,7 +904,7 @@ namespace ZFYL
 
             myWeb.ApplyProvisioningTemplate(myTemplate);
         }
-        //gavdcodeend 48
+        //gavdcodeend 048
 
         //-------------------------------------------------------------------------------
         static ClientContext LoginCsom()

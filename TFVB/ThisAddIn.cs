@@ -2,7 +2,7 @@
 {
     public partial class ThisAddIn
     {
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             ShowPanel();
@@ -16,7 +16,7 @@
             customPanel.Width = panelObject.Width;
             customPanel.Visible = true;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {

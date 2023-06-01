@@ -9,7 +9,7 @@
 
     <!-- Define properties in the Properties element.
          Remember to put Property Name on the Src attribute of the Content element above. -->
-<!--gavdcodebegin 02-->
+<!--gavdcodebegin 002-->
     <Properties>
       <Property Name="strProperty" 
                 Type="string" 
@@ -18,7 +18,7 @@
                 WebDisplayName="My string property" 
                 WebCategory="Basic add-in part category" />
     </Properties>
-<!--gavdcodeend 02-->
+<!--gavdcodeend 002-->
 
   </ClientWebPart>
 </Elements>

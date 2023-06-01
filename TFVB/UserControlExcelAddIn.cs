@@ -13,7 +13,7 @@ namespace TFVB
             InitializeComponent();
         }
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         private void BtnAddPicture_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -31,9 +31,9 @@ namespace TFVB
                         10, 10, bmPicture.Width, bmPicture.Height);
             }
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
         private void BtnSaveAsCsv_Click(object sender, EventArgs e)
         {
             SaveFileDialog exportDialog = new SaveFileDialog();
@@ -53,14 +53,14 @@ namespace TFVB
                                 Type.Missing, Type.Missing);
             }
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
 
-        //gavdcodebegin 05
+        //gavdcodebegin 005
         private void BtnGetTime_Click(object sender, EventArgs e)
         {
             FormTime newForm = new FormTime();
             newForm.Show();
         }
-        //gavdcodeend 05
+        //gavdcodeend 005
     }
 }

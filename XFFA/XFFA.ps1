@@ -76,7 +76,7 @@ Function LoginPsCLI_WithCertificate()
 ##---------------------------------------------------------------------------------------
 
 #------- Search --------
-#gavdcodebegin 01
+#gavdcodebegin 001
 Function SpPsRest_ResultsSearchGET
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -94,9 +94,9 @@ Function SpPsRest_ResultsSearchGET
 
 	Write-Host $data
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 Function SpPsRest_ResultsSearchPOST
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -126,10 +126,10 @@ Function SpPsRest_ResultsSearchPOST
 
 	Write-Host $data
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
 #------- User Profile --------
-#gavdcodebegin 03
+#gavdcodebegin 003
 Function SpPsRest_GetAllPropertiesUserProfile
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -150,9 +150,9 @@ Function SpPsRest_GetAllPropertiesUserProfile
 
 	Write-Host $data
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 Function SpPsRest_GetAllMyPropertiesUserProfile
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -170,9 +170,9 @@ Function SpPsRest_GetAllMyPropertiesUserProfile
 
 	Write-Host $data
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 Function SpPsRest_GetPropertiesUserProfile
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -194,10 +194,10 @@ Function SpPsRest_GetPropertiesUserProfile
 
 	Write-Host $data
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
 #------- Site Scripts --------
-#gavdcodebegin 06
+#gavdcodebegin 006
 Function SpPsRest_GenerateListSiteScript
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -221,9 +221,9 @@ Function SpPsRest_GenerateListSiteScript
 
 	Write-Host $data
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 Function SpPsRest_GenerateWebSiteScript
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -258,9 +258,9 @@ Function SpPsRest_GenerateWebSiteScript
 
 	Write-Host $data
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 Function SpPsRest_AddSiteScript
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -353,9 +353,9 @@ Function SpPsRest_AddSiteScript
 
 	Write-Host $data
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 Function SpPsRest_GetAllSiteScripts
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -377,9 +377,9 @@ Function SpPsRest_GetAllSiteScripts
 
 	Write-Host $data
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
+#gavdcodebegin 010
 Function SpPsRest_GetOneSiteScript
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -403,9 +403,9 @@ Function SpPsRest_GetOneSiteScript
 
 	Write-Host $data
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 Function SpPsRest_UpdateSiteScript
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -434,9 +434,9 @@ Function SpPsRest_UpdateSiteScript
 
 	Write-Host $data
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 Function SpPsRest_DeleteSiteScript
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -460,10 +460,10 @@ Function SpPsRest_DeleteSiteScript
 
 	Write-Host $data
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
 #------- Site Templates --------
-#gavdcodebegin 13
+#gavdcodebegin 013
 Function SpPsRest_AddSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -494,9 +494,9 @@ Function SpPsRest_AddSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 Function SpPsRest_GetAllSiteTemplates
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -518,9 +518,9 @@ Function SpPsRest_GetAllSiteTemplates
 
 	Write-Host $data
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
+#gavdcodebegin 015
 Function SpPsRest_GetOneSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -544,9 +544,9 @@ Function SpPsRest_GetOneSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
-#gavdcodebegin 16
+#gavdcodebegin 016
 Function SpPsRest_UpdateSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -576,9 +576,9 @@ Function SpPsRest_UpdateSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
+#gavdcodebegin 017
 Function SpPsRest_DeleteSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -602,9 +602,9 @@ Function SpPsRest_DeleteSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
+#gavdcodebegin 018
 Function SpPsRest_ApplySiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -629,9 +629,9 @@ Function SpPsRest_ApplySiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
+#gavdcodebegin 019
 Function SpPsRest_ApplyToSiteSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -655,9 +655,9 @@ Function SpPsRest_ApplyToSiteSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
+#gavdcodebegin 020
 Function SpPsRest_GetRigthsSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -681,9 +681,9 @@ Function SpPsRest_GetRigthsSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
+#gavdcodebegin 021
 Function SpPsRest_GrantRightsSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -709,9 +709,9 @@ Function SpPsRest_GrantRightsSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
+#gavdcodebegin 022
 Function SpPsRest_DeleteRightsSiteTemplate
 {
 	LoginPsPnPPowerShell_WithAccPw
@@ -736,7 +736,7 @@ Function SpPsRest_DeleteRightsSiteTemplate
 
 	Write-Host $data
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
 
 ##---------------------------------------------------------------------------------------

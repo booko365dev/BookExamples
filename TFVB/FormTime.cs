@@ -5,7 +5,7 @@ namespace TFVB
 {
     public partial class FormTime : Form
     {
-        //gavdcodebegin 04
+        //gavdcodebegin 004
         public FormTime()
         {
             InitializeComponent();
@@ -15,6 +15,6 @@ namespace TFVB
         {
             lblTime.Text = DateTime.Now.ToLongTimeString();
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
     }
 }
