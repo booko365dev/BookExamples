@@ -115,7 +115,7 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsRest_ResultsSearchGET()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -140,9 +140,9 @@ static void SpCsRest_ResultsSearchGET()
         //      of the JSON "resultStr" string
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsRest_ResultsSearchPOST()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -198,9 +198,9 @@ static void SpCsRest_ResultsSearchPOST()
         }
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsRest_GetAllPropertiesUserProfile()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -227,9 +227,9 @@ static void SpCsRest_GetAllPropertiesUserProfile()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsRest_GetAllMyPropertiesUserProfile()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -253,9 +253,9 @@ static void SpCsRest_GetAllMyPropertiesUserProfile()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsRest_GetPropertiesUserProfile()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
@@ -282,7 +282,7 @@ static void SpCsRest_GetPropertiesUserProfile()
         Console.WriteLine(resultStr);
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
 
 //---------------------------------------------------------------------------------------
