@@ -2,7 +2,7 @@
 {
     public partial class Sheet1
     {
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         private void Sheet1_Startup(object sender, System.EventArgs e)
         {
             Microsoft.Office.Tools.Excel.NamedRange myNamedRange =
@@ -13,7 +13,7 @@
         private void Sheet1_Shutdown(object sender, System.EventArgs e)
         {
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
         #region VSTO Designer generated code
 

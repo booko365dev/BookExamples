@@ -19,7 +19,7 @@ Function LoginPsCLI
 ##---------------------------------------------------------------------------------------
 
 #------- Term Store --------
-#gavdcodebegin 01
+#gavdcodebegin 001
 function SpPsCliM365_CreateTermGroup
 {
 	$spCtx = LoginPsCLI
@@ -30,9 +30,9 @@ function SpPsCliM365_CreateTermGroup
 
 	m365 logout
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
+#gavdcodebegin 002
 function SpPsCliM365_FindAllTermGroups
 {
 	$spCtx = LoginPsCLI
@@ -41,9 +41,9 @@ function SpPsCliM365_FindAllTermGroups
 	
 	m365 logout
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
+#gavdcodebegin 003
 function SpPsCliM365_FindOneTermGroup
 {
 	$spCtx = LoginPsCLI
@@ -56,9 +56,9 @@ function SpPsCliM365_FindOneTermGroup
 	
 	m365 logout
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
+#gavdcodebegin 004
 function SpPsCliM365_CreateTermSet
 {
 	$spCtx = LoginPsCLI
@@ -70,9 +70,9 @@ function SpPsCliM365_CreateTermSet
 	
 	m365 logout
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
+#gavdcodebegin 005
 function SpPsCliM365_FindAllTermSets
 {
 	$spCtx = LoginPsCLI
@@ -81,9 +81,9 @@ function SpPsCliM365_FindAllTermSets
 	
 	m365 logout
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
+#gavdcodebegin 006
 function SpPsCliM365_FindOneTermSet
 {
 	$spCtx = LoginPsCLI
@@ -98,9 +98,9 @@ function SpPsCliM365_FindOneTermSet
 	
 	m365 logout
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
+#gavdcodebegin 007
 function SpPsCliM365_CreateTerm
 {
 	$spCtx = LoginPsCLI
@@ -112,9 +112,9 @@ function SpPsCliM365_CreateTerm
 	
 	m365 logout
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
+#gavdcodebegin 008
 function SpPsCliM365_FindAllTerms
 {
 	$spCtx = LoginPsCLI
@@ -124,9 +124,9 @@ function SpPsCliM365_FindAllTerms
 	
 	m365 logout
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
+#gavdcodebegin 009
 function SpPsCliM365_FindOneTermSet
 {
 	$spCtx = LoginPsCLI
@@ -147,10 +147,10 @@ function SpPsCliM365_FindOneTermSet
 	
 	m365 logout
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
 #------- Search --------
-#gavdcodebegin 10
+#gavdcodebegin 010
 function SpPsCliM365_Search
 {
 	$spCtx = LoginPsCLI
@@ -165,9 +165,9 @@ function SpPsCliM365_Search
 	
 	m365 logout
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
-#gavdcodebegin 11
+#gavdcodebegin 011
 function SpPsCliM365_SearchProperties
 {
 	$spCtx = LoginPsCLI
@@ -179,9 +179,9 @@ function SpPsCliM365_SearchProperties
 	
 	m365 logout
 }
-#gavdcodeend 11
+#gavdcodeend 011
 
-#gavdcodebegin 12
+#gavdcodebegin 012
 function SpPsCliM365_SearchSorting
 {
 	$spCtx = LoginPsCLI
@@ -194,10 +194,10 @@ function SpPsCliM365_SearchSorting
 	
 	m365 logout
 }
-#gavdcodeend 12
+#gavdcodeend 012
 
 #------- User Profile --------
-#gavdcodebegin 13
+#gavdcodebegin 013
 function SpPsCliM365_GetUserProfile
 {
 	$spCtx = LoginPsCLI
@@ -207,9 +207,9 @@ function SpPsCliM365_GetUserProfile
 	
 	m365 logout
 }
-#gavdcodeend 13
+#gavdcodeend 013
 
-#gavdcodebegin 14
+#gavdcodebegin 014
 function SpPsCliM365_UpdateSingleUserProfile
 {
 	$spCtx = LoginPsCLI
@@ -220,9 +220,9 @@ function SpPsCliM365_UpdateSingleUserProfile
 	
 	m365 logout
 }
-#gavdcodeend 14
+#gavdcodeend 014
 
-#gavdcodebegin 15
+#gavdcodebegin 015
 function SpPsCliM365_UpdateMultipleUserProfile
 {
 	$spCtx = LoginPsCLI
@@ -233,10 +233,10 @@ function SpPsCliM365_UpdateMultipleUserProfile
 	
 	m365 logout
 }
-#gavdcodeend 15
+#gavdcodeend 015
 
 #------- Modern Pages --------
-#gavdcodebegin 16
+#gavdcodebegin 016
 function SpPsCliM365_FindAllPages
 {
 	$spCtx = LoginPsCLI
@@ -245,9 +245,9 @@ function SpPsCliM365_FindAllPages
 	
 	m365 logout
 }
-#gavdcodeend 16
+#gavdcodeend 016
 
-#gavdcodebegin 17
+#gavdcodebegin 017
 function SpPsCliM365_FindOnePage
 {
 	$spCtx = LoginPsCLI
@@ -258,9 +258,9 @@ function SpPsCliM365_FindOnePage
 	
 	m365 logout
 }
-#gavdcodeend 17
+#gavdcodeend 017
 
-#gavdcodebegin 18
+#gavdcodebegin 018
 function SpPsCliM365_CreateOnePage
 {
 	$spCtx = LoginPsCLI
@@ -274,9 +274,9 @@ function SpPsCliM365_CreateOnePage
 	
 	m365 logout
 }
-#gavdcodeend 18
+#gavdcodeend 018
 
-#gavdcodebegin 19
+#gavdcodebegin 019
 function SpPsCliM365_UpdateOnePage
 {
 	$spCtx = LoginPsCLI
@@ -288,9 +288,9 @@ function SpPsCliM365_UpdateOnePage
 	
 	m365 logout
 }
-#gavdcodeend 19
+#gavdcodeend 019
 
-#gavdcodebegin 20
+#gavdcodebegin 020
 function SpPsCliM365_CopyOnePage
 {
 	$spCtx = LoginPsCLI
@@ -302,9 +302,9 @@ function SpPsCliM365_CopyOnePage
 	
 	m365 logout
 }
-#gavdcodeend 20
+#gavdcodeend 020
 
-#gavdcodebegin 21
+#gavdcodebegin 021
 function SpPsCliM365_DeleteOnePage
 {
 	$spCtx = LoginPsCLI
@@ -315,9 +315,9 @@ function SpPsCliM365_DeleteOnePage
 	
 	m365 logout
 }
-#gavdcodeend 21
+#gavdcodeend 021
 
-#gavdcodebegin 22
+#gavdcodebegin 022
 function SpPsCliM365_FindAllSectionsInPage
 {
 	$spCtx = LoginPsCLI
@@ -327,9 +327,9 @@ function SpPsCliM365_FindAllSectionsInPage
 	
 	m365 logout
 }
-#gavdcodeend 22
+#gavdcodeend 022
 
-#gavdcodebegin 23
+#gavdcodebegin 023
 function SpPsCliM365_FindOneSectionInPage
 {
 	$spCtx = LoginPsCLI
@@ -340,9 +340,9 @@ function SpPsCliM365_FindOneSectionInPage
 	
 	m365 logout
 }
-#gavdcodeend 23
+#gavdcodeend 023
 
-#gavdcodebegin 24
+#gavdcodebegin 024
 function SpPsCliM365_CreateOneSectionInPage
 {
 	$spCtx = LoginPsCLI
@@ -358,9 +358,9 @@ function SpPsCliM365_CreateOneSectionInPage
 	
 	m365 logout
 }
-#gavdcodeend 24
+#gavdcodeend 024
 
-#gavdcodebegin 25
+#gavdcodebegin 025
 function SpPsCliM365_FindAllColumnsInSectionPage
 {
 	$spCtx = LoginPsCLI
@@ -371,9 +371,9 @@ function SpPsCliM365_FindAllColumnsInSectionPage
 	
 	m365 logout
 }
-#gavdcodeend 25
+#gavdcodeend 025
 
-#gavdcodebegin 26
+#gavdcodebegin 026
 function SpPsCliM365_FindOneColumnInSectionPage
 {
 	$spCtx = LoginPsCLI
@@ -385,9 +385,9 @@ function SpPsCliM365_FindOneColumnInSectionPage
 	
 	m365 logout
 }
-#gavdcodeend 26
+#gavdcodeend 026
 
-#gavdcodebegin 27
+#gavdcodebegin 027
 function SpPsCliM365_FindAllControlsInPage
 {
 	$spCtx = LoginPsCLI
@@ -397,9 +397,9 @@ function SpPsCliM365_FindAllControlsInPage
 	
 	m365 logout
 }
-#gavdcodeend 27
+#gavdcodeend 027
 
-#gavdcodebegin 28
+#gavdcodebegin 028
 function SpPsCliM365_FindOneControlInPage
 {
 	$spCtx = LoginPsCLI
@@ -410,9 +410,9 @@ function SpPsCliM365_FindOneControlInPage
 	
 	m365 logout
 }
-#gavdcodeend 28
+#gavdcodeend 028
 
-#gavdcodebegin 29
+#gavdcodebegin 029
 function SpPsCliM365_CreateTextControlInPage
 {
 	$spCtx = LoginPsCLI
@@ -425,9 +425,9 @@ function SpPsCliM365_CreateTextControlInPage
 	
 	m365 logout
 }
-#gavdcodeend 29
+#gavdcodeend 029
 
-#gavdcodebegin 30
+#gavdcodebegin 030
 function SpPsCliM365_CreateWebPartControlInPage
 {
 	$spCtx = LoginPsCLI
@@ -442,9 +442,9 @@ function SpPsCliM365_CreateWebPartControlInPage
 	
 	m365 logout
 }
-#gavdcodeend 30
+#gavdcodeend 030
 
-#gavdcodebegin 31
+#gavdcodebegin 031
 function SpPsCliM365_ModifyControlInPage
 {
 	$spCtx = LoginPsCLI
@@ -456,9 +456,9 @@ function SpPsCliM365_ModifyControlInPage
 	
 	m365 logout
 }
-#gavdcodeend 31
+#gavdcodeend 031
 
-#gavdcodebegin 32
+#gavdcodebegin 032
 function SpPsCliM365_ModifyHeaderPage
 {
 	$spCtx = LoginPsCLI
@@ -474,7 +474,7 @@ function SpPsCliM365_ModifyHeaderPage
 
 	m365 logout
 }
-#gavdcodeend 32
+#gavdcodeend 032
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------

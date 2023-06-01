@@ -80,7 +80,7 @@ static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 static void SpCsPnPFramework_CreateTermGroup()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -95,9 +95,9 @@ static void SpCsPnPFramework_CreateTermGroup()
         TermGroup myTermGroup = myTermStore.CreateTermGroup("CsPnpFrameworkTermGroup");
     }
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 static void SpCsPnPFramework_CreateTermGroupEnsure()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -109,9 +109,9 @@ static void SpCsPnPFramework_CreateTermGroupEnsure()
         Console.WriteLine(myTermGroup.Id);
     }
 }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 static void SpCsPnPFramework_FindTermGroup()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -123,9 +123,9 @@ static void SpCsPnPFramework_FindTermGroup()
         Console.WriteLine(myTermGroup.Id);
     }
 }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
 static void SpCsPnPFramework_CreateTermSetEnsure()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -137,9 +137,9 @@ static void SpCsPnPFramework_CreateTermSetEnsure()
         Console.WriteLine(myTermSet.Id);
     }
 }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 05
+//gavdcodebegin 005
 static void SpCsPnPFramework_FindTermSet()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -151,9 +151,9 @@ static void SpCsPnPFramework_FindTermSet()
         Console.WriteLine(myTermSet[0].Id);
     }
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
-//gavdcodebegin 06
+//gavdcodebegin 006
 static void SpCsPnPFramework_CreateTerm()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -167,9 +167,9 @@ static void SpCsPnPFramework_CreateTerm()
         Console.WriteLine(myTerm.Id);
     }
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
-//gavdcodebegin 07
+//gavdcodebegin 007
 static void SpCsPnPFramework_FindTerm()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -183,9 +183,9 @@ static void SpCsPnPFramework_FindTerm()
         Console.WriteLine(myTerm.Id);
     }
 }
-//gavdcodeend 07
+//gavdcodeend 007
 
-//gavdcodebegin 08
+//gavdcodebegin 008
 static void SpCsPnPFramework_ExportTermStore()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -199,9 +199,9 @@ static void SpCsPnPFramework_ExportTermStore()
         }
     }
 }
-//gavdcodeend 08
+//gavdcodeend 008
 
-//gavdcodebegin 09
+//gavdcodebegin 009
 static void SpCsPnPFramework_ImportTermStore()
 {
     using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
@@ -214,7 +214,7 @@ static void SpCsPnPFramework_ImportTermStore()
         spPnpCtx.Site.ImportTerms(myTerms, 1033);
     }
 }
-//gavdcodeend 09
+//gavdcodeend 009
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------

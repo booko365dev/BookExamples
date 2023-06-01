@@ -23,7 +23,7 @@ namespace LPPBWeb
             }
         }
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         protected void Page_Load(object sender, EventArgs e)
         {
             var spContext = SharePointContextProvider.Current.
@@ -39,9 +39,9 @@ namespace LPPBWeb
                 GetSiteInformation(spClientContext);
             }
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
         private void GetSiteInformation(ClientContext spClientContext)
         {
             if (IsPostBack)
@@ -83,6 +83,6 @@ namespace LPPBWeb
             lstLists.DataSource = myLists;
             lstLists.DataBind();
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
     }
 }
