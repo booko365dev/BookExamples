@@ -2,16 +2,16 @@
 (function () {
     "use strict"
 
-    //gavdcodebegin 02
+    //gavdcodebegin 002
     Office.initialize = function (reason) {
         $(document).ready(function () {
             $('#btnGetPlaceHolder').text("Get PlaceHolder")
             $('#btnGetPlaceHolder').click(GetPlaceHolder)
         })
     }
-    //gavdcodeend 02
+    //gavdcodeend 002
 
-    //gavdcodebegin 03
+    //gavdcodebegin 003
     function GetPlaceHolder() {
         var ServiceUrl = "https://jsonplaceholder.typicode.com/posts/11"
 
@@ -45,9 +45,9 @@
             }
         )
     }
-    //gavdcodeend 03
+    //gavdcodeend 003
 
-    //gavdcodebegin 04
+    //gavdcodebegin 004
     async function CallGetAsync(urlToCall) {
         var urlResponse = await fetch(urlToCall)
         var responseData = await urlResponse.json()
@@ -60,5 +60,5 @@
             console.log("Debug info: " + JSON.stringify(error.debugInfo))
         }
     }
-    //gavdcodeend 04
+    //gavdcodeend 004
 })()
