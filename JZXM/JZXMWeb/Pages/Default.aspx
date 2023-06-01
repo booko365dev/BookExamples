@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<!--gavdcodebegin 01-->
+<!--gavdcodebegin 001-->
 <head runat="server">
 
      <title>Chrome control host page</title>
@@ -33,8 +33,8 @@
      </script>
 
 </head>
-<!--gavdcodeend 01-->
-<!--gavdcodebegin 02-->
+<!--gavdcodeend 001-->
+<!--gavdcodebegin 002-->
 <body>
 
      <div 
@@ -63,5 +63,5 @@
     </div>
     </form>
 </body>
-<!--gavdcodeend 02-->
+<!--gavdcodeend 002-->
 </html>

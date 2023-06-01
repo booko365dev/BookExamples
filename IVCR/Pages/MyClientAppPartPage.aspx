@@ -40,7 +40,7 @@
         })();
     </script>
 </head>
-<!--gavdcodebegin 01-->
+<!--gavdcodebegin 001-->
 <body>
     <div><h2>This is my AppPart</h2></div>
     <div>
@@ -50,5 +50,5 @@
     </div>
     <script>initializePage()</script>
 </body>
-<!--gavdcodeend 01-->
+<!--gavdcodeend 001-->
 </html>
