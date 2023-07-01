@@ -1,4 +1,4 @@
-//gavdcodebegin 05
+//gavdcodebegin 005
 import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
@@ -17,11 +17,11 @@ export interface IListItemCrudJavaScriptWebPartProps {
   description: string;
   listName: string;
 }
-//gavdcodeend 05
+//gavdcodeend 005
 
 export default class ListItemCrudJavaScriptWebPart extends BaseClientSideWebPart<IListItemCrudJavaScriptWebPartProps> {
 
-//gavdcodebegin 09
+//gavdcodebegin 009
   private CreateItem(): void {
     var myDate = new Date();
     const myBody: string = JSON.stringify({
@@ -52,9 +52,9 @@ export default class ListItemCrudJavaScriptWebPart extends BaseClientSideWebPart
       this.ResponseMessage('Error creating Item: ' + myError);  
     });  
   }  
-//gavdcodeend 09
+//gavdcodeend 009
     
-//gavdcodebegin 11
+//gavdcodebegin 011
 private ReadItem(): void {  
   this.GetLatestItemId()  
     .then((myItemId: number): Promise<SPHttpClientResponse> => {  
@@ -86,9 +86,9 @@ private ReadItem(): void {
       this.ResponseMessage('Error finding Item: ' + myError);  
     });  
 }  
-//gavdcodeend 11
+//gavdcodeend 011
 
-//gavdcodebegin 13
+//gavdcodebegin 013
 private UpdateItem(): void {
   this.GetLatestItemId()  
     .then((myItemId: number): Promise<SPHttpClientResponse> => {  
@@ -144,9 +144,9 @@ private UpdateItem(): void {
         });  
     });  
 }  
-//gavdcodeend 13
+//gavdcodeend 013
 
-//gavdcodebegin 14
+//gavdcodebegin 014
 private DeleteItem(): void {
   let etag: string = undefined;  
   this.GetLatestItemId()  
@@ -199,9 +199,9 @@ private DeleteItem(): void {
       this.ResponseMessage(`Error deleting Item: ${myError}`);  
     });  
 } 
-//gavdcodeend 14
+//gavdcodeend 014
 
-//gavdcodebegin 12
+//gavdcodebegin 012
 private GetLatestItemId(): Promise<number> {  
   return new Promise<number>(
       (resolve: (itemId: number) => void, reject: (error: any) => void): void => {  
@@ -233,15 +233,15 @@ private GetLatestItemId(): Promise<number> {
       });  
   });  
 }  
-//gavdcodeend 12
+//gavdcodeend 012
 
-//gavdcodebegin 10
+//gavdcodebegin 010
   private ResponseMessage(myResponse: string): void {  
     this.domElement.querySelector('.lblMessage').innerHTML = myResponse;  
   }
-//gavdcodeend 10
+//gavdcodeend 010
 
-//gavdcodebegin 08
+//gavdcodebegin 008
   public render(): void {
     this.domElement.innerHTML = `
       <div class="${ styles.listItemCrudJavaScript }">
@@ -271,13 +271,13 @@ private GetLatestItemId(): Promise<number> {
       document.getElementById("btnDelete").onclick = 
                                           this.DeleteItem.bind(this);
   }
-//gavdcodeend 08
+//gavdcodeend 008
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
 
-//gavdcodebegin 07
+//gavdcodebegin 007
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -302,5 +302,5 @@ private GetLatestItemId(): Promise<number> {
       ]
     };
   }
-//gavdcodeend 07
+//gavdcodeend 007
 }

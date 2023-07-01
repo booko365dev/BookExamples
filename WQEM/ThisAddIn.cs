@@ -1,21 +1,26 @@
-﻿using System;
+﻿// Ignore Spelling: WQEM
+
+using System;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace WQEM
 {
     public partial class ThisAddIn
     {
-        //gavdcodebegin 01
+        //gavdcodebegin 001
+        Outlook.Application myApplication; // Must be declared at class level
+        Outlook.Inspectors myInspectors; // Must be declared at class level
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            Outlook.Application myApplication = this.Application;
-            Outlook.Inspectors myInspectors = myApplication.Inspectors;
+            myApplication = this.Application;
+            myInspectors = myApplication.Inspectors;
 
             myInspectors.NewInspector +=
                                 new Outlook.InspectorsEvents_NewInspectorEventHandler(
-                                                            Inspectors_AddTextToNewMail);
+                                                         Inspectors_AddTextToNewMail);
         }
-
+        
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
             // Note: Outlook no longer raises this event. If you have code that 
@@ -26,7 +31,7 @@ namespace WQEM
         void Inspectors_AddTextToNewMail(Outlook.Inspector inspector)
         {
             string userName = (string)this.Application.ActiveExplorer().Session.
-                                                                        CurrentUser.Name;
+                                                                    CurrentUser.Name;
 
             Outlook.MailItem myMailItem = inspector.CurrentItem as Outlook.MailItem;
             if (myMailItem != null)
@@ -39,7 +44,7 @@ namespace WQEM
                 }
             }
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
         #region VSTO generated code
 

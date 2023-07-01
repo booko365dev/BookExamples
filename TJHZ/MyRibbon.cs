@@ -13,11 +13,14 @@ namespace TJHZ
 
         }
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
+        Outlook.Application myApplication;
+        Outlook.Inspector myInspector;
+
         private void btnGetSelectedText_Click(object sender, RibbonControlEventArgs e)
         {
-            Outlook.Application myApplication = Globals.ThisAddIn.Application;
-            Outlook.Inspector myInspector = myApplication.ActiveInspector();
+            myApplication = Globals.ThisAddIn.Application;
+            myInspector = myApplication.ActiveInspector();
 
             Outlook.MailItem myMailItem = myInspector.CurrentItem as Outlook.MailItem;
             if (myMailItem != null)
@@ -28,9 +31,9 @@ namespace TJHZ
                 MessageBox.Show(selectedText);
             }
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
         private void btnCreateEmail_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -43,9 +46,9 @@ namespace TJHZ
             myMailItem.Importance = Outlook.OlImportance.olImportanceLow;
             myMailItem.Display(false);
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
         private void btnAddAttachment_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -71,9 +74,9 @@ namespace TJHZ
 
             ((Outlook._MailItem)myMailItem).Send();
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
 
-        //gavdcodebegin 04
+        //gavdcodebegin 004
         private void btnGetEmails_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -84,9 +87,9 @@ namespace TJHZ
 
             MessageBox.Show("Unread items = " + myUnreadItems.Count.ToString());
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
 
-        //gavdcodebegin 05
+        //gavdcodebegin 005
         private void btnSaveAttachments_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -103,9 +106,9 @@ namespace TJHZ
                 }
             }
         }
-        //gavdcodeend 05
+        //gavdcodeend 005
 
-        //gavdcodebegin 06
+        //gavdcodebegin 006
         private void btnFindContact_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -126,9 +129,9 @@ namespace TJHZ
                 MessageBox.Show("Contact not found");
             }
         }
-        //gavdcodeend 06
+        //gavdcodeend 006
 
-        //gavdcodebegin 07
+        //gavdcodebegin 007
         private void btnAddContact_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -145,9 +148,9 @@ namespace TJHZ
             newContact.Save();
             newContact.Display(true);
         }
-        //gavdcodeend 07
+        //gavdcodeend 007
 
-        //gavdcodebegin 08
+        //gavdcodebegin 008
         private void btnDeleteContact_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -164,9 +167,9 @@ namespace TJHZ
                 myContact.Delete();
             }
         }
-        //gavdcodeend 08
+        //gavdcodeend 008
 
-        //gavdcodebegin 09
+        //gavdcodebegin 009
         private void btnCreateAppointment_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -192,9 +195,9 @@ namespace TJHZ
             newAppointment.Save();
             newAppointment.Display(true);
         }
-        //gavdcodeend 09
+        //gavdcodeend 009
 
-        //gavdcodebegin 10
+        //gavdcodebegin 010
         private void btnDeleteAppointment_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -210,9 +213,9 @@ namespace TJHZ
                 oneCalendarItem.Delete();
             }
         }
-        //gavdcodeend 10
+        //gavdcodeend 010
 
-        //gavdcodebegin 11
+        //gavdcodebegin 011
         private void btnCreateCalendar_Click(object sender, RibbonControlEventArgs e)
         {
             const string newCalendarName = "MyCalendar";
@@ -248,9 +251,9 @@ namespace TJHZ
                                                             Folders[newCalendarName]);
             myApplication.ActiveExplorer().CurrentFolder.Display();
         }
-        //gavdcodeend 11
+        //gavdcodeend 011
 
-        //gavdcodebegin 12
+        //gavdcodebegin 012
         private void btnCreateFolder_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -265,9 +268,9 @@ namespace TJHZ
                                             Outlook.OlDefaultFolders.olFolderInbox);
             myInBox.Folders[userName].Display();
         }
-        //gavdcodeend 12
+        //gavdcodeend 012
 
-        //gavdcodebegin 13
+        //gavdcodebegin 013
         private void btnSelectFolder_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -286,9 +289,9 @@ namespace TJHZ
                 MessageBox.Show("There is no folder " + folderToFind);
             }
         }
-        //gavdcodeend 13
+        //gavdcodeend 013
 
-        //gavdcodebegin 14
+        //gavdcodebegin 014
         private void btnDeleteFolder_Click(object sender, RibbonControlEventArgs e)
         {
             Outlook.Application myApplication = Globals.ThisAddIn.Application;
@@ -304,6 +307,6 @@ namespace TJHZ
                 myFolder.Delete();
             }
         }
-        //gavdcodeend 14
+        //gavdcodeend 014
     }
 }

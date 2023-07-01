@@ -15,14 +15,14 @@ import * as strings from 'ListViewExtCommandSetStrings';
  * it will be deserialized into the BaseExtension.properties object.
  * You can define an interface to describe it.
  */
-//gavdcodebegin 01
+//gavdcodebegin 001
 export interface IListViewExtCommandSetProperties {
   // This is an example; replace with your own properties
   sampleTextOne: string;
   sampleTextTwo: string;
   sampleTextThree: string;
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
 const LOG_SOURCE: string = 'ListViewExtCommandSet';
 
@@ -34,7 +34,7 @@ export default class ListViewExtCommandSet extends BaseListViewCommandSet<IListV
     return Promise.resolve();
   }
 
-//gavdcodebegin 02
+//gavdcodebegin 002
 @override
   public onListViewUpdated(event: IListViewCommandSetListViewUpdatedParameters): void {
     const compareOneCommand: Command = this.tryGetCommand('COMMAND_3');
@@ -43,9 +43,9 @@ export default class ListViewExtCommandSet extends BaseListViewCommandSet<IListV
       compareOneCommand.visible = event.selectedRows.length === 1;
     }
   }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
 @override
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
     switch (event.itemId) {
@@ -65,5 +65,5 @@ export default class ListViewExtCommandSet extends BaseListViewCommandSet<IListV
         throw new Error('Unknown command');
     }
   }
-//gavdcodeend 03
+//gavdcodeend 003
 }

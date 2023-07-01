@@ -50,8 +50,8 @@
             this.btnDeleteAppointment = this.Factory.CreateRibbonButton();
             this.btnCreateCalendar = this.Factory.CreateRibbonButton();
             this.grpFolders = this.Factory.CreateRibbonGroup();
-            this.btnSelectFolder = this.Factory.CreateRibbonButton();
             this.btnCreateFolder = this.Factory.CreateRibbonButton();
+            this.btnSelectFolder = this.Factory.CreateRibbonButton();
             this.btnDeleteFolder = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpEmails.SuspendLayout();
@@ -170,17 +170,17 @@
             this.grpFolders.Label = "Folders";
             this.grpFolders.Name = "grpFolders";
             // 
-            // btnSelectFolder
-            // 
-            this.btnSelectFolder.Label = "Select Folder";
-            this.btnSelectFolder.Name = "btnSelectFolder";
-            this.btnSelectFolder.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSelectFolder_Click);
-            // 
             // btnCreateFolder
             // 
             this.btnCreateFolder.Label = "Create Folder";
             this.btnCreateFolder.Name = "btnCreateFolder";
             this.btnCreateFolder.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateFolder_Click);
+            // 
+            // btnSelectFolder
+            // 
+            this.btnSelectFolder.Label = "Select Folder";
+            this.btnSelectFolder.Name = "btnSelectFolder";
+            this.btnSelectFolder.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSelectFolder_Click);
             // 
             // btnDeleteFolder
             // 

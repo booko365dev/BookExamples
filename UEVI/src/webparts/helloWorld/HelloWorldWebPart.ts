@@ -1,5 +1,5 @@
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
@@ -16,20 +16,20 @@ export interface IHelloWorldWebPartProps {
   description: string;
   maxRandom: string;
 }
-//gavdcodeend 01
+//gavdcodeend 001
 
 export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
 
-//gavdcodebegin 04
+//gavdcodebegin 004
   private GetSomeRandom(): void {
     console.log("GetSomeRandom started");
     var myMax = Number(this.properties.maxRandom);
     document.getElementById("divRandomString").innerHTML = 
                       String(Math.floor(Math.random() * myMax));
   }
-//gavdcodeend 04
+//gavdcodeend 004
 
-//gavdcodebegin 02
+//gavdcodebegin 002
   public render(): void {
     this.domElement.innerHTML = `
       <div class="${ styles.helloWorld }">
@@ -58,13 +58,13 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
                                           this.GetSomeRandom.bind(this);
 
   }
-//gavdcodeend 02
+//gavdcodeend 002
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
 
-//gavdcodebegin 03
+//gavdcodebegin 003
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -91,5 +91,5 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
       ]
     };
   }
-//gavdcodebegin 03
+//gavdcodeend 003
 }

@@ -1,4 +1,4 @@
-//gavdcodebegin 22
+//gavdcodebegin 022
 import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
@@ -17,11 +17,11 @@ export interface IListItemCrudPnPWebPartProps {
   description: string;
   listName: string;
 }
-//gavdcodeend 22
+//gavdcodeend 022
 
 export default class ListItemCrudPnPWebPart extends BaseClientSideWebPart<IListItemCrudPnPWebPartProps> {
 
-//gavdcodebegin 26
+//gavdcodebegin 026
   private CreateItem(): void {
     var myDate = new Date();
     sp.web.lists.getByTitle(this.properties.listName).items.add({
@@ -33,9 +33,9 @@ export default class ListItemCrudPnPWebPart extends BaseClientSideWebPart<IListI
       this.ResponseMessage('Error creating Item: ' + myError);
      });
   }
-//gavdcodeend 26
+//gavdcodeend 026
 
-//gavdcodebegin 28
+//gavdcodebegin 028
   private ReadItem(): void {
     this.GetLatestItemId()  
       .then((myItemId: number): Promise<IListItem> => {  
@@ -52,9 +52,9 @@ export default class ListItemCrudPnPWebPart extends BaseClientSideWebPart<IListI
         this.ResponseMessage('Error finding Item: ' + myError);  
       });  
   }
-//gavdcodeend 28
+//gavdcodeend 028
 
-//gavdcodebegin 30
+//gavdcodebegin 030
   private UpdateItem(): void {
     let etag: string = undefined;  
   
@@ -87,9 +87,9 @@ export default class ListItemCrudPnPWebPart extends BaseClientSideWebPart<IListI
         this.ResponseMessage('Error updating Item: ' + myError);  
       });
   }
-//gavdcodeend 30
+//gavdcodeend 030
 
-//gavdcodebegin 31
+//gavdcodebegin 031
   private DeleteItem(): void {
     let etag: string = undefined;
 
@@ -120,9 +120,9 @@ export default class ListItemCrudPnPWebPart extends BaseClientSideWebPart<IListI
         this.ResponseMessage(`Error deleting item: ${myError}`);  
       });
   }
-//gavdcodeend 31
+//gavdcodeend 031
 
-//gavdcodebegin 29
+//gavdcodebegin 029
   private GetLatestItemId(): Promise<number> {  
     return new Promise<number>((resolve: (itemId: number) => 
                         void, reject: (error: any) => void): void => {  
@@ -140,15 +140,15 @@ export default class ListItemCrudPnPWebPart extends BaseClientSideWebPart<IListI
         });  
     });  
   }  
-//gavdcodeend 29
+//gavdcodeend 029
 
-//gavdcodebegin 27
+//gavdcodebegin 027
   private ResponseMessage(myResponse: string): void {  
     this.domElement.querySelector('.lblMessage').innerHTML = myResponse;  
   }
-//gavdcodeend 27
+//gavdcodeend 027
 
-//gavdcodebegin 25
+//gavdcodebegin 025
 public render(): void {
     this.domElement.innerHTML = `
       <div class="${ styles.listItemCrudPnP }">
@@ -178,13 +178,13 @@ public render(): void {
       document.getElementById("btnDelete").onclick = 
                                           this.DeleteItem.bind(this);
   }
-//gavdcodeend 25
+//gavdcodeend 025
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
 
-//gavdcodebegin 24
+//gavdcodebegin 024
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -209,5 +209,5 @@ public render(): void {
       ]
     };
   }
-//gavdcodeend 24
+//gavdcodeend 024
 }
