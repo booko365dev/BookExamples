@@ -2,16 +2,16 @@
 (function () {
     "use strict"
 
-    //gavdcodebegin 02
+    //gavdcodebegin 002
     Office.initialize = function (reason) {
         $(document).ready(function () {
             $('#btnGetDateTime').text("Get DateTime")
             $('#btnGetDateTime').click(GetDateTime)
         });
     };
-    //gavdcodeend 02
+    //gavdcodeend 002
 
-    //gavdcodebegin 03
+    //gavdcodebegin 003
     function GetDateTime() {
         var ServiceUrl = "http://date.jsontest.com"
 
@@ -33,13 +33,13 @@
                 }
             })
     }
-    //gavdcodeend 03
+    //gavdcodeend 003
 
-    //gavdcodebegin 04
+    //gavdcodebegin 004
     async function CallGetAsync(urlToCall) {
         var urlResponse = await fetch(urlToCall)
         var responseData = await urlResponse.json()
         return responseData
     }
-    //gavdcodeend 04
+    //gavdcodeend 004
 })();
