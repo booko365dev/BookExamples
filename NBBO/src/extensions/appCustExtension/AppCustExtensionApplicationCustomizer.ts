@@ -1,4 +1,4 @@
-//gavdcodebegin 02
+//gavdcodebegin 002
 import { override } from '@microsoft/decorators';
 import { Log } from '@microsoft/sp-core-library';
 import {
@@ -9,7 +9,7 @@ import { Dialog } from '@microsoft/sp-dialog';
 import * as strings from 'AppCustExtensionApplicationCustomizerStrings';
 
 const LOG_SOURCE: string = 'AppCustExtensionApplicationCustomizer';
-//gavdcodeend 02
+//gavdcodeend 002
 
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
@@ -25,7 +25,7 @@ export interface IAppCustExtensionApplicationCustomizerProperties {
 export default class AppCustExtensionApplicationCustomizer
   extends BaseApplicationCustomizer<IAppCustExtensionApplicationCustomizerProperties> {
 
-//gavdcodebegin 01
+//gavdcodebegin 001
 @override
   public onInit(): Promise<void> {
     let topPholder: PlaceholderContent = 
@@ -47,4 +47,4 @@ export default class AppCustExtensionApplicationCustomizer
     return Promise.resolve();
   }
 }
-//gavdcodeend 01
+//gavdcodeend 001
