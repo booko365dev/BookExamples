@@ -1,4 +1,4 @@
-//gavdcodebegin 03
+//gavdcodebegin 003
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
@@ -62,4 +62,4 @@ export default class GraphToolkitWp01WebPart extends
     };
   }
 }
-//gavdcodeend 03
+//gavdcodeend 003

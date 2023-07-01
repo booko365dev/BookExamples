@@ -1,4 +1,4 @@
-//gavdcodebegin 04
+//gavdcodebegin 004
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
@@ -70,4 +70,4 @@ export default class PersonWp01WebPart extends
     };
   }
 }
-//gavdcodeend 04
+//gavdcodeend 004
