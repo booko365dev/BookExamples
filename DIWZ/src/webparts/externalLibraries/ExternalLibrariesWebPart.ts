@@ -9,17 +9,17 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './ExternalLibrariesWebPart.module.scss';
 import * as strings from 'ExternalLibrariesWebPartStrings';
 
-//gavdcodebegin 15
+//gavdcodebegin 015
 import * as validator from 'validator';
-//gavdcodeend 15
+//gavdcodeend 015
 
-//gavdcodebegin 18
+//gavdcodebegin 018
 import * as marked from 'marked'; 
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 20
+//gavdcodebegin 020
 import * as $ from 'jquery'; 
-//gavdcodeend 20
+//gavdcodeend 020
 
 export interface IExternalLibrariesWebPartProps {
   description: string;
@@ -27,27 +27,27 @@ export interface IExternalLibrariesWebPartProps {
 
 export default class ExternalLibrariesWebPart extends BaseClientSideWebPart<IExternalLibrariesWebPartProps> {
 
-//gavdcodebegin 17
+//gavdcodebegin 017
   private ValidateInteger(): void {
     document.getElementById("divMessage").innerHTML = 
                       validator.isInt('somestring');  // Should get 'false'
   }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 19
+//gavdcodebegin 019
 private ShowMarkdown(): void {
   document.getElementById("divMessage").innerHTML = 
                   marked('This string is __bold__');  // Should show html text
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
-//gavdcodebegin 21
+//gavdcodebegin 021
 private ShowWithJquery(): void {
 	$("#divMessage").text("Some text in the label");   // Should show text in the label
 }
-//gavdcodeend 21
+//gavdcodeend 021
 
-//gavdcodebegin 16
+//gavdcodebegin 016
   public render(): void {
     this.domElement.innerHTML = `
       <div class="${ styles.externalLibraries }">
@@ -73,7 +73,7 @@ private ShowWithJquery(): void {
       document.getElementById("btnJquery").onclick = 
                                           this.ShowWithJquery.bind(this);
   }
-//gavdcodeend 16
+//gavdcodeend 016
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');

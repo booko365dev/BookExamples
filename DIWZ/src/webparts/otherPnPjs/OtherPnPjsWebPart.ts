@@ -1,4 +1,4 @@
-//gavdcodebegin 40
+//gavdcodebegin 040
 import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
@@ -16,17 +16,17 @@ import { any } from 'prop-types';
 export interface IOtherPnPjsWebPartProps {
   description: string;
 }
-//gavdcodeend 40
+//gavdcodeend 040
 
 export default class OtherPnPjsWebPart extends BaseClientSideWebPart<IOtherPnPjsWebPartProps> {
 
-//gavdcodebegin 32
+//gavdcodebegin 032
   private GetUrlFromContext(): void {
     this.ResponseMessage(this.context.pageContext.web.absoluteUrl);
   }
-//gavdcodeend 32
+//gavdcodeend 032
 
-//gavdcodebegin 34
+//gavdcodebegin 034
   private CreateList(): void {
     let spListTitle = "SPFxPnPjsList";  
     let spListDescription = "New List created with PnPjs";  
@@ -40,9 +40,9 @@ export default class OtherPnPjsWebPart extends BaseClientSideWebPart<IOtherPnPjs
         this.ResponseMessage('Error creating List: ' + myError);
     });
   }   
-//gavdcodeend 34
+//gavdcodeend 034
 
-//gavdcodebegin 35
+//gavdcodebegin 035
   private UploadFile(): void {
     var myFiles = (<HTMLInputElement>document.getElementById('inpFile')).files;
     var myFile = myFiles[0];
@@ -83,9 +83,9 @@ export default class OtherPnPjsWebPart extends BaseClientSideWebPart<IOtherPnPjs
       }
     }
   }
-//gavdcodeend 35
+//gavdcodeend 035
 
-//gavdcodebegin 36
+//gavdcodebegin 036
 private GetUserProperties(): void {
   var userPropertyValues = ""; 
 
@@ -103,9 +103,9 @@ private GetUserProperties(): void {
     this.ResponseMessage('Error geting user: ' + myError);
   });
 }
-//gavdcodeend 36
+//gavdcodeend 036
 
-//gavdcodebegin 37
+//gavdcodebegin 037
 private GetOtherUserProperties(): void {  
   var userPropertyValues = "";
 
@@ -124,9 +124,9 @@ private GetOtherUserProperties(): void {
     this.ResponseMessage('Error getting user: ' + myError);
   });
 }
-//gavdcodeend 37
+//gavdcodeend 037
 
-//gavdcodebegin 38
+//gavdcodebegin 038
 private UpdateUserProperties(): void {
   var userAccName = ""; 
 
@@ -153,9 +153,9 @@ private UpdateUserProperties(): void {
     this.ResponseMessage('Error updating user properties: ' + myError);
   });
 }
-//gavdcodeend 38
+//gavdcodeend 038
 
-//gavdcodebegin 39
+//gavdcodebegin 039
 private GetSearchResults(): void {
   var allSearchRes = "";
 
@@ -180,15 +180,15 @@ private GetSearchResults(): void {
       this.ResponseMessage('Error getting search: ' + myError);
     });
   }
-//gavdcodeend 39
+//gavdcodeend 039
 
-//gavdcodebegin 33
+//gavdcodebegin 033
   private ResponseMessage(myResponse: string): void {  
     this.domElement.querySelector('.lblMessage').innerHTML = myResponse;  
   }
-//gavdcodeend 33
+//gavdcodeend 033
 
-//gavdcodebegin 41
+//gavdcodebegin 041
 public render(): void {
     this.domElement.innerHTML = `
       <div class="${ styles.otherPnPjs }">
@@ -231,7 +231,7 @@ public render(): void {
       document.getElementById("btnGetSearchResults").onclick = 
                                           this.GetSearchResults.bind(this);
   }
-//gavdcodeend 41
+//gavdcodeend 041
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
