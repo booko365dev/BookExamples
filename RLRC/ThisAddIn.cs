@@ -5,7 +5,7 @@ namespace RLRC
 {
     public partial class ThisAddIn
     {
-        //gavdcodebegin 01
+        //gavdcodebegin 001
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.Application.PresentationSave +=
@@ -17,6 +17,8 @@ namespace RLRC
         {
             Prs.ApplyTheme(
                 @"C:\Program Files\Microsoft Office\root\Document Themes 16\Wisp.thmx");
+            //or, for Office 32 bits
+            //C:\Program Files (x86)\Microsoft Office\root\Document Themes 16\Wisp.tmx
 
             PowerPoint.CustomLayout pptLayout = Prs.Slides[1].CustomLayout;
             Prs.Slides.AddSlide(1, pptLayout);
@@ -27,7 +29,7 @@ namespace RLRC
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
         #region VSTO generated code
 
