@@ -1,4 +1,4 @@
-﻿//gavdcodebegin 02
+﻿//gavdcodebegin 002
 (function () {
     "use strict"
 
@@ -36,4 +36,4 @@
         document.getElementById('myTextArea').innerText += TextToWrite
     }
 })()
-//gavdcodeend 02
+//gavdcodeend 002
