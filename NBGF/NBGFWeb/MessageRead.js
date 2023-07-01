@@ -4,7 +4,7 @@
   var messageBanner;
 
   // The Office initialize function must be run each time a new page is loaded.
-  //gavdcodebegin 02
+  //gavdcodebegin 002
   Office.initialize = function (reason) {
     $(document).ready(function () {
 
@@ -17,9 +17,9 @@
       loadProps();
     });
   };
-  //gavdcodeend 02
+  //gavdcodeend 002
 
-    //gavdcodebegin 03
+    //gavdcodebegin 003
     function CreateNewEmail() {
         Office.context.mailbox.displayNewMessageForm(
             {
@@ -37,7 +37,7 @@
                 ]
             });
     }
-    //gavdcodeend 03
+    //gavdcodeend 003
 
   // Take an array of AttachmentDetails objects and build a list of attachment names, separated by a line-break.
   function buildAttachmentsString(attachments) {
