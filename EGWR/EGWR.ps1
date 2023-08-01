@@ -870,7 +870,7 @@ Function GrPsLoginGraphPnPWithAccPwAndClientId
 Function GrPsLoginGraphPnP_GetContextWithAccPw
 {
 	GrPsLoginGraphPnPWithAccPwAndClientId `
-					-TenantUrl $configFile.appsettings.TenantUrl `
+					-TenantUrl $configFile.appsettings.SiteBaseUrl `
 					-ClientId $configFile.appSettings.ClientIdWithAccPw `
 					-UserName $configFile.appSettings.UserName `
 					-UserPw $configFile.appSettings.UserPw

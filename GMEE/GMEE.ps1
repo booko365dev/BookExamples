@@ -1,5 +1,5 @@
 ﻿
-Function ConnectPsOnlBA() 
+Function ConnectPsOnlBA  #*** LEGACY CODE ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 				$configFile.appsettings.UserPw -AsPlainText -Force
@@ -12,8 +12,8 @@ Function ConnectPsOnlBA()
 }
 #-----------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-Function ExPsEolGetPermissions()
+#gavdcodebegin 001
+Function ExchangePsEol_GetPermissions  #*** LEGACY CODE ***
 {
 	$myPerms = Get-ManagementRoleAssignment
 	foreach ($onePerm in $myPerms) {
@@ -21,17 +21,17 @@ Function ExPsEolGetPermissions()
 															$onePerm.RoleAssigneeName
 	}
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
-Function ExPsEolEnablePsAccess()
+#gavdcodebegin 002
+Function ExchangePsEol_EnablePsAccess  #*** LEGACY CODE ***
 {
 	Set-User -Identity user@dominio.onmicrosoft.com -RemotePowerShellEnabled $true
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function ExPsEolEnablePsAccess()
+#gavdcodebegin 003
+Function ExchangePsEol_EnablePsAccess  #*** LEGACY CODE ***
 {
 	# For one user
 	Get-User -Identity "Name Surname" | Format-List RemotePowerShellEnabled
@@ -40,34 +40,34 @@ Function ExPsEolEnablePsAccess()
 	Get-User -ResultSize unlimited | Format-Table -Auto `
 											Name,DisplayName,RemotePowerShellEnabled
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-Function ExPsEolCreateMailbox()
+#gavdcodebegin 004
+Function ExchangePsEol_CreateMailbox  #*** LEGACY CODE ***
 {
 	New-Mailbox -Alias somebody -Name Some -FirstName Some -LastName Body `
 				-DisplayName "Some Body" `
 				-MicrosoftOnlineServicesID somebody@domain.onmicrosoft.com `
 				-Password (ConvertTo-SecureString -String "SecPW56%&" -AsPlainText -Force) `
 				-ResetPasswordOnNextLogon $true}
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-Function ExPsEolDeleteMailbox()
+#gavdcodebegin 005
+Function ExchangePsEol_DeleteMailbox  #*** LEGACY CODE ***
 {
 	Remove-MsolUser -UserPrincipalName "Some Body" -RemoveFromRecycleBin true
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-Function ExPsEolCreateMailcontact()
+#gavdcodebegin 006
+Function ExchangePsEol_CreateMailcontact  #*** LEGACY CODE ***
 {
 	New-MailContact -Name "Some Body" -ExternalEmailAddress sbody@domain.com
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-Function ExPsEolCreateMailuser()
+#gavdcodebegin 007
+Function ExchangePsEol_CreateMailuser  #*** LEGACY CODE ***
 {
 	New-MailUser -Name "Some Body" -Alias somebody `
 				 -ExternalEmailAddress sbody@domain.com `
@@ -75,14 +75,14 @@ Function ExPsEolCreateMailuser()
 				 -MicrosoftOnlineServicesID sobody@domain.onmicrosoft.com `
 				 -Password (ConvertTo-SecureString -String "SecPW56%&" -AsPlainText -Force)
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-Function ExPsEolBlockIP()
+#gavdcodebegin 008
+Function ExchangePsEol_BlockIP  #*** LEGACY CODE ***
 {
 	Set-OrganizationConfig -IPListBlocked @{add="111.2222.333.444"}
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
 
 #-----------------------------------------------------------------------------------------
@@ -91,13 +91,13 @@ Function ExPsEolBlockIP()
 
 ConnectPsOnlBA
 
-#ExPsEolGetPermissions
-#ExPsEolEnablePsAccess
-#ExPsEolBlockIP
-#ExPsEolCreateMailbox
-#ExPsEolDeleteMailbox
-#ExPsEolCreateMailcontact
-#ExPsEolCreateMailuser
+#ExchangePsEol_GetPermissions
+#ExchangePsEol_EnablePsAccess
+#ExchangePsEol_BlockIP
+#ExchangePsEol_CreateMailbox
+#ExchangePsEol_DeleteMailbox
+#ExchangePsEol_CreateMailcontact
+#ExchangePsEol_CreateMailuser
 
 $currentSession = Get-PSSession
 Remove-PSSession -Session $currentSession
