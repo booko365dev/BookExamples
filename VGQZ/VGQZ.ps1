@@ -6,6 +6,34 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
+Function GrPsLoginGraphSDKWithAccPw
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientID,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$UserName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$UserPw
+	)
+
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+									$UserPw -AsPlainText -Force
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+							-argumentlist $UserName, $securePW
+
+	$myToken = Get-MsalToken -TenantId $TenantName `
+							 -ClientId $ClientId `
+							 -UserCredential $myCredentials 
+
+	Connect-Graph -AccessToken $myToken.AccessToken
+}
+
 Function LoginPsCLI()
 {
 	m365 login --authType password `
@@ -116,25 +144,210 @@ function PsCliAdaptiveCards_SendCardToWebhookWithJson
 
 ##-----------------------------------------------------------
 
+##----> Licensing
+
+#gavdcodebegin 005
+Function PsGraphSdkLicensing_UserGetLicenseList
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgUser -UserId "user@domain.onmicrosoft.com" `
+               -Property Id, displayName, assignedLicenses | Select `
+               -ExpandProperty AssignedLicenses
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 005
+
+#gavdcodebegin 006
+Function PsGraphSdkLicensing_UserGetLicenseListDetailSku
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgUserLicenseDetail -UserId "user@domain.onmicrosoft.com" | fl
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 006
+
+#gavdcodebegin 007
+Function PsGraphSdkLicensing_UserGetLicenseListDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+    Get-MgUserLicenseDetail -UserId "user@domain.onmicrosoft.com" | ? `
+        {$_.SkuId -eq "c42b9cae-xxxx-4ab7-9717-81576235ccac"} | `
+        Select-Object -ExpandProperty ServicePlans
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 007
+
+#gavdcodebegin 008
+Function PsGraphSdkLicensing_GetSku
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+    $oneSku = Get-MgSubscribedSku -All | Where "SkuPartNumber" -eq "DEVELOPERPACK_E5"
+
+    Write-Host "SkuId-" $oneSku.SkuId
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 008
+
+#gavdcodebegin 009
+Function PsGraphSdkLicensing_GetUsersLicenseList
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+    Get-MgUser -Filter `
+            "assignedLicenses/any(x:x/skuId eq c42b9cae-xxxx-4ab7-9717-81576235ccac)" `
+            -All
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 009
+
+#gavdcodebegin 010
+Function PsGraphSdkLicensing_UserAddLicense
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+    Set-MgUserLicense -UserId "user@domain.onmicrosoft.com" `
+                      -Addlicenses @{SkuId = "c42b9cae-xxxx-4ab7-9717-81576235ccac"} `
+                      -RemoveLicenses @()
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 010
+
+#gavdcodebegin 011
+Function PsGraphSdkLicensing_UserDeleteLicense
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+    Set-MgUserLicense -UserId "user@domain.onmicrosoft.com" `
+                      -Addlicenses @{} `
+                      -RemoveLicenses @("c42b9cae-xxxx-4ab7-9717-81576235ccac")
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 011
+
+#gavdcodebegin 012
+Function PsGraphSdkLicensing_UserDisableLicenseAndPlans
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+    $myLicenseOptions = @{SkuId = "c42b9cae-xxxx-4ab7-9717-81576235ccac"; `
+                          DisabledPlans = @("a1ace008-xxxx-4ea0-8dac-33b3a23a2472", `
+                                            "199a5c09-xxxx-4e37-8f7c-b05d533e1ea2")}
+
+    Set-MgUserLicense -UserId "user@domain.onmicrosoft.com" `
+                      -Addlicenses @($myLicenseOptions) `
+                      -RemoveLicenses @()
+
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 012
+
+#gavdcodebegin 013
+function PsCliLicensing_LicenseGetList
+{
+    m365 aad license list
+}
+#gavdcodeend 013
+
+#gavdcodebegin 014
+function PsCliLicensing_UserGetLicenseListByName
+{
+    m365 aad user license list --userName "user@domain.onmicrosoft.com"
+}
+#gavdcodeend 014
+
+#gavdcodebegin 015
+function PsCliLicensing_UserGetLicenseListById
+{
+    m365 aad user license list --userId "e4ab0702-xxxx-4a17-974f-2d9d0449a7c0"
+}
+#gavdcodeend 015
+
+#gavdcodebegin 016
+function PsCliLicensing_UserAddLicenseListById
+{
+    m365 aad user license add --userId "e4ab0702-xxxx-4a17-974f-2d9d0449a7c0" `
+                              --ids "c42b9cae-xxxx-4ab7-9717-81576235ccac"
+}
+#gavdcodeend 016
+
+#gavdcodebegin 017
+function PsCliLicensing_UserDeleteLicenseListById
+{
+    m365 aad user license remove --userId "e4ab0702-xxxx-4a17-974f-2d9d0449a7c0" `
+                                 --ids "c42b9cae-xxxx-4ab7-9717-81576235ccac"
+}
+#gavdcodeend 017
 
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 003 ***
+# *** Latest Source Code Index: 017 ***
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 # Connect to M365 using the CLI
-#$spCtx = LoginPsCLI
+$spCtx = LoginPsCLI
 
+#Adaptive Cards
 #JsonAdaptiveCard_01
 #PsAdaptiveCards_SendCardToWebhook
 #PsCliAdaptiveCards_SendCardToWebhook
 #PsCliAdaptiveCards_SendCardToWebhookWithJson
 
-#m365 logout
+#Licensing
+#PsGraphSdkLicensing_UserGetLicenseList
+#PsGraphSdkLicensing_UserGetLicenseListDetailSku
+#PsGraphSdkLicensing_UserGetLicenseListDetail
+#PsGraphSdkLicensing_GetSku
+#PsGraphSdkLicensing_GetUsersLicenseList
+#PsGraphSdkLicensing_UserAddLicense
+#PsGraphSdkLicensing_UserDeleteLicense
+#PsGraphSdkLicensing_UserDisableLicenseAndPlans
+#PsCliLicensing_LicenseGetList
+#PsCliLicensing_UserGetLicenseListByName
+#PsCliLicensing_UserGetLicenseListById
+#PsCliLicensing_UserAddLicenseListById
+#PsCliLicensing_UserDeleteLicenseListById
+
+m365 logout
 Write-Host "Done" 
 
 
