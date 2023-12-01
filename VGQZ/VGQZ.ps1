@@ -314,12 +314,395 @@ function PsCliLicensing_UserDeleteLicenseListById
 }
 #gavdcodeend 017
 
+##-----------------------------------------------------------
+
+##----> Reporting
+
+#gavdcodebegin 018
+Function PsGraphSdkReporting_EmailActivityCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportEmailActivityCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\EmailActivity.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 018
+
+#gavdcodebegin 019
+Function PsGraphSdkReporting_EmailActivityUserCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportEmailActivityUserCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\EmailActivityUser.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 019
+
+#gavdcodebegin 020
+Function PsGraphSdkReporting_EmailActivityUserDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportEmailActivityUserDetail `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\EmailActivityUserDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 020
+
+#gavdcodebegin 021
+Function PsGraphSdkReporting_MailboxUsageDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportMailboxUsageDetail `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\MailboxUsageDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 021
+
+#gavdcodebegin 022
+Function PsGraphSdkReporting_MailboxUsageCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportMailboxUsageMailboxCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\MailboxUsageCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 022
+
+#gavdcodebegin 023
+Function PsGraphSdkReporting_MailboxQuota
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportMailboxUsageQuotaStatusMailboxCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\MailboxQuota.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 023
+
+#gavdcodebegin 024
+Function PsGraphSdkReporting_MailboxStorage
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportMailboxUsageStorage `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\MailboxStorage.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 024
+
+#gavdcodebegin 025
+function PsCliReporting_EmailActivityCountToScreen
+{
+    m365 outlook report mailactivitycounts --period "D90" `
+                    --output "csv"
+}
+#gavdcodeend 025
+
+#gavdcodebegin 026
+function PsCliReporting_EmailActivityCountToFile
+{
+    m365 outlook report mailactivitycounts --period "D90" `
+                    --output "csv" > "C:\Temporary\EmailActivity.csv"
+}
+#gavdcodeend 026
+
+#gavdcodebegin 027
+function PsCliReporting_EmailActivityUserCountToFile
+{
+    m365 outlook report mailactivityusercounts --period "D90" `
+                    --output "csv" > "C:\Temporary\EmailActivityUser.csv"
+}
+#gavdcodeend 027
+
+#gavdcodebegin 028
+function PsCliReporting_EmailActivityUserDetailToFile
+{
+    m365 outlook report mailactivityuserdetail --period "D90" `
+                    --output "csv" > "C:\Temporary\EmailActivityUserDetail.csv"
+}
+#gavdcodeend 028
+
+#gavdcodebegin 029
+function PsCliReporting_MailboxUsageDetailToFile
+{
+    m365 outlook report mailboxusagedetail --period "D90" `
+                    --output "csv" > "C:\Temporary\MailboxUsageDetail.csv"
+}
+#gavdcodeend 029
+
+#gavdcodebegin 030
+function PsCliReporting_MailboxUsageCountToFile
+{
+    m365 outlook report mailboxusagemailboxcount --period "D90" `
+                    --output "csv" > "C:\Temporary\MailboxUsageCount.csv"
+}
+#gavdcodeend 030
+
+#gavdcodebegin 031
+function PsCliReporting_MailboxQuotaToFile
+{
+    m365 outlook report mailboxusagequotastatusmailboxcounts --period "D90" `
+                    --output "csv" > "C:\Temporary\MailboxQuota.csv"
+}
+#gavdcodeend 031
+
+#gavdcodebegin 032
+function PsCliReporting_MailboxStorageToFile
+{
+    m365 outlook report mailboxusagestorage --period "D90" `
+                    --output "csv" > "C:\Temporary\MailboxStorage.csv"
+}
+#gavdcodeend 032
+
+#gavdcodebegin 033
+Function PsGraphSdkReporting_M365ActivationCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365ActivationCount `
+                               -OutFile "C:\Temporary\M365ActivationCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 033
+
+#gavdcodebegin 034
+Function PsGraphSdkReporting_M365ActivationUserCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365ActivationUserCount `
+                               -OutFile "C:\Temporary\M365ActivationUserCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 034
+
+#gavdcodebegin 035
+Function PsGraphSdkReporting_M365ActivationUserDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365ActivationUserDetail `
+                               -OutFile "C:\Temporary\M365ActivationUserDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 035
+
+#gavdcodebegin 036
+Function PsGraphSdkReporting_M365ActiveUserCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365ActiveUserCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\M365ActivUserCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 036
+
+#gavdcodebegin 037
+Function PsGraphSdkReporting_M365ActiveUserDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365ActiveUserDetail `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\M365ActivUserDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 037
+
+#gavdcodebegin 038
+function PsCliReporting_M365ActivationCountToScreen
+{
+    m365 tenant report office365activationcounts
+}
+#gavdcodeend 038
+
+#gavdcodebegin 039
+function PsCliReporting_M365ActivationCountToFile
+{
+    m365 tenant report office365activationcounts `
+                    --output "csv" > "C:\Temporary\M365ActivationCount.csv"
+}
+#gavdcodeend 039
+
+#gavdcodebegin 040
+function PsCliReporting_M365ActivationUserDetailToFile
+{
+    m365 tenant report office365activationsuserdetail `
+                    --output "csv" > "C:\Temporary\M365ActivationUserDetail.csv"
+}
+#gavdcodeend 040
+
+#gavdcodebegin 041
+function PsCliReporting_M365ActivationUserCountToFile
+{
+    m365 tenant report office365activationsusercounts `
+                    --output "csv" > "C:\Temporary\M365ActivationUserCount.csv"
+}
+#gavdcodeend 041
+
+#gavdcodebegin 042
+function PsCliReporting_M365ActiveUserCountToFile
+{
+    m365 tenant report activeusercounts --period "D90" `
+                    --output "csv" > "C:\Temporary\M365ActiveUserCount.csv"
+}
+#gavdcodeend 042
+
+#gavdcodebegin 043
+function PsCliReporting_M365ActiveUserDetailToFile
+{
+    m365 tenant report activeuserdetail  --period "D90" `
+                    --output "csv" > "C:\Temporary\M365ActiveUserDetail.csv"
+}
+#gavdcodeend 043
+
+#gavdcodebegin 044
+Function PsGraphSdkReporting_GroupActivityCount #==> Error in cmd: Gets only reports about Yammer
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365GroupActivityCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\GroupActivityCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 044
+
+#gavdcodebegin 045
+Function PsGraphSdkReporting_GroupActivityDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365GroupActivityDetail `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\GroupActivityDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 045
+
+#gavdcodebegin 046
+Function PsGraphSdkReporting_GroupActivityFileCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365GroupActivityFileCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\GroupActivityFileCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 046
+
+#gavdcodebegin 047
+Function PsGraphSdkReporting_GroupActivityGroupCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365GroupActivityGroupCount `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\GroupActivityGroupCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 047
+
+#gavdcodebegin 048
+Function PsGraphSdkReporting_GroupActivityStorage
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOffice365GroupActivityStorage `
+                               -Period "D90" `
+                               -OutFile "C:\Temporary\GroupActivityStorage.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 048
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 017 ***
+# *** Latest Source Code Index: 048 ***
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
@@ -346,6 +729,39 @@ $spCtx = LoginPsCLI
 #PsCliLicensing_UserGetLicenseListById
 #PsCliLicensing_UserAddLicenseListById
 #PsCliLicensing_UserDeleteLicenseListById
+
+#Reporting
+#PsGraphSdkReporting_EmailActivityCount
+#PsGraphSdkReporting_EmailActivityUserCount
+#PsGraphSdkReporting_EmailActivityUserDetail
+#PsGraphSdkReporting_MailboxUsageDetail
+#PsGraphSdkReporting_MailboxUsageCount
+#PsGraphSdkReporting_MailboxQuota
+#PsGraphSdkReporting_MailboxStorage
+#PsCliReporting_EmailActivityCountToScreen
+#PsCliReporting_EmailActivityCountToFile
+#PsCliReporting_EmailActivityUserCountToFile
+#PsCliReporting_EmailActivityUserDetailToFile
+#PsCliReporting_MailboxUsageDetailToFile
+#PsCliReporting_MailboxUsageCountToFile
+#PsCliReporting_MailboxQuotaToFile
+#PsCliReporting_MailboxStorageToFile
+#PsGraphSdkReporting_M365ActivationCount
+#PsGraphSdkReporting_M365ActivationUserCount
+#PsGraphSdkReporting_M365ActivationUserDetail
+#PsGraphSdkReporting_M365ActiveUserCount
+#PsGraphSdkReporting_M365ActiveUserDetail
+#PsCliReporting_M365ActivationCountToScreen
+#PsCliReporting_M365ActivationCountToFile
+#PsCliReporting_M365ActivationUserDetailToFile
+#PsCliReporting_M365ActivationUserCountToFile
+#PsCliReporting_M365ActiveUserCountToFile
+#PsCliReporting_M365ActiveUserDetailToFile
+#PsGraphSdkReporting_GroupActivityCount  #==> Error in cmd: Gets only reports about Yammer
+#PsGraphSdkReporting_GroupActivityDetail
+#PsGraphSdkReporting_GroupActivityFileCount
+#PsGraphSdkReporting_GroupActivityGroupCount
+#PsGraphSdkReporting_GroupActivityStorage
 
 m365 logout
 Write-Host "Done" 
