@@ -698,11 +698,564 @@ Function PsGraphSdkReporting_GroupActivityStorage
 }
 #gavdcodeend 048
 
+#gavdcodebegin 049
+Function PsGraphSdkReporting_OneDriveActivityFileCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOneDriveActivityFileCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\OneDriveActivityFileCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 049
+
+#gavdcodebegin 050
+Function PsGraphSdkReporting_OneDriveActivityUserCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOneDriveActivityUserCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\OneDriveActivityUserCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 050
+
+#gavdcodebegin 051
+Function PsGraphSdkReporting_OneDriveActivityUserDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOneDriveActivityUserDetail `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\OneDriveActivityUserDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 051
+
+#gavdcodebegin 052
+Function PsGraphSdkReporting_OneDriveUsageAccountCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOneDriveUsageAccountCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\OneDriveUsageAccountCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 052
+
+#gavdcodebegin 053
+Function PsGraphSdkReporting_OneDriveUsageAccountDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOneDriveUsageAccountDetail `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\OneDriveUsageAccountDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 053
+
+#gavdcodebegin 054
+Function PsGraphSdkReporting_OneDriveUsageFileCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOneDriveUsageFileCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\OneDriveUsageFileCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 054
+
+#gavdcodebegin 055
+Function PsGraphSdkReporting_OneDriveUsageStorage
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportOneDriveUsageStorage `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\OneDriveUsageStorage.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 055
+
+#gavdcodebegin 056
+function PsCliReporting_OneDriveActivityFileCounts
+{
+    m365 onedrive report activityfilecounts --period "D90"
+}
+#gavdcodeend 056
+
+#gavdcodebegin 057
+function PsCliReporting_OneDriveActivityFileCountsToFile
+{
+    m365 onedrive report activityfilecounts --period "D90" `
+                    --output "csv" > "C:\Temporary\OneDriveActivityFileCounts.csv"
+}
+#gavdcodeend 057
+
+#gavdcodebegin 058
+function PsCliReporting_OneDriveActivityUserCountsToFile
+{
+    m365 onedrive report activityusercounts --period "D90" `
+                    --output "csv" > "C:\Temporary\OneDriveActivityUserCounts.csv"
+}
+#gavdcodeend 058
+
+#gavdcodebegin 059
+function PsCliReporting_OneDriveActivityUserDetailToFile
+{
+    m365 onedrive report activityuserdetail --period "D90" `
+                    --output "csv" > "C:\Temporary\OneDriveActivityUserDetail.csv"
+}
+#gavdcodeend 059
+
+#gavdcodebegin 060
+function PsCliReporting_OneDriveActivityUserDetailByDateToFile
+{
+    m365 onedrive report activityuserdetail --date "2023-12-16" `
+                    --output "csv" > "C:\Temporary\OneDriveActivityUserDetailByDate.csv"
+}
+#gavdcodeend 060
+
+#gavdcodebegin 061
+function PsCliReporting_OneDriveUsageAccountCountsToFile
+{
+    m365 onedrive report usageaccountcounts --period "D90" `
+                    --output "csv" > "C:\Temporary\OneDriveUsageAccountCounts.csv"
+}
+#gavdcodeend 061
+
+#gavdcodebegin 062
+function PsCliReporting_OneDriveUsageAccountDetailToFile
+{
+    m365 onedrive report usageaccountdetail --period "D90" `
+                    --output "csv" > "C:\Temporary\OneDriveUsageAccountDetail.csv"
+}
+#gavdcodeend 062
+
+#gavdcodebegin 063
+function PsCliReporting_OneDriveUsageFileCountsToFile
+{
+    m365 onedrive report usagefilecounts --period "D90" `
+                    --output "csv" > "C:\Temporary\OneDriveUsageFileCounts.csv"
+}
+#gavdcodeend 063
+
+#gavdcodebegin 064
+function PsCliReporting_OneDriveUsageStorageToFile
+{
+    m365 onedrive report usagestorage --period "D90" `
+                    --output "csv" > "C:\Temporary\OneDriveUsageStorage.csv"
+}
+#gavdcodeend 064
+
+#gavdcodebegin 065
+Function PsGraphSdkReporting_SharePointActivityFileCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointActivityFileCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointActivityFileCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 065
+
+#gavdcodebegin 066
+Function PsGraphSdkReporting_SharePointActivityPage
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointActivityPage `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointActivityPage.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 066
+
+#gavdcodebegin 067
+Function PsGraphSdkReporting_SharePointActivityUserCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointActivityUserCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointActivityUserCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 067
+
+#gavdcodebegin 068
+Function PsGraphSdkReporting_SharePointActivityUserDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointActivityUserDetail `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointActivityUserDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 068
+
+#gavdcodebegin 069
+Function PsGraphSdkReporting_SharePointSiteUsageDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointSiteUsageDetail `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointSiteUsageDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 069
+
+#gavdcodebegin 070
+Function PsGraphSdkReporting_SharePointSiteUsageFileCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointSiteUsageFileCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointSiteUsageFileCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 070
+
+#gavdcodebegin 071
+Function PsGraphSdkReporting_SharePointSiteUsagePage
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointSiteUsagePage `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointSiteUsagePage.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 071
+
+#gavdcodebegin 072
+Function PsGraphSdkReporting_SharePointSiteUsageSiteCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointSiteUsageSiteCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointSiteUsageSiteCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 072
+
+#gavdcodebegin 073
+Function PsGraphSdkReporting_SharePointSiteUsageStorage
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportSharePointSiteUsageStorage `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\SharePointSiteUsageStorage.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 073
+
+#gavdcodebegin 074
+function PsCliReporting_SharePointActivityFileCount
+{
+    m365 spo report activityfilecounts --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointActivityFileCount.csv"
+}
+#gavdcodeend 074
+
+#gavdcodebegin 075
+function PsCliReporting_SharePointActivityPages
+{
+    m365 spo report activitypages --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointActivityPages.csv"
+}
+#gavdcodeend 075
+
+#gavdcodebegin 076
+function PsCliReporting_SharePointActivityUserCounts
+{
+    m365 spo report activityusercounts --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointActivityUserCounts.csv"
+}
+#gavdcodeend 076
+
+#gavdcodebegin 077
+function PsCliReporting_SharePointActivityUserDetail
+{
+    m365 spo report activityuserdetail --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointActivityUserDetail.csv"
+}
+#gavdcodeend 077
+
+#gavdcodebegin 078
+function PsCliReporting_SharePointSiteUsageDetail
+{
+    m365 spo report siteusagedetail --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointSiteusageDetail.csv"
+}
+#gavdcodeend 078
+
+#gavdcodebegin 079
+function PsCliReporting_SharePointSiteUsageFileCounts
+{
+    m365 spo report siteusagefilecounts --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointSiteUsageFileCounts.csv"
+}
+#gavdcodeend 079
+
+#gavdcodebegin 080
+function PsCliReporting_SharePointSiteSiteUsagePages
+{
+    m365 spo report siteusagepages --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointSiteUsagePages.csv"
+}
+#gavdcodeend 080
+
+#gavdcodebegin 081
+function PsCliReporting_SharePointSiteUsageSiteCounts
+{
+    m365 spo report siteusagesitecounts --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointSiteUsageSiteCounts.csv"
+}
+#gavdcodeend 081
+
+#gavdcodebegin 082
+function PsCliReporting_SharePointSiteUsageStorage
+{
+    m365 spo report siteusagestorage --period "D90" `
+                    --output "csv" > "C:\Temporary\SharePointSiteUsageStorage.csv"
+}
+#gavdcodeend 082
+
+#gavdcodebegin 083
+Function PsGraphSdkReporting_TeamActivityCount   #==> Does not exist
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportTeamActivityCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\TeamActivityCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 083
+
+#gavdcodebegin 084
+Function PsGraphSdkReporting_TeamActivityDetail   #==> Does not exist
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportTeamActivityDetail `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\TeamActivityDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 084
+
+#gavdcodebegin 085
+Function PsGraphSdkReporting_TeamActivityDistributionCount   #==> Does not exist
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportTeamActivityDistributionCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\TeamActivityDistributionCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 085
+
+#gavdcodebegin 086
+Function PsGraphSdkReporting_TeamCount   #==> Does not exist
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportTeamCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\TeamCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 086
+
+#gavdcodebegin 087
+Function PsGraphSdkReporting_TeamUserActivityCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportTeamUserActivityCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\TeamUserActivityCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 087
+
+#gavdcodebegin 088
+Function PsGraphSdkReporting_TeamUserActivityUserCount
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportTeamUserActivityUserCount `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\TeamUserActivityUserCount.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 088
+
+#gavdcodebegin 089
+Function PsGraphSdkReporting_TeamUserActivityUserDetail
+{
+	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgReportTeamUserActivityUserDetail `
+							   -Period "D90" `
+							   -OutFile "C:\Temporary\TeamUserActivityUserDetail.csv"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 089
+
+#gavdcodebegin 090
+function PsCliReporting_TeamDirectRoutingCalls #==> Needs CallRecords.Read.All permission
+{
+    m365 teams report directroutingcalls --debug `
+					--fromDateTime 2023-12-01 --toDateTime 2023-12-17 `
+                    --output "csv" > "C:\Temporary\DirectRoutingCalls.csv"
+}
+#gavdcodeend 090
+
+#gavdcodebegin 091
+function PsCliReporting_TeamPstnCalls #==> Needs CallRecords.Read.All permission
+{
+    m365 teams report pstncalls `
+					--fromDateTime 2023-12-01 --toDateTime 2023-12-17 `
+                    --output "csv" > "C:\Temporary\PstnCalls.csv"
+}
+#gavdcodeend 091
+
+#gavdcodebegin 092
+function PsCliReporting_TeamUserActivityCounts
+{
+    m365 teams report useractivitycounts --period "D90" `
+                    --output "csv" > "C:\Temporary\UserActivityCounts.csv"
+}
+#gavdcodeend 092
+
+#gavdcodebegin 093
+function PsCliReporting_TeamUserActivityUserCounts
+{
+    m365 teams report useractivityusercounts --period "D90" `
+                    --output "csv" > "C:\Temporary\UserActivityUserCounts.csv"
+}
+#gavdcodeend 093
+
+#gavdcodebegin 094
+function PsCliReporting_TeamUserActivityUserDetail
+{
+    m365 teams report useractivityuserdetail --period "D90" `
+                    --output "csv" > "C:\Temporary\UserActivityUserDetail.csv"
+}
+#gavdcodeend 094
+
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 048 ***
+# *** Latest Source Code Index: 094 ***
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
@@ -762,6 +1315,52 @@ $spCtx = LoginPsCLI
 #PsGraphSdkReporting_GroupActivityFileCount
 #PsGraphSdkReporting_GroupActivityGroupCount
 #PsGraphSdkReporting_GroupActivityStorage
+#PsGraphSdkReporting_OneDriveActivityFileCount
+#PsGraphSdkReporting_OneDriveActivityUserCount
+#PsGraphSdkReporting_OneDriveActivityUserDetail
+#PsGraphSdkReporting_OneDriveUsageAccountCount
+#PsGraphSdkReporting_OneDriveUsageAccountDetail
+#PsGraphSdkReporting_OneDriveUsageFileCount
+#PsGraphSdkReporting_OneDriveUsageStorage
+#PsCliReporting_OneDriveActivityFileCounts
+#PsCliReporting_OneDriveActivityFileCountsToFile
+#PsCliReporting_OneDriveActivityUserCountsToFile
+#PsCliReporting_OneDriveActivityUserDetailToFile
+#PsCliReporting_OneDriveActivityUserDetailByDateToFile
+#PsCliReporting_OneDriveUsageAccountCountsToFile
+#PsCliReporting_OneDriveUsageAccountDetailToFile
+#PsCliReporting_OneDriveUsageFileCountsToFile
+#PsCliReporting_OneDriveUsageStorageToFile
+#PsGraphSdkReporting_SharePointActivityFileCount
+#PsGraphSdkReporting_SharePointActivityPage
+#PsGraphSdkReporting_SharePointActivityUserCount
+#PsGraphSdkReporting_SharePointActivityUserDetail
+#PsGraphSdkReporting_SharePointSiteUsageDetail
+#PsGraphSdkReporting_SharePointSiteUsageFileCount
+#PsGraphSdkReporting_SharePointSiteUsagePage
+#PsGraphSdkReporting_SharePointSiteUsageSiteCount
+#PsGraphSdkReporting_SharePointSiteUsageStorage
+#PsCliReporting_SharePointActivityFileCount
+#PsCliReporting_SharePointActivityPages
+#PsCliReporting_SharePointActivityUserCounts
+#PsCliReporting_SharePointActivityUserDetail
+#PsCliReporting_SharePointSiteUsageDetail
+#PsCliReporting_SharePointSiteUsageFileCounts
+#PsCliReporting_SharePointSiteSiteUsagePages
+#PsCliReporting_SharePointSiteUsageSiteCounts
+#PsCliReporting_SharePointSiteUsageStorage
+#PsGraphSdkReporting_TeamActivityCount
+#PsGraphSdkReporting_TeamActivityDetail
+#PsGraphSdkReporting_TeamActivityDistributionCount
+#PsGraphSdkReporting_TeamCount
+#PsGraphSdkReporting_TeamUserActivityCount
+#PsGraphSdkReporting_TeamUserActivityUserCount
+#PsGraphSdkReporting_TeamUserActivityUserDetail
+#PsCliReporting_TeamDirectRoutingCalls
+#PsCliReporting_TeamPstnCalls
+#PsCliReporting_TeamUserActivityCounts
+#PsCliReporting_TeamUserActivityUserCounts
+#PsCliReporting_TeamUserActivityUserDetail
 
 m365 logout
 Write-Host "Done" 
