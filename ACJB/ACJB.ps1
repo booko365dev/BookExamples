@@ -1,4 +1,12 @@
 ﻿
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
 #gavdcodebegin 001
 Function LoginPsCsom  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
@@ -89,7 +97,7 @@ Function LoginPsPnPPowerShellInteractive
 #gavdcodeend 021
 
 #gavdcodebegin 014
-Function LoginPsCLIWithAccPw
+Function PsCli_LoginWithAccPw
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
@@ -98,7 +106,7 @@ Function LoginPsCLIWithAccPw
 #gavdcodeend 014
 
 #gavdcodebegin 023
-Function LoginPsCLIWithSecret
+Function PsCli_LoginWithSecret
 {
 	m365 login --authType secret `
 			   --tenant $configFile.appsettings.TenantName `
@@ -108,7 +116,7 @@ Function LoginPsCLIWithSecret
 #gavdcodeend 023
 
 #gavdcodebegin 025
-Function LoginPsCLIWithCertificate
+Function PsCli_LoginWithCertificate
 {
 	m365 login --authType certificate `
 			   --tenant $configFile.appsettings.TenantName `
@@ -117,6 +125,11 @@ Function LoginPsCLIWithCertificate
 			   --password $configFile.appsettings.CertificateFilePw
 }
 #gavdcodeend 025
+
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 004
 Function Invoke-RestSPO #*** LEGACY CODE ***  
@@ -461,9 +474,9 @@ Function PsPnpRestPostExample
 #gavdcodeend 013
 
 #gavdcodebegin 015
-Function PsCliExampleWithAccPw
+Function PsCli_ExampleWithAccPw
 {
-	LoginPsCLIWithAccPw
+	PsCli_LoginWithAccPw
 	
 	m365 spo site list --type TeamSite
 
@@ -472,9 +485,9 @@ Function PsCliExampleWithAccPw
 #gavdcodeend 015
 
 #gavdcodebegin 024
-Function PsCliExampleWithSecret
+Function PsCli_ExampleWithSecret
 {
-	LoginPsCLIWithSecret
+	PsCli_LoginWithSecret
 	
 	m365 teams team list
 
@@ -483,9 +496,9 @@ Function PsCliExampleWithSecret
 #gavdcodeend 024
 
 #gavdcodebegin 026
-Function PsCliExampleWithCertificate
+Function PsCli_ExampleWithCertificate
 {
-	LoginPsCLIWithCertificate
+	PsCli_LoginWithCertificate
 	
 	m365 spo tenant settings list
 
@@ -493,9 +506,85 @@ Function PsCliExampleWithCertificate
 }
 #gavdcodeend 026
 
-#----------------------------------------------------------------------------------------
+#gavdcodebegin 027
+Function PsCli_GetRoleAssigmentsById
+{
+	PsCli_LoginWithAccPw
+	
+	m365 entra approleassignment list --appId "377568de-bf5d-4ea6-b4d7-b8e6dac488c9"
 
-# Running the Functions
+	m365 logout
+}
+#gavdcodeend 027
+
+#gavdcodebegin 028
+Function PsCli_GetRoleAssigmentsByName
+{
+	PsCli_LoginWithAccPw
+	
+	m365 entra approleassignment list --appDisplayName "TestAppReg"
+
+	m365 logout
+}
+#gavdcodeend 028
+
+#gavdcodebegin 029
+Function PsCli_AddRoleAssigments
+{
+	PsCli_LoginWithAccPw
+	
+	m365 entra approleassignment add --appId "377568de-bf5d-4ea6-b4d7-b8e6dac488c9" `
+									 --resource "Microsoft Graph" `
+									 --scopes "Sites.FullControl.All"
+
+	m365 logout
+}
+#gavdcodeend 029
+
+#gavdcodebegin 030
+Function PsCli_DeleteRoleAssigments
+{
+	PsCli_LoginWithAccPw
+	
+	m365 entra approleassignment remove --appId "377568de-bf5d-4ea6-b4d7-b8e6dac488c9" `
+									    --resource "Microsoft Graph" `
+									    --scopes "Sites.FullControl.All" `
+										--force
+
+	m365 logout
+}
+#gavdcodeend 030
+
+#gavdcodebegin 031
+Function PsCli_GetAccessTokenGraph
+{
+	PsCli_LoginWithAccPw
+	
+	m365 util accesstoken get --resource graph
+
+	m365 logout
+}
+#gavdcodeend 031
+
+#gavdcodebegin 032
+Function PsCli_GetAccessTokenSharePoint
+{
+	PsCli_LoginWithAccPw
+	
+	m365 spo set --url "https://[domain].sharepoint.com"
+	m365 util accesstoken get --resource sharepoint
+
+	m365 logout
+}
+#gavdcodeend 032
+
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
+
+# *** Latest Source Code Index: 032 ***
+
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
@@ -527,8 +616,14 @@ Function PsCliExampleWithCertificate
 #PsPnpRestPostExample
 
 ##==> CLI
-#PsCliExampleWithAccPw
-#PsCliExampleWithSecret
-#PsCliExampleWithCertificate
+#PsCli_ExampleWithAccPw
+#PsCli_ExampleWithSecret
+#PsCli_ExampleWithCertificate
+#PsCli_GetRoleAssigmentsById
+#PsCli_GetRoleAssigmentsByName
+#PsCli_AddRoleAssigments
+#PsCli_DeleteRoleAssigments
+#PsCli_GetAccessTokenGraph
+#PsCli_GetAccessTokenSharePoint
 
 Write-Host "Done"
