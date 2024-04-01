@@ -1,4 +1,4 @@
-<!--gavdcodebegin 05-->
+﻿<!--gavdcodebegin 005-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Privacy.aspx.cs" 
     Inherits="JHCW.Privacy" %>
 
@@ -16,6 +16,5 @@
     </form>
 </body>
 </html>
-<!--gavdcodeend 05-->
-
+<!--gavdcodeend 005-->
 

@@ -26,7 +26,8 @@ namespace JHCW.Controllers
             return "value";
         }
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
+        // ATTENTION: Replaced by DSPG
         [HttpPost]
         public async Task<HttpResponseMessage> Post([FromBody] Activity myActivity)
         {
@@ -36,9 +37,10 @@ namespace JHCW.Controllers
                 ? Request.CreateResponse<ComposeExtensionResponse>(myResponse)
                 : new HttpResponseMessage(HttpStatusCode.OK);
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
+        // ATTENTION: Replaced by DSPG
         private async Task<ComposeExtensionResponse> CreateCard(Activity myActivity)
         {
             ComposeExtensionResponse rtnResponse = null;
@@ -83,9 +85,10 @@ namespace JHCW.Controllers
 
             return rtnResponse;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
-        //gavdcodebegin 03
+        //gavdcodebegin 003
+        // ATTENTION: Replaced by DSPG
         private async Task<string> GetWikipediaSnippet(string WordToQuery)
         {
             string strReturn = string.Empty;
@@ -111,7 +114,7 @@ namespace JHCW.Controllers
             strReturn = myResult.query.search[0].snippet;
             return strReturn;
         }
-        //gavdcodeend 03
+        //gavdcodeend 003
 
         // DELETE: api/Messages/5
         public void Delete(int id)
@@ -119,7 +122,8 @@ namespace JHCW.Controllers
         }
     }
 
-    //gavdcodebegin 04
+    //gavdcodebegin 004
+    // ATTENTION: Replaced by DSPG
     public class Wikipedia
     {
         public string batchcomplete { get; set; }
@@ -154,5 +158,5 @@ namespace JHCW.Controllers
         public string snippet { get; set; }
         public DateTime timestamp { get; set; }
     }
-    //gavdcodeend 04
+    //gavdcodeend 004
 }
