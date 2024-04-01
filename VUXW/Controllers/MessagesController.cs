@@ -26,7 +26,8 @@ namespace VUXW.Controllers
             return "value";
         }
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
+        // ATTENTION: Replaced by HUWY
         [HttpPost]
         public async Task<HttpResponseMessage> Post([FromBody]Activity myActivity)
         {
@@ -35,9 +36,10 @@ namespace VUXW.Controllers
                 ? Request.CreateResponse<ComposeExtensionResponse>(myResponse)
                 : new HttpResponseMessage(HttpStatusCode.OK);
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
+        // ATTENTION: Replaced by HUWY
         private static ComposeExtensionResponse CreateCard(Activity myActivity)
         {
             ComposeExtensionResponse rtnResponse = null;
@@ -71,7 +73,7 @@ namespace VUXW.Controllers
 
             return rtnResponse;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
         // PUT: api/Messages/5
         public void Put(int id, [FromBody]string value)

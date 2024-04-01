@@ -1,4 +1,5 @@
-<!--gavdcodebegin 04-->
+﻿<!--gavdcodebegin 004-->
+<!-- ATTENTION: Replaced by HUWY -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Terms.aspx.cs" 
     Inherits="VUXW.Terms" %>
 
@@ -15,5 +16,4 @@
     </form>
 </body>
 </html>
-<!--gavdcodeend 04-->
-
+<!--gavdcodeend 004-->

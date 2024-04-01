@@ -1,4 +1,5 @@
-<!--gavdcodebegin 03-->
+﻿<!--gavdcodebegin 003-->
+<!-- ATTENTION: Replaced by HUWY -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Privacy.aspx.cs" 
     Inherits="VUXW.Privacy" %>
 
@@ -15,5 +16,4 @@
     </form>
 </body>
 </html>
-<!--gavdcodeend 03-->
-
+<!--gavdcodeend 003-->
