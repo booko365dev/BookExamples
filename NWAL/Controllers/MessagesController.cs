@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -24,9 +23,8 @@ namespace NWAL.Controllers
         public override Task ExecuteAsync(string TheReceiver,
                                           WebHookHandlerContext TheContext)
         {
-            string myAction = TheContext.Actions.First();
-            string myBodyFormated = TheContext.Data.ToString();
-            dynamic myBodyObj = JsonConvert.DeserializeObject(myBodyFormated);
+            string myBodyFormatted = TheContext.Data.ToString();
+            dynamic myBodyObj = JsonConvert.DeserializeObject(myBodyFormatted);
 
             bool myValidationResult = ValidationIsOk(TheContext);
 
@@ -57,9 +55,8 @@ namespace NWAL.Controllers
         //gavdcodebegin 003
         static bool ValidationIsOk(WebHookHandlerContext TheContext)
         {
-            bool rtnBool = false;
             string myHMAC_Calculated = string.Empty;
-            string signingKey = "LtHurznxPxnvpew5GRMNooIuF6kpfzjxwYpXnJVEONo=";
+            string signingKey = "BVK3o93NuB6y3BA5J5k+mBR9n+mG+qGDWbtcxHcrUYg=";
 
             var myHMACFromAuthorization = TheContext.Request.Headers.Authorization;
             string myHMAC_Authorization = myHMACFromAuthorization.Parameter;
@@ -75,7 +72,7 @@ namespace NWAL.Controllers
                 myHMAC_Calculated = Convert.ToBase64String(myDataHashBytes);
             }
 
-            rtnBool = myHMAC_Authorization.Equals(myHMAC_Calculated);
+            bool rtnBool = myHMAC_Authorization.Equals(myHMAC_Calculated);
 
             return rtnBool;
         }
