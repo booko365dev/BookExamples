@@ -6,6 +6,7 @@ namespace ERUU
     class Program
     {
         //gavdcodebegin 001
+        // ATTENTION: Replaced by IMUF
         static void Main(string[] args)
         {
             string myCard = CreateCard();
@@ -14,6 +15,7 @@ namespace ERUU
         //gavdcodeend 001
 
         //gavdcodebegin 002
+        // ATTENTION: Replaced by IMUF
         static string CreateCard()
         {
             string picUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/" +
@@ -85,6 +87,7 @@ namespace ERUU
         //gavdcodeend 002
 
         //gavdcodebegin 003
+        // ATTENTION: Replaced by IMUF
         static void PostCard(string theCard)
         {
             string WebhookUrl = "https://outlook.office.com/webhook/3a0c86a6-4bb9-" +
