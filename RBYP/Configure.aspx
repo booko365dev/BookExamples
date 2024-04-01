@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 005-->
+<!--ATTENTION: Replaced by TZGQ--> 
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Configure.aspx.cs" 
     Inherits="RBYP.Configure" %>
 

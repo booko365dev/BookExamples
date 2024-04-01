@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 006-->
+<!--ATTENTION: Replaced by TZGQ--> 
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Privacy.aspx.cs" Inherits="RBYP.Privacy" %>
 
 <!DOCTYPE html>

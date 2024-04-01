@@ -1,4 +1,5 @@
 ﻿//gavdcodebegin 008
+//Replaced by TZGQ
 (function () {
   'use strict';
 

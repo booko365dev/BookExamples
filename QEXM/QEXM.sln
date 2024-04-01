@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QEXM", "QEXM.csproj", "{9EF32B96-C5AF-4B45-8D0C-062C3B4F7944}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9EF32B96-C5AF-4B45-8D0C-062C3B4F7944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF32B96-C5AF-4B45-8D0C-062C3B4F7944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF32B96-C5AF-4B45-8D0C-062C3B4F7944}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9EF32B96-C5AF-4B45-8D0C-062C3B4F7944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF32B96-C5AF-4B45-8D0C-062C3B4F7944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EF32B96-C5AF-4B45-8D0C-062C3B4F7944}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D463EC76-2A8C-42DD-B555-0E0AB2DA64D2}
+	EndGlobalSection
+EndGlobal

@@ -9,6 +9,7 @@ namespace RBYP
         }
 
         //gavdcodebegin 004
+        //ATTENTION: Replaced by TZGQ 
         protected void btnGenerateRandomString_Click(object sender, EventArgs e)
         {
             lblRandomString.Text =

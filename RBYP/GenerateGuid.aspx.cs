@@ -9,6 +9,7 @@ namespace RBYP
         }
 
         //gavdcodebegin 002
+        //ATTENTION: Replaced by TZGQ 
         protected void btnGenerateGuid_Click(object sender, EventArgs e)
         {
             lblNewGuid.Text = Guid.NewGuid().ToString();

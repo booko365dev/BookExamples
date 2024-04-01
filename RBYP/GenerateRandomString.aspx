@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 003-->
+<!--ATTENTION: Replaced by TZGQ--> 
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GenerateRandomString.aspx.cs" 
     Inherits="RBYP.GenerateRandomString" %>
 
