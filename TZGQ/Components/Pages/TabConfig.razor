@@ -1,0 +1,36 @@
+<!--gavdcodebegin 002-->
+@page "/config"
+@inject MicrosoftTeams MicrosoftTeams;
+@inject NavigationManager NavigationManager;
+
+<div class="config page" id ="tab config">
+    <h1>Tab Configuration</h1>
+    <p>
+        This is where you will add your tab configuration options the user 
+        can choose when the tab is added to your team/group chat.
+    </p>
+    <button onclick="ActivateSaveButton()">
+        Save the configurations and activate the Save button</button>
+</div>
+
+<script>
+    function ActivateSaveButton() {
+        ensureTeamsSdkInitialized().then((iniResult) => {
+            microsoftTeams.pages.config.setConfig({
+                suggestedDisplayName: "My book Channel Tab",
+                entityId: "1234-5678-90",
+                contentUrl: "https://localhost:44302",
+                websiteUrl: "https://guitaca.com",
+                removeUrl: ""
+                });
+            microsoftTeams.pages.config.setValidityState(true);
+        });
+    }
+
+    async function ensureTeamsSdkInitialized() {
+        let iniResult = await microsoftTeams.app.initialize();
+        return iniResult;
+    }
+
+</script>
+<!--gavdcodeend 002-->
