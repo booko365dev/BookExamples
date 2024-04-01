@@ -1,0 +1,14 @@
+﻿<!--gavdcodebegin 001-->
+<div style="margin: 0 auto; display: block; width: 100%;">
+    <h2>Generate a new GUID</h2>
+    <div>
+        <p>
+            This is a new GUID: <b>@newGuid</b>
+        </p>
+    </div>
+</div>
+
+@code {
+    public string newGuid = Guid.NewGuid().ToString();
+}
+<!--gavdcodeend 001-->
