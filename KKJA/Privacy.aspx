@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 003-->
+<!-- ATTENTION: Replaced by LZWD -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Privacy.aspx.cs" 
     Inherits="KKJA.Privacy" %>
 

@@ -9,6 +9,7 @@ namespace KKJA
         }
 
         //gavdcodebegin 002
+        // ATTENTION: Replaced by LZWD 
         protected void btnGenerateGuid_Click(object sender, EventArgs e)
         {
             lblNewGuid.Text = Guid.NewGuid().ToString();

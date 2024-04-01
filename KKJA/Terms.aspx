@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 004-->
+<!-- ATTENTION: Replaced by LZWD -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Terms.aspx.cs" Inherits="KKJA.Terms" %>
 
 <!DOCTYPE html>

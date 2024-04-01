@@ -1,4 +1,5 @@
 //gavdcodebegin 001
+// NOT USED ANYMORE
 import { Version } from '@microsoft/sp-core-library';
 import * as microsoftTeams from '@microsoft/teams-js';
 import {
@@ -17,6 +18,7 @@ export interface ISpFxAsTeamsTabWebPartProps {
 }
 
 //gavdcodebegin 002
+// NOT USED ANYMORE
 export default class SpFxAsTeamsTabWebPart extends BaseClientSideWebPart<ISpFxAsTeamsTabWebPartProps> {
   private myTeamsContext: microsoftTeams.Context;
 
@@ -35,6 +37,7 @@ protected onInit(): Promise<any> {
 //gavdcodeend 002
 
 //gavdcodebegin 003
+// NOT USED ANYMORE
   public render(): void {
 
     let webpartContext: string = '';
