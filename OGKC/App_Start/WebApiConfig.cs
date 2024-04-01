@@ -6,7 +6,8 @@ namespace OGKC
 {
     public static class WebApiConfig
     {
-        //gavdcodebegin 04
+        //gavdcodebegin 004
+        // ATTENTION: Replaced by QEXM
         public static void Register(HttpConfiguration config)
         {
             // Json settings
@@ -34,6 +35,6 @@ namespace OGKC
                 defaults: new { id = RouteParameter.Optional }
             );
         }
-        //gavdcodeend 04
+        //gavdcodeend 004
     }
 }

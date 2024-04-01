@@ -25,7 +25,8 @@ namespace OGKC.Controllers
             return "value";
         }
 
-        //gavdcodebegin 01
+        //gavdcodebegin 001
+        // ATTENTION: Replaced by QEXM
         [HttpPost]
         [BotAuthentication]
         public async Task<HttpResponseMessage> Post([FromBody] Activity myActivity)
@@ -64,9 +65,10 @@ namespace OGKC.Controllers
                 return new HttpResponseMessage(HttpStatusCode.Accepted);
             }
         }
-        //gavdcodeend 01
+        //gavdcodeend 001
 
-        //gavdcodebegin 02
+        //gavdcodebegin 002
+        // ATTENTION: Replaced by QEXM
         private async Task<string> GetWikipediaSnippet(string WordToQuery)
         {
             string strReturn = string.Empty;
@@ -92,7 +94,7 @@ namespace OGKC.Controllers
             strReturn = myResult.query.search[0].snippet;
             return strReturn;
         }
-        //gavdcodeend 02
+        //gavdcodeend 002
 
         // PUT: api/Messages/5
         public void Put(int id, [FromBody]string value)
@@ -105,7 +107,8 @@ namespace OGKC.Controllers
         }
     }
 
-    //gavdcodebegin 03
+    //gavdcodebegin 003
+    // ATTENTION: Replaced by QEXM
     public class Wikipedia
     {
         public string batchcomplete { get; set; }
@@ -140,5 +143,5 @@ namespace OGKC.Controllers
         public string snippet { get; set; }
         public DateTime timestamp { get; set; }
     }
-    //gavdcodeend 03
+    //gavdcodeend 003
 }

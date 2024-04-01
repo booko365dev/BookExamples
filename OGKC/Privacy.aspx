@@ -1,4 +1,5 @@
-<!--gavdcodebegin 06-->
+﻿<!--gavdcodebegin 006-->
+<!-- ATTENTION: Replaced by QEXM-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Privacy.aspx.cs" 
          Inherits="OGKC.Privacy" %>
 
@@ -16,5 +17,4 @@
     </form>
 </body>
 </html>
-<!--gavdcodeend 06-->
-
+<!--gavdcodeend 006-->

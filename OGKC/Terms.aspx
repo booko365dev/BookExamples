@@ -1,4 +1,5 @@
-<!--gavdcodebegin 07-->
+﻿<!--gavdcodebegin 007-->
+<!-- ATTENTION: Replaced by QEXM-->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Terms.aspx.cs" 
          Inherits="OGKC.Terms" %>
 
@@ -16,5 +17,4 @@
     </form>
 </body>
 </html>
-<!--gavdcodeend 07-->
-
+<!--gavdcodeend 007-->
