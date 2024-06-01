@@ -8,7 +8,7 @@
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function LoginPsCsom  #*** USE POWERSHELL 5.x, NOT 7.x ***
+function PsSpCsom_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -24,7 +24,7 @@ Function LoginPsCsom  #*** USE POWERSHELL 5.x, NOT 7.x ***
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function LoginPsPSO  #*** USE POWERSHELL 5.x, NOT 7.x ***
+function PsSpPso_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -36,7 +36,7 @@ Function LoginPsPSO  #*** USE POWERSHELL 5.x, NOT 7.x ***
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function LoginPsPnP #*** LEGACY CODE *** 
+function PsSpPnP_Login #*** LEGACY CODE *** 
 {
     # ATTENTION: Using the deprecated PnP-PowerShell module
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -49,7 +49,7 @@ Function LoginPsPnP #*** LEGACY CODE ***
 #gavdcodeend 003
 
 #gavdcodebegin 016
-Function LoginPsPnPPowerShell
+function PsSpPnP_LoginWithAccPw
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -61,7 +61,7 @@ Function LoginPsPnPPowerShell
 #gavdcodeend 016
 
 #gavdcodebegin 018
-Function LoginPsPnPPowerShellCertificate
+function PsSpPnP_LoginWithCertificate
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			"myStrongPassword" -AsPlainText -Force
@@ -75,7 +75,7 @@ Function LoginPsPnPPowerShellCertificate
 #gavdcodeend 018
 
 #gavdcodebegin 020
-Function LoginPsPnPPowerShellCertificateBase64
+function PsSpPnP_LoginWithCertificateBase64
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			"myStrongPassword" -AsPlainText -Force
@@ -89,7 +89,7 @@ Function LoginPsPnPPowerShellCertificateBase64
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function LoginPsPnPPowerShellInteractive
+function PsSpPnP_LoginWithInteraction
 {
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
 					  -Credentials (Get-Credential)
@@ -97,7 +97,7 @@ Function LoginPsPnPPowerShellInteractive
 #gavdcodeend 021
 
 #gavdcodebegin 014
-Function PsCli_LoginWithAccPw
+function PsCliM365_LoginWithAccPw
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
@@ -106,7 +106,7 @@ Function PsCli_LoginWithAccPw
 #gavdcodeend 014
 
 #gavdcodebegin 023
-Function PsCli_LoginWithSecret
+function PsCliM365_LoginWithSecret
 {
 	m365 login --authType secret `
 			   --tenant $configFile.appsettings.TenantName `
@@ -116,7 +116,7 @@ Function PsCli_LoginWithSecret
 #gavdcodeend 023
 
 #gavdcodebegin 025
-Function PsCli_LoginWithCertificate
+function PsCliM365_LoginWithCertificate
 {
 	m365 login --authType certificate `
 			   --tenant $configFile.appsettings.TenantName `
@@ -132,7 +132,7 @@ Function PsCli_LoginWithCertificate
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 004
-Function Invoke-RestSPO #*** LEGACY CODE ***  
+function PsSpSpo_InvokeRest #*** LEGACY CODE ***  
 {
 	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	Param (
@@ -242,7 +242,7 @@ Function Invoke-RestSPO #*** LEGACY CODE ***
 #gavdcodeend 004
  
 #gavdcodebegin 005
-Function Get-SPOContextInfo #*** LEGACY CODE *** 
+function PsSpSpo_GetContextInfo #*** LEGACY CODE *** 
 {
 	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	Param(
@@ -257,10 +257,10 @@ Function Get-SPOContextInfo #*** LEGACY CODE ***
 	)
    
 	$Url = $WebUrl + "/_api/contextinfo"
-	Invoke-RestSPO $Url Post $UserName $Password
+	PsSpSpo_InvokeRest $Url Post $UserName $Password
 }
 
-Function Stream-CopyTo(
+function Stream-CopyTo(
 	[System.IO.Stream]$Source, [System.IO.Stream]$Destination) #*** LEGACY CODE *** 
 {
 	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
@@ -272,7 +272,7 @@ Function Stream-CopyTo(
 }
 #gavdcodeend 005
 
-Function LoginPsPnPPowerShellWithAccPwDefault
+function PsSpPnP_LoginWithAccPwDefault
 {
 	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -286,7 +286,7 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 006
-Function PsRestGetExample #*** LEGACY CODE *** 
+function PsRest_GetExample #*** LEGACY CODE *** 
 {
 	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	$webUrl = $configFile.appsettings.SiteCollUrl
@@ -294,7 +294,7 @@ Function PsRestGetExample #*** LEGACY CODE ***
 	$password = $configFile.appsettings.UserPw
 
 	$endpointUrl = $WebUrl + "/_api/web/Created"
-	$myResult = Invoke-RestSPO -Url $endpointUrl `
+	$myResult = PsSpSpo_InvokeRest -Url $endpointUrl `
 							   -Method Get `
 							   -UserName $userName `
 							   -Password $password
@@ -303,7 +303,7 @@ Function PsRestGetExample #*** LEGACY CODE ***
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function PsRestPostExample #*** LEGACY CODE *** 
+function PsRest_PostExample #*** LEGACY CODE *** 
 {
 	# ATTENTION: Legacy - Using the deprecated PnP-PowerShell module
 	$webUrl = $configFile.appsettings.SiteCollUrl
@@ -319,10 +319,10 @@ Function PsRestPostExample #*** LEGACY CODE ***
 	            AllowContentTypes = $true;
 	            ContentTypesEnabled = $true
 			   } | ConvertTo-Json
-	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl `
+	$contextInfo = PsSpSpo_GetContextInfo -WebUrl $WebUrl `
 									  -UserName $userName `
 									  -Password $password
-	Invoke-RestSPO -Url $endpointUrl `
+	PsSpSpo_InvokeRest -Url $endpointUrl `
 				   -Method Post `
 				   -UserName $userName `
 				   -Password $password `
@@ -332,9 +332,9 @@ Function PsRestPostExample #*** LEGACY CODE ***
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function PsCsomExample  #*** USE POWERSHELL 5.x, NOT 7.x ***
+function PsCsom_Example  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
-	$spCtx = LoginPsCsom
+	$spCtx = PsSpCsom_Login
 	
 	$rootWeb = $spCtx.Web
 	$spCtx.Load($rootWeb)
@@ -346,19 +346,19 @@ Function PsCsomExample  #*** USE POWERSHELL 5.x, NOT 7.x ***
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function PsPsoExample  #*** USE POWERSHELL 5.x, NOT 7.x ***
+function PsPso_Example  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
-	LoginPsPSO
+	PsSpPso_Login
 	Test-SPOSite $configFile.appsettings.SiteCollUrl
 	Disconnect-SPOService
 }
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function PsPnpExample    #*** LEGACY CODE ***
+function PsPnp_Example    #*** LEGACY CODE ***
 { 
     # ATTENTION: Using the deprecated PnP-PowerShell module
-	LoginPsPnP
+	PsSpPnP_Login
 	
 	$myWeb = Get-PnPWeb
 	
@@ -369,9 +369,9 @@ Function PsPnpExample    #*** LEGACY CODE ***
 #gavdcodeend 010
 
 #gavdcodebegin 017
-Function PsPnpPowerShellExample
+function PsPnpPowerShell_Example
 {
-	LoginPsPnPPowerShell
+	PsSpPnP_LoginWithAccPw
 	
 	$myWeb = Get-PnPWeb
 	
@@ -382,9 +382,9 @@ Function PsPnpPowerShellExample
 #gavdcodeend 017
 
 #gavdcodebegin 019
-Function PsPnpPowerShellCertificateExample
+function PsPnpPowerShell_CertificateExample
 {
-	LoginPsPnPPowerShellCertificate
+	PsSpPnP_LoginWithCertificate
 	
 	$myWeb = Get-PnPWeb
 	
@@ -395,9 +395,9 @@ Function PsPnpPowerShellCertificateExample
 #gavdcodeend 019
 
 #gavdcodebegin 022
-Function PsPnpPowerShellInteractiveExample
+function PsPnpPowerShell_InteractiveExample
 {
-	LoginPsPnPPowerShellInteractive
+	PsSpPnP_LoginWithInteraction
 	
 	$myWeb = Get-PnPWeb
 	
@@ -408,9 +408,9 @@ Function PsPnpPowerShellInteractiveExample
 #gavdcodeend 022
 
 #gavdcodebegin 011
-Function PsPnpRestGetWebExample
+function PsPnpRest_GetWebExample
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnP_LoginWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
 	
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web"
@@ -427,9 +427,9 @@ Function PsPnpRestGetWebExample
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function PsPnpRestGetItemsExample
+function PsPnpRest_GetItemsExample
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnP_LoginWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
 	
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + 
@@ -448,9 +448,9 @@ Function PsPnpRestGetItemsExample
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function PsPnpRestPostExample
+function PsPnpRest_PostExample
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnP_LoginWithAccPwDefault
 	$myOAuth = Get-PnPAppAuthAccessToken
 	
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + 
@@ -474,9 +474,9 @@ Function PsPnpRestPostExample
 #gavdcodeend 013
 
 #gavdcodebegin 015
-Function PsCli_ExampleWithAccPw
+function PsCliM365_ExampleWithAccPw
 {
-	PsCli_LoginWithAccPw
+	PsCliM365_LoginWithAccPw
 	
 	m365 spo site list --type TeamSite
 
@@ -485,9 +485,9 @@ Function PsCli_ExampleWithAccPw
 #gavdcodeend 015
 
 #gavdcodebegin 024
-Function PsCli_ExampleWithSecret
+function PsCliM365_ExampleWithSecret
 {
-	PsCli_LoginWithSecret
+	PsCliM365_LoginWithSecret
 	
 	m365 teams team list
 
@@ -496,9 +496,9 @@ Function PsCli_ExampleWithSecret
 #gavdcodeend 024
 
 #gavdcodebegin 026
-Function PsCli_ExampleWithCertificate
+function PsCliM365_ExampleWithCertificate
 {
-	PsCli_LoginWithCertificate
+	PsCliM365_LoginWithCertificate
 	
 	m365 spo tenant settings list
 
@@ -507,9 +507,9 @@ Function PsCli_ExampleWithCertificate
 #gavdcodeend 026
 
 #gavdcodebegin 027
-Function PsCli_GetRoleAssigmentsById
+function PsCliM365_GetRoleAssigmentsById
 {
-	PsCli_LoginWithAccPw
+	PsCliM365_LoginWithAccPw
 	
 	m365 entra approleassignment list --appId "377568de-bf5d-4ea6-b4d7-b8e6dac488c9"
 
@@ -518,9 +518,9 @@ Function PsCli_GetRoleAssigmentsById
 #gavdcodeend 027
 
 #gavdcodebegin 028
-Function PsCli_GetRoleAssigmentsByName
+function PsCliM365_GetRoleAssigmentsByName
 {
-	PsCli_LoginWithAccPw
+	PsCliM365_LoginWithAccPw
 	
 	m365 entra approleassignment list --appDisplayName "TestAppReg"
 
@@ -529,9 +529,9 @@ Function PsCli_GetRoleAssigmentsByName
 #gavdcodeend 028
 
 #gavdcodebegin 029
-Function PsCli_AddRoleAssigments
+function PsCliM365_AddRoleAssigments
 {
-	PsCli_LoginWithAccPw
+	PsCliM365_LoginWithAccPw
 	
 	m365 entra approleassignment add --appId "377568de-bf5d-4ea6-b4d7-b8e6dac488c9" `
 									 --resource "Microsoft Graph" `
@@ -542,9 +542,9 @@ Function PsCli_AddRoleAssigments
 #gavdcodeend 029
 
 #gavdcodebegin 030
-Function PsCli_DeleteRoleAssigments
+function PsCliM365_DeleteRoleAssigments
 {
-	PsCli_LoginWithAccPw
+	PsCliM365_LoginWithAccPw
 	
 	m365 entra approleassignment remove --appId "377568de-bf5d-4ea6-b4d7-b8e6dac488c9" `
 									    --resource "Microsoft Graph" `
@@ -556,9 +556,9 @@ Function PsCli_DeleteRoleAssigments
 #gavdcodeend 030
 
 #gavdcodebegin 031
-Function PsCli_GetAccessTokenGraph
+function PsCliM365_GetAccessTokenGraph
 {
-	PsCli_LoginWithAccPw
+	PsCliM365_LoginWithAccPw
 	
 	m365 util accesstoken get --resource graph
 
@@ -567,9 +567,9 @@ Function PsCli_GetAccessTokenGraph
 #gavdcodeend 031
 
 #gavdcodebegin 032
-Function PsCli_GetAccessTokenSharePoint
+function PsCliM365_GetAccessTokenSharePoint
 {
-	PsCli_LoginWithAccPw
+	PsCliM365_LoginWithAccPw
 	
 	m365 spo set --url "https://[domain].sharepoint.com"
 	m365 util accesstoken get --resource sharepoint
@@ -591,39 +591,39 @@ Function PsCli_GetAccessTokenSharePoint
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
 ##==> CSOM
-#PsCsomExample
+#PsCsom_Example
 
 ##==> PSO
-#PsPsoExample
+#PsPso_Example
 
 ##==> PnP-PowerShell (Legacy)
 # ATTENTION: Using the deprecated PnP-PowerShell module
-#PsPnpExample
+#PsPnp_Example
 
 ##==> PnP PowerShell (Replacement of the legacy PnP-PowerShell)
-#PsPnpPowerShellExample
-#PsPnpPowerShellCertificateExample
-#PsPnpPowerShellInteractiveExample
+#PsPnpPowerShell_Example
+#PsPnpPowerShell_CertificateExample
+#PsPnpPowerShell_InteractiveExample
 
 #==> REST PowerShell cmdlets (Legacy)
 # ATTENTION: Using the deprecated PnP-PowerShell module
-#PsRestGetExample       ## Simple GET request without body
-#PsRestPostExample      ## Full POST query with data in the body
+#PsRest_GetExample       ## Simple GET request without body
+#PsRest_PostExample      ## Full POST query with data in the body
 
 #==> REST PnP PowerShell cmdlets
-#PsPnpRestGetWebExample
-#PsPnpRestGetItemsExample
-#PsPnpRestPostExample
+#PsPnpRest_GetWebExample
+#PsPnpRest_GetItemsExample
+#PsPnpRest_PostExample
 
 ##==> CLI
-#PsCli_ExampleWithAccPw
-#PsCli_ExampleWithSecret
-#PsCli_ExampleWithCertificate
-#PsCli_GetRoleAssigmentsById
-#PsCli_GetRoleAssigmentsByName
-#PsCli_AddRoleAssigments
-#PsCli_DeleteRoleAssigments
-#PsCli_GetAccessTokenGraph
-#PsCli_GetAccessTokenSharePoint
+#PsCliM365_ExampleWithAccPw
+#PsCliM365_ExampleWithSecret
+#PsCliM365_ExampleWithCertificate
+#PsCliM365_GetRoleAssigmentsById
+#PsCliM365_GetRoleAssigmentsByName
+#PsCliM365_AddRoleAssigments
+#PsCliM365_DeleteRoleAssigments
+#PsCliM365_GetAccessTokenGraph
+#PsCliM365_GetAccessTokenSharePoint
 
 Write-Host "Done"

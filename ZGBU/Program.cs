@@ -4,26 +4,27 @@ using System.Configuration;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static AdAppToken GetAzureTokenApplication(string TenantName, string ClientId, 
-                                                                    string ClientSecret)
+static AdAppToken CsRestSharp_GetAzureTokenApplication(string TenantName,
+                                                  string ClientId, string ClientSecret)
 {
     string LoginUrl = "https://login.microsoftonline.com";
     string ScopeUrl = "https://graph.microsoft.com/.default";
 
     string myUri = LoginUrl + "/" + TenantName + "/oauth2/v2.0/token";
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(myUri, Method.Post);
+    RestRequest myRequest = new(myUri, Method.Post);
     myRequest.AddHeader("Content-Type", "application/x-www-form-urlencoded");
 
     string myBody = "Scope=" + HttpUtility.UrlEncode(ScopeUrl) + "&" +
@@ -40,17 +41,17 @@ static AdAppToken GetAzureTokenApplication(string TenantName, string ClientId,
 //gavdcodeend 001
 
 //gavdcodebegin 007
-static AdAppToken GetAzureTokenDelegation(string TenantName, string ClientId,
-                                                         string UserName, string UserPw)
+static AdAppToken CsRestSharp_GetAzureTokenDelegation(string TenantName,
+                                         string ClientId, string UserName, string UserPw)
 {
     string LoginUrl = "https://login.microsoftonline.com";
     string ScopeUrl = "https://graph.microsoft.com/.default";
 
     string myUri = LoginUrl + "/" + TenantName + "/oauth2/v2.0/token";
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(myUri, Method.Post);
+    RestRequest myRequest = new(myUri, Method.Post);
     myRequest.AddHeader("Content-Type", "application/x-www-form-urlencoded");
 
     string myBody = "Scope=" + HttpUtility.UrlEncode(ScopeUrl) + "&" +
@@ -72,19 +73,19 @@ static AdAppToken GetAzureTokenDelegation(string TenantName, string ClientId,
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 003
-static void GetTeamApp()
+static void CsRestSharp_GetTeamApp()
 {
     string graphQuery =
-     "https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c";
+     "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037";
 
-    AdAppToken adToken = GetAzureTokenApplication(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenApplication(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithSecret"],
                                 ConfigurationManager.AppSettings["ClientSecret"]);
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Get);
+    RestRequest myRequest = new(graphQuery, Method.Get);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
 
@@ -94,49 +95,49 @@ static void GetTeamApp()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void CreateChannelApp()
+static void CsRestSharp_CreateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-                                        "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels";
+                                        "dd1223a2-28a7-47d4-afc2-f42eae94f037";
 
-    AdAppToken adToken = GetAzureTokenApplication(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenApplication(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithSecret"],
                                 ConfigurationManager.AppSettings["ClientSecret"]);
 
     string myBody = "{ " +
-                        "\"displayName\": \"Graph Channel 20\"," +
+                        "\"displayName\": \"Graph Channel\"," +
                         "\"description\": \"Channel created with Graph\"" +
                     " }";
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Post);
+    RestRequest myRequest = new(graphQuery, Method.Post);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
     myRequest.AddHeader("ContentType", "application/json");
     myRequest.AddParameter("", myBody, ParameterType.RequestBody);
 
-    string resultText = myClient.ExecuteAsync(myRequest).Result.Content;
+    string resultText = myClient.Execute(myRequest).Content;
 
     Console.WriteLine(resultText);
 }
 //gavdcodeend 004
 
-static void GetChannelApp()
+static void CsRestSharp_GetChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:a82727613c6d4a679233d153c40c7fb7@thread.tacv2";
 
-    AdAppToken adToken = GetAzureTokenApplication(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenApplication(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithSecret"],
                                 ConfigurationManager.AppSettings["ClientSecret"]);
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Get);
+    RestRequest myRequest = new(graphQuery, Method.Get);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
 
@@ -146,22 +147,22 @@ static void GetChannelApp()
 }
 
 //gavdcodebegin 005
-static void UpdateChannelApp()
+static void CsRestSharp_UpdateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:a82727613c6d4a679233d153c40c7fb7@thread.tacv2";
 
-    AdAppToken adToken = GetAzureTokenApplication(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenApplication(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithSecret"],
                                 ConfigurationManager.AppSettings["ClientSecret"]);
 
     string myBody = "{ \"description\": \"Channel Description Updated\" }";
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Patch);
+    RestRequest myRequest = new(graphQuery, Method.Patch);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
     myRequest.AddHeader("IF-MATCH", "*");
@@ -174,20 +175,20 @@ static void UpdateChannelApp()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void DeleteChannelApp()
+static void CsRestSharp_DeleteChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:a82727613c6d4a679233d153c40c7fb7@thread.tacv2";
 
-    AdAppToken adToken = GetAzureTokenApplication(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenApplication(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithSecret"],
                                 ConfigurationManager.AppSettings["ClientSecret"]);
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Delete);
+    RestRequest myRequest = new(graphQuery, Method.Delete);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
 
@@ -198,20 +199,20 @@ static void DeleteChannelApp()
 //gavdcodeend 006
 
 //gavdcodebegin 008
-static void GetTeamDel()
+static void CsRestSharp_GetTeamDel()
 {
     string graphQuery =
      "https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c";
 
-    AdAppToken adToken = GetAzureTokenDelegation(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                                 ConfigurationManager.AppSettings["UserName"],
                                 ConfigurationManager.AppSettings["UserPw"]);
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Get);
+    RestRequest myRequest = new(graphQuery, Method.Get);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
 
@@ -221,12 +222,12 @@ static void GetTeamDel()
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void CreateChannelDel()
+static void CsRestSharp_CreateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
                                         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels";
 
-    AdAppToken adToken = GetAzureTokenDelegation(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                                 ConfigurationManager.AppSettings["UserName"],
@@ -237,9 +238,9 @@ static void CreateChannelDel()
                         "\"description\": \"Channel created with Graph\"" +
                     " }";
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Post);
+    RestRequest myRequest = new(graphQuery, Method.Post);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
     myRequest.AddHeader("ContentType", "application/json");
@@ -251,21 +252,21 @@ static void CreateChannelDel()
 }
 //gavdcodeend 009
 
-static void GetChannelDel()
+static void CsRestSharp_GetChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:a82727613c6d4a679233d153c40c7fb7@thread.tacv2";
 
-    AdAppToken adToken = GetAzureTokenDelegation(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                                 ConfigurationManager.AppSettings["UserName"],
                                 ConfigurationManager.AppSettings["UserPw"]);
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Get);
+    RestRequest myRequest = new(graphQuery, Method.Get);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
 
@@ -275,13 +276,13 @@ static void GetChannelDel()
 }
 
 //gavdcodebegin 010
-static void UpdateChannelDel()
+static void CsRestSharp_UpdateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:a82727613c6d4a679233d153c40c7fb7@thread.tacv2";
 
-    AdAppToken adToken = GetAzureTokenDelegation(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                                 ConfigurationManager.AppSettings["UserName"],
@@ -289,9 +290,9 @@ static void UpdateChannelDel()
 
     string myBody = "{ \"description\": \"Channel Description Updated\" }";
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Patch);
+    RestRequest myRequest = new(graphQuery, Method.Patch);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
     myRequest.AddHeader("IF-MATCH", "*");
@@ -304,21 +305,21 @@ static void UpdateChannelDel()
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void DeleteChannelDel()
+static void CsRestSharp_DeleteChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:a82727613c6d4a679233d153c40c7fb7@thread.tacv2";
 
-    AdAppToken adToken = GetAzureTokenDelegation(
+    AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
                                 ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                                 ConfigurationManager.AppSettings["UserName"],
                                 ConfigurationManager.AppSettings["UserPw"]);
 
-    RestClient myClient = new RestClient();
+    RestClient myClient = new();
 
-    RestRequest myRequest = new RestRequest(graphQuery, Method.Delete);
+    RestRequest myRequest = new(graphQuery, Method.Delete);
     myRequest.AddHeader("Authorization", adToken.token_type + " " +
                                                         adToken.access_token);
 
@@ -332,21 +333,23 @@ static void DeleteChannelDel()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//GetTeamApp();    
-//CreateChannelApp();
-//GetChannelApp(); 
-//UpdateChannelApp();
-//DeleteChannelApp();
-//AdAppToken myToken = GetAzureTokenApplication(
+// *** Latest Source Code Index: 011 ***
+
+//CsRestSharp_GetTeamApp();    
+//CsRestSharp_CreateChannelApp();
+//CsRestSharp_GetChannelApp(); 
+//CsRestSharp_UpdateChannelApp();
+//CsRestSharp_DeleteChannelApp();
+//AdAppToken myToken = CsRestSharp_GetAzureTokenApplication(
 //    ConfigurationManager.AppSettings["TenantName"],
 //    ConfigurationManager.AppSettings["ClientIdWithSecret"],
 //    ConfigurationManager.AppSettings["ClientSecret"]); Console.WriteLine(myToken.access_token);
-//GetTeamDel();    
-//CreateChannelDel();
-//GetChannelDel(); 
-//UpdateChannelDel();
-//DeleteChannelDel();
-//AdAppToken myToken = GetAzureTokenDelegation(
+//CsRestSharp_GetTeamDel();    
+//CsRestSharp_CreateChannelDel();
+//CsRestSharp_GetChannelDel(); 
+//CsRestSharp_UpdateChannelDel();
+//CsRestSharp_DeleteChannelDel();
+//AdAppToken myToken = CsRestSharp_GetAzureTokenDelegation(
 //    ConfigurationManager.AppSettings["TenantName"],
 //    ConfigurationManager.AppSettings["ClientIdWithAccPw"],
 //    ConfigurationManager.AppSettings["UserName"],
@@ -372,3 +375,4 @@ public class AdAppToken
 //gavdcodeend 002
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used

@@ -16,7 +16,7 @@
 #*** Getting the Azure token with REST ---------------------------------------------------
 
 #gavdcodebegin 007
-Function Get-AzureTokenWithAccPw
+function PsRest_GetAzureTokenWithAccPw
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -51,7 +51,7 @@ Function Get-AzureTokenWithAccPw
 #gavdcodeend 007 
  
 #gavdcodebegin 001
-Function Get-AzureTokenWithSecret
+function PsRest_GetAzureTokenWithSecret
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -82,7 +82,7 @@ Function Get-AzureTokenWithSecret
 #gavdcodeend 001 
 
 #gavdcodebegin 022
-Function Get-AzureTokenWithCertificate
+function PsRest_GetAzureTokenWithCertificate
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -173,15 +173,15 @@ Function Get-AzureTokenWithCertificate
 }
 #gavdcodeend 022 
 
-#*** Using Classic PowerShell cmdlets and REST -------------------------------------------
+#*** Using Classical PowerShell cmdlets and REST -------------------------------------------
 
 #gavdcodebegin 002
-Function PsGrClassical_GetTeam
+function PsClassicalCdm_GetTeam
 {
 	$Url = "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037"
 
 	# Requires Delegated rights for Team.ReadBasic.All
-	$myOAuth = Get-AzureTokenWithAccPw `
+	$myOAuth = PsRest_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
@@ -189,13 +189,13 @@ Function PsGrClassical_GetTeam
 
 	<#
 	# Requires Application rights for Team.ReadBasic.All
-	$myOAuth = Get-AzureTokenWithSecret `
+	$myOAuth = PsRest_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
 
 	# Requires Application rights for Team.ReadBasic.All
-	$myOAuth = Get-AzureTokenWithCertificate `
+	$myOAuth = PsRest_GetAzureTokenWithCertificate `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -209,7 +209,7 @@ Function PsGrClassical_GetTeam
 #gavdcodeend 002 
 
 #gavdcodebegin 003
-Function PsGrClassical_CreateChannel
+function PsClassicalCmd_CreateChannel
 {
 	$Url = `
 		"https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c" + 
@@ -217,20 +217,20 @@ Function PsGrClassical_CreateChannel
 	
 
 	# Requires Delegated rights for Channel.Create
-	$myOAuth = Get-AzureTokenWithAccPw `
+	$myOAuth = PsRest_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 									   -TenantName $configFile.appsettings.TenantName `
 									   -UserName $configFile.appsettings.UserName `
 									   -UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for Channel.Create
-	$myOAuth = Get-AzureTokenWithSecret `
+	$myOAuth = PsRest_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
     
 	# Requires Application rights for Channel.Create
-	$myOAuth = Get-AzureTokenWithCertificate `
+	$myOAuth = PsRest_GetAzureTokenWithCertificate `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -248,7 +248,7 @@ Function PsGrClassical_CreateChannel
 #gavdcodeend 003 
 
 #gavdcodebegin 004
-Function PsGrClassical_GetChannel
+function PsClassicalCmd_GetChannel
 {
 	$Url = `
 		"https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c" +
@@ -256,20 +256,20 @@ Function PsGrClassical_GetChannel
 	
 
 	# Requires Delegated rights for ChannelSettings.Read.All
-	$myOAuth = Get-AzureTokenWithAccPw `
+	$myOAuth = PsRest_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
 					-UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for ChannelSettings.Read.All
-	$myOAuth = Get-AzureTokenWithSecret `
+	$myOAuth = PsRest_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
 	
 	# Requires Application rights for ChannelSettings.Read.All
-	$myOAuth = Get-AzureTokenWithCertificate `
+	$myOAuth = PsRest_GetAzureTokenWithCertificate `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -283,7 +283,7 @@ Function PsGrClassical_GetChannel
 #gavdcodeend 004 
 
 #gavdcodebegin 005
-Function PsGrClassical_UpdateChannel
+function PsClassicalCmd_UpdateChannel
 {
 	$Url = 
 		"https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c" +
@@ -291,20 +291,20 @@ Function PsGrClassical_UpdateChannel
 
 
 	# Requires Delegated rights for ChannelSettings.ReadWrite.All
-	$myOAuth = Get-AzureTokenWithAccPw `
+	$myOAuth = PsRest_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
 					-UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for ChannelSettings.ReadWrite.All
-	$myOAuth = Get-AzureTokenWithSecret `
+	$myOAuth = PsRest_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
     
 	# Requires Application rights for ChannelSettings.ReadWrite.All
-	$myOAuth = Get-AzureTokenWithCertificate `
+	$myOAuth = PsRest_GetAzureTokenWithCertificate `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -322,7 +322,7 @@ Function PsGrClassical_UpdateChannel
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function PsGrClassical_DeleteChannel
+function PsClassicalCmd_DeleteChannel
 {
 	$Url = 
 		"https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c" + 
@@ -330,20 +330,20 @@ Function PsGrClassical_DeleteChannel
 	
 
 	# Requires Delegated rights for Channel.Delete.All
-	$myOAuth = Get-AzureTokenWithAccPw `
+	$myOAuth = PsRest_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
 									   -UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for Channel.Delete.All
-	$myOAuth = Get-AzureTokenWithSecret `
+	$myOAuth = PsRest_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
 	
 	# Requires Application rights for Channel.Delete.All
-	$myOAuth = Get-AzureTokenWithCertificate `
+	$myOAuth = PsRest_GetAzureTokenWithCertificate `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -359,28 +359,28 @@ Function PsGrClassical_DeleteChannel
 #*** Logging in using the Graph PowerShell SDK cmdlets -----------------------------------
 
 #gavdcodebegin 008
-Function PsGrSdk_LoginGraphWithInteraction
+function PsGraphSdk_LoginWithInteraction
 {
 	Connect-Graph
 }
 #gavdcodeend 008
 
 #gavdcodebegin 023
-Function PsGrSdk_GetContextInfo
+function PsGraphSdk_GetContextInfo
 {
 	Get-MgContext
 }
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function PsGrSdk_GetMe
+function PsGraphSdk_GetMe
 {
 	Get-MgUser -UserId "user@domain.onmicrosoft.com"
 }
 #gavdcodeend 024
 
 #gavdcodebegin 025
-Function PsGrSdk_ConnectDisconnect
+function PsGraphSdk_ConnectDisconnect
 {
 	Connect-Graph -TenantId "021ee864-951d-4f25-a5c3-b6d4412c4052"
 	Get-MgUser -UserId "user@domain.onmicrosoft.com"
@@ -389,16 +389,16 @@ Function PsGrSdk_ConnectDisconnect
 #gavdcodeend 025
 
 #gavdcodebegin 031
-Function PsGrSdk_CheckRights
+function PsGraphSdk_CheckRights
 {
-	PsGrSdk_LoginGraphWithSecret
+	PsGraphSdk_LoginWithSecret
 	(Get-MgContext).Scopes
 	Disconnect-MgGraph
 }
 #gavdcodeend 031
 
 #gavdcodebegin 026
-Function PsGrSdk_SetVersion
+function PsGraphSdk_SetVersion
 {
 	Select-MgProfile -Name "beta"
 	Select-MgProfile -Name "v1.0"
@@ -406,7 +406,7 @@ Function PsGrSdk_SetVersion
 #gavdcodeend 026
 
 #gavdcodebegin 009
-Function PsGrSdk_AssignRights
+function PsGraphSdk_AssignRights
 {
 	Connect-Graph -Scopes "Directory.AccessAsUser.All, Directory.ReadWrite.All"
 	Get-MgUser
@@ -415,15 +415,14 @@ Function PsGrSdk_AssignRights
 #gavdcodeend 009
 
 #gavdcodebegin 032
-Function PsGrSdk_CheckAvailableRights
+function PsGraphSdk_CheckAvailableRights
 {
 	Find-MgGraphPermission "user" -PermissionType Application
 }
 #gavdcodeend 032
 
-
 #gavdcodebegin 027
-Function PsGrSdk_LoginGraphWithAccPw
+function PsGraphSdk_LoginWithAccPwMSAL
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -447,27 +446,28 @@ Function PsGrSdk_LoginGraphWithAccPw
 	$myToken = Get-MsalToken -TenantId $TenantName `
 							 -ClientId $ClientId `
 							 -UserCredential $myCredentials 
+	$myTokenSecure = ConvertTo-SecureString -String $myToken.AccessToken `
+											-AsPlainText -Force
 
-	Connect-Graph -AccessToken $myToken.AccessToken
+	Connect-MgGraph -AccessToken $myTokenSecure
 }
 #gavdcodeend 027
 
 #gavdcodebegin 028
-Function PsGrSdk_GetUserWithAccPw
+function PsGraphSdk_GetUserWithAccPwMSAL
 {
 	# Requires Delegated rights for Directory.Read.All
-	PsGrSdk_LoginGraphWithAccPw -TenantName $configFile.appsettings.TenantName `
-							    -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							    -UserName $configFile.appsettings.UserName `
-							    -UserPw $configFile.appsettings.UserPw
+	PsGraphSdk_LoginWithAccPwMSAL -TenantName $configFile.appsettings.TenantName `
+									-ClientID $configFile.appsettings.ClientIdWithAccPw `
+									-UserName $configFile.appsettings.UserName `
+									-UserPw $configFile.appsettings.UserPw
 	Get-MgUser -UserId "user@domain.onmicrosoft.com"
 	Disconnect-MgGraph
 }
 #gavdcodeend 028
 
-
 #gavdcodebegin 029
-Function PsGrSdk_LoginGraphWithSecret
+function PsGraphSdk_LoginWithSecretMSAL
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -486,26 +486,63 @@ Function PsGrSdk_LoginGraphWithSecret
 	$myToken = Get-MsalToken -TenantId $TenantName `
 							 -ClientId $ClientId `
 							 -ClientSecret ($secureSecret)
+	$myTokenSecure = ConvertTo-SecureString -String $myToken.AccessToken `
+											-AsPlainText -Force
 
-	Connect-Graph -AccessToken $myToken.AccessToken
+	Connect-MgGraph -AccessToken $myTokenSecure
 }
 #gavdcodeend 029
 
 #gavdcodebegin 030
-Function PsGrSdk_GetUsersWithSecret
+function PsGraphSdk_GetUsersWithSecretMSAL
 {
 	# Requires Application rights for Directory.Read.All
-	PsGrSdk_LoginGraphWithSecret -TenantName $configFile.appsettings.TenantName `
-								 -ClientID $configFile.appsettings.ClientIdWithSecret `
-								 -ClientSecret $configFile.appsettings.ClientSecret
+	PsGraphSdk_LoginWithSecretMSAL -TenantName $configFile.appsettings.TenantName `
+									 -ClientID $configFile.appsettings.ClientIdWithSecret `
+									 -ClientSecret $configFile.appsettings.ClientSecret
 	Get-MgUser
 	Disconnect-MgGraph
 }
 #gavdcodeend 030
 
+#gavdcodebegin 051
+function PsGraphSdk_LoginWithSecret
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientID,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientSecret
+	)
+
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+									$ClientSecret -AsPlainText -Force
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+							-argumentlist $ClientID, $securePW
+
+	Connect-MgGraph -TenantId $TenantName `
+					-ClientSecretCredential $myCredentials
+}
+#gavdcodeend 051
+
+#gavdcodebegin 052
+function PsGraphSdk_GetUsersWithSecret
+{
+	# Requires Application rights for Directory.Read.All
+	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+								 -ClientID $configFile.appsettings.ClientIdWithSecret `
+								 -ClientSecret $configFile.appsettings.ClientSecret
+	Get-MgUser
+	Disconnect-MgGraph
+}
+#gavdcodeend 052
 
 #gavdcodebegin 033
-Function PsGrSdk_LoginGraphWithCertificate
+function PsGraphSdk_LoginWithCertificate
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -525,7 +562,7 @@ Function PsGrSdk_LoginGraphWithCertificate
 #gavdcodeend 033
 
 #gavdcodebegin 034
-Function PsGrSdk_LoginGraphWithCertificateFile
+function PsGraphSdk_LoginWithCertificateFile
 {
 	[SecureString]$secureCertPw = ConvertTo-SecureString -String `
 						$configFile.appSettings.CertificateFilePw -AsPlainText -Force
@@ -540,10 +577,10 @@ Function PsGrSdk_LoginGraphWithCertificateFile
 #gavdcodeend 034
 
 #gavdcodebegin 035
-Function PsGrSdk_GetUsersWithCertificate
+function PsGraphSdk_GetUsersWithCertificate
 {
 	# Requires Application rights for Directory.Read.All
-	PsGrSdk_LoginGraphWithCertificate `
+	PsGraphSdk_LoginWithCertificate `
 					-TenantName $configFile.appsettings.TenantName `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -555,9 +592,8 @@ Function PsGrSdk_GetUsersWithCertificate
 }
 #gavdcodeend 035
 
-
 #gavdcodebegin 011
-Function GrPsGetGroupsSelect #Not Used
+function PsGraphSdk_GetGroupsSelect #Not Used
 {
 	Get-MgGroup | Select-Object id, DisplayName, GroupTypes
 }
@@ -566,7 +602,7 @@ Function GrPsGetGroupsSelect #Not Used
 #*** Using MSAL.PS module to get the token -----------------------------------------------
 
 #gavdcodebegin 036
-Function PsMsal_LoginGraphWithInteraction
+function PsMsal_LoginWithInteraction
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -588,7 +624,7 @@ Function PsMsal_LoginGraphWithInteraction
 #gavdcodeend 036
 
 #gavdcodebegin 037
-Function PsMsal_LoginGraphWithAccPw
+function PsMsal_LoginWithAccPw
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -620,7 +656,7 @@ Function PsMsal_LoginGraphWithAccPw
 #gavdcodeend 037
 
 #gavdcodebegin 038
-Function PsMsal_LoginGraphWithSecret
+function PsMsal_LoginWithSecret
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -647,7 +683,7 @@ Function PsMsal_LoginGraphWithSecret
 #gavdcodeend 038
 
 #gavdcodebegin 039
-Function PsMsal_LoginGraphWithCertificate
+function PsMsal_LoginWithCertificate
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -675,7 +711,7 @@ Function PsMsal_LoginGraphWithCertificate
 #gavdcodeend 039
 
 #gavdcodebegin 040
-Function PsMsal_LoginGraph_GetTeamWithAccPw
+function PsMsal_GetTeam
 {
 	$Url = "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037"
 	
@@ -693,9 +729,9 @@ Function PsMsal_LoginGraph_GetTeamWithAccPw
 #gavdcodeend 040
 
 #gavdcodebegin 041
-Function PsMsal_LoginGraph_GetUsersWithSecret
+function PsMsal_GetUsers
 {
-	$myToken = PsMsal_LoginGraphWithSecret `
+	$myToken = PsMsal_LoginWithSecret `
 						-TenantName	$configFile.appsettings.TenantName `
 						-ClientId $configFile.appsettings.ClientIdWithSecret `
 						-ClientSecret $configFile.appsettings.ClientSecret
@@ -711,7 +747,7 @@ Function PsMsal_LoginGraph_GetUsersWithSecret
 #*** Using PowerShell-MicrosoftGraphAPI module (Other Modules, not from MS) --------------
 
 #gavdcodebegin 012
-Function PsGrFrea_GetToken
+function PsGraphFrea_GetToken
 {
 	Import-Module .\MicrosoftGraph.psm1
 
@@ -725,9 +761,9 @@ Function PsGrFrea_GetToken
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function PsGrFrea_GetTeamWithModule
+function PsGraphFrea_GetTeamWithModule
 {
-	$myToken = PsGrFrea_GetToken
+	$myToken = PsGraphFrea_GetToken
 	Invoke-MSGraphQuery `
 	  -URI "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037" `
 	  -Token $myToken
@@ -735,13 +771,13 @@ Function PsGrFrea_GetTeamWithModule
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function PsGrFrea_CreateChannelWithModule
+function PsGraphFrea_CreateChannelWithModule
 {
 	$Url = `
 		"https://graph.microsoft.com/v1.0/teams/5b409eec-a4ae-4f04-a354-0434c444265d" + 
 							"/channels"
 	
-	$myToken = PsGrFrea_GetToken
+	$myToken = PsGraphFrea_GetToken
 	$myBody = "{ 'displayName':'Graph Channel 40', `
 				 'description':'Channel created with Graph' }"
 	Invoke-MSGraphQuery `
@@ -753,13 +789,13 @@ Function PsGrFrea_CreateChannelWithModule
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function PsGrFrea_UpdateChannelWithModule
+function PsGraphFrea_UpdateChannelWithModule
 {
 	$Url = `
 		"https://graph.microsoft.com/v1.0/teams/5b409eec-a4ae-4f04-a354-0434c444265d" + 
 							"/channels/19:bb17af0c3a894262809c5412606f09f3@thread.tacv2"
 	
-	$myToken = PsGrFrea_GetToken
+	$myToken = PsGraphFrea_GetToken
 	$myBody = "{ 'description':'Channel Description Updated' }"
 	Invoke-MSGraphQuery `
 		-URI $Url `
@@ -770,13 +806,13 @@ Function PsGrFrea_UpdateChannelWithModule
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function PsGrFrea_DeleteChannelWithModule
+function PsGraphFrea_DeleteChannelWithModule
 {
 	$Url = `
 		"https://graph.microsoft.com/v1.0/teams/5b409eec-a4ae-4f04-a354-0434c444265d" + 
 							"/channels/19:bb17af0c3a894262809c5412606f09f3@thread.tacv2"
 	
-	$myToken = PsGrFrea_GetToken
+	$myToken = PsGraphFrea_GetToken
 	$myBody = "{ 'description':'Channel Description Updated' }"
 	Invoke-MSGraphQuery `
 		-URI $Url `
@@ -789,7 +825,7 @@ Function PsGrFrea_DeleteChannelWithModule
 #*** Using PnP Graph PowerShell ----------------------------------------------------------
 
 #gavdcodebegin 042
-Function PsGrPnp_LoginGraphWithInteraction
+function PsPnPPowerShell_LoginWithInteraction
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -803,7 +839,7 @@ Function PsGrPnp_LoginGraphWithInteraction
 #gavdcodeend 042
 
 #gavdcodebegin 043
-Function PsGrPnp_LoginGraphWithInteractionMFA
+function PsPnPPowerShell_LoginWithInteractionMFA
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -817,9 +853,9 @@ Function PsGrPnp_LoginGraphWithInteractionMFA
 #gavdcodeend 043
 
 #gavdcodebegin 018
-Function PsGrPnp_GetTeamUsersWithInteraction
+function PsPnPPowerShell_GetTeamUsersWithInteraction
 {
-	PsGrPnp_LoginGraphWithInteractionMFA -SiteBaseUrl $configFile.appsettings.SiteBaseUrl
+	PsPnPPowerShell_LoginWithInteractionMFA -SiteBaseUrl $configFile.appsettings.SiteBaseUrl
 	
 	Get-PnPTeamsUser -Team "Design"
 
@@ -828,7 +864,7 @@ Function PsGrPnp_GetTeamUsersWithInteraction
 #gavdcodeend 018
 
 #gavdcodebegin 021
-Function PsGrPnp_GetToken
+function PsPnPPowerShell_GetToken
 {
 	Connect-PnPOnline -Url $configFile.appsettings.SiteBaseUrl -DeviceLogin -LaunchBrowser
 	Get-PnPGraphAccessToken -Decoded
@@ -838,7 +874,7 @@ Function PsGrPnp_GetToken
 #gavdcodeend 021
 
 #gavdcodebegin 020
-Function PsGrPnp_LoginGraphWithAccPw
+function PsPnPPowerShell_LoginWithAccPw
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -861,7 +897,7 @@ Function PsGrPnp_LoginGraphWithAccPw
 #gavdcodeend 020
 
 #gavdcodebegin 047
-Function PsGrPnp_LoginGraphWithAccPwAndClientId
+function PsPnPPowerShell_LoginWithAccPwAndClientId
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -887,9 +923,9 @@ Function PsGrPnp_LoginGraphWithAccPwAndClientId
 #gavdcodeend 047
 
 #gavdcodebegin 044
-Function PsGrPnp_GetContextWithAccPw
+function PsPnPPowerShell_GetContextWithAccPw
 {
-	PsGrPnp_LoginGraphWithAccPwAndClientId `
+	PsPnPPowerShell_LoginWithAccPwAndClientId `
 					-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
 					-ClientId $configFile.appSettings.ClientIdWithAccPw `
 					-UserName $configFile.appSettings.UserName `
@@ -901,9 +937,8 @@ Function PsGrPnp_GetContextWithAccPw
 }
 #gavdcodeend 044
 
-
 #gavdcodebegin 045
-Function PsGrPnp_LoginGraphWithSecret
+function PsPnPPowerShell_LoginWithSecret
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -930,9 +965,9 @@ Function PsGrPnp_LoginGraphWithSecret
 #gavdcodeend 045
 
 #gavdcodebegin 046
-Function PsGrPnp_GetTeamUsersWithSecret
+function PsPnPPowerShell_GetTeamUsersWithSecret
 {
-	PsGrPnp_LoginGraphWithSecret `
+	PsPnPPowerShell_LoginWithSecret `
 					-TenantName	$configFile.appsettings.TenantName `
 					-ClientId $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret
@@ -943,9 +978,8 @@ Function PsGrPnp_GetTeamUsersWithSecret
 }
 #gavdcodeend 046
 
-
 #gavdcodebegin 048
-Function PsGrPnp_LoginGraphWithCertificate
+function PsPnPPowerShell_LoginGraphWithCertificate
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -969,7 +1003,7 @@ Function PsGrPnp_LoginGraphWithCertificate
 #gavdcodeend 048
 
 #gavdcodebegin 049
-Function PsGrPnp_LoginGraphWithCertificateFile
+function PsPnPPowerShell_LoginGraphWithCertificateFile
 {
 	[SecureString]$secureCertPw = ConvertTo-SecureString -String `
 						$configFile.appSettings.CertificateFilePw -AsPlainText -Force
@@ -983,9 +1017,9 @@ Function PsGrPnp_LoginGraphWithCertificateFile
 #gavdcodeend 049
 
 #gavdcodebegin 050
-Function PsGrPnp_GetLanguagesWithCertificate
+function PsPnPPowerShell_GetLanguagesWithCertificate
 {
-	PsGrPnp_LoginGraphWithCertificate `
+	PsPnPPowerShell_LoginGraphWithCertificate `
 					-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
 					-TenantName $configFile.appsettings.TenantName `
 					-ClientId $configFile.appSettings.ClientIdWithCert `
@@ -997,12 +1031,84 @@ Function PsGrPnp_GetLanguagesWithCertificate
 }
 #gavdcodeend 050
 
+#*** Using the Microsoft Graph CLI ----------------------------------------------------------
+#gavdcodebegin 053
+function PsGraphCli_LoginWithInteraction
+{
+	mgc login --tenant-id $configFile.appsettings.TenantName `
+			  --client-id $configFile.appsettings.ClientIdWithAccPw `
+			  --environment "Global" `
+			  --strategy InteractiveBrowser
+}
+#gavdcodeend 053
+
+#gavdcodebegin 055
+function PsGraphCli_LoginWithDeviceCode
+{
+	mgc login --tenant-id $configFile.appsettings.TenantName `
+			  --client-id $configFile.appsettings.ClientIdWithAccPw `
+			  --strategy DeviceCode
+}
+#gavdcodeend 055
+
+#gavdcodebegin 057
+function PsGraphCli_LoginWithCertificate
+{
+	mgc login --tenant-id $configFile.appsettings.TenantName `
+			  --client-id $configFile.appsettings.ClientIdWithCert `
+			  --certificate-thumb-print $configFile.appsettings.CertificateThumbprint `
+			  --strategy ClientCertificate
+}
+#gavdcodeend 057
+
+#gavdcodebegin 059
+function PsGraphCli_LoginWithManagedIdentity
+{
+	mgc login --tenant-id $configFile.appsettings.TenantName `
+			  --client-id $configFile.appsettings.ClientIdWithManagedIdent `
+			  --strategy ManagedIdentity
+}
+#gavdcodeend 059
+
+#gavdcodebegin 054
+function PsGraphCli_ExampleLoginWithInteraction
+{
+	PsGraphCli_LoginWithInteraction
+
+	mgc users list
+
+	mgc logout
+}
+#gavdcodeend 054
+
+#gavdcodebegin 056
+function PsGraphCli_ExampleLoginWithDeviceCode
+{
+	PsGraphCli_LoginWithDeviceCode
+
+	mgc teams list
+
+	mgc logout
+}
+#gavdcodeend 056
+
+#gavdcodebegin 058
+function PsGraphCli_ExampleLoginWithCertificate
+{
+	PsGraphCli_LoginWithCertificate
+
+	mgc groups list
+
+	mgc logout
+}
+#gavdcodeend 058
+
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 050 ***
+# *** Latest Source Code Index: 059 ***
 
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
@@ -1024,64 +1130,74 @@ $mySiteCollUrl = $configFile.appsettings.SiteCollUrl
 $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 
 #*** Using Classic PowerShell cmdlets
-#PsGrClassical_GetTeam
-#PsGrClassical_CreateChannel
-#PsGrClassical_GetChannel
-#PsGrClassical_UpdateChannel
-#PsGrClassical_DeleteChannel
+#PsClassicalCdm_GetTeam
+#PsClassicalCmd_CreateChannel
+#PsClassicalCmd_GetChannel
+#PsClassicalCmd_UpdateChannel
+#PsClassicalCmd_DeleteChannel
 
 #*** Using Microsoft Graph PowerShell SDK cmdlets
-#PsGrSdk_LoginGraphWithInteraction
-#PsGrSdk_GetContextInfo
-#PsGrSdk_GetMe
-#PsGrSdk_ConnectDisconnect
-#PsGrSdk_CheckRights
-#PsGrSdk_SetVersion
-#PsGrSdk_AssignRights
-#PsGrSdk_CheckAvailableRights
+#PsGraphSdk_LoginWithInteraction
+#PsGraphSdk_GetContextInfo
+#PsGraphSdk_GetMe
+#PsGraphSdk_ConnectDisconnect
+#PsGraphSdk_CheckRights
+#PsGraphSdk_SetVersion
+#PsGraphSdk_AssignRights
+#PsGraphSdk_CheckAvailableRights
 
-#PsGrSdk_LoginGraphWithAccPw $myTenantName $myClientIdWithAccPw $myUserName $myUserPw
-#PsGrSdk_GetUserWithAccPw
+#PsGraphSdk_LoginWithAccPwMSAL $myTenantName $myClientIdWithAccPw $myUserName $myUserPw
+#PsGraphSdk_GetUserWithAccPwMSAL
 
-#PsGrSdk_LoginGraphWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
-#PsGrSdk_GetUsersWithSecret
+#PsGraphSdk_LoginWithSecretMSAL $myTenantName $myClientIdWithSecret $myClientSecret
+#PsGraphSdk_GetUsersWithSecretMSAL
 
-#PsGrSdk_LoginGraphWithCertificate $myTenantName $myClientIdWithCert $myCertificateThumbprint
-#PsGrSdk_LoginGraphWithCertificateFile
-#PsGrSdk_GetUsersWithCertificate
+#PsGraphSdk_LoginWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
+#PsGraphSdk_GetUsersWithSecret
 
-#GrPsGetGroupsSelect #Not Used
+#PsGraphSdk_LoginWithCertificate $myTenantName $myClientIdWithCert $myCertificateThumbprint
+#PsGraphSdk_LoginWithCertificateFile
+#PsGraphSdk_GetUsersWithCertificate
+
+#PsGraphSdk_GetGroupsSelect #Not Used
 
 #*** Using MSAL.PS module to get the token
-#PsMsal_LoginGraphWithInteraction $myTenantName $myClientIdWithAccPw
-#PsMsal_LoginGraphWithAccPw $myTenantName $myClientIdWithAccPw $myUserName $myUserPw
-#PsMsal_LoginGraphWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
-#PsMsal_LoginGraphWithCertificate $myTenantName $myClientIdWithCert $myCertificateThumbprint
-#PsMsal_LoginGraph_GetTeamWithAccPw
-#PsMsal_LoginGraph_GetUsersWithSecret
+#PsMsal_LoginWithInteraction $myTenantName $myClientIdWithAccPw
+#PsMsal_LoginWithAccPw $myTenantName $myClientIdWithAccPw $myUserName $myUserPw
+#PsMsal_LoginWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
+#PsMsal_LoginWithCertificate $myTenantName $myClientIdWithCert $myCertificateThumbprint
+#PsMsal_GetTeam
+#PsMsal_GetUsers
 
 #*** Using PowerShell-MicrosoftGraphAPI module (Other modules, not MS)
-#PsGrFrea_GetToken
-#PsGrFrea_GetTeamWithModule
-#PsGrFrea_CreateChannelWithModule
-#PsGrFrea_UpdateChannelWithModule
-#PsGrFrea_DeleteChannelWithModule
+#PsGraphFrea_GetToken
+#PsGraphFrea_GetTeamWithModule
+#PsGraphFrea_CreateChannelWithModule
+#PsGraphFrea_UpdateChannelWithModule
+#PsGraphFrea_DeleteChannelWithModule
 
 #*** Using PnP Graph PowerShell
-#PsGrPnp_LoginGraphWithInteraction $mySiteBaseUrl
-#PsGrPnp_LoginGraphWithInteractionMFA $mySiteBaseUrl
-#PsGrPnp_GetTeamUsersWithInteraction
-#PsGrPnp_GetToken
+#PsPnPPowerShell_LoginWithInteraction $mySiteBaseUrl
+#PsPnPPowerShell_LoginWithInteractionMFA $mySiteBaseUrl
+#PsPnPPowerShell_GetTeamUsersWithInteraction
+#PsPnPPowerShell_GetToken
 
-#PsGrPnp_LoginGraphWithAccPw $mySiteCollUrl $myUserName $myUserPw
-#PsGrPnp_LoginGraphWithAccPwAndClientId $mySiteBaseUrl $myClientIdWithAccPw $myUserName $myUserPw
-#PsGrPnp_GetContextWithAccPw
+#PsPnPPowerShell_LoginWithAccPw $mySiteCollUrl $myUserName $myUserPw
+#PsPnPPowerShell_LoginWithAccPwAndClientId $mySiteBaseUrl $myClientIdWithAccPw $myUserName $myUserPw
+#PsPnPPowerShell_GetContextWithAccPw
 
-#PsGrPnp_LoginGraphWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
-#PsGrPnp_GetTeamUsersWithSecret
+#PsPnPPowerShell_LoginWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
+#PsPnPPowerShell_GetTeamUsersWithSecret
 
-#PsGrPnp_LoginGraphWithCertificate $mySiteBaseUrl $myClientIdWithCert $myCertificateThumbprint
-#PsGrPnp_LoginGraphWithCertificateFile
-#PsGrPnp_GetLanguagesWithCertificate
+#PsPnPPowerShell_LoginGraphWithCertificate $mySiteBaseUrl $myClientIdWithCert $myCertificateThumbprint
+#PsPnPPowerShell_LoginGraphWithCertificateFile
+#PsPnPPowerShell_GetLanguagesWithCertificate
+
+#*** Using the MS Graph CLI
+#		ATTENTION: There is a Windows Environment Variable already configured in the computer
+#					to redirect the commands to the mgc.exe directory (see instructions in the book)
+#PsGraphCli_ExampleLoginWithInteraction
+#PsGraphCli_ExampleLoginWithDeviceCode
+#PsGraphCli_ExampleLoginWithCertificate
 
 Write-Host "Done" 

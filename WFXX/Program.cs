@@ -5,21 +5,22 @@ using System.Text;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ***-----------
+// ------**** ATTENTION **** This is a DotNet 8.0 Console Application ***-----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 003
-static void GetTeamApp()
+static void CsDotNet_GetTeamApp()
 {
     string graphQuery =
-    "https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c";
+    "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithSecret"],
         ClientSecret = ConfigurationManager.AppSettings["ClientSecret"],
@@ -37,12 +38,12 @@ static void GetTeamApp()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void GetTeamDel()
+static void CsDotNet_GetTeamDel()
 {
     string graphQuery =
     "https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
@@ -61,7 +62,7 @@ static void GetTeamDel()
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void CreateChannelApp()
+static void CsDotNet_CreateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
                                 "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels";
@@ -71,7 +72,7 @@ static void CreateChannelApp()
                         "\"description\": \"Channel created with Graph\"" +
                     " }";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithSecret"],
         ClientSecret = ConfigurationManager.AppSettings["ClientSecret"],
@@ -91,7 +92,7 @@ static void CreateChannelApp()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void CreateChannelDel()
+static void CsDotNet_CreateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
                                 "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels";
@@ -101,7 +102,7 @@ static void CreateChannelDel()
                         "\"description\": \"Channel created with Graph\"" +
                     " }";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
@@ -121,13 +122,13 @@ static void CreateChannelDel()
 }
 //gavdcodeend 006
 
-static void GetChannelApp()
+static void CsDotNet_GetChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:eb21860817fb4fe1a774bef08091635d@thread.tacv2";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithSecret"],
         ClientSecret = ConfigurationManager.AppSettings["ClientSecret"],
@@ -143,13 +144,13 @@ static void GetChannelApp()
     Console.WriteLine(resultText.Item2);
 }
 
-static void GetChannelDel()
+static void CsDotNet_GetChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:0da30c7628cb4b33923a49eb9f66141d@thread.tacv2";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
@@ -167,7 +168,7 @@ static void GetChannelDel()
 }
 
 //gavdcodebegin 007
-static void UpdateChannelApp()
+static void CsDotNet_UpdateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
@@ -175,15 +176,15 @@ static void UpdateChannelApp()
 
     string myBody = "{ \"description\": \"Channel Description Updated\" }";
 
-    List<HeaderConfig> myHeadersList = new List<HeaderConfig>();
-    HeaderConfig myHeaderMat = new HeaderConfig
+    List<HeaderConfig> myHeadersList = [];
+    HeaderConfig myHeaderMat = new()
     {
         HeaderTitle = "IF-MATCH",
         HeaderValue = "*"
     };
     myHeadersList.Add(myHeaderMat);
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithSecret"],
         ClientSecret = ConfigurationManager.AppSettings["ClientSecret"],
@@ -204,7 +205,7 @@ static void UpdateChannelApp()
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void UpdateChannelDel()
+static void CsDotNet_UpdateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
@@ -212,15 +213,15 @@ static void UpdateChannelDel()
 
     string myBody = "{ \"description\": \"Channel Description Updated\" }";
 
-    List<HeaderConfig> myHeadersList = new List<HeaderConfig>();
-    HeaderConfig myHeaderMat = new HeaderConfig
+    List<HeaderConfig> myHeadersList = [];
+    HeaderConfig myHeaderMat = new()
     {
         HeaderTitle = "IF-MATCH",
         HeaderValue = "*"
     };
     myHeadersList.Add(myHeaderMat);
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
@@ -242,13 +243,13 @@ static void UpdateChannelDel()
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void DeleteChannelApp()
+static void CsDotNet_DeleteChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:eb21860817fb4fe1a774bef08091635d@thread.tacv2";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithSecret"],
         ClientSecret = ConfigurationManager.AppSettings["ClientSecret"],
@@ -266,13 +267,13 @@ static void DeleteChannelApp()
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void DeleteChannelDel()
+static void CsDotNet_DeleteChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
         "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
         "19:0da30c7628cb4b33923a49eb9f66141d@thread.tacv2";
 
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
@@ -291,9 +292,9 @@ static void DeleteChannelDel()
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static AdAppToken GetADTokenApplication()
+static AdAppToken CsDotNet_GetADTokenApplication()
 {
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithSecret"],
         ClientSecret = ConfigurationManager.AppSettings["ClientSecret"],
@@ -307,9 +308,9 @@ static AdAppToken GetADTokenApplication()
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static AdAppToken GetADTokenDelegation()
+static AdAppToken CsDotNet_GetADTokenDelegation()
 {
-    RestGraphClient myClient = new RestGraphClient
+    RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
@@ -327,18 +328,20 @@ static AdAppToken GetADTokenDelegation()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//GetTeamApp();
-//GetTeamDel();
-//CreateChannelApp();
-//CreateChannelDel();
-//GetChannelApp();   
-//GetChannelDel();   
-//UpdateChannelApp();
-//UpdateChannelDel();
-//DeleteChannelApp();
-//DeleteChannelDel();
-//AdAppToken myTokenApp = GetADTokenApplication(); Console.WriteLine(myTokenApp.access_token);
-//AdAppToken myTokenDel = GetADTokenDelegation(); Console.WriteLine(myTokenDel.access_token);
+// *** Latest Source Code Index: 012 ***
+
+//CsDotNet_GetTeamApp();
+//CsDotNet_GetTeamDel();
+//CsDotNet_CreateChannelApp();
+//CsDotNet_CreateChannelDel();
+//CsDotNet_GetChannelApp();   
+//CsDotNet_GetChannelDel();   
+//CsDotNet_UpdateChannelApp();
+//CsDotNet_UpdateChannelDel();
+//CsDotNet_DeleteChannelApp();
+//CsDotNet_DeleteChannelDel();
+//CSDotNet_AdAppToken myTokenApp = GetADTokenApplication(); Console.WriteLine(myTokenApp.access_token);
+//CSDotNet_AdAppToken myTokenDel = GetADTokenDelegation(); Console.WriteLine(myTokenDel.access_token);
 
 Console.WriteLine("Done");
 
@@ -367,7 +370,7 @@ public class RestGraphClient
 
     public Tuple<string, string> SendGraphRequest()
     {
-        AdAppToken adToken = new AdAppToken();
+        AdAppToken adToken = new();
         if (Registration == TypeRegistration.Application)
             adToken = GetAzureTokenApplication();
         else if (Registration == TypeRegistration.Delegation)
@@ -375,8 +378,8 @@ public class RestGraphClient
 
         if (adToken != null)
         {
-            List<HeaderConfig> myHeadersList = new List<HeaderConfig>();
-            HeaderConfig authorizationHeader = new HeaderConfig
+            List<HeaderConfig> myHeadersList = [];
+            HeaderConfig authorizationHeader = new()
             {
                 HeaderTitle = "Authorization",
                 HeaderValue = adToken.token_type + " " + adToken.access_token
@@ -388,8 +391,7 @@ public class RestGraphClient
         }
         else
         {
-            Tuple<string, string> tplReturn = new Tuple<string, string>
-                                ("Error", string.Empty);
+            Tuple<string, string> tplReturn = new ("Error", string.Empty);
             return tplReturn;
         }
     }
@@ -414,36 +416,31 @@ public class RestGraphClient
             byte[] bodyBytes = Encoding.GetEncoding("iso-8859-1").GetBytes(PostData);
             myRequest.ContentLength = bodyBytes.Length;
 
-            using (Stream writeStream = myRequest.GetRequestStream())
-            {
-                writeStream.Write(bodyBytes, 0, bodyBytes.Length);
-            }
+            using Stream writeStream = myRequest.GetRequestStream();
+            writeStream.Write(bodyBytes, 0, bodyBytes.Length);
         }
 
         try
         {
-            using (HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse())
+            using HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
+            string responseValue = string.Empty;
+
+            using (Stream responseStream = myResponse.GetResponseStream())
             {
-                string responseValue = string.Empty;
-
-                using (Stream responseStream = myResponse.GetResponseStream())
-                {
-                    if (responseStream != null)
-                        using (StreamReader myReader = new StreamReader(responseStream))
-                        {
-                            responseValue = myReader.ReadToEnd();
-                        }
-                }
-
-                Tuple<string, string> tplReturn = new Tuple<string, string>
-                                    (myResponse.StatusCode.ToString(), responseValue);
-                return tplReturn;
+                if (responseStream != null)
+                    using (StreamReader myReader = new(responseStream))
+                    {
+                        responseValue = myReader.ReadToEnd();
+                    }
             }
+
+            Tuple<string, string> tplReturn = new (myResponse.StatusCode.ToString(), 
+                                                   responseValue);
+            return tplReturn;
         }
         catch (Exception ex)
         {
-            Tuple<string, string> tplReturn = new Tuple<string, string>
-                                ("Error", ex.ToString());
+            Tuple<string, string> tplReturn = new ("Error", ex.ToString());
             return tplReturn;
         }
     }
@@ -459,7 +456,7 @@ public class RestGraphClient
             "client_id=" + ClientID + "&" +
             "client_secret=" + ClientSecret + "";
 
-        RestGraphClient myClient = new RestGraphClient
+        RestGraphClient myClient = new()
         {
             EndPoint = myUri,
             Method = HttpVerb.POST,
@@ -490,7 +487,7 @@ public class RestGraphClient
                         "Username=" + UserName + "&" +
                         "Password=" + UserPw + "";
 
-        RestGraphClient myClient = new RestGraphClient
+        RestGraphClient myClient = new()
         {
             EndPoint = myUri,
             Method = HttpVerb.POST,
@@ -546,3 +543,4 @@ public class HeaderConfig
 //gavdcodeend 002
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used

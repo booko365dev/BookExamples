@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
 
@@ -29,25 +29,26 @@ using System.Web;
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
+//# *** Latest Source Code Index: 002 ***
+
 //gavdcodebegin 002
-SecureString usrPw = new SecureString();
+SecureString usrPw = new();
 foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
     usrPw.AppendChar(oneChar);
 
-using (AuthenticationManager authenticationManager =
-            new AuthenticationManager())
+using (AuthenticationManager authenticationManager = new())
 using (ClientContext spCtx = authenticationManager.GetContext(
             new Uri(ConfigurationManager.AppSettings["SiteCollUrl"]),
             ConfigurationManager.AppSettings["UserName"],
             usrPw,
             ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 {
-    SpCsCsomReadAllList(spCtx);
+    CsSpCsom_ReadAllList(spCtx);
 
     Console.WriteLine("Done");
 }
 
-static void SpCsCsomReadAllList(ClientContext spCtx)
+static void CsSpCsom_ReadAllList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web; ListCollection allLists = myWeb.Lists;
     spCtx.Load(allLists, lsts => lsts.Include(lst => lst.Title, lst => lst.Id));
@@ -66,14 +67,13 @@ static void SpCsCsomReadAllList(ClientContext spCtx)
 //gavdcodebegin 001
 public class AuthenticationManager : IDisposable
 {
-    private static readonly HttpClient httpClient = new HttpClient();
+    private static readonly HttpClient httpClient = new();
     private const string tokenEndpoint =
                             "https://login.microsoftonline.com/common/oauth2/token";
 
-    private static readonly SemaphoreSlim semaphoreSlimTokens = new SemaphoreSlim(1);
+    private static readonly SemaphoreSlim semaphoreSlimTokens = new(1);
     private AutoResetEvent tokenResetEvent = null;
-    private readonly ConcurrentDictionary<string, string> tokenCache =
-                                            new ConcurrentDictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> tokenCache = new();
     private bool disposedValue;
 
     internal class TokenWaitInfo
@@ -124,7 +124,7 @@ public class AuthenticationManager : IDisposable
                 AddTokenToCache(resourceUri, tokenCache, accessToken);
 
                 tokenResetEvent = new AutoResetEvent(false);
-                TokenWaitInfo wi = new TokenWaitInfo();
+                TokenWaitInfo wi = new();
                 wi.Handle = ThreadPool.RegisterWaitForSingleObject(
                     tokenResetEvent,
                     async (state, timedOut) =>
@@ -145,7 +145,7 @@ public class AuthenticationManager : IDisposable
                                                             ConfigureAwait(false);
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
@@ -173,8 +173,8 @@ public class AuthenticationManager : IDisposable
         }
     }
 
-    private async Task<string> AcquireTokenAsync(Uri resourceUri,
-                                        string username, string password, string clientId)
+    private static async Task<string> AcquireTokenAsync(Uri resourceUri,
+                                    string username, string password, string clientId)
     {
         string resource = $"{resourceUri.Scheme}://{resourceUri.DnsSafeHost}";
 

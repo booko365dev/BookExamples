@@ -7,9 +7,10 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-# Functions to login in Azure
+# functions to login in Azure
 
-Function Get-AzureTokenApplication(){
+function Get-AzureTokenApplication
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -37,7 +38,8 @@ Function Get-AzureTokenApplication(){
 	return $myOAuth
 }
 
-Function Get-AzureTokenDelegation(){
+function Get-AzureTokenDelegation
+{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -72,7 +74,7 @@ Function Get-AzureTokenDelegation(){
 # Functions to login in Teams
 
 #gavdcodebegin 001
-Function TeamsPsMtp_LoginPsTeams
+function PsTeamsMtp_LoginPsTeams
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -84,7 +86,7 @@ Function TeamsPsMtp_LoginPsTeams
 #gavdcodeend 001
 
 #gavdcodebegin 018
-Function TeamsPsSkype_LoginPsTeams
+function PsTeamsSkype_LoginPsTeams
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -99,7 +101,7 @@ Function TeamsPsSkype_LoginPsTeams
 #gavdcodeend 018
 
 #gavdcodebegin 037
-Function TeamsPsPnP_LoginPsTeams
+function PsTeamsPnpPowerShell_LoginPsTeams
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -110,7 +112,7 @@ Function TeamsPsPnP_LoginPsTeams
 }
 #gavdcodeend 037
 
-Function TeamsPsCli_LoginPsTeams
+function PsTeamsCliM365_LoginPsTeams
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
@@ -122,7 +124,7 @@ Function TeamsPsCli_LoginPsTeams
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 002
-Function TeamsPsMtp_EnumarateTeams
+function PsTeamsMtp_EnumarateTeams
 {
 	$allTeams = Get-Team
 	foreach($oneTeam in $allTeams) {
@@ -134,7 +136,7 @@ Function TeamsPsMtp_EnumarateTeams
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function TeamsPsMtp_GetTeamsByDisplayName
+function PsTeamsMtp_GetTeamsByDisplayName
 {
 	$oneTeam = Get-Team -DisplayName "Mark 8 Project Team"
 	Write-Host $oneTeam.GroupId
@@ -144,7 +146,7 @@ Function TeamsPsMtp_GetTeamsByDisplayName
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function TeamsPsMtp_CreateTeam
+function PsTeamsMtp_CreateTeam
 {
 	New-Team -DisplayName "Test Team from PS" `
 			 -Description "Team created with PowerShell" `
@@ -154,7 +156,7 @@ Function TeamsPsMtp_CreateTeam
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function TeamsPsMtp_UpdateTeam
+function PsTeamsMtp_UpdateTeam
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	Set-Team -GroupId $myTeam.GroupId `
@@ -165,7 +167,7 @@ Function TeamsPsMtp_UpdateTeam
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function TeamsPsMtp_DeleteTeam
+function PsTeamsMtp_DeleteTeam
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	Remove-Team -GroupId $myTeam.GroupId
@@ -174,7 +176,7 @@ Function TeamsPsMtp_DeleteTeam
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function TeamsPsMtp_TeamsHelp
+function PsTeamsMtp_TeamsHelp
 {
 	Get-TeamHelp
 	Disconnect-MicrosoftTeams
@@ -182,7 +184,7 @@ Function TeamsPsMtp_TeamsHelp
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function TeamsPsMtp_EnumerateChannels
+function PsTeamsMtp_EnumerateChannels
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	$allChannels = Get-TeamChannel -GroupId $myTeam.GroupId
@@ -195,7 +197,7 @@ Function TeamsPsMtp_EnumerateChannels
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function TeamsPsMtp_CreateChannels
+function PsTeamsMtp_CreateChannels
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	New-TeamChannel -GroupId $myTeam.GroupId `
@@ -206,7 +208,7 @@ Function TeamsPsMtp_CreateChannels
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function TeamsPsMtp_UpdateChannels
+function PsTeamsMtp_UpdateChannels
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	Set-TeamChannel -GroupId $myTeam.GroupId `
@@ -218,7 +220,7 @@ Function TeamsPsMtp_UpdateChannels
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function TeamsPsMtp_DeleteChannels
+function PsTeamsMtp_DeleteChannels
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	Remove-TeamChannel -GroupId $myTeam.GroupId `
@@ -229,7 +231,7 @@ Function TeamsPsMtp_DeleteChannels
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function TeamsPsMtp_EnumerateTeamUser
+function PsTeamsMtp_EnumerateTeamUser
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	$allUsers = Get-TeamUser -GroupId $myTeam.GroupId
@@ -242,7 +244,7 @@ Function TeamsPsMtp_EnumerateTeamUser
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function TeamsPsMtp_CreateTeamUser
+function PsTeamsMtp_CreateTeamUser
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	Add-TeamUser -GroupId $myTeam.GroupId `
@@ -253,7 +255,7 @@ Function TeamsPsMtp_CreateTeamUser
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function TeamsPsMtp_DeleteTeamUser
+function PsTeamsMtp_DeleteTeamUser
 {
 	$myTeam = Get-Team -DisplayName "Test Team from PS"
 	Remove-TeamUser -GroupId $myTeam.GroupId `
@@ -264,7 +266,7 @@ Function TeamsPsMtp_DeleteTeamUser
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function TeamsPsMtp_EnumeratePolicyPackage
+function PsTeamsMtp_EnumeratePolicyPackage
 {
 	$allPolicies = Get-CsPolicyPackage
 	foreach($onePolicy in $allPolicies) {
@@ -276,7 +278,7 @@ Function TeamsPsMtp_EnumeratePolicyPackage
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function TeamsPsMtp_PolicyPackageUser
+function PsTeamsMtp_PolicyPackageUser
 {
 	Get-CsUserPolicyPackage -Identity "user@domain.onmicrosoft.com"
 	Disconnect-MicrosoftTeams
@@ -284,7 +286,7 @@ Function TeamsPsMtp_PolicyPackageUser
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function TeamsPsMtp_PolicyPackageUserRecommended
+function PsTeamsMtp_PolicyPackageUserRecommended
 {
 	$allPolicies = Get-CsUserPolicyPackageRecommendation -Identity "admin@guitacadev.onmicrosoft.com"
 	foreach($onePolicy in $allPolicies) {
@@ -296,7 +298,7 @@ Function TeamsPsMtp_PolicyPackageUserRecommended
 #gavdcodeend 017
 
 #gavdcodebegin 030
-Function TeamsPsMtp_GetCsTeamTemplateList
+function PsTeamsMtp_GetCsTeamTemplateList
 {
 	$allTemplates = Get-CsTeamTemplateList
 	foreach($oneTemplate in $allTemplates) {
@@ -308,7 +310,7 @@ Function TeamsPsMtp_GetCsTeamTemplateList
 #gavdcodeend 030
 
 #gavdcodebegin 031
-Function TeamsPsMtp_GetCsTeamTemplate
+function PsTeamsMtp_GetCsTeamTemplate
 {
 	$oneTemplate = Get-CsTeamTemplate -OdataId `
 		"/api/teamtemplates/v1.0/com.microsoft.teams.template.ManageAProject/Public/en-US" `
@@ -320,7 +322,7 @@ Function TeamsPsMtp_GetCsTeamTemplate
 #gavdcodeend 031
 
 #gavdcodebegin 032
-Function TeamsPsMtp_GetTeamsApp
+function PsTeamsMtp_GetTeamsApp
 {
 	$allApps = Get-TeamsApp
 	foreach($oneApp in $allApps) {
@@ -332,7 +334,7 @@ Function TeamsPsMtp_GetTeamsApp
 #gavdcodeend 032
 
 #gavdcodebegin 033
-Function TeamsPsMtp_GetOneTeamsAppByIdOrName
+function PsTeamsMtp_GetOneTeamsAppByIdOrName
 {
 	$oneAppById = Get-TeamsApp -Id "fe157fa1-3f58-47ac-b66c-5eaafb55c4ad" | ConvertTo-Json 
 	Write-Host $oneAppById
@@ -345,7 +347,7 @@ Function TeamsPsMtp_GetOneTeamsAppByIdOrName
 #gavdcodeend 033
 
 #gavdcodebegin 034
-Function TeamsPsMtp_NewTeamsApp
+function PsTeamsMtp_NewTeamsApp
 {
 	New-TeamsApp -DistributionMethod "organization" `
 				 -Path "C:\Temporary\App01FromDevSite.zip" 
@@ -355,7 +357,7 @@ Function TeamsPsMtp_NewTeamsApp
 #gavdcodeend 034
 
 #gavdcodebegin 035
-Function TeamsPsMtp_SetTeamsApp
+function PsTeamsMtp_SetTeamsApp
 {
 	Set-TeamsApp -Id "eed59874-e471-49ca-a01f-7d92bee85fc6" `
 				 -Path "C:\Temporary\App01FromDevSite.zip" 
@@ -365,7 +367,7 @@ Function TeamsPsMtp_SetTeamsApp
 #gavdcodeend 035
 
 #gavdcodebegin 036
-Function TeamsPsMtp_DeleteTeamsApp
+function PsTeamsMtp_DeleteTeamsApp
 {
 	Remove-TeamsApp -Id "eed59874-e471-49ca-a01f-7d92bee85fc6"
 	
@@ -374,7 +376,7 @@ Function TeamsPsMtp_DeleteTeamsApp
 #gavdcodeend 036
 
 #gavdcodebegin 019
-Function TeamsPsSkype_GetCallingPolicy
+function PsTeamsSkype_GetCallingPolicy
 {
 	#*** LEGACY CODE ***
 	Get-CsTeamsCallingPolicy
@@ -383,7 +385,7 @@ Function TeamsPsSkype_GetCallingPolicy
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function TeamsPsSkype_GetCallParkPolicy
+function PsTeamsSkype_GetCallParkPolicy
 {
 	#*** LEGACY CODE ***
 	Get-CsTeamsCallParkPolicy
@@ -392,7 +394,7 @@ Function TeamsPsSkype_GetCallParkPolicy
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function TeamsPsSkype_GetChannelPolicy
+function PsTeamsSkype_GetChannelPolicy
 {
 	#*** LEGACY CODE ***
 	Get-CsTeamsChannelsPolicy
@@ -401,7 +403,7 @@ Function TeamsPsSkype_GetChannelPolicy
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function TeamsPsSkype_CreateChannelPolicy
+function PsTeamsSkype_CreateChannelPolicy
 {
 	#*** LEGACY CODE ***
 	New-CsTeamsChannelsPolicy -Identity myPolicy -AllowPrivateTeamDiscovery $false
@@ -410,7 +412,7 @@ Function TeamsPsSkype_CreateChannelPolicy
 #gavdcodeend 022
 
 #gavdcodebegin 023
-Function TeamsPsSkype_AssignChannelPolicy
+function PsTeamsSkype_AssignChannelPolicy
 {
 	#*** LEGACY CODE ***
 	Grant-CsTeamsChannelsPolicy -Identity user@tenant.OnMicrosoft.com -PolicyName myPolicy
@@ -419,7 +421,7 @@ Function TeamsPsSkype_AssignChannelPolicy
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function TeamsPsSkype_ModifyChannelPolicy
+function PsTeamsSkype_ModifyChannelPolicy
 {
 	#*** LEGACY CODE ***
 	Set-CsTeamsChannelsPolicy -Identity myPolicy -AllowPrivateTeamDiscovery $true
@@ -428,7 +430,7 @@ Function TeamsPsSkype_ModifyChannelPolicy
 #gavdcodeend 024
 
 #gavdcodebegin 025
-Function TeamsPsSkype_ModifyChannelPolicy
+function PsTeamsSkype_ModifyChannelPolicy
 {
 	#*** LEGACY CODE ***
 	Grant-CsTeamsChannelsPolicy -Identity user@tenant.OnMicrosoft.com -PolicyName Default
@@ -438,7 +440,7 @@ Function TeamsPsSkype_ModifyChannelPolicy
 #gavdcodeend 025
 
 #gavdcodebegin 026
-Function TeamsPsSkype_GetTeamsClientConfiguration
+function PsTeamsSkype_GetTeamsClientConfiguration
 {
 	#*** LEGACY CODE ***
 	Get-CsTeamsClientConfiguration
@@ -447,7 +449,7 @@ Function TeamsPsSkype_GetTeamsClientConfiguration
 #gavdcodeend 026
 
 #gavdcodebegin 027
-Function TeamsPsSkype_GetGuestMessagingConfiguration
+function PsTeamsSkype_GetGuestMessagingConfiguration
 {
 	#*** LEGACY CODE ***
 	Get-CsTeamsGuestMessagingConfiguration
@@ -456,7 +458,7 @@ Function TeamsPsSkype_GetGuestMessagingConfiguration
 #gavdcodeend 027
 
 #gavdcodebegin 028
-Function TeamsPsSkype_GetMeetingBroadcastConfiguration
+function PsTeamsSkype_GetMeetingBroadcastConfiguration
 {
 	#*** LEGACY CODE ***
 	Get-CsTeamsMeetingBroadcastConfiguration
@@ -465,7 +467,7 @@ Function TeamsPsSkype_GetMeetingBroadcastConfiguration
 #gavdcodeend 028
 
 #gavdcodebegin 029
-Function TeamsPsSkype_RemoveGoogleDrive
+function PsTeamsSkype_RemoveGoogleDrive
 {
 	#*** LEGACY CODE ***
 	Set-CsTeamsClientConfiguration -Identity Global -AllowGoogleDrive $false
@@ -474,7 +476,7 @@ Function TeamsPsSkype_RemoveGoogleDrive
 #gavdcodeend 029
 
 #gavdcodebegin 038
-Function TeamsPsPnP_GetAllTeams
+function PsTeamsPnpPowerShell_GetAllTeams
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	Get-PnPTeamsTeam
@@ -482,7 +484,7 @@ Function TeamsPsPnP_GetAllTeams
 #gavdcodeend 038
 
 #gavdcodebegin 039
-Function TeamsPsPnP_GetOneTeam
+function PsTeamsPnpPowerShell_GetOneTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	Get-PnPTeamsTeam -Identity "3216704d-ed17-4286-9206-2fa67b85780c"  # GroupID
@@ -492,7 +494,7 @@ Function TeamsPsPnP_GetOneTeam
 #gavdcodeend 039
 
 #gavdcodebegin 040
-Function TeamsPsPnP_NewTeamByName
+function PsTeamsPnpPowerShell_NewTeamByName
 {
 	# Permissions required: Group.ReadWrite.All
 	New-PnPTeamsTeam -DisplayName "TeamCreatedWithPnP" `
@@ -503,7 +505,7 @@ Function TeamsPsPnP_NewTeamByName
 #gavdcodeend 040
 
 #gavdcodebegin 041
-Function TeamsPsPnP_NewTeamByGroup
+function PsTeamsPnpPowerShell_NewTeamByGroup
 {
 	# Permissions required: Group.ReadWrite.All
 	New-PnPTeamsTeam -GroupId "89e67c39-b5b3-440d-9bcd-ac8b3743dda1" `
@@ -512,7 +514,7 @@ Function TeamsPsPnP_NewTeamByGroup
 #gavdcodeend 041
 
 #gavdcodebegin 042
-Function TeamsPsPnP_SetTeam
+function PsTeamsPnpPowerShell_SetTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Set-PnPTeamsTeam -Identity "TeamCreatedWithPnP" `
@@ -522,7 +524,7 @@ Function TeamsPsPnP_SetTeam
 #gavdcodeend 042
 
 #gavdcodebegin 043
-Function TeamsPsPnP_SetPictureTeam
+function PsTeamsPnpPowerShell_SetPictureTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Set-PnPTeamsTeamPicture -Team "Team Created With PnP" `
@@ -531,7 +533,7 @@ Function TeamsPsPnP_SetPictureTeam
 #gavdcodeend 043
 
 #gavdcodebegin 044
-Function TeamsPsPnP_SetArchivedTeam
+function PsTeamsPnpPowerShell_SetArchivedTeam
 {
 	# Permissions required: Group.ReadWrite.All or Directory.ReadWrite.All
 	Set-PnPTeamsTeamArchivedState -Identity "Team Created With PnP" `
@@ -541,7 +543,7 @@ Function TeamsPsPnP_SetArchivedTeam
 #gavdcodeend 044
 
 #gavdcodebegin 045
-Function TeamsPsPnP_RemoveTeam
+function PsTeamsPnpPowerShell_RemoveTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Remove-PnPTeamsTeam -Identity "Team Created With PnP" -Force
@@ -550,7 +552,7 @@ Function TeamsPsPnP_RemoveTeam
 #gavdcodeend 045
 
 #gavdcodebegin 046
-Function TeamsPsPnP_GetAllChannelsTeam
+function PsTeamsPnpPowerShell_GetAllChannelsTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Get-PnPTeamsChannel -Team "Team Created With PnP"
@@ -558,7 +560,7 @@ Function TeamsPsPnP_GetAllChannelsTeam
 #gavdcodeend 046
 
 #gavdcodebegin 047
-Function TeamsPsPnP_GetOneChannelTeam
+function PsTeamsPnpPowerShell_GetOneChannelTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	Get-PnPTeamsChannel -Team "Team Created With PnP" `
@@ -567,7 +569,7 @@ Function TeamsPsPnP_GetOneChannelTeam
 #gavdcodeend 047
 
 #gavdcodebegin 131
-Function TeamsPsPnP_GetOneChannelFilesFolder
+function PsTeamsPnpPowerShell_GetOneChannelFilesFolder
 {
 	# Permissions required: Group.ReadWrite.All
 	Get-PnPTeamsChannelFilesFolder -Team "Team Created With PnP" `
@@ -576,7 +578,7 @@ Function TeamsPsPnP_GetOneChannelFilesFolder
 #gavdcodeend 131
 
 #gavdcodebegin 048
-Function TeamsPsPnP_AddOneChannelTeam
+function PsTeamsPnpPowerShell_AddOneChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Add-PnPTeamsChannel -Team "Team Created With PnP" `
@@ -585,7 +587,7 @@ Function TeamsPsPnP_AddOneChannelTeam
 #gavdcodeend 048
 
 #gavdcodebegin 049
-Function TeamsPsPnP_UpdateOneChannelTeam
+function PsTeamsPnpPowerShell_UpdateOneChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Set-PnPTeamsChannel -Team "Team Created With PnP" `
@@ -597,7 +599,7 @@ Function TeamsPsPnP_UpdateOneChannelTeam
 #gavdcodeend 049
 
 #gavdcodebegin 050
-Function TeamsPsPnP_SendMessageToOneChannelTeam
+function PsTeamsPnpPowerShell_SendMessageToOneChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Submit-PnPTeamsChannelMessage -Team "Team Created With PnP" `
@@ -609,7 +611,7 @@ Function TeamsPsPnP_SendMessageToOneChannelTeam
 #gavdcodeend 050
 
 #gavdcodebegin 051
-Function TeamsPsPnP_GetMessagesFromOneChannelTeam
+function PsTeamsPnpPowerShell_GetMessagesFromOneChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	$myMessages = Get-PnPTeamsChannelMessage -Team "Team Created With PnP" `
@@ -625,7 +627,7 @@ Function TeamsPsPnP_GetMessagesFromOneChannelTeam
 #gavdcodeend 051
 
 #gavdcodebegin 132
-Function TeamsPsPnP_GetReplayMessageOneChannelTeam
+function PsTeamsPnpPowerShell_GetReplayMessageOneChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	$myReplay = Get-PnPTeamsChannelMessageReply -Team "Team Created With PnP" `
@@ -637,7 +639,7 @@ Function TeamsPsPnP_GetReplayMessageOneChannelTeam
 #gavdcodeend 132
 
 #gavdcodebegin 052
-Function TeamsPsPnP_RemoveOneChannelTeam
+function PsTeamsPnpPowerShell_RemoveOneChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Remove-PnPTeamsChannel -Team "Team Created With PnP" `
@@ -646,7 +648,7 @@ Function TeamsPsPnP_RemoveOneChannelTeam
 #gavdcodeend 052
 
 #gavdcodebegin 053
-Function TeamsPsPnP_GetAllTabsChannelTeam
+function PsTeamsPnpPowerShell_GetAllTabsChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	$myTabs = Get-PnPTeamsTab -Team "Team Created With PnP" `
@@ -659,7 +661,7 @@ Function TeamsPsPnP_GetAllTabsChannelTeam
 #gavdcodeend 053
 
 #gavdcodebegin 054
-Function TeamsPsPnP_GetOneTabChannelTeam
+function PsTeamsPnpPowerShell_GetOneTabChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	$oneTab = Get-PnPTeamsTab -Team "Team Created With PnP" `
@@ -671,7 +673,7 @@ Function TeamsPsPnP_GetOneTabChannelTeam
 #gavdcodeend 054
 
 #gavdcodebegin 055
-Function TeamsPsPnP_AddOneTabChannelTeam
+function PsTeamsPnpPowerShell_AddOneTabChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	$myDocsUrl = $configFile.appsettings.SiteBaseUrl + `
@@ -685,7 +687,7 @@ Function TeamsPsPnP_AddOneTabChannelTeam
 #gavdcodeend 055
 
 #gavdcodebegin 056
-Function TeamsPsPnP_UpdateOneTabChannelTeam
+function PsTeamsPnpPowerShell_UpdateOneTabChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Set-PnPTeamsTab -Team "Team Created With PnP" `
@@ -696,7 +698,7 @@ Function TeamsPsPnP_UpdateOneTabChannelTeam
 #gavdcodeend 056
 
 #gavdcodebegin 057
-Function TeamsPsPnP_DeleteOneTabChannelTeam
+function PsTeamsPnpPowerShell_DeleteOneTabChannelTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Remove-PnPTeamsTab -Team "Team Created With PnP" `
@@ -707,7 +709,7 @@ Function TeamsPsPnP_DeleteOneTabChannelTeam
 #gavdcodeend 057
 
 #gavdcodebegin 058
-Function TeamsPsPnP_GetAllUsersTeam
+function PsTeamsPnpPowerShell_GetAllUsersTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	$myUsers = Get-PnPTeamsUser -Team "Team Created With PnP"
@@ -722,7 +724,7 @@ Function TeamsPsPnP_GetAllUsersTeam
 #gavdcodeend 058
 
 #gavdcodebegin 059
-Function TeamsPsPnP_GetAllUsersChannelTeam
+function PsTeamsPnpPowerShell_GetAllUsersChannelTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	$myUsers = Get-PnPTeamsUser -Team "Team Created With PnP" `
@@ -738,7 +740,7 @@ Function TeamsPsPnP_GetAllUsersChannelTeam
 #gavdcodeend 059
 
 #gavdcodebegin 060
-Function TeamsPsPnP_GetAllUsersChannelByRoleTeam
+function PsTeamsPnpPowerShell_GetAllUsersChannelByRoleTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	$myUsers = Get-PnPTeamsUser -Team "Team Created With PnP" `
@@ -755,7 +757,7 @@ Function TeamsPsPnP_GetAllUsersChannelByRoleTeam
 #gavdcodeend 060
 
 #gavdcodebegin 061
-Function TeamsPsPnP_AddOneUserTeam
+function PsTeamsPnpPowerShell_AddOneUserTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	Add-PnPTeamsUser -Team "Team Created With PnP" `
@@ -765,7 +767,7 @@ Function TeamsPsPnP_AddOneUserTeam
 #gavdcodeend 061
 
 #gavdcodebegin 129
-Function TeamsPsPnP_AddOneUserChannel
+function PsTeamsPnpPowerShell_AddOneUserChannel
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	Add-PnPTeamsUser -Team "Team Created With PnP" `
@@ -776,7 +778,7 @@ Function TeamsPsPnP_AddOneUserChannel
 #gavdcodeend 129
 
 #gavdcodebegin 130
-Function TeamsPsPnP_DeleteOneUserChannel
+function PsTeamsPnpPowerShell_DeleteOneUserChannel
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	Remove-PnPTeamsChannelUser -Team "Team Created With PnP" `
@@ -787,7 +789,7 @@ Function TeamsPsPnP_DeleteOneUserChannel
 #gavdcodeend 130
 
 #gavdcodebegin 062
-Function TeamsPsPnP_DeleteOneUserTeam
+function PsTeamsPnpPowerShell_DeleteOneUserTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	Remove-PnPTeamsUser -Team "Team Created With PnP" `
@@ -797,7 +799,7 @@ Function TeamsPsPnP_DeleteOneUserTeam
 #gavdcodeend 062
 
 #gavdcodebegin 063
-Function TeamsPsPnP_GetAllAppsTeam
+function PsTeamsPnpPowerShell_GetAllAppsTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	$myApps = Get-PnPTeamsApp
@@ -812,7 +814,7 @@ Function TeamsPsPnP_GetAllAppsTeam
 #gavdcodeend 063
 
 #gavdcodebegin 064
-Function TeamsPsPnP_GetOneAppTeam
+function PsTeamsPnpPowerShell_GetOneAppTeam
 {
 	# Permissions required: Group.Read.All or Group.ReadWrite.All
 	$myApp = Get-PnPTeamsApp -Identity "Salesforce"
@@ -826,7 +828,7 @@ Function TeamsPsPnP_GetOneAppTeam
 #gavdcodeend 064
 
 #gavdcodebegin 065
-Function TeamsPsPnP_AddOneAppTeam
+function PsTeamsPnpPowerShell_AddOneAppTeam
 {
 	# Permissions required: AppCatalog.ReadWrite.All or Directory.ReadWrite.All
 	New-PnPTeamsApp -Path "C:\Temporary\App01FromDevSite.zip"
@@ -834,7 +836,7 @@ Function TeamsPsPnP_AddOneAppTeam
 #gavdcodeend 065
 
 #gavdcodebegin 066
-Function TeamsPsPnP_UpdateOneAppTeam
+function PsTeamsPnpPowerShell_UpdateOneAppTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Update-PnPTeamsApp -Identity "1e67180b-1904-4637-91b5-fa09420953f6" `
@@ -843,7 +845,7 @@ Function TeamsPsPnP_UpdateOneAppTeam
 #gavdcodeend 066
 
 #gavdcodebegin 067
-Function TeamsPsPnP_DeleteOneAppTeam
+function PsTeamsPnpPowerShell_DeleteOneAppTeam
 {
 	# Permissions required: Group.ReadWrite.All
 	Remove-PnPTeamsApp -Identity "App01FromDevSite" -Force
@@ -852,7 +854,7 @@ Function TeamsPsPnP_DeleteOneAppTeam
 #gavdcodeend 067
 
 #gavdcodebegin 068
-Function TeamsPsGraph_GetJoinedTeams
+function PsTeamsGraphRest_GetJoinedTeams
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -879,7 +881,7 @@ Function TeamsPsGraph_GetJoinedTeams
 #gavdcodeend 068 
 
 #gavdcodebegin 069
-Function TeamsPsGraph_GetAllTeamsByGroup
+function PsTeamsGraphRest_GetAllTeamsByGroup
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -907,7 +909,7 @@ Function TeamsPsGraph_GetAllTeamsByGroup
 #gavdcodeend 069 
 
 #gavdcodebegin 070
-Function TeamsPsGraph_GetOneTeam
+function PsTeamsGraphRest_GetOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -933,7 +935,7 @@ Function TeamsPsGraph_GetOneTeam
 #gavdcodeend 070 
 
 #gavdcodebegin 071
-Function TeamsPsGraph_CreateOneTeam
+function PsTeamsGraphRest_CreateOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Directory.ReadWrite.All, 
@@ -965,7 +967,7 @@ Function TeamsPsGraph_CreateOneTeam
 #gavdcodeend 071
 
 #gavdcodebegin 072
-Function TeamsPsGraph_CreateOneGroup
+function PsTeamsGraphRest_CreateOneGroup
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Directory.ReadWrite.All, 
@@ -1005,7 +1007,7 @@ Function TeamsPsGraph_CreateOneGroup
 #gavdcodeend 072
 
 #gavdcodebegin 073
-Function TeamsPsGraph_CreateOneTeamFromGroup
+function PsTeamsGraphRest_CreateOneTeamFromGroup
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Directory.ReadWrite.All, 
@@ -1037,7 +1039,7 @@ Function TeamsPsGraph_CreateOneTeamFromGroup
 #gavdcodeend 073
 
 #gavdcodebegin 074
-Function TeamsPsGraph_UpdateOneTeam
+function PsTeamsGraphRest_UpdateOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1064,7 +1066,7 @@ Function TeamsPsGraph_UpdateOneTeam
 #gavdcodeend 074 
 
 #gavdcodebegin 075
-Function TeamsPsGraph_DeleteOneTeam
+function PsTeamsGraphRest_DeleteOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1085,7 +1087,7 @@ Function TeamsPsGraph_DeleteOneTeam
 #gavdcodeend 075
 
 #gavdcodebegin 076
-Function TeamsPsGraph_GetAllChannelsInOneTeam
+function PsTeamsGraphRest_GetAllChannelsInOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Channel.ReadBasic.All
@@ -1113,7 +1115,7 @@ Function TeamsPsGraph_GetAllChannelsInOneTeam
 #gavdcodeend 076
 
 #gavdcodebegin 077
-Function TeamsPsGraph_GetOneChannelInOneTeam
+function PsTeamsGraphRest_GetOneChannelInOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Channel.ReadBasic.All
@@ -1140,7 +1142,7 @@ Function TeamsPsGraph_GetOneChannelInOneTeam
 #gavdcodeend 077 
 
 #gavdcodebegin 078
-Function TeamsPsGraph_CreateOneChannel
+function PsTeamsGraphRest_CreateOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Directory.ReadWrite.All, Group.ReadWrite.All, Channel.Create
@@ -1169,7 +1171,7 @@ Function TeamsPsGraph_CreateOneChannel
 #gavdcodeend 078
 
 #gavdcodebegin 079
-Function TeamsPsGraph_UpdateOneChannel
+function PsTeamsGraphRest_UpdateOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1198,7 +1200,7 @@ Function TeamsPsGraph_UpdateOneChannel
 #gavdcodeend 079
 
 #gavdcodebegin 080
-Function TeamsPsGraph_DeleteOneChannel
+function PsTeamsGraphRest_DeleteOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1221,7 +1223,7 @@ Function TeamsPsGraph_DeleteOneChannel
 #gavdcodeend 080
 
 #gavdcodebegin 081
-Function TeamsPsGraph_GetAllTabsInOneChannel
+function PsTeamsGraphRest_GetAllTabsInOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Channel.ReadBasic.All
@@ -1251,7 +1253,7 @@ Function TeamsPsGraph_GetAllTabsInOneChannel
 #gavdcodeend 081
 
 #gavdcodebegin 082
-Function TeamsPsGraph_GetOneTabInOneChannel
+function PsTeamsGraphRest_GetOneTabInOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Channel.ReadBasic.All
@@ -1279,7 +1281,7 @@ Function TeamsPsGraph_GetOneTabInOneChannel
 #gavdcodeend 082
 
 #gavdcodebegin 083
-Function TeamsPsGraph_CreateOneTabInOneChannel
+function PsTeamsGraphRest_CreateOneTabInOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Directory.ReadWrite.All, 
@@ -1320,7 +1322,7 @@ Function TeamsPsGraph_CreateOneTabInOneChannel
 #gavdcodeend 083
 
 #gavdcodebegin 084
-Function TeamsPsGraph_UpdateOneTabInOneChannel
+function PsTeamsGraphRest_UpdateOneTabInOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1350,7 +1352,7 @@ Function TeamsPsGraph_UpdateOneTabInOneChannel
 #gavdcodeend 084
 
 #gavdcodebegin 085
-Function TeamsPsGraph_DeleteOneTabFromOneChannel
+function PsTeamsGraphRest_DeleteOneTabFromOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1374,7 +1376,7 @@ Function TeamsPsGraph_DeleteOneTabFromOneChannel
 #gavdcodeend 085
 
 #gavdcodebegin 086
-Function TeamsPsGraph_GetAllUsersInOneTeam
+function PsTeamsGraphRest_GetAllUsersInOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1402,7 +1404,7 @@ Function TeamsPsGraph_GetAllUsersInOneTeam
 #gavdcodeend 086
 
 #gavdcodebegin 133
-Function TeamsPsGraph_AddOneUserToOneTeam
+function PsTeamsGraphRest_AddOneUserToOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Directory.ReadWrite.All, 
@@ -1431,7 +1433,7 @@ Function TeamsPsGraph_AddOneUserToOneTeam
 #gavdcodeend 133
 
 #gavdcodebegin 134
-Function TeamsPsGraph_DeleteOneUserFromOneTeam
+function PsTeamsGraphRest_DeleteOneUserFromOneTeam
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -1454,7 +1456,7 @@ Function TeamsPsGraph_DeleteOneUserFromOneTeam
 #gavdcodeend 134
 
 #gavdcodebegin 087
-Function TeamsPsGraph_SendMessageToOneChannel
+function PsTeamsGraphRest_SendMessageToOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: ChannelMessage.Send
@@ -1486,7 +1488,7 @@ Function TeamsPsGraph_SendMessageToOneChannel
 #gavdcodeend 087
 
 #gavdcodebegin 088
-Function TeamsPsGraph_GetAllMessagesChannel
+function PsTeamsGraphRest_GetAllMessagesChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.Read, Chat.ReadWrite
@@ -1511,7 +1513,7 @@ Function TeamsPsGraph_GetAllMessagesChannel
 #gavdcodeend 088
 
 #gavdcodebegin 089
-Function TeamsPsGraph_SendMessageReplayToOneChannel
+function PsTeamsGraphRest_SendMessageReplayToOneChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: ChannelMessage.Send, Group.ReadWrite.All
@@ -1544,7 +1546,7 @@ Function TeamsPsGraph_SendMessageReplayToOneChannel
 #gavdcodeend 089
 
 #gavdcodebegin 090
-Function TeamsPsGraph_GetAllReplaysToOneMessagesChannel
+function PsTeamsGraphRest_GetAllReplaysToOneMessagesChannel
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.Read, Chat.ReadWrite
@@ -1570,7 +1572,7 @@ Function TeamsPsGraph_GetAllReplaysToOneMessagesChannel
 #gavdcodeend 090
 
 #gavdcodebegin 152
-Function TeamsPsGraph_GetAllMeetings
+function PsTeamsGraphRest_GetAllMeetings
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1597,7 +1599,7 @@ Function TeamsPsGraph_GetAllMeetings
 #gavdcodeend 152
 
 #gavdcodebegin 153
-Function TeamsPsGraph_GetOneMeeting
+function PsTeamsGraphRest_GetOneMeeting
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1622,7 +1624,7 @@ Function TeamsPsGraph_GetOneMeeting
 #gavdcodeend 153
 
 #gavdcodebegin 154
-Function TeamsPsGraph_CreateOneMeeting
+function PsTeamsGraphRest_CreateOneMeeting
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1651,7 +1653,7 @@ Function TeamsPsGraph_CreateOneMeeting
 #gavdcodeend 154
 
 #gavdcodebegin 155
-Function TeamsPsGraph_DeleteOneMeeting
+function PsTeamsGraphRest_DeleteOneMeeting
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1672,7 +1674,7 @@ Function TeamsPsGraph_DeleteOneMeeting
 #gavdcodeend 155
 
 #gavdcodebegin 156
-Function TeamsPsGraph_GetAllChats
+function PsTeamsGraphRest_GetAllChats
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.ReadBasic, Chat.Read, Chat.ReadWrite
@@ -1695,7 +1697,7 @@ Function TeamsPsGraph_GetAllChats
 #gavdcodeend 156
 
 #gavdcodebegin 157
-Function TeamsPsGraph_GetOneChat
+function PsTeamsGraphRest_GetOneChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.ReadBasic, Chat.Read, Chat.ReadWrite
@@ -1719,7 +1721,7 @@ Function TeamsPsGraph_GetOneChat
 #gavdcodeend 157
 
 #gavdcodebegin 158
-Function TeamsPsGraph_GetOneChatMessages
+function PsTeamsGraphRest_GetOneChatMessages
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.ReadBasic, Chat.Read, Chat.ReadWrite
@@ -1743,7 +1745,7 @@ Function TeamsPsGraph_GetOneChatMessages
 #gavdcodeend 158
 
 #gavdcodebegin 159
-Function TeamsPsGraph_GetAllChatsMessages
+function PsTeamsGraphRest_GetAllChatsMessages
 {
 	# App Registration type:		Application
 	# App Registration permissions: Chat.ReadBasic, Chat.Read, Chat.ReadWrite
@@ -1773,7 +1775,7 @@ Function TeamsPsGraph_GetAllChatsMessages
 #gavdcodeend 159
 
 #gavdcodebegin 160
-Function TeamsPsGraph_GetOneChatParticipants
+function PsTeamsGraphRest_GetOneChatParticipants
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.ReadBasic, Chat.Read, Chat.ReadWrite
@@ -1797,7 +1799,7 @@ Function TeamsPsGraph_GetOneChatParticipants
 #gavdcodeend 160
 
 #gavdcodebegin 161
-Function TeamsPsGraph_GetOneChatOneParticipant
+function PsTeamsGraphRest_GetOneChatOneParticipant
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.ReadBasic, Chat.Read, Chat.ReadWrite
@@ -1823,7 +1825,7 @@ Function TeamsPsGraph_GetOneChatOneParticipant
 #gavdcodeend 161
 
 #gavdcodebegin 162
-Function TeamsPsGraph_AddOneUserToChat
+function PsTeamsGraphRest_AddOneUserToChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1855,7 +1857,7 @@ Function TeamsPsGraph_AddOneUserToChat
 #gavdcodeend 162
 
 #gavdcodebegin 163
-Function TeamsPsGraph_DeleteOneUserFromChat
+function PsTeamsGraphRest_DeleteOneUserFromChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1878,7 +1880,7 @@ Function TeamsPsGraph_DeleteOneUserFromChat
 #gavdcodeend 163
 
 #gavdcodebegin 164
-Function TeamsPsGraph_SendMessageToChat
+function PsTeamsGraphRest_SendMessageToChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1909,7 +1911,7 @@ Function TeamsPsGraph_SendMessageToChat
 #gavdcodeend 164
 
 #gavdcodebegin 165
-Function TeamsPsGraph_HideChat
+function PsTeamsGraphRest_HideChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1941,7 +1943,7 @@ Function TeamsPsGraph_HideChat
 #gavdcodeend 165
 
 #gavdcodebegin 166
-Function TeamsPsGraph_UnhideChat
+function PsTeamsGraphRest_UnhideChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -1973,7 +1975,7 @@ Function TeamsPsGraph_UnhideChat
 #gavdcodeend 166
 
 #gavdcodebegin 167
-Function TeamsPsGraph_PinChat
+function PsTeamsGraphRest_PinChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -2002,7 +2004,7 @@ Function TeamsPsGraph_PinChat
 #gavdcodeend 167
 
 #gavdcodebegin 168
-Function TeamsPsGraph_GetPinnedChats
+function PsTeamsGraphRest_GetPinnedChats
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Chat.ReadBasic, Chat.Read, Chat.ReadWrite
@@ -2026,7 +2028,7 @@ Function TeamsPsGraph_GetPinnedChats
 #gavdcodeend 168
 
 #gavdcodebegin 169
-Function TeamsPsGraph_UnpinChat
+function PsTeamsGraphRest_UnpinChat
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -2053,7 +2055,7 @@ Function TeamsPsGraph_UnpinChat
 #gavdcodeend 169
 
 #gavdcodebegin 170
-Function TeamsPsGraph_ReadChatForUser
+function PsTeamsGraphRest_ReadChatForUser
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -2086,7 +2088,7 @@ Function TeamsPsGraph_ReadChatForUser
 #gavdcodeend 170
 
 #gavdcodebegin 171
-Function TeamsPsGraph_UnreadChatForUser
+function PsTeamsGraphRest_UnreadChatForUser
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: OnlineMeetings.Read, OnlineMeetings.ReadWrite
@@ -2119,9 +2121,9 @@ Function TeamsPsGraph_UnreadChatForUser
 #gavdcodeend 171
 
 #gavdcodebegin 091
-Function TeamsPsCli_GetAllTeams
+function PsTeamsCliM365_GetAllTeams
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team list
 
@@ -2130,9 +2132,9 @@ Function TeamsPsCli_GetAllTeams
 #gavdcodeend 091
 
 #gavdcodebegin 092
-Function TeamsPsCli_GetTeamsByQuery
+function PsTeamsCliM365_GetTeamsByQuery
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team list --output json --query "[?displayName == 'Sales and Marketing']"
 
@@ -2141,9 +2143,9 @@ Function TeamsPsCli_GetTeamsByQuery
 #gavdcodeend 092
 
 #gavdcodebegin 093
-Function TeamsPsCli_GetOneTeam
+function PsTeamsCliM365_GetOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team get --id "3216704d-ed17-4286-9206-2fa67b85780c"
 	#m365 teams team get --name "Team Cloned With CLI"
@@ -2153,9 +2155,9 @@ Function TeamsPsCli_GetOneTeam
 #gavdcodeend 093
 
 #gavdcodebegin 094
-Function TeamsPsCli_CreateOneTeam
+function PsTeamsCliM365_CreateOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team add --name "Team Created With CLI" `
 						--description "Team Created With the CLI" `
@@ -2166,9 +2168,9 @@ Function TeamsPsCli_CreateOneTeam
 #gavdcodeend 094
 
 #gavdcodebegin 095
-Function TeamsPsCli_CloneOneTeam
+function PsTeamsCliM365_CloneOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team clone --id "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						  --name "Team Cloned With CLI" `
@@ -2181,9 +2183,9 @@ Function TeamsPsCli_CloneOneTeam
 #gavdcodeend 095
 
 #gavdcodebegin 096
-Function TeamsPsCli_UpdateOneTeam
+function PsTeamsCliM365_UpdateOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team set --id "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						--description "Team Updated With the CLI"
@@ -2193,9 +2195,9 @@ Function TeamsPsCli_UpdateOneTeam
 #gavdcodeend 096
 
 #gavdcodebegin 097
-Function TeamsPsCli_ArchiveOneTeam
+function PsTeamsCliM365_ArchiveOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team archive --id "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						    --shouldSetSpoSiteReadOnlyForMembers
@@ -2205,9 +2207,9 @@ Function TeamsPsCli_ArchiveOneTeam
 #gavdcodeend 097
 
 #gavdcodebegin 098
-Function TeamsPsCli_UnarchiveOneTeam
+function PsTeamsCliM365_UnarchiveOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team unarchive --id "02e80b46-223e-4dfa-bbe5-c57fd5a28a95"
 
@@ -2216,9 +2218,9 @@ Function TeamsPsCli_UnarchiveOneTeam
 #gavdcodeend 098
 
 #gavdcodebegin 099
-Function TeamsPsCli_DeleteOneTeam
+function PsTeamsCliM365_DeleteOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams team remove --name "Team Cloned With CLI" `
 						   --force
@@ -2228,9 +2230,9 @@ Function TeamsPsCli_DeleteOneTeam
 #gavdcodeend 099
 
 #gavdcodebegin 100
-Function TeamsPsCli_GetAllChannelsOneTeam
+function PsTeamsCliM365_GetAllChannelsOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel list --teamName "Team Created With CLI"
 
@@ -2239,9 +2241,9 @@ Function TeamsPsCli_GetAllChannelsOneTeam
 #gavdcodeend 100
 
 #gavdcodebegin 101
-Function TeamsPsCli_GetChannelByQuery
+function PsTeamsCliM365_GetChannelByQuery
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel list --output json `
 							--teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
@@ -2252,9 +2254,9 @@ Function TeamsPsCli_GetChannelByQuery
 #gavdcodeend 101
 
 #gavdcodebegin 102
-Function TeamsPsCli_GetOneChannelFromOneTeam
+function PsTeamsCliM365_GetOneChannelFromOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel get --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						   --id "19:Ok65JBLI9xaKjIYvXyXhyxxxeak1@thread.tacv2"
@@ -2264,9 +2266,9 @@ Function TeamsPsCli_GetOneChannelFromOneTeam
 #gavdcodeend 102
 
 #gavdcodebegin 103
-Function TeamsPsCli_CreateOneChannelInOneTeam
+function PsTeamsCliM365_CreateOneChannelInOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel add --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						   --name "Channel Created With CLI" `
@@ -2277,9 +2279,9 @@ Function TeamsPsCli_CreateOneChannelInOneTeam
 #gavdcodeend 103
 
 #gavdcodebegin 104
-Function TeamsPsCli_UpdateOneChannelInOneTeam
+function PsTeamsCliM365_UpdateOneChannelInOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel set --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						   --name "Channel Created With CLI" `
@@ -2290,9 +2292,9 @@ Function TeamsPsCli_UpdateOneChannelInOneTeam
 #gavdcodeend 104
 
 #gavdcodebegin 105
-Function TeamsPsCli_DeleteOneChannelFromOneTeam
+function PsTeamsCliM365_DeleteOneChannelFromOneTeam
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel remove --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						      --name "Channel Created With CLI" `
@@ -2303,9 +2305,9 @@ Function TeamsPsCli_DeleteOneChannelFromOneTeam
 #gavdcodeend 105
 
 #gavdcodebegin 106
-Function TeamsPsCli_GetAllTabs
+function PsTeamsCliM365_GetAllTabs
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams tab list --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 					    --channelId "19:Ok65JBLI9xaKjIxxx1-uMATiMsgaeak1@thread.tacv2"
@@ -2315,9 +2317,9 @@ Function TeamsPsCli_GetAllTabs
 #gavdcodeend 106
 
 #gavdcodebegin 107
-Function TeamsPsCli_GetTabByQuery
+function PsTeamsCliM365_GetTabByQuery
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams tab list --output json `
 						--teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
@@ -2329,9 +2331,9 @@ Function TeamsPsCli_GetTabByQuery
 #gavdcodeend 107
 
 #gavdcodebegin 108
-Function TeamsPsCli_GetOneTab
+function PsTeamsCliM365_GetOneTab
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams tab get --teamName "Team Created with CLI" `
 					   --channelName "General" `
@@ -2342,9 +2344,9 @@ Function TeamsPsCli_GetOneTab
 #gavdcodeend 108
 
 #gavdcodebegin 109
-Function TeamsPsCli_AddOneTab
+function PsTeamsCliM365_AddOneTab
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams tab add --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 					   --channelId "19:Ok65JBLI9xaKjxxxM1-uMATiMsgaeak1@thread.tacv2" `
@@ -2357,9 +2359,9 @@ Function TeamsPsCli_AddOneTab
 #gavdcodeend 109
 
 #gavdcodebegin 110
-Function TeamsPsCli_DeleteOneTab
+function PsTeamsCliM365_DeleteOneTab
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams tab remove --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						  --channelId "19:Ok65J9xaKjxxxM1-uMATiMsgaeak1@thread.tacv2" `
@@ -2371,9 +2373,9 @@ Function TeamsPsCli_DeleteOneTab
 #gavdcodeend 110
 
 #gavdcodebegin 111
-Function TeamsPsCli_GetAllUsers
+function PsTeamsCliM365_GetAllUsers
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams user list --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 					     --role "Owner"
@@ -2383,9 +2385,9 @@ Function TeamsPsCli_GetAllUsers
 #gavdcodeend 111
 
 #gavdcodebegin 112
-Function TeamsPsCli_GetUserByQuery
+function PsTeamsCliM365_GetUserByQuery
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams user list --output json `
 						 --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
@@ -2397,9 +2399,9 @@ Function TeamsPsCli_GetUserByQuery
 #gavdcodeend 112
 
 #gavdcodebegin 136
-Function TeamsPsCli_GetAllUsersChannel
+function PsTeamsCliM365_GetAllUsersChannel
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel member list --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 								   --channelName "My Private Channel" `
@@ -2410,9 +2412,9 @@ Function TeamsPsCli_GetAllUsersChannel
 #gavdcodeend 136
 
 #gavdcodebegin 113
-Function TeamsPsCli_AddOneUser
+function PsTeamsCliM365_AddOneUser
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams user add --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 					    --userName "user@domain.onmicrosoft.com" `
@@ -2423,9 +2425,9 @@ Function TeamsPsCli_AddOneUser
 #gavdcodeend 113
 
 #gavdcodebegin 137
-Function TeamsPsCli_AddOneUserToOneChannel
+function PsTeamsCliM365_AddOneUserToOneChannel
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel member add --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 								  --channelName "My Private Channel" `
@@ -2437,9 +2439,9 @@ Function TeamsPsCli_AddOneUserToOneChannel
 #gavdcodeend 137
 
 #gavdcodebegin 114
-Function TeamsPsCli_UpdateOneUser
+function PsTeamsCliM365_UpdateOneUser
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel member set --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 								  --channelName "My Private Channel" `
@@ -2451,9 +2453,9 @@ Function TeamsPsCli_UpdateOneUser
 #gavdcodeend 114
 
 #gavdcodebegin 115
-Function TeamsPsCli_DeleteOneUser
+function PsTeamsCliM365_DeleteOneUser
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 entra m365group user remove --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 								     --userName "user@domain.onmicrosoft.com" `
@@ -2464,9 +2466,9 @@ Function TeamsPsCli_DeleteOneUser
 #gavdcodeend 115
 
 #gavdcodebegin 138
-Function TeamsPsCli_DeleteOneUserFromOneChannel
+function PsTeamsCliM365_DeleteOneUserFromOneChannel
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams channel member remove --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 									 --channelName "My Private Channel" `
@@ -2478,9 +2480,9 @@ Function TeamsPsCli_DeleteOneUserFromOneChannel
 #gavdcodeend 138
 
 #gavdcodebegin 116
-Function TeamsPsCli_GetAllApps
+function PsTeamsCliM365_GetAllApps
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams app list
 	Write-Host ("-------")
@@ -2495,9 +2497,9 @@ Function TeamsPsCli_GetAllApps
 #gavdcodeend 116
 
 #gavdcodebegin 117
-Function TeamsPsCli_GetAppByQuery
+function PsTeamsCliM365_GetAppByQuery
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams app list --output json `
 						--query "[?displayName == 'MailChimp']"
@@ -2507,9 +2509,9 @@ Function TeamsPsCli_GetAppByQuery
 #gavdcodeend 117
 
 #gavdcodebegin 118
-Function TeamsPsCli_AddOneApp
+function PsTeamsCliM365_AddOneApp
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams app install --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 					       --id "ffdb7239-3b58-46ba-b108-7f90a6d8799b"
@@ -2519,9 +2521,9 @@ Function TeamsPsCli_AddOneApp
 #gavdcodeend 118
 
 #gavdcodebegin 119
-Function TeamsPsCli_PublishOneApp
+function PsTeamsCliM365_PublishOneApp
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams app publish --filePath "C:\Projects\MyApp.zip"
 
@@ -2530,9 +2532,9 @@ Function TeamsPsCli_PublishOneApp
 #gavdcodeend 119
 
 #gavdcodebegin 120
-Function TeamsPsCli_UpdateOneApp
+function PsTeamsCliM365_UpdateOneApp
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams app update --id "ffdb7239-3b58-46ba-b108-7f90a6d8799b" `
 						  --filePath "C:\Projects\MyApp.zip"
@@ -2542,9 +2544,9 @@ Function TeamsPsCli_UpdateOneApp
 #gavdcodeend 120
 
 #gavdcodebegin 121
-Function TeamsPsCli_UninstallOneApp
+function PsTeamsCliM365_UninstallOneApp
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams app uninstall --teamId "c77f29d7-fdaa-4570-9c3c-210e2d20bc90" `
 					         --id "ffdb7239-3b58-46ba-b108-7f90a6d8799b" `
@@ -2555,9 +2557,9 @@ Function TeamsPsCli_UninstallOneApp
 #gavdcodeend 121
 
 #gavdcodebegin 122
-Function TeamsPsCli_DeleteOneApp
+function PsTeamsCliM365_DeleteOneApp
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams app remove --id "ffdb7239-3b58-46ba-b108-7f90a6d8799b0" `
 						  --force
@@ -2567,9 +2569,9 @@ Function TeamsPsCli_DeleteOneApp
 #gavdcodeend 122
 
 #gavdcodebegin 123
-Function TeamsPsCli_GetAllMessages
+function PsTeamsCliM365_GetAllMessages
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams message list --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						    --channelId "19:Ok65JBLxxxWVM1-uMATiMsgaeak1@thread.tacv2"
@@ -2579,9 +2581,9 @@ Function TeamsPsCli_GetAllMessages
 #gavdcodeend 123
 
 #gavdcodebegin 124
-Function TeamsPsCli_GetMessageByQuery
+function PsTeamsCliM365_GetMessageByQuery
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams message list --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						    --channelId "19:Ok65JxxxWVM1-uMATiMsgaeak1@thread.tacv2" `
@@ -2593,9 +2595,9 @@ Function TeamsPsCli_GetMessageByQuery
 #gavdcodeend 124
 
 #gavdcodebegin 125
-Function TeamsPsCli_GetOneMessage
+function PsTeamsCliM365_GetOneMessage
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams message get --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						   --channelId "19:Ok65xxxKoOWVM1-uMATiMsgaeak1@thread.tacv2" `
@@ -2606,9 +2608,9 @@ Function TeamsPsCli_GetOneMessage
 #gavdcodeend 125
 
 #gavdcodebegin 139
-Function TeamsPsCli_SendMessageToOneChannel
+function PsTeamsCliM365_SendMessageToOneChannel
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams message send --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 						    --channelId "19:Ok65JBxxxoOWVM1-uMATiMsgaeak1@thread.tacv2" `
@@ -2619,9 +2621,9 @@ Function TeamsPsCli_SendMessageToOneChannel
 #gavdcodeend 139
 
 #gavdcodebegin 126
-Function TeamsPsCli_GetMessageReplays
+function PsTeamsCliM365_GetMessageReplays
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams message reply list --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 								  --channelId "19:Ok6LxxxoOWVM1-uMATaeak1@thread.tacv2" `
@@ -2632,9 +2634,9 @@ Function TeamsPsCli_GetMessageReplays
 #gavdcodeend 126
 
 #gavdcodebegin 140
-Function TeamsPsCli_GetAllMeetings
+function PsTeamsCliM365_GetAllMeetings
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams meeting list --startDateTime "2024-01-01T10:00:00Z" `
 							--endDateTime "2024-04-30T23:59:59Z"
@@ -2644,9 +2646,9 @@ Function TeamsPsCli_GetAllMeetings
 #gavdcodeend 140
 
 #gavdcodebegin 141
-Function TeamsPsCli_GetOneMeeting
+function PsTeamsCliM365_GetOneMeeting
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams meeting get --userName "user@domain.onmicrosoft.com" `
 						   --joinUrl "https://teams.microsoft.com/l/meetup-join/19%..."
@@ -2656,9 +2658,9 @@ Function TeamsPsCli_GetOneMeeting
 #gavdcodeend 141
 
 #gavdcodebegin 142
-Function TeamsPsCli_CreateOneMeeting
+function PsTeamsCliM365_CreateOneMeeting
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams meeting add --subject "Meeting created with the CLI" `
 						   --participantUserNames "user@domain.onmicrosoft.com" `
@@ -2670,9 +2672,9 @@ Function TeamsPsCli_CreateOneMeeting
 #gavdcodeend 142
 
 #gavdcodebegin 143
-Function TeamsPsCli_AttendanceMeeting
+function PsTeamsCliM365_AttendanceMeeting
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams meeting attendancereport list --meetingId "MSphY2MyO..."
 
@@ -2681,9 +2683,9 @@ Function TeamsPsCli_AttendanceMeeting
 #gavdcodeend 143
 
 #gavdcodebegin 144
-Function TeamsPsCli_GetAllChats
+function PsTeamsCliM365_GetAllChats
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat list
 
@@ -2692,9 +2694,9 @@ Function TeamsPsCli_GetAllChats
 #gavdcodeend 144
 
 #gavdcodebegin 145
-Function TeamsPsCli_GetOneChat
+function PsTeamsCliM365_GetOneChat
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat get --id "19:acc28fcb-5261-47f8-960b-..."
 
@@ -2703,9 +2705,9 @@ Function TeamsPsCli_GetOneChat
 #gavdcodeend 145
 
 #gavdcodebegin 146
-Function TeamsPsCli_GetOneChatParticipants
+function PsTeamsCliM365_GetOneChatParticipants
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat member list --chatId "19:acc28fcb-5261-47f8-960b-..."
 
@@ -2714,9 +2716,9 @@ Function TeamsPsCli_GetOneChatParticipants
 #gavdcodeend 146
 
 #gavdcodebegin 147
-Function TeamsPsCli_AddOneChatParticipant
+function PsTeamsCliM365_AddOneChatParticipant
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat member add --chatId "19:acc28fcb-5261-47f8-960b-..." `
 							   --userName "user@domain.onmicrosoft.com" `
@@ -2728,9 +2730,9 @@ Function TeamsPsCli_AddOneChatParticipant
 #gavdcodeend 147
 
 #gavdcodebegin 148
-Function TeamsPsCli_DeleteOneChatParticipant
+function PsTeamsCliM365_DeleteOneChatParticipant
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat member remove --chatId "19:acc28fcb-5261-47f8-960b-..." `
 								  --userName "adelev@guitacadev.onmicrosoft.com" `
@@ -2741,9 +2743,9 @@ Function TeamsPsCli_DeleteOneChatParticipant
 #gavdcodeend 148
 
 #gavdcodebegin 149
-Function TeamsPsCli_GetChatMessages
+function PsTeamsCliM365_GetChatMessages
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat message list --chatId "19:acc28fcb-5261-47f8-960b-..."
 
@@ -2752,9 +2754,9 @@ Function TeamsPsCli_GetChatMessages
 #gavdcodeend 149
 
 #gavdcodebegin 150
-Function TeamsPsCli_SendChatMessageToChat
+function PsTeamsCliM365_SendChatMessageToChat
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat message send --chatId "19:acc28fcb-5261-47f8-960b-..." `
 								 --message "Message to Chat sent using the CLI"
@@ -2764,9 +2766,9 @@ Function TeamsPsCli_SendChatMessageToChat
 #gavdcodeend 150
 
 #gavdcodebegin 151
-Function TeamsPsCli_SendChatMessageToPerson
+function PsTeamsCliM365_SendChatMessageToPerson
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams chat message send --userEmails "user@domain.onmicrosoft.com" `
 								 --message "Message to user sent using the CLI"
@@ -2776,9 +2778,9 @@ Function TeamsPsCli_SendChatMessageToPerson
 #gavdcodeend 151
 
 #gavdcodebegin 127
-Function TeamsPsCli_GetSettings
+function PsTeamsCliM365_GetSettings
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams membersettings list --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95"
 	Write-Host ("-------")
@@ -2793,9 +2795,9 @@ Function TeamsPsCli_GetSettings
 #gavdcodeend 127
 
 #gavdcodebegin 128
-Function TeamsPsCli_SetSettings
+function PsTeamsCliM365_SetSettings
 {
-	TeamsPsCli_LoginPsTeams
+	PsTeamsCliM365_LoginPsTeams
 	
 	m365 teams funsettings set --teamId "02e80b46-223e-4dfa-bbe5-c57fd5a28a95" `
 							   --allowGiphy false
@@ -2815,210 +2817,210 @@ Function TeamsPsCli_SetSettings
 
 #------------------------ Using Teams cmdlets
 
-#TeamsPsMtp_LoginPsTeams
+#PsTeamsMtp_LoginPsTeams
 
-#TeamsPsMtp_TeamsHelp
-#TeamsPsMtp_EnumarateTeams
-#TeamsPsMtp_GetTeamsByDisplayName
-#TeamsPsMtp_CreateTeam
-#TeamsPsMtp_UpdateTeam
-#TeamsPsMtp_DeleteTeam
+#PsTeamsMtp_TeamsHelp
+#PsTeamsMtp_EnumarateTeams
+#PsTeamsMtp_GetTeamsByDisplayName
+#PsTeamsMtp_CreateTeam
+#PsTeamsMtp_UpdateTeam
+#PsTeamsMtp_DeleteTeam
 
-#TeamsPsMtp_EnumerateChannels
-#TeamsPsMtp_CreateChannels
-#TeamsPsMtp_UpdateChannels
-#TeamsPsMtp_DeleteChannels
+#PsTeamsMtp_EnumerateChannels
+#PsTeamsMtp_CreateChannels
+#PsTeamsMtp_UpdateChannels
+#PsTeamsMtp_DeleteChannels
 
-#TeamsPsMtp_EnumerateTeamUser
-#TeamsPsMtp_CreateTeamUser
-#TeamsPsMtp_DeleteTeamUser
+#PsTeamsMtp_EnumerateTeamUser
+#PsTeamsMtp_CreateTeamUser
+#PsTeamsMtp_DeleteTeamUser
 
-#TeamsPsMtp_EnumeratePolicyPackage
-#TeamsPsMtp_PolicyPackageUser
-#TeamsPsMtp_PolicyPackageUserRecommended
+#PsTeamsMtp_EnumeratePolicyPackage
+#PsTeamsMtp_PolicyPackageUser
+#PsTeamsMtp_PolicyPackageUserRecommended
 
-#TeamsPsMtp_GetCsTeamTemplateList
-#TeamsPsMtp_GetCsTeamTemplate
-#TeamsPsMtp_GetTeamsApp
-#TeamsPsMtp_GetOneTeamsAppByIdOrName
-#TeamsPsMtp_NewTeamsApp
-#TeamsPsMtp_SetTeamsApp
-#TeamsPsMtp_DeleteTeamsApp
+#PsTeamsMtp_GetCsTeamTemplateList
+#PsTeamsMtp_GetCsTeamTemplate
+#PsTeamsMtp_GetTeamsApp
+#PsTeamsMtp_GetOneTeamsAppByIdOrName
+#PsTeamsMtp_NewTeamsApp
+#PsTeamsMtp_SetTeamsApp
+#PsTeamsMtp_DeleteTeamsApp
 
 #------------------------ Using Skype For Business cmdlets
 
-#TeamsPsSkype_LoginPsTeams
+#PsTeamsSkype_LoginPsTeams
 
-#TeamsPsSkype_GetCallingPolicy
-#TeamsPsSkype_GetCallParkPolicy
-#TeamsPsSkype_GetChannelPolicy
-#TeamsPsSkype_CreateChannelPolicy
-#TeamsPsSkype_AssignChannelPolicy
-#TeamsPsSkype_ModifyChannelPolicy
-#TeamsPsSkype_ModifyChannelPolicy
-#TeamsPsSkype_GetTeamsClientConfiguration
-#TeamsPsSkype_GetGuestMessagingConfiguration
-#TeamsPsSkype_GetMeetingBroadcastConfiguration
-#TeamsPsSkype_RemoveGoogleDrive
+#PsTeamsSkype_GetCallingPolicy
+#PsTeamsSkype_GetCallParkPolicy
+#PsTeamsSkype_GetChannelPolicy
+#PsTeamsSkype_CreateChannelPolicy
+#PsTeamsSkype_AssignChannelPolicy
+#PsTeamsSkype_ModifyChannelPolicy
+#PsTeamsSkype_ModifyChannelPolicy
+#PsTeamsSkype_GetTeamsClientConfiguration
+#PsTeamsSkype_GetGuestMessagingConfiguration
+#PsTeamsSkype_GetMeetingBroadcastConfiguration
+#PsTeamsSkype_RemoveGoogleDrive
 
 #------------------------ Using PnP PowerShell for Teams
 
-#TeamsPsPnP_LoginPsTeams
+#PsTeamsPnpPowerShell_LoginPsTeams
 
-#TeamsPsPnP_GetAllTeams
-#TeamsPsPnP_GetOneTeam
-#TeamsPsPnP_NewTeamByName
-#TeamsPsPnP_NewTeamByGroup
-#TeamsPsPnP_SetTeam
-#TeamsPsPnP_SetPictureTeam
-#TeamsPsPnP_SetArchivedTeam
-#TeamsPsPnP_RemoveTeam
+#PsTeamsPnpPowerShell_GetAllTeams
+#PsTeamsPnpPowerShell_GetOneTeam
+#PsTeamsPnpPowerShell_NewTeamByName
+#PsTeamsPnpPowerShell_NewTeamByGroup
+#PsTeamsPnpPowerShell_SetTeam
+#PsTeamsPnpPowerShell_SetPictureTeam
+#PsTeamsPnpPowerShell_SetArchivedTeam
+#PsTeamsPnpPowerShell_RemoveTeam
 
-#TeamsPsPnP_GetAllChannelsTeam
-#TeamsPsPnP_GetOneChannelFilesFolder
-#TeamsPsPnP_GetOneChannelTeam
-#TeamsPsPnP_AddOneChannelTeam
-#TeamsPsPnP_UpdateOneChannelTeam
-#TeamsPsPnP_SendMessageToOneChannelTeam
-#TeamsPsPnP_GetMessagesFromOneChannelTeam
-#TeamsPsPnP_GetReplayMessageOneChannelTeam
-#TeamsPsPnP_RemoveOneChannelTeam
-#TeamsPsPnP_GetAllTabsChannelTeam
-#TeamsPsPnP_GetOneTabChannelTeam
-#TeamsPsPnP_AddOneTabChannelTeam
-#TeamsPsPnP_UpdateOneTabChannelTeam
-#TeamsPsPnP_DeleteOneTabChannelTeam
+#PsTeamsPnpPowerShell_GetAllChannelsTeam
+#PsTeamsPnpPowerShell_GetOneChannelFilesFolder
+#PsTeamsPnpPowerShell_GetOneChannelTeam
+#PsTeamsPnpPowerShell_AddOneChannelTeam
+#PsTeamsPnpPowerShell_UpdateOneChannelTeam
+#PsTeamsPnpPowerShell_SendMessageToOneChannelTeam
+#PsTeamsPnpPowerShell_GetMessagesFromOneChannelTeam
+#PsTeamsPnpPowerShell_GetReplayMessageOneChannelTeam
+#PsTeamsPnpPowerShell_RemoveOneChannelTeam
+#PsTeamsPnpPowerShell_GetAllTabsChannelTeam
+#PsTeamsPnpPowerShell_GetOneTabChannelTeam
+#PsTeamsPnpPowerShell_AddOneTabChannelTeam
+#PsTeamsPnpPowerShell_UpdateOneTabChannelTeam
+#PsTeamsPnpPowerShell_DeleteOneTabChannelTeam
 
-#TeamsPsPnP_GetAllUsersTeam
-#TeamsPsPnP_GetAllUsersChannelTeam
-#TeamsPsPnP_GetAllUsersChannelByRoleTeam
-#TeamsPsPnP_AddOneUserTeam
-#TeamsPsPnP_AddOneUserChannel
-#TeamsPsPnP_DeleteOneUserChannel
-#TeamsPsPnP_DeleteOneUserTeam
+#PsTeamsPnpPowerShell_GetAllUsersTeam
+#PsTeamsPnpPowerShell_GetAllUsersChannelTeam
+#PsTeamsPnpPowerShell_GetAllUsersChannelByRoleTeam
+#PsTeamsPnpPowerShell_AddOneUserTeam
+#PsTeamsPnpPowerShell_AddOneUserChannel
+#PsTeamsPnpPowerShell_DeleteOneUserChannel
+#PsTeamsPnpPowerShell_DeleteOneUserTeam
 
-#TeamsPsPnP_GetAllAppsTeam
-#TeamsPsPnP_GetOneAppTeam
-#TeamsPsPnP_AddOneAppTeam
-#TeamsPsPnP_UpdateOneAppTeam
-#TeamsPsPnP_DeleteOneAppTeam
+#PsTeamsPnpPowerShell_GetAllAppsTeam
+#PsTeamsPnpPowerShell_GetOneAppTeam
+#PsTeamsPnpPowerShell_AddOneAppTeam
+#PsTeamsPnpPowerShell_UpdateOneAppTeam
+#PsTeamsPnpPowerShell_DeleteOneAppTeam
 
-#------------------------ Using Microsoft Graph PowerShell for Teams (REST calls)
+#------------------------ Using Microsoft Graph for Teams (REST calls)
 
-#TeamsPsGraph_GetJoinedTeams
-#TeamsPsGraph_GetAllTeamsByGroup
-#TeamsPsGraph_GetOneTeam
-#TeamsPsGraph_CreateOneTeam
-#TeamsPsGraph_CreateOneGroup
-#TeamsPsGraph_CreateOneTeamFromGroup
-#TeamsPsGraph_UpdateOneTeam
-#TeamsPsGraph_DeleteOneTeam
+#PsTeamsGraphRest_GetJoinedTeams
+#PsTeamsGraphRest_GetAllTeamsByGroup
+#PsTeamsGraphRest_GetOneTeam
+#PsTeamsGraphRest_CreateOneTeam
+#PsTeamsGraphRest_CreateOneGroup
+#PsTeamsGraphRest_CreateOneTeamFromGroup
+#PsTeamsGraphRest_UpdateOneTeam
+#PsTeamsGraphRest_DeleteOneTeam
 
-#TeamsPsGraph_GetAllChannelsInOneTeam
-#TeamsPsGraph_GetOneChannelInOneTeam
-#TeamsPsGraph_CreateOneChannel
-#TeamsPsGraph_UpdateOneChannel
-#TeamsPsGraph_DeleteOneChannel
-#TeamsPsGraph_GetAllTabsInOneChannel
-#TeamsPsGraph_GetOneTabInOneChannel
-#TeamsPsGraph_CreateOneTabInOneChannel
-#TeamsPsGraph_UpdateOneTabInOneChannel
-#TeamsPsGraph_DeleteOneTabFromOneChannel
+#PsTeamsGraphRest_GetAllChannelsInOneTeam
+#PsTeamsGraphRest_GetOneChannelInOneTeam
+#PsTeamsGraphRest_CreateOneChannel
+#PsTeamsGraphRest_UpdateOneChannel
+#PsTeamsGraphRest_DeleteOneChannel
+#PsTeamsGraphRest_GetAllTabsInOneChannel
+#PsTeamsGraphRest_GetOneTabInOneChannel
+#PsTeamsGraphRest_CreateOneTabInOneChannel
+#PsTeamsGraphRest_UpdateOneTabInOneChannel
+#PsTeamsGraphRest_DeleteOneTabFromOneChannel
 
-#TeamsPsGraph_GetAllUsersInOneTeam
-#TeamsPsGraph_AddOneUserToOneTeam
-#TeamsPsGraph_DeleteOneUserFromOneTeam
+#PsTeamsGraphRest_GetAllUsersInOneTeam
+#PsTeamsGraphRest_AddOneUserToOneTeam
+#PsTeamsGraphRest_DeleteOneUserFromOneTeam
 
-#TeamsPsGraph_SendMessageToOneChannel
-#TeamsPsGraph_GetAllMessagesChannel
-#TeamsPsGraph_SendMessageReplayToOneChannel
-#TeamsPsGraph_GetAllReplaysToOneMessagesChannel
+#PsTeamsGraphRest_SendMessageToOneChannel
+#PsTeamsGraphRest_GetAllMessagesChannel
+#PsTeamsGraphRest_SendMessageReplayToOneChannel
+#PsTeamsGraphRest_GetAllReplaysToOneMessagesChannel
 
-#TeamsPsGraph_GetAllMeetings
-#TeamsPsGraph_GetOneMeeting
-#TeamsPsGraph_CreateOneMeeting
-#TeamsPsGraph_DeleteOneMeeting
+#PsTeamsGraphRest_GetAllMeetings
+#PsTeamsGraphRest_GetOneMeeting
+#PsTeamsGraphRest_CreateOneMeeting
+#PsTeamsGraphRest_DeleteOneMeeting
 
-#TeamsPsGraph_GetAllChats
-#TeamsPsGraph_GetOneChat
-#TeamsPsGraph_GetOneChatMessages
-#TeamsPsGraph_GetAllChatsMessages
-#TeamsPsGraph_GetOneChatParticipants
-#TeamsPsGraph_GetOneChatOneParticipant
-#TeamsPsGraph_AddOneUserToChat
-#TeamsPsGraph_DeleteOneUserFromChat
-#TeamsPsGraph_SendMessageToChat
-#TeamsPsGraph_HideChat
-#TeamsPsGraph_PinChat
-#TeamsPsGraph_GetPinnedChats
-#TeamsPsGraph_UnpinChat
-#TeamsPsGraph_ReadChatForUser
-#TeamsPsGraph_UnreadChatForUser
+#PsTeamsGraphRest_GetAllChats
+#PsTeamsGraphRest_GetOneChat
+#PsTeamsGraphRest_GetOneChatMessages
+#PsTeamsGraphRest_GetAllChatsMessages
+#PsTeamsGraphRest_GetOneChatParticipants
+#PsTeamsGraphRest_GetOneChatOneParticipant
+#PsTeamsGraphRest_AddOneUserToChat
+#PsTeamsGraphRest_DeleteOneUserFromChat
+#PsTeamsGraphRest_SendMessageToChat
+#PsTeamsGraphRest_HideChat
+#PsTeamsGraphRest_PinChat
+#PsTeamsGraphRest_GetPinnedChats
+#PsTeamsGraphRest_UnpinChat
+#PsTeamsGraphRest_ReadChatForUser
+#PsTeamsGraphRest_UnreadChatForUser
 
-#------------------------ Using Microsoft PnP CLI for Teams
+#------------------------ Using PnP CLI M365 for Teams
 
-#TeamsPsCli_GetAllTeams
-#TeamsPsCli_GetTeamsByQuery
-#TeamsPsCli_GetOneTeam
-#TeamsPsCli_CreateOneTeam
-#TeamsPsCli_CloneOneTeam
-#TeamsPsCli_UpdateOneTeam
-#TeamsPsCli_ArchiveOneTeam
-#TeamsPsCli_UnarchiveOneTeam
-#TeamsPsCli_DeleteOneTeam
+#PsTeamsCliM365_GetAllTeams
+#PsTeamsCliM365_GetTeamsByQuery
+#PsTeamsCliM365_GetOneTeam
+#PsTeamsCliM365_CreateOneTeam
+#PsTeamsCliM365_CloneOneTeam
+#PsTeamsCliM365_UpdateOneTeam
+#PsTeamsCliM365_ArchiveOneTeam
+#PsTeamsCliM365_UnarchiveOneTeam
+#PsTeamsCliM365_DeleteOneTeam
 
-#TeamsPsCli_GetAllChannelsOneTeam
-#TeamsPsCli_GetChannelByQuery
-#TeamsPsCli_GetOneChannelFromOneTeam
-#TeamsPsCli_CreateOneChannelInOneTeam
-#TeamsPsCli_UpdateOneChannelInOneTeam
-#TeamsPsCli_DeleteOneChannelFromOneTeam
+#PsTeamsCliM365_GetAllChannelsOneTeam
+#PsTeamsCliM365_GetChannelByQuery
+#PsTeamsCliM365_GetOneChannelFromOneTeam
+#PsTeamsCliM365_CreateOneChannelInOneTeam
+#PsTeamsCliM365_UpdateOneChannelInOneTeam
+#PsTeamsCliM365_DeleteOneChannelFromOneTeam
 
-#TeamsPsCli_GetAllTabs
-#TeamsPsCli_GetTabByQuery
-#TeamsPsCli_GetOneTab
-#TeamsPsCli_AddOneTab
-#TeamsPsCli_DeleteOneTab
+#PsTeamsCliM365_GetAllTabs
+#PsTeamsCliM365_GetTabByQuery
+#PsTeamsCliM365_GetOneTab
+#PsTeamsCliM365_AddOneTab
+#PsTeamsCliM365_DeleteOneTab
 
-#TeamsPsCli_GetAllUsers
-#TeamsPsCli_GetUserByQuery
-#TeamsPsCli_GetAllUsersChannel
-#TeamsPsCli_AddOneUser
-#TeamsPsCli_AddOneUserToOneChannel
-#TeamsPsCli_UpdateOneUser
-#TeamsPsCli_DeleteOneUser
-#TeamsPsCli_DeleteOneUserFromOneChannel
+#PsTeamsCliM365_GetAllUsers
+#PsTeamsCliM365_GetUserByQuery
+#PsTeamsCliM365_GetAllUsersChannel
+#PsTeamsCliM365_AddOneUser
+#PsTeamsCliM365_AddOneUserToOneChannel
+#PsTeamsCliM365_UpdateOneUser
+#PsTeamsCliM365_DeleteOneUser
+#PsTeamsCliM365_DeleteOneUserFromOneChannel
 
-#TeamsPsCli_GetAllApps
-#TeamsPsCli_GetAppByQuery
-#TeamsPsCli_AddOneApp
-#TeamsPsCli_PublishOneApp
-#TeamsPsCli_UpdateOneApp
-#TeamsPsCli_UninstallOneApp
-#TeamsPsCli_DeleteOneApp
+#PsTeamsCliM365_GetAllApps
+#PsTeamsCliM365_GetAppByQuery
+#PsTeamsCliM365_AddOneApp
+#PsTeamsCliM365_PublishOneApp
+#PsTeamsCliM365_UpdateOneApp
+#PsTeamsCliM365_UninstallOneApp
+#PsTeamsCliM365_DeleteOneApp
 
-#TeamsPsCli_GetAllMessages
-#TeamsPsCli_GetMessageByQuery
-#TeamsPsCli_GetOneMessage
-#TeamsPsCli_SendMessageToOneChannel
-#TeamsPsCli_GetMessageReplays
+#PsTeamsCliM365_GetAllMessages
+#PsTeamsCliM365_GetMessageByQuery
+#PsTeamsCliM365_GetOneMessage
+#PsTeamsCliM365_SendMessageToOneChannel
+#PsTeamsCliM365_GetMessageReplays
 
-#TeamsPsCli_GetAllMeetings
-#TeamsPsCli_GetOneMeeting
-#TeamsPsCli_CreateOneMeeting
-#TeamsPsCli_AttendanceMeeting
+#PsTeamsCliM365_GetAllMeetings
+#PsTeamsCliM365_GetOneMeeting
+#PsTeamsCliM365_CreateOneMeeting
+#PsTeamsCliM365_AttendanceMeeting
 
-#TeamsPsCli_GetAllChats
-#TeamsPsCli_GetOneChat
-#TeamsPsCli_GetOneChatParticipants
-#TeamsPsCli_AddOneChatParticipant
-#TeamsPsCli_DeleteOneChatParticipant
-#TeamsPsCli_GetChatMessages
-#TeamsPsCli_SendChatMessageToChat
-#TeamsPsCli_SendChatMessageToPerson
+#PsTeamsCliM365_GetAllChats
+#PsTeamsCliM365_GetOneChat
+#PsTeamsCliM365_GetOneChatParticipants
+#PsTeamsCliM365_AddOneChatParticipant
+#PsTeamsCliM365_DeleteOneChatParticipant
+#PsTeamsCliM365_GetChatMessages
+#PsTeamsCliM365_SendChatMessageToChat
+#PsTeamsCliM365_SendChatMessageToPerson
 
-#TeamsPsCli_GetSettings
-#TeamsPsCli_SetSettings
+#PsTeamsCliM365_GetSettings
+#PsTeamsCliM365_SetSettings
 
 Write-Host "Done"  
 

@@ -12,7 +12,7 @@
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function ManagedIdentyPsRest_SetClaims
+function PsRestManagedIdenty_SetClaims
 {
 	#-------------------------------------
 	# Connect to Azure AD using User Account and Password
@@ -72,7 +72,7 @@ Function ManagedIdentyPsRest_SetClaims
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function ManagedIdentyPsRest_RemoveClaims
+function PsRestManagedIdenty_RemoveClaims
 {
 	#-------------------------------------
 	# Connect to Azure AD using User Account and Password
@@ -112,7 +112,7 @@ Function ManagedIdentyPsRest_RemoveClaims
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function ManagedIdentyPsPnp_SetClaims
+function PsPnPManagedIdenty_SetClaims
 {
 	#-------------------------------------
 	# Connect to Azure AD using User Account and Password
@@ -159,7 +159,7 @@ Function ManagedIdentyPsPnp_SetClaims
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function ManagedIdentyPsPnp_RemoveClaims
+function PsPnPManagedIdenty_RemoveClaims
 {
 	#-------------------------------------
 	# Connect to Azure AD using User Account and Password
@@ -204,7 +204,7 @@ Function ManagedIdentyPsPnp_RemoveClaims
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function ManagedIdentyPsRest_Example
+function PsRestManagedIdenty_Example
 {
 	Import-Module -Name "Microsoft.Graph.Authentication"
 	Import-Module -Name "Microsoft.Graph.Sites"
@@ -235,7 +235,7 @@ Function ManagedIdentyPsRest_Example
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function ManagedIdentyPsGraphSdk_Example
+function PsGraphSdkManagedIdenty_Example
 {
 	Import-Module -Name "Microsoft.Graph.Authentication"
 	Import-Module -Name "Microsoft.Graph.Sites"
@@ -262,7 +262,7 @@ Function ManagedIdentyPsGraphSdk_Example
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function ManagedIdentyPsPnp_Example
+function PsPnPManagedIdenty_Example
 {
 	Import-Module -Name "PnP.PowerShell"
 
@@ -285,7 +285,7 @@ Function ManagedIdentyPsPnp_Example
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function ManagedIdentyPsCli_Example
+function PsCliM365ManagedIdenty_Example
 {
 	# For Non *-Cs cmdlets - the Microsoft Graph API permissions needed are: 
 	#   Organization.Read.All, User.Read.All, Group.ReadWrite.All, 
@@ -317,7 +317,7 @@ Function ManagedIdentyPsCli_Example
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-##==> The scripts must be run from an Azure Automation Runbook or Azure Function
+##==> The scripts must be run from an Azure Automation Runbook or Azure function
 #		The examples cannot be run from an external script. Managed Identities work
 #		only if the code is running from an script inside an Azure Service
 

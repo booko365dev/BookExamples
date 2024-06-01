@@ -10,17 +10,18 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
-                                                   string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsPnPCoreSdk_GetContextWithInteraction(string TenantId, 
+                            string ClientId, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
@@ -44,8 +45,8 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                                .GetRequiredService<IPnPContextFactory>();
-    Uri mySiteCollUri = new Uri(SiteCollUrl);
+                                              .GetRequiredService<IPnPContextFactory>();
+    Uri mySiteCollUri = new(SiteCollUrl);
     PnPContext myContext = myPnpContextFactory.CreateAsync(mySiteCollUri).Result;
 
     myHost.Dispose();
@@ -55,15 +56,15 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
 //gavdcodeend 001
 
 //gavdcodebegin 003
-static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
-                  string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsPnPCoreSdk_GetContextWithAccPw(string TenantId, string ClientId,
+                string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
         {
             services.AddPnPCore(options =>
             {
-                SecureString secPw = new SecureString();
+                SecureString secPw = new();
                 foreach (char oneChar in UserPw)
                     secPw.AppendChar(oneChar);
 
@@ -84,7 +85,7 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                                .GetRequiredService<IPnPContextFactory>();
+                                              .GetRequiredService<IPnPContextFactory>();
     PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
 
     myHost.Dispose();
@@ -94,8 +95,9 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
 //gavdcodeend 003
 
 //gavdcodebegin 005
-static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
-                    string CertificateThumbprint, string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsPnPCoreSdk_GetContextWithCertificate(string TenantId, 
+                string ClientId, string CertificateThumbprint, string SiteCollUrl, 
+                LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
@@ -120,7 +122,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                                .GetRequiredService<IPnPContextFactory>();
+                                              .GetRequiredService<IPnPContextFactory>();
     PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
 
     myHost.Dispose();
@@ -134,23 +136,21 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 002
-static void PnPCoreSdkGetWebWithInteraction()
+static void CsPnPCoreSdk_GetWebWithInteraction()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
     string mySiteCollUrl = ConfigurationManager.AppSettings["SiteCollUrl"];
 
-    using (PnPContext myContext = CreateContextWithInteraction(myTenantId, myClientId,
-                                                          mySiteCollUrl, LogLevel.None))
-    {
-        myContext.Web.LoadAsync(p => p.Title).Wait();
-        Console.WriteLine($"The title of the web is '" + myContext.Web.Title + "'");
-    }
+    using PnPContext myContext = CsPnPCoreSdk_GetContextWithInteraction(myTenantId, myClientId,
+                                                         mySiteCollUrl, LogLevel.None);
+    myContext.Web.LoadAsync(p => p.Title).Wait();
+    Console.WriteLine($"The title of the web is '" + myContext.Web.Title + "'");
 }
 //gavdcodeend 002
 
 //gavdcodebegin 004
-static void PnPCoreSdkGetListsWithAccPw()
+static void CsPnPCoreSdk_GetListsWithAccPw()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -158,40 +158,36 @@ static void PnPCoreSdkGetListsWithAccPw()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.Trace))
+    using PnPContext myContext = CsPnPCoreSdk_GetContextWithAccPw(myTenantId, myClientId,
+                                   myUserName, myUserPw, mySiteCollUrl, LogLevel.Trace);
+    myContext.Web.Lists.LoadAsync().Wait();
+    foreach (IList oneList in myContext.Web.Lists)
     {
-        myContext.Web.Lists.LoadAsync().Wait();
-        foreach (IList oneList in myContext.Web.Lists)
-        {
-            Console.WriteLine("List - " + oneList.Title);
-        }
+        Console.WriteLine("List - " + oneList.Title);
     }
 }
 //gavdcodeend 004
 
 //gavdcodebegin 006
-static void PnPCoreSdkGetItemsWithCertificate()
+static void CsPnPCoreSdk_GetItemsWithCertificate()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithCert"];
     string mySiteCollUrl = ConfigurationManager.AppSettings["SiteCollUrl"];
     string myCertThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"];
 
-    using (PnPContext myContext = CreateContextWithCertificate(myTenantId, myClientId,
-                                      myCertThumbprint, mySiteCollUrl, LogLevel.Debug))
+    using PnPContext myContext = CsPnPCoreSdk_GetContextWithCertificate(myTenantId, myClientId,
+                                      myCertThumbprint, mySiteCollUrl, LogLevel.Debug);
+    myContext.Web.LoadAsync(p => p.Title).Wait();
+    Console.WriteLine($"The title of the web is {myContext.Web.Title}");
+
+    IList myList = myContext.Web.Lists.GetByTitle("Documents",
+                            p => p.Title,
+                            p => p.Items.QueryProperties(p => p.Title));
+
+    foreach (IListItem oneItem in myList.Items)
     {
-        myContext.Web.LoadAsync(p => p.Title).Wait();
-        Console.WriteLine($"The title of the web is {myContext.Web.Title}");
-
-        IList myList = myContext.Web.Lists.GetByTitle("Documents",
-                                p => p.Title,
-                                p => p.Items.QueryProperties(p => p.Title));
-
-        foreach (IListItem oneItem in myList.Items)
-        {
-            Console.WriteLine("Item - " + oneItem.Title);
-        }
+        Console.WriteLine("Item - " + oneItem.Title);
     }
 }
 //gavdcodeend 006
@@ -200,12 +196,15 @@ static void PnPCoreSdkGetItemsWithCertificate()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//PnPCoreSdkGetWebWithInteraction();
-//PnPCoreSdkGetListsWithAccPw();
-//PnPCoreSdkGetItemsWithCertificate();
+// *** Latest Source Code Index: 006 ***
+
+//CsPnPCoreSdk_GetWebWithInteraction();
+//CsPnPCoreSdk_GetListsWithAccPw();
+//CsPnPCoreSdk_GetItemsWithCertificate();
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used

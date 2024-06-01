@@ -7,18 +7,19 @@ using System.Web;
 using System.Xml;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static Tuple<string, string> GetTokenWithAccPw()
+static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw()
 {
-    Tuple<string, string> tplReturn = new Tuple<string, string>(string.Empty, string.Empty);
+    Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
 
     string myEndpoint = "https://login.microsoftonline.com/" +
                         ConfigurationManager.AppSettings["TenantName"] + "/oauth2/token";
@@ -32,16 +33,15 @@ static Tuple<string, string> GetTokenWithAccPw()
     reqBody += $"password=" +
                 $"{HttpUtility.UrlEncode(ConfigurationManager.AppSettings["UserPw"])}";
 
-    using (StringContent myStrContent = new StringContent(reqBody, Encoding.UTF8,
+    using (StringContent myStrContent = new(reqBody, Encoding.UTF8,
                                                     "application/x-www-form-urlencoded"))
     {
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         string tokenStr = myHttpClient.PostAsync(myEndpoint,
-                            myStrContent).ContinueWith((myResponse) =>
-                            {
-                                return myResponse.Result.Content
-                                                        .ReadAsStringAsync().Result;
-                            }).Result;
+                    myStrContent).ContinueWith((myResponse) =>
+                    {
+                        return myResponse.Result.Content.ReadAsStringAsync().Result;
+                    }).Result;
 
         var tokenObj = System.Text.Json.JsonSerializer.Deserialize<JsonElement>(tokenStr);
         JsonElement myError;
@@ -69,14 +69,14 @@ static Tuple<string, string> GetTokenWithAccPw()
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static string GetRequestDigest(Tuple<string, string> AuthToken)
+static string CsSpSharePointRest_GetRequestDigest(Tuple<string, string> AuthToken)
 {
     string strReturn = string.Empty;
     Tuple<string, string> myTokenWithAccPw;
 
     if (AuthToken == null)
     {
-        myTokenWithAccPw = GetTokenWithAccPw();
+        myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
     }
     else
     {
@@ -88,10 +88,9 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 
     string myBody = "{}";
 
-    using (StringContent myStrContent = new StringContent(myBody, Encoding.UTF8,
-                                             "application/json"))
+    using (StringContent myStrContent = new(myBody, Encoding.UTF8, "application/json"))
     {
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
 
@@ -102,7 +101,7 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
                                                         .ReadAsStringAsync().Result;
                             }).Result;
 
-        XmlDocument myDocXml = new XmlDocument();
+        XmlDocument myDocXml = new();
         myDocXml.LoadXml(digestXml);
 
         XmlNodeList allNodes = myDocXml.SelectNodes("/");
@@ -119,25 +118,25 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 003
-static void TestSpRestGet()
+static void CsSpSharePointRest_TestSpRestGet()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
-                                    "Accept", "application/json"); // Output as JSON
+                                "Accept", "application/json"); // Output as JSON
 
         string resultStr = myHttpClient.GetAsync(myEndpoint).ContinueWith((myResponse) =>
-                            {
-                              return myResponse.Result.Content.ReadAsStringAsync().Result;
-                            }).Result;
+                        {
+                            return myResponse.Result.Content.ReadAsStringAsync().Result;
+                        }).Result;
 
         // Reading the query result, but only if the result is a JSON string
         dynamic resultObj = JsonConvert.DeserializeObject(resultStr);
@@ -145,7 +144,7 @@ static void TestSpRestGet()
         {
             string strError = resultObj["odata.error"].code.Value;
             Console.WriteLine("Error found - " +
-                                            resultObj["odata.error"].message.value.Value);
+                                        resultObj["odata.error"].message.value.Value);
         }
         catch
         {
@@ -172,11 +171,11 @@ static void TestSpRestGet()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void TestSpRestPost()
+static void CsSpSharePointRest_TestSpRestPost()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists";
@@ -192,19 +191,19 @@ static void TestSpRestPost()
         };
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                "X-RequestDigest", CsSpSharePointRest_GetRequestDigest(myTokenWithAccPw));
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
@@ -213,7 +212,8 @@ static void TestSpRestPost()
                                                             .ReadAsStringAsync().Result;
                                 }).Result;
 
-            var resultObj = System.Text.Json.JsonSerializer.Deserialize<JsonElement>(resultStr);
+            var resultObj = System.Text.Json.JsonSerializer
+                                        .Deserialize<JsonElement>(resultStr);
             JsonElement myError;
             bool hasError = resultObj.TryGetProperty("error", out myError);
 
@@ -231,11 +231,11 @@ static void TestSpRestPost()
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void TestSpRestUpdate()
+static void CsSpSharePointRest_TestSpRestUpdate()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists/getbytitle('NewListRestCs')";
@@ -247,35 +247,35 @@ static void TestSpRestUpdate()
         };
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                            "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "Accept", "application/json;odata=verbose");
+                            "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-RequestDigest", GetRequestDigest(null));
+                            "X-RequestDigest", CsSpSharePointRest_GetRequestDigest(null));
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "IF-MATCH", "*");
+                            "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                     "X-HTTP-Method", "MERGE");
+                            "X-HTTP-Method", "MERGE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
                                 {
                                     return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
+                                                        .ReadAsStringAsync().Result;
                                 }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -288,11 +288,11 @@ static void TestSpRestUpdate()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void TestSpRestDelete()
+static void CsSpSharePointRest_TestSpRestDelete()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists/getbytitle('NewListRestCs')";
@@ -300,35 +300,35 @@ static void TestSpRestDelete()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "Accept", "application/json;odata=verbose");
+                "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-RequestDigest", GetRequestDigest(myTokenWithAccPw));
+                "X-RequestDigest", CsSpSharePointRest_GetRequestDigest(myTokenWithAccPw));
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "IF-MATCH", "*");
+                "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
-                                   "X-HTTP-Method", "DELETE");
+                "X-HTTP-Method", "DELETE");
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
-                                myStrContent).ContinueWith((myResponse) =>
-                                {
-                                    return myResponse.Result.Content
-                                                            .ReadAsStringAsync().Result;
-                                }).Result;
+                            myStrContent).ContinueWith((myResponse) =>
+                            {
+                                return myResponse.Result.Content
+                                                        .ReadAsStringAsync().Result;
+                            }).Result;
 
             if (resultStr != String.Empty)
             {
                 var resultObj = System.Text.Json.JsonSerializer
-                                                    .Deserialize<JsonElement>(resultStr);
+                                                .Deserialize<JsonElement>(resultStr);
                 Console.WriteLine("QueryException - " + resultObj.GetProperty("error"));
             }
             else
@@ -345,10 +345,12 @@ static void TestSpRestDelete()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//TestSpRestGet();
-//TestSpRestPost();
-//TestSpRestUpdate();
-//TestSpRestDelete();
+//# *** Latest Source Code Index: 006 ***
+
+//CsSpSharePointRest_TestSpRestGet();
+//CsSpSharePointRest_TestSpRestPost();
+//CsSpSharePointRest_TestSpRestUpdate();
+//CsSpSharePointRest_TestSpRestDelete();
 
 
 //---------------------------------------------------------------------------------------
@@ -358,3 +360,4 @@ static void TestSpRestDelete()
 
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
