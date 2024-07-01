@@ -6,12 +6,7 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-Function GrPsLoginGraphSDKWithInteraction
-{
-	Connect-Graph
-}
-
-Function GrPsLoginGraphSDKWithAccPw
+function PsGraphSdk_LoginWithAccPwMSAL
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -35,11 +30,13 @@ Function GrPsLoginGraphSDKWithAccPw
 	$myToken = Get-MsalToken -TenantId $TenantName `
 							 -ClientId $ClientId `
 							 -UserCredential $myCredentials 
+	$myTokenSecure = ConvertTo-SecureString -String $myToken.AccessToken `
+											-AsPlainText -Force
 
-	Connect-Graph -AccessToken $myToken.AccessToken
+	Connect-MgGraph -AccessToken $myTokenSecure
 }
 
-Function GrPsLoginGraphSDKWithSecret
+function PsGraphSdk_LoginWithSecret
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -52,68 +49,18 @@ Function GrPsLoginGraphSDKWithSecret
 		[String]$ClientSecret
 	)
 
-	[SecureString]$secureSecret = ConvertTo-SecureString -String `
-								$ClientSecret -AsPlainText -Force
-
-	$myToken = Get-MsalToken -TenantId $TenantName `
-							 -ClientId $ClientId `
-							 -ClientSecret ($secureSecret)
-
-	Connect-Graph -AccessToken $myToken.AccessToken
-}
-
-Function GrPsLoginGraphSDKWithCertificate
-{
-	Param(
-		[Parameter(Mandatory=$True)]
-		[String]$TenantName,
- 
-		[Parameter(Mandatory=$True)]
-		[String]$ClientID,
- 
-		[Parameter(Mandatory=$True)]
-		[String]$CertificateThumbprint
-	)
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+									$ClientSecret -AsPlainText -Force
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+							-argumentlist $ClientID, $securePW
 
 	Connect-MgGraph -TenantId $TenantName `
-					-ClientId $ClientId `
-					-CertificateThumbprint $CertificateThumbprint
-}
-
-Function GrPsLoginGraphSDKWithCertificateFile
-{
-	[SecureString]$secureCertPw = ConvertTo-SecureString -String `
-							$configFile.appSettings.CertificateFilePw -AsPlainText -Force
-
-	$myCert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2(`
-							  $configFile.appSettings.CertificateFilePath, $secureCertPw)
-	
-	Connect-MgGraph -TenantId $configFile.appsettings.TenantName `
-					-ClientId $configFile.appsettings.ClientIdWithCert `
-					-Certificate $myCert 
+					-ClientSecretCredential $myCredentials
 }
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Other routines ***---------------------------
 ##---------------------------------------------------------------------------------------
-
-Function GrPsLoginGraphSDKSetVersion
-{
-	#Select-MgProfile -Name "beta"
-	#Select-MgProfile -Name "v1.0"
-}
-
-Function GrPsLoginGraphSDKAssignRights
-{
-	Connect-Graph -Scopes "Directory.AccessAsUser.All, Directory.ReadWrite.All"
-	Get-MgUser
-	Disconnect-MgGraph
-}
-
-Function GrPsLoginGraphSDKCheckAvailableRights
-{
-	Find-MgGraphPermission "user" -PermissionType Application
-}
 
 
 ##---------------------------------------------------------------------------------------
@@ -121,47 +68,113 @@ Function GrPsLoginGraphSDKCheckAvailableRights
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function SpPsGraphSdk_GetSiteCollections
+function PsSpGraphSdk_GetAllSiteCollections
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# App Registration type: Graph 
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+	
+	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+								-ClientID $configFile.appsettings.ClientIdWithSecret `
+								-ClientSecret $configFile.appsettings.ClientSecret
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							   -UserName $configFile.appsettings.UserName `
-							   -UserPw $configFile.appsettings.UserPw
-
-	Get-MgSite -Search "*"
-
+	Get-MgSite
+    
 	Disconnect-MgGraph
 }
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function SpPsGraphSdk_GetOneSiteCollection
+function PsSpGraphSdk_GetOneSiteCollection
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							   -UserName $configFile.appsettings.UserName `
-							   -UserPw $configFile.appsettings.UserPw
+	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+								-ClientID $configFile.appsettings.ClientIdWithSecret `
+								-ClientSecret $configFile.appsettings.ClientSecret
 
-	Get-MgSite -Search "NewSite*"
-	Get-MgSite -SiteId "7f80b1d6-885a-4630-91c1-57b45c9159cb"
+	Get-MgSite -Search "Test*"
+	Get-MgSite -SiteId "e7cd70c0-6e48-48b4-9380-caab1d1e8433"
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 002
 
-#gavdcodebegin 003
-Function SpPsGraphSdk_GetWebs
+#gavdcodebegin 004
+function PsSpGraphSdk_GetFollowedSiteCollections
 {
-	# Requires Delegated rights: Sites.Read.All/Sites.ReadWrite.All/Sites.FullControl.All
+	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
+	# Works only for Delegated permissions
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							   -UserName $configFile.appsettings.UserName `
-							   -UserPw $configFile.appsettings.UserPw
+	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+								-ClientID $configFile.appsettings.ClientIdWithSecret `
+								-ClientSecret $configFile.appsettings.ClientSecret
+
+	Get-MgUserFollowedSite -UserId "acc28fcb-5261-47f8-960b-715d2f98a431"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 004
+
+#gavdcodebegin 005
+function PsSpGraphSdk_FollowSiteCollections
+{
+	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
+
+	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+								-ClientID $configFile.appsettings.ClientIdWithSecret `
+								-ClientSecret $configFile.appsettings.ClientSecret
+
+	$sitesToFollow = @{
+		value = @(
+			@{
+				id = "domain.sharepoint.com,"`
+					"e7cd70c0-6e48-48b4-9380-caab1d1e8433,"`
+					"7dc381ab-fa9a-41a7-a98b-7dafa684eb1c"
+			}
+		)
+	}
+
+	Add-MgUserFollowedSite -UserId "acc28fcb-5261-47f8-960b-715d2f98a431" `
+							-BodyParameter $sitesToFollow
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 005
+
+#gavdcodebegin 006
+function PsSpGraphSdk_UnFollowSiteCollections
+{
+	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
+
+	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+								-ClientID $configFile.appsettings.ClientIdWithSecret `
+								-ClientSecret $configFile.appsettings.ClientSecret
+
+	$sitesToUnFollow = @{
+		value = @(
+			@{
+				id = "domain.sharepoint.com,"1
+					"e7cd70c0-6e48-48b4-9380-caab1d1e8433,"`
+					"7dc381ab-fa9a-41a7-a98b-7dafa684eb1c"
+			}
+		)
+	}
+
+	Remove-MgUserFollowedSite -UserId "acc28fcb-5261-47f8-960b-715d2f98a431" `
+							  -BodyParameter $sitesToUnFollow
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 006
+
+#gavdcodebegin 003
+function PsSpGraphSdk_GetWebs
+{
+	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
+
+	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+								-ClientID $configFile.appsettings.ClientIdWithSecret `
+								-ClientSecret $configFile.appsettings.ClientSecret
 
 	Get-MgSubSite -SiteId "7f80b1d6-885a-4630-91c1-57b45c9159cb"
 
@@ -173,11 +186,16 @@ Function SpPsGraphSdk_GetWebs
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
+# *** Latest Source Code Index: 006 ***
+
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
-#SpPsGraphSdk_GetSiteCollections
-#SpPsGraphSdk_GetOneSiteCollection
-#SpPsGraphSdk_GetWebs
+#PsSpGraphSdk_GetAllSiteCollections
+#PsSpGraphSdk_GetOneSiteCollection
+#PsSpGraphSdk_GetFollowedSiteCollections
+#PsSpGraphSdk_FollowSiteCollections
+#PsSpGraphSdk_UnFollowSiteCollections
+#PsSpGraphSdk_GetWebs
 
 Write-Host "Done" 
 

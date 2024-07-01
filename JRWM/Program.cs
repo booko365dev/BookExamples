@@ -9,16 +9,18 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
+
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
-                                                   string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsSpPnpCoreSdk_GetContextWithInteraction(string TenantId, 
+                        string ClientId, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
@@ -42,8 +44,8 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                                .GetRequiredService<IPnPContextFactory>();
-    Uri mySiteCollUri = new Uri(SiteCollUrl);
+                                            .GetRequiredService<IPnPContextFactory>();
+    Uri mySiteCollUri = new(SiteCollUrl);
     PnPContext myContext = myPnpContextFactory.CreateAsync(mySiteCollUri).Result;
 
     myHost.Dispose();
@@ -51,7 +53,7 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
     return myContext;
 }
 
-static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
+static PnPContext CsSpPnpCoreSdk_GetContextWithAccPw(string TenantId, string ClientId,
                   string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
@@ -59,7 +61,7 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
         {
             services.AddPnPCore(options =>
             {
-                SecureString secPw = new SecureString();
+                SecureString secPw = new();
                 foreach (char oneChar in UserPw)
                     secPw.AppendChar(oneChar);
 
@@ -88,8 +90,8 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
     return myContext;
 }
 
-static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
-                    string CertificateThumbprint, string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsSpPnpCoreSdk_GetContextWithCertificate(string TenantId, 
+    string ClientId, string CertificateThumbprint, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
@@ -114,7 +116,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                                .GetRequiredService<IPnPContextFactory>();
+                                            .GetRequiredService<IPnPContextFactory>();
     PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
 
     myHost.Dispose();
@@ -127,7 +129,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsPnpCoreSdk_CreateCommunicationSiteColl()
+static void CsSpPnpCoreSdk_CreateCommunicationSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -135,20 +137,20 @@ static void SpCsPnpCoreSdk_CreateCommunicationSiteColl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        CommunicationSiteOptions myCommSiteOptions = new CommunicationSiteOptions(
-                                new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
-                                "/sites/NewCommSiteCollFromPnPCoreSdk"),
-                                "NewCommunicationSiteCollPnPCoreSdk")
+        CommunicationSiteOptions myCommSiteOptions = new(
+                            new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
+                            "/sites/NewCommSiteCollFromPnPCoreSdk"),
+                            "NewCommunicationSiteCollPnPCoreSdk")
         {
             Description = "Communication Site description",
             Language = Language.English
         };
 
         PnPContext ctxNewSiteColl = myContext.GetSiteCollectionManager()
-                                                .CreateSiteCollection(myCommSiteOptions);
+                                            .CreateSiteCollection(myCommSiteOptions);
     }
 
     Console.WriteLine("Done");
@@ -156,7 +158,7 @@ static void SpCsPnpCoreSdk_CreateCommunicationSiteColl()
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsPnpCoreSdk_CreateTeamNoGroupSiteColl()
+static void CsSpPnpCoreSdk_CreateTeamNoGroupSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -164,20 +166,20 @@ static void SpCsPnpCoreSdk_CreateTeamNoGroupSiteColl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        TeamSiteWithoutGroupOptions myTeamSiteOptions = new TeamSiteWithoutGroupOptions(
-                                new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
-                                "/sites/NewTeamSiteCollFromPnPCoreSdk"),
-                                "NewTeamSiteCollPnPCoreSdk")
+        TeamSiteWithoutGroupOptions myTeamSiteOptions = new(
+                            new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
+                            "/sites/NewTeamSiteCollFromPnPCoreSdk"),
+                            "NewTeamSiteCollPnPCoreSdk")
         {
             Description = "Team Site description",
             Language = Language.English
         };
 
         PnPContext ctxNewSiteColl = myContext.GetSiteCollectionManager()
-                                                .CreateSiteCollection(myTeamSiteOptions);
+                                            .CreateSiteCollection(myTeamSiteOptions);
     }
 
     Console.WriteLine("Done");
@@ -185,7 +187,7 @@ static void SpCsPnpCoreSdk_CreateTeamNoGroupSiteColl()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsPnpCoreSdk_CreateTeamClassicSiteColl()
+static void CsSpPnpCoreSdk_CreateTeamClassicSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -193,29 +195,29 @@ static void SpCsPnpCoreSdk_CreateTeamClassicSiteColl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        ClassicSiteOptions myTeamSiteClassicOptions = new ClassicSiteOptions(
-                                new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
-                                "/sites/NewClassicTeamSiteCollFromPnPCoreSdk"),
-                                "NewClassicTeamSiteCollPnPCoreSdk",
-                                "STS#3",
-                                myUserName,
-                                Language.English,
-                                PnP.Core.Admin.Model.SharePoint.TimeZone
-                                                        .UTCMINUS0500_BOGOTA_LIMA_QUITO);
+        ClassicSiteOptions myTeamSiteClassicOptions = new(
+                            new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
+                            "/sites/NewClassicTeamSiteCollFromPnPCoreSdk"),
+                            "NewClassicTeamSiteCollPnPCoreSdk",
+                            "STS#3",
+                            myUserName,
+                            Language.English,
+                            PnP.Core.Admin.Model.SharePoint.TimeZone
+                                                    .UTCMINUS0500_BOGOTA_LIMA_QUITO);
 
         PnPContext ctxNewSiteColl = myContext.GetSiteCollectionManager()
-                                          .CreateSiteCollection(myTeamSiteClassicOptions);
+                                        .CreateSiteCollection(myTeamSiteClassicOptions);
     }
 
     Console.WriteLine("Done");
 }
 //gavdcodeend 003
 
-//gavdcodebegin 004
-static void SpCsPnpCoreSdk_GetAllSiteColls()
+//gavdcodebegin 014
+static void CsSpPnpCoreSdk_CreateTeamSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -223,8 +225,36 @@ static void SpCsPnpCoreSdk_GetAllSiteColls()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId,
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    {
+        TeamSiteOptions myTeamSiteOptions = new(
+                            "NewTeamSiteCollPnPCoreSdk",
+                            "NewTeamSiteCollPnPCoreSdk")
+        {
+            Description = "Team Site description",
+            Language = Language.English
+        };
+
+        PnPContext ctxNewSiteColl = myContext.GetSiteCollectionManager()
+                                    .CreateSiteCollectionAsync(myTeamSiteOptions).Result;
+    }
+
+    Console.WriteLine("Done");
+}
+//gavdcodeend 014
+
+//gavdcodebegin 004
+static void CsSpPnpCoreSdk_GetAllSiteColls()
+{
+    string myTenantId = ConfigurationManager.AppSettings["TenantName"];
+    string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
+    string mySiteCollUrl = ConfigurationManager.AppSettings["SiteBaseUrl"];
+    string myUserName = ConfigurationManager.AppSettings["UserName"];
+    string myUserPw = ConfigurationManager.AppSettings["UserPw"];
+
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         List<ISiteCollection> mySiteColls =
                             myContext.GetSiteCollectionManager().GetSiteCollections();
@@ -240,7 +270,7 @@ static void SpCsPnpCoreSdk_GetAllSiteColls()
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsPnpCoreSdk_GetAllSiteCollsWithDetails()
+static void CsSpPnpCoreSdk_GetAllSiteCollsWithDetails()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -248,11 +278,11 @@ static void SpCsPnpCoreSdk_GetAllSiteCollsWithDetails()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         List<ISiteCollectionWithDetails> mySiteColls =
-                     myContext.GetSiteCollectionManager().GetSiteCollectionsWithDetails();
+                    myContext.GetSiteCollectionManager().GetSiteCollectionsWithDetails();
 
         foreach (ISiteCollectionWithDetails oneSiteColl in mySiteColls)
         {
@@ -265,7 +295,7 @@ static void SpCsPnpCoreSdk_GetAllSiteCollsWithDetails()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void SpCsPnpCoreSdk_GetOneSiteColl()
+static void CsSpPnpCoreSdk_GetOneSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -273,8 +303,8 @@ static void SpCsPnpCoreSdk_GetOneSiteColl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ISiteCollectionWithDetails mySiteColl = myContext.GetSiteCollectionManager().
                             GetSiteCollectionWithDetails(new Uri(mySiteCollUrl));
@@ -287,7 +317,7 @@ static void SpCsPnpCoreSdk_GetOneSiteColl()
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void SpCsPnpCoreSdk_GetAllWebsInSiteColl()
+static void CsSpPnpCoreSdk_GetAllWebsInSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -295,8 +325,8 @@ static void SpCsPnpCoreSdk_GetAllWebsInSiteColl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         List<IWebWithDetails> mySiteCollWebs = myContext.GetSiteCollectionManager().
                             GetSiteCollectionWebsWithDetails(new Uri(mySiteCollUrl));
@@ -312,7 +342,7 @@ static void SpCsPnpCoreSdk_GetAllWebsInSiteColl()
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void SpCsPnpCoreSdk_GetSiteCollProperties()
+static void CsSpPnpCoreSdk_GetSiteCollProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -320,15 +350,16 @@ static void SpCsPnpCoreSdk_GetSiteCollProperties()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ISiteCollectionProperties mySiteCollProps = myContext.GetSiteCollectionManager().
                             GetSiteCollectionProperties(new Uri(mySiteCollUrl));
 
         var stringPropertyNamesAndValues = mySiteCollProps.GetType()
             .GetProperties()
-            .Where(prop => prop.PropertyType == typeof(string) && prop.GetGetMethod() != null)
+            .Where(prop => prop.PropertyType == typeof(string) && 
+                                                            prop.GetGetMethod() != null)
             .Select(prop => new
             {
                 Name = prop.Name,
@@ -345,7 +376,7 @@ static void SpCsPnpCoreSdk_GetSiteCollProperties()
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void SpCsPnpCoreSdk_ChangeOneSiteCollProperty()
+static void CsSpPnpCoreSdk_ChangeOneSiteCollProperty()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -353,8 +384,8 @@ static void SpCsPnpCoreSdk_ChangeOneSiteCollProperty()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ISiteCollectionProperties mySiteCollProps = myContext.GetSiteCollectionManager().
                             GetSiteCollectionProperties(new Uri(mySiteCollUrl));
@@ -367,7 +398,7 @@ static void SpCsPnpCoreSdk_ChangeOneSiteCollProperty()
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void SpCsPnpCoreSdk_ConnectSiteCollToGroup()
+static void CsSpPnpCoreSdk_ConnectSiteCollToGroup()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -375,15 +406,16 @@ static void SpCsPnpCoreSdk_ConnectSiteCollToGroup()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ConnectSiteToGroupOptions myConnectGroup = new ConnectSiteToGroupOptions(
             new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                     "/sites/NewTeamSiteCollFromPnPCoreSdk"),
             "GroupFor_NewTeamSiteCollFromPnPCoreSdk",
             "New Title For SiteColl NewTeamSiteCollFromPnPCoreSdk");
-        myContext.GetSiteCollectionManager().ConnectSiteCollectionToGroup(myConnectGroup);
+        myContext.GetSiteCollectionManager()
+                                        .ConnectSiteCollectionToGroup(myConnectGroup);
     }
 
     Console.WriteLine("Done");
@@ -391,7 +423,7 @@ static void SpCsPnpCoreSdk_ConnectSiteCollToGroup()
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void SpCsPnpCoreSdk_DeleteSiteColl()
+static void CsSpPnpCoreSdk_DeleteSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -399,8 +431,8 @@ static void SpCsPnpCoreSdk_DeleteSiteColl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         myContext.GetSiteCollectionManager().DeleteSiteCollection(
             new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
@@ -415,7 +447,7 @@ static void SpCsPnpCoreSdk_DeleteSiteColl()
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void SpCsPnpCoreSdk_GetDeletedSiteColls()
+static void CsSpPnpCoreSdk_GetDeletedSiteColls()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -423,11 +455,11 @@ static void SpCsPnpCoreSdk_GetDeletedSiteColls()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         List<IRecycledSiteCollection> deletedSitColls = myContext
-                                .GetSiteCollectionManager().GetRecycledSiteCollections();
+                            .GetSiteCollectionManager().GetRecycledSiteCollections();
 
         foreach (IRecycledSiteCollection oneDeleted in deletedSitColls)
         {
@@ -440,7 +472,7 @@ static void SpCsPnpCoreSdk_GetDeletedSiteColls()
 //gavdcodeend 012
 
 //gavdcodebegin 013
-static void SpCsPnpCoreSdk_GetRestoredSiteColl()
+static void CsSpPnpCoreSdk_GetRestoredSiteColl()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -448,8 +480,8 @@ static void SpCsPnpCoreSdk_GetRestoredSiteColl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsSpPnpCoreSdk_GetContextWithAccPw(myTenantId, 
+                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         myContext.GetSiteCollectionManager().RestoreSiteCollection(
             new Uri(ConfigurationManager.AppSettings["SiteBaseUrl"] +
@@ -465,19 +497,22 @@ static void SpCsPnpCoreSdk_GetRestoredSiteColl()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsPnpCoreSdk_CreateCommunicationSiteColl();
-//SpCsPnpCoreSdk_CreateTeamNoGroupSiteColl();
-//SpCsPnpCoreSdk_CreateTeamClassicSiteColl();
-//SpCsPnpCoreSdk_GetAllSiteColls();
-//SpCsPnpCoreSdk_GetAllSiteCollsWithDetails();
-//SpCsPnpCoreSdk_GetOneSiteColl();
-//SpCsPnpCoreSdk_GetAllWebsInSiteColl();
-//SpCsPnpCoreSdk_GetSiteCollProperties();
-//SpCsPnpCoreSdk_ChangeOneSiteCollProperty();
-//SpCsPnpCoreSdk_ConnectSiteCollToGroup();
-//SpCsPnpCoreSdk_DeleteSiteColl();
-//SpCsPnpCoreSdk_GetDeletedSiteColls();
-//SpCsPnpCoreSdk_GetRestoredSiteColl();
+//# *** Latest Source Code Index: 014 ***
+
+//CsSpPnpCoreSdk_CreateCommunicationSiteColl();
+//CsSpPnpCoreSdk_CreateTeamNoGroupSiteColl();
+//CsSpPnpCoreSdk_CreateTeamClassicSiteColl();
+//CsSpPnpCoreSdk_CreateTeamSiteColl();
+//CsSpPnpCoreSdk_GetAllSiteColls();
+//CsSpPnpCoreSdk_GetAllSiteCollsWithDetails();
+//CsSpPnpCoreSdk_GetOneSiteColl();
+//CsSpPnpCoreSdk_GetAllWebsInSiteColl();
+//CsSpPnpCoreSdk_GetSiteCollProperties();
+//CsSpPnpCoreSdk_ChangeOneSiteCollProperty();
+//CsSpPnpCoreSdk_ConnectSiteCollToGroup();
+//CsSpPnpCoreSdk_DeleteSiteColl();
+//CsSpPnpCoreSdk_GetDeletedSiteColls();
+//CsSpPnpCoreSdk_GetRestoredSiteColl();
 
 
 //---------------------------------------------------------------------------------------
@@ -485,3 +520,4 @@ static void SpCsPnpCoreSdk_GetRestoredSiteColl()
 //---------------------------------------------------------------------------------------
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used

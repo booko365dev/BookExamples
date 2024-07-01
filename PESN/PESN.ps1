@@ -7,7 +7,7 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-Function LoginPsPnPPowerShellWithAccPwDefault
+function PsSpPnpPowerShell_LoginWithAccPwDefault
 {
 	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -18,7 +18,7 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
 }
 
-Function LoginPsPnPPowerShellWithAccPw($FullSiteUrl)
+function PsSpPnpPowerShell_LoginWithAccPw($FullSiteUrl)
 {
 	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	if($fullSiteUrl -ne $null) {
@@ -31,14 +31,14 @@ Function LoginPsPnPPowerShellWithAccPw($FullSiteUrl)
 	}
 }
 
-Function LoginPsPnPPowerShellWithInteraction
+function PsSpPnpPowerShell_LoginWithInteraction
 {
 	# Using user interaction and the Azure AD PnP App Registration (Delegated)
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
 					  -Credentials (Get-Credential)
 }
 
-Function LoginPsPnPPowerShellWithCertificate
+function PsSpPnpPowerShell_LoginWithCertificate
 {
 	# Using a Digital Certificate and Azure App Registration (Application)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -51,7 +51,7 @@ Function LoginPsPnPPowerShellWithCertificate
 					  -CertificatePassword $securePW
 }
 
-Function LoginPsPnPPowerShellWithCertificateBase64
+function PsSpPnpPowerShell_LoginWithCertificateBase64
 {
 	# Using a Digital Certificate and Azure App Registration (Application)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -70,12 +70,12 @@ Function LoginPsPnPPowerShellWithCertificateBase64
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-function SpPsPnpPowerShell_CreateOneSiteCollection
+function PsSpPnpPowerShell_CreateOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP"
 	New-PnPSite -Type CommunicationSite `
@@ -88,12 +88,12 @@ function SpPsPnpPowerShell_CreateOneSiteCollection
 #gavdcodeend 001
 
 #gavdcodebegin 002
-function SpPsPnpPowerShell_CreateOneSiteCollection01
+function PsSpPnpPowerShell_CreateOneSiteCollection01
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
 	New-PnPTenantSite -Title "NewSiteCollectionModernPsPnP01" `
@@ -107,12 +107,12 @@ function SpPsPnpPowerShell_CreateOneSiteCollection01
 #gavdcodeend 002
 
 #gavdcodebegin 003
-function SpPsPnpPowerShell_GetAllSiteCollections
+function PsSpPnpPowerShell_GetAllSiteCollections
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Get-PnPTenantSite
 
@@ -121,12 +121,12 @@ function SpPsPnpPowerShell_GetAllSiteCollections
 #gavdcodeend 003
 
 #gavdcodebegin 004
-function SpPsPnpPowerShell_GetOneSiteCollection
+function PsSpPnpPowerShell_GetOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Get-PnPSite
 
@@ -135,12 +135,12 @@ function SpPsPnpPowerShell_GetOneSiteCollection
 #gavdcodeend 004
 
 #gavdcodebegin 005
-function SpPsPnpPowerShell_GetAllSiteCollectionsFiltered
+function PsSpPnpPowerShell_GetAllSiteCollectionsFiltered
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Get-PnPTenantSite -Template "SITEPAGEPUBLISHING#0" -Detailed
 
@@ -149,12 +149,12 @@ function SpPsPnpPowerShell_GetAllSiteCollectionsFiltered
 #gavdcodeend 005
 
 #gavdcodebegin 006
-function SpPsPnpPowerShell_GetHubSiteCollection
+function PsSpPnpPowerShell_GetHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Get-PnPHubSite
 
@@ -163,15 +163,15 @@ function SpPsPnpPowerShell_GetHubSiteCollection
 #gavdcodeend 006
 
 #gavdcodebegin 007
-function SpPsPnpPowerShell_UpdateOneSiteCollection
+function PsSpPnpPowerShell_UpdateOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Set-PnPSite -CommentsOnSitePagesDisabled $true
 
 	Disconnect-PnPOnline
@@ -179,15 +179,15 @@ function SpPsPnpPowerShell_UpdateOneSiteCollection
 #gavdcodeend 007
 
 #gavdcodebegin 008
-function SpPsPnpPowerShell_UpdateOneSiteCollection01
+function PsSpPnpPowerShell_UpdateOneSiteCollection01
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Set-PnPTenantSite -Url $fullSiteUrl -Title "NewSiteCollModernPsPnP01_Updated"
 
 	Disconnect-PnPOnline
@@ -195,15 +195,15 @@ function SpPsPnpPowerShell_UpdateOneSiteCollection01
 #gavdcodeend 008
 
 #gavdcodebegin 009
-function SpPsPnpPowerShell_DeleteOneSiteCollection
+function PsSpPnpPowerShell_DeleteOneSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSitesWrite.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Remove-PnPTenantSite -Url $fullSiteUrl -Force -SkipRecycleBin
 
 	Disconnect-PnPOnline
@@ -211,15 +211,15 @@ function SpPsPnpPowerShell_DeleteOneSiteCollection
 #gavdcodeend 009
 
 #gavdcodebegin 010
-function SpPsPnpPowerShell_RegisterHubSiteCollection
+function PsSpPnpPowerShell_RegisterHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrlHub = $configFile.appsettings.SiteBaseUrl + "/sites/NewHubSite"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrlHub
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrlHub
 	Register-PnPHubSite -Site $fullSiteUrlHub
 
 	Disconnect-PnPOnline
@@ -227,15 +227,15 @@ function SpPsPnpPowerShell_RegisterHubSiteCollection
 #gavdcodeend 010
 
 #gavdcodebegin 011
-function SpPsPnpPowerShell_UnregisterHubSiteCollection
+function PsSpPnpPowerShell_UnregisterHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrlHub = $configFile.appsettings.SiteBaseUrl + "/sites/NewHubSite"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrlHub
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrlHub
 	Unregister-PnPHubSite -Site $fullSiteUrlHub
 
 	Disconnect-PnPOnline
@@ -243,16 +243,16 @@ function SpPsPnpPowerShell_UnregisterHubSiteCollection
 #gavdcodeend 011
 
 #gavdcodebegin 012
-function SpPsPnpPowerShell_AddSiteToHubSiteCollection
+function PsSpPnpPowerShell_AddSiteToHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrlHub = $configFile.appsettings.SiteBaseUrl + "/sites/NewHubSite"
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/OneSite"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrlHub
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrlHub
 	Add-PnPHubSiteAssociation -Site $fullSiteUrl -HubSite $fullSiteUrlHub
 
 	Disconnect-PnPOnline
@@ -260,15 +260,15 @@ function SpPsPnpPowerShell_AddSiteToHubSiteCollection
 #gavdcodeend 012
 
 #gavdcodebegin 013
-function SpPsPnpPowerShell_RemoveSiteFromHubSiteCollection
+function PsSpPnpPowerShell_RemoveSiteFromHubSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/OneSite"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Remove-PnPHubSiteAssociation -Site $fullSiteUrl
 
 	Disconnect-PnPOnline
@@ -276,15 +276,15 @@ function SpPsPnpPowerShell_RemoveSiteFromHubSiteCollection
 #gavdcodeend 013
 
 #gavdcodebegin 014
-function SpPsPnpPowerShell_GetAdminsInSiteCollection
+function PsSpPnpPowerShell_GetAdminsInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/OneSite"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Get-PnPSiteCollectionAdmin
 
 	Disconnect-PnPOnline
@@ -292,15 +292,15 @@ function SpPsPnpPowerShell_GetAdminsInSiteCollection
 #gavdcodeend 014
 
 #gavdcodebegin 015
-function SpPsPnpPowerShell_AddAdminsToSiteCollection
+function PsSpPnpPowerShell_AddAdminsToSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/OneSite"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Add-PnPSiteCollectionAdmin -Owners "user@domain.OnMicrosoft.com"
 
 	Disconnect-PnPOnline
@@ -308,15 +308,15 @@ function SpPsPnpPowerShell_AddAdminsToSiteCollection
 #gavdcodeend 015
 
 #gavdcodebegin 016
-function SpPsPnpPowerShell_RemoveAdminsFromSiteCollection
+function PsSpPnpPowerShell_RemoveAdminsFromSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/OneSite"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Remove-PnPSiteCollectionAdmin -Owners "user@domain.OnMicrosoft.com"
 
 	Disconnect-PnPOnline
@@ -324,12 +324,12 @@ function SpPsPnpPowerShell_RemoveAdminsFromSiteCollection
 #gavdcodeend 016
 
 #gavdcodebegin 017
-function SpPsPnpPowerShell_CreateWebInSiteCollection
+function PsSpPnpPowerShell_CreateWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.Read.All
 	#								Delegated AllSites.Read
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	New-PnPWeb -Title "NewWebSiteModernPsPnP" `
 			   -Url "NewWebSiteModernPsPnP" `
@@ -342,12 +342,12 @@ function SpPsPnpPowerShell_CreateWebInSiteCollection
 #gavdcodeend 017
 
 #gavdcodebegin 018
-function SpPsPnpPowerShell_GetOneWebInSiteCollection
+function PsSpPnpPowerShell_GetOneWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Get-PnPWeb
 
@@ -356,12 +356,12 @@ function SpPsPnpPowerShell_GetOneWebInSiteCollection
 #gavdcodeend 018
 
 #gavdcodebegin 019
-function SpPsPnpPowerShell_GetWebsInSiteCollection
+function PsSpPnpPowerShell_GetWebsInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Get-PnPSubWeb -Recurse
 
@@ -370,15 +370,15 @@ function SpPsPnpPowerShell_GetWebsInSiteCollection
 #gavdcodeend 019
 
 #gavdcodebegin 020
-function SpPsPnpPowerShell_UpdateOneWebInSiteCollection
+function PsSpPnpPowerShell_UpdateOneWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	$fullSiteUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsPnP"
-	LoginPsPnPPowerShellWithAccPw $fullSiteUrl
+	PsSpPnpPowerShell_LoginWithAccPw $fullSiteUrl
 	Set-PnPWeb -Description "NewWebSiteModernPsPnP Description Updated"
 
 	Disconnect-PnPOnline
@@ -386,12 +386,12 @@ function SpPsPnpPowerShell_UpdateOneWebInSiteCollection
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function SpPsPnpPowerShell_AddPermissionsInWebInSiteCollection
+function PsSpPnpPowerShell_AddPermissionsInWebInSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Set-PnPWebPermission -Identity "NewWebSiteModernPsPnP" `
 						 -User "AdeleV@M365x17625301.OnMicrosoft.com" `
@@ -402,12 +402,12 @@ Function SpPsPnpPowerShell_AddPermissionsInWebInSiteCollection
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function SpPsPnpPowerShell_RemoveOneWebFromSiteCollection
+function PsSpPnpPowerShell_RemoveOneWebFromSiteCollection
 {
 	# App Registration type: Office 365 SharePoint Online 
 	# App Registration permissions: Application Sites.ReadWrite.All
 	#								Delegated AllSites.ReadWrite
-	$spCtx = LoginPsPnPPowerShellWithAccPwDefault
+	$spCtx = PsSpPnpPowerShell_LoginWithAccPwDefault
 	
 	Remove-PnPWeb -Identity "NewWebSiteModernPsPnP"
 
@@ -419,30 +419,32 @@ Function SpPsPnpPowerShell_RemoveOneWebFromSiteCollection
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
+# *** Latest Source Code Index: 022 ***
+
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 #------- Using PnP PowerShell --------
-#SpPsPnpPowerShell_CreateOneSiteCollection
-#SpPsPnpPowerShell_CreateOneSiteCollection01
-#SpPsPnpPowerShell_GetAllSiteCollections
-#SpPsPnpPowerShell_GetOneSiteCollection
-#SpPsPnpPowerShell_GetAllSiteCollectionsFiltered
-#SpPsPnpPowerShell_GetHubSiteCollection
-#SpPsPnpPowerShell_UpdateOneSiteCollection
-#SpPsPnpPowerShell_UpdateOneSiteCollection01
-#SpPsPnpPowerShell_DeleteOneSiteCollection
-#SpPsPnpPowerShell_RegisterHubSiteCollection
-#SpPsPnpPowerShell_UnregisterHubSiteCollection
-#SpPsPnpPowerShell_AddSiteToHubSiteCollection
-#SpPsPnpPowerShell_RemoveSiteFromHubSiteCollection
-#SpPsPnpPowerShell_GetAdminsInSiteCollection
-#SpPsPnpPowerShell_AddAdminsToSiteCollection
-#SpPsPnpPowerShell_RemoveAdminsFromSiteCollection
-#SpPsPnpPowerShell_CreateWebInSiteCollection
-#SpPsPnpPowerShell_GetOneWebInSiteCollection
-#SpPsPnpPowerShell_GetWebsInSiteCollection
-#SpPsPnpPowerShell_UpdateOneWebInSiteCollection
-#SpPsPnpPowerShell_AddPermissionsInWebInSiteCollection
-#SpPsPnpPowerShell_RemoveOneWebFromSiteCollection
+#PsSpPnpPowerShell_CreateOneSiteCollection
+#PsSpPnpPowerShell_CreateOneSiteCollection01
+#PsSpPnpPowerShell_GetAllSiteCollections
+#PsSpPnpPowerShell_GetOneSiteCollection
+#PsSpPnpPowerShell_GetAllSiteCollectionsFiltered
+#PsSpPnpPowerShell_GetHubSiteCollection
+#PsSpPnpPowerShell_UpdateOneSiteCollection
+#PsSpPnpPowerShell_UpdateOneSiteCollection01
+#PsSpPnpPowerShell_DeleteOneSiteCollection
+#PsSpPnpPowerShell_RegisterHubSiteCollection
+#PsSpPnpPowerShell_UnregisterHubSiteCollection
+#PsSpPnpPowerShell_AddSiteToHubSiteCollection
+#PsSpPnpPowerShell_RemoveSiteFromHubSiteCollection
+#PsSpPnpPowerShell_GetAdminsInSiteCollection
+#PsSpPnpPowerShell_AddAdminsToSiteCollection
+#PsSpPnpPowerShell_RemoveAdminsFromSiteCollection
+#PsSpPnpPowerShell_CreateWebInSiteCollection
+#PsSpPnpPowerShell_GetOneWebInSiteCollection
+#PsSpPnpPowerShell_GetWebsInSiteCollection
+#PsSpPnpPowerShell_UpdateOneWebInSiteCollection
+#PsSpPnpPowerShell_AddPermissionsInWebInSiteCollection
+#PsSpPnpPowerShell_RemoveOneWebFromSiteCollection
 
 Write-Host "Done" 

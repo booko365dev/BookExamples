@@ -5,9 +5,10 @@ using System.Web;
 using System.Xml;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
@@ -15,7 +16,7 @@ using System.Xml;
 
 static Tuple<string, string> GetTokenWithAccPw()
 {
-    Tuple<string, string> tplReturn = new Tuple<string, string>(string.Empty, string.Empty);
+    Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
 
     string myEndpoint = "https://login.microsoftonline.com/" +
                         ConfigurationManager.AppSettings["TenantName"] + "/oauth2/token";
@@ -29,10 +30,10 @@ static Tuple<string, string> GetTokenWithAccPw()
     reqBody += $"password=" +
                 $"{HttpUtility.UrlEncode(ConfigurationManager.AppSettings["UserPw"])}";
 
-    using (StringContent myStrContent = new StringContent(reqBody, Encoding.UTF8,
+    using (StringContent myStrContent = new(reqBody, Encoding.UTF8,
                                                     "application/x-www-form-urlencoded"))
     {
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         string tokenStr = myHttpClient.PostAsync(myEndpoint,
                             myStrContent).ContinueWith((myResponse) =>
                             {
@@ -83,10 +84,10 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 
     string myBody = "{}";
 
-    using (StringContent myStrContent = new StringContent(myBody, Encoding.UTF8,
+    using (StringContent myStrContent = new(myBody, Encoding.UTF8,
                                              "application/json"))
     {
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
 
@@ -97,7 +98,7 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
                                                         .ReadAsStringAsync().Result;
                             }).Result;
 
-        XmlDocument myDocXml = new XmlDocument();
+        XmlDocument myDocXml = new();
         myDocXml.LoadXml(digestXml);
 
         XmlNodeList allNodes = myDocXml.SelectNodes("/");
@@ -113,16 +114,16 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsRest_FindAppCatalog()
+static void CsSpRest_FindAppCatalog()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/_api/SP_TenantSettings_Current";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -143,16 +144,16 @@ static void SpCsRest_FindAppCatalog()
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsRest_FindTenantProps()
+static void CsSpRest_FindTenantProps()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/_api/web/AllProperties";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -173,16 +174,16 @@ static void SpCsRest_FindTenantProps()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsRest_FindTenantOneProp()
+static void CsSpRest_FindTenantOneProp()
 {
     Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteBaseUrl"] +
                           "/sites/appcatalog/_api/web/GetStorageEntity('[PropertyName]')";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -207,9 +208,11 @@ static void SpCsRest_FindTenantOneProp()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsRest_FindAppCatalog();
-//SpCsRest_FindTenantProps();
-//SpCsRest_FindTenantOneProp();
+//# *** Latest Source Code Index: 003 ***
+
+//CsSpRest_FindAppCatalog();
+//CsSpRest_FindTenantProps();
+//CsSpRest_FindTenantOneProp();
 
 
 //---------------------------------------------------------------------------------------
@@ -219,3 +222,4 @@ static void SpCsRest_FindTenantOneProp()
 
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used

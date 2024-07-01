@@ -7,7 +7,7 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-Function LoginPsCLI()
+function PsSpCliM365_LoginWithAccPw
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
@@ -19,9 +19,9 @@ Function LoginPsCLI()
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-function SpPsCliM365_GetModernSiteCollections
+function PsSpCliM365_GetModernSiteCollections
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site list
 	#m365 spo site list --type "TeamSite"
@@ -32,9 +32,9 @@ function SpPsCliM365_GetModernSiteCollections
 #gavdcodeend 001
 
 #gavdcodebegin 002
-function SpPsCliM365_GetOneModernSiteCollection
+function PsSpCliM365_GetOneModernSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site list --type TeamSite --filter "Url -like 'contoso'"
 	#m365 spo site list --type TeamSite `
@@ -45,9 +45,9 @@ function SpPsCliM365_GetOneModernSiteCollection
 #gavdcodeend 002
 
 #gavdcodebegin 003
-function SpPsCliM365_GetClassicSiteCollections
+function PsSpCliM365_GetClassicSiteCollections
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site classic list
 	#m365 spo site classic list --webTemplate "STS#3" #"APPCATALOG#0"
@@ -57,9 +57,9 @@ function SpPsCliM365_GetClassicSiteCollections
 #gavdcodeend 003
 
 #gavdcodebegin 004
-function SpPsCliM365_GetPropertiesOneSiteCollection
+function PsSpCliM365_GetPropertiesOneSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site get --url $configFile.appsettings.SiteCollUrl
 
@@ -68,9 +68,9 @@ function SpPsCliM365_GetPropertiesOneSiteCollection
 #gavdcodeend 004
 
 #gavdcodebegin 005
-function SpPsCliM365_CreateSiteCollection
+function PsSpCliM365_CreateSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site add --type "CommunicationSite" `
 					  --siteDesign "Showcase" `
@@ -107,9 +107,9 @@ function SpPsCliM365_CreateSiteCollection
 #gavdcodeend 005
 
 #gavdcodebegin 006
-function SpPsCliM365_RenameSiteCollection
+function PsSpCliM365_RenameSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site rename `
 			--siteUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI") `
@@ -122,9 +122,9 @@ function SpPsCliM365_RenameSiteCollection
 #gavdcodeend 006
 
 #gavdcodebegin 007
-function SpPsCliM365_UpdateSiteCollection
+function PsSpCliM365_UpdateSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site set `
 				--url ($configFile.appsettings.SiteBaseUrl + "/sites/UpdSiteFromCLI") `
@@ -135,9 +135,9 @@ function SpPsCliM365_UpdateSiteCollection
 #gavdcodeend 007
 
 #gavdcodebegin 008
-function SpPsCliM365_DeleteSiteCollection
+function PsSpCliM365_DeleteSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site remove `
 				--url ($configFile.appsettings.SiteBaseUrl + "/sites/UpdSiteFromCLI") `
@@ -149,9 +149,9 @@ function SpPsCliM365_DeleteSiteCollection
 #gavdcodeend 008
 
 #gavdcodebegin 009
-function SpPsCliM365_GetRecyclebonSiteCollection
+function PsSpCliM365_GetRecyclebonSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site recyclebinitem list `
 			--siteUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01")
@@ -161,9 +161,9 @@ function SpPsCliM365_GetRecyclebonSiteCollection
 #gavdcodeend 009
 
 #gavdcodebegin 010
-function SpPsCliM365_GetRecyclebinQuerySiteCollection
+function PsSpCliM365_GetRecyclebinQuerySiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site recyclebinitem list `
 			--siteUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01") `
@@ -174,9 +174,9 @@ function SpPsCliM365_GetRecyclebinQuerySiteCollection
 #gavdcodeend 010
 
 #gavdcodebegin 011
-function SpPsCliM365_GetRecyclebinTypeSiteCollection
+function PsSpCliM365_GetRecyclebinTypeSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site recyclebinitem list `
 			--siteUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01") `
@@ -187,9 +187,9 @@ function SpPsCliM365_GetRecyclebinTypeSiteCollection
 #gavdcodeend 011
 
 #gavdcodebegin 012
-function SpPsCliM365_GetRecyclebinRestoreSiteCollection
+function PsSpCliM365_GetRecyclebinRestoreSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site recyclebinitem restore `
 			--siteUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01") `
@@ -200,9 +200,9 @@ function SpPsCliM365_GetRecyclebinRestoreSiteCollection
 #gavdcodeend 012
 
 #gavdcodebegin 013
-function SpPsCliM365_SetChromeSiteCollection
+function PsSpCliM365_SetChromeSiteCollection
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo site chrome set `
 		--url ($configFile.appsettings.SiteBaseUrl + "/sites/NewCommunicationSite") `
@@ -213,24 +213,24 @@ function SpPsCliM365_SetChromeSiteCollection
 #gavdcodeend 013
 
 #gavdcodebegin 014
-function SpPsCliM365_GetWebs
+function PsSpCliM365_GetWebs
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo web list `
-			--webUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01")
+			--url ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01")
 
 	m365 logout
 }
 #gavdcodeend 014
 
 #gavdcodebegin 015
-function SpPsCliM365_GetSubWeb
+function PsSpCliM365_GetSubWeb
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo web get `
-	--webUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01/Subweb01") 
+	--url ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01/Subweb01") `
 	--withGroups
 
 	m365 logout
@@ -238,13 +238,13 @@ function SpPsCliM365_GetSubWeb
 #gavdcodeend 015
 
 #gavdcodebegin 016
-function SpPsCliM365_CreateSubWeb
+function PsSpCliM365_CreateSubWeb
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo web add `
 	--parentWebUrl ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01") `
-	--webUrl "MySubweb" `
+	--url "MySubweb" `
 	--title "My Sub-Site" `
 	--description "This is my sub-site" `
 	--webTemplate "STS#0" `
@@ -257,13 +257,12 @@ function SpPsCliM365_CreateSubWeb
 #gavdcodeend 016
 
 #gavdcodebegin 017
-function SpPsCliM365_DeleteSubWeb
+function PsSpCliM365_DeleteSubWeb
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo web remove `
-		--webUrl ($configFile.appsettings.SiteBaseUrl + `
-													"/sites/NewSiteFromCLI01/MySubweb") `
+		--url ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01/MySubweb") `
 		--confirm
 
 	m365 logout
@@ -271,26 +270,24 @@ function SpPsCliM365_DeleteSubWeb
 #gavdcodeend 017
 
 #gavdcodebegin 018
-function SpPsCliM365_LanguagesSubWeb
+function PsSpCliM365_LanguagesSubWeb
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo web installedlanguage list `
-		--webUrl ($configFile.appsettings.SiteBaseUrl + `
-													"/sites/NewSiteFromCLI01/Subsite01") 
+		--url ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01/Subsite01") 
 
 	m365 logout
 }
 #gavdcodeend 018
 
 #gavdcodebegin 019
-function SpPsCliM365_ReindexSubWeb
+function PsSpCliM365_ReindexSubWeb
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 	
 	m365 spo web reindex  `
-		--webUrl ($configFile.appsettings.SiteBaseUrl + `
-													"/sites/NewSiteFromCLI01/Subsite01") 
+		--url ($configFile.appsettings.SiteBaseUrl + "/sites/NewSiteFromCLI01/Subsite01") 
 
 	m365 logout
 }
@@ -301,27 +298,29 @@ function SpPsCliM365_ReindexSubWeb
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
+# *** Latest Source Code Index: 019 ***
+
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 #------- Using the CLI for Microsoft 365 --------
-#SpPsCliM365_GetModernSiteCollections
-#SpPsCliM365_GetOneModernSiteCollection
-#SpPsCliM365_GetClassicSiteCollections
-#SpPsCliM365_GetPropertiesOneSiteCollection
-#SpPsCliM365_CreateSiteCollection
-#SpPsCliM365_RenameSiteCollection
-#SpPsCliM365_UpdateSiteCollection
-#SpPsCliM365_DeleteSiteCollection
-#SpPsCliM365_GetRecyclebonSiteCollection
-#SpPsCliM365_GetRecyclebinQuerySiteCollection
-#SpPsCliM365_GetRecyclebinTypeSiteCollection
-#SpPsCliM365_GetRecyclebinRestoreSiteCollection
-#SpPsCliM365_SetChromeSiteCollection
-#SpPsCliM365_GetWebs
-#SpPsCliM365_GetSubWeb
-#SpPsCliM365_CreateSubWeb
-#SpPsCliM365_DeleteSubWeb
-#SpPsCliM365_LanguagesSubWeb
-#SpPsCliM365_ReindexSubWeb
+#PsSpCliM365_GetModernSiteCollections
+#PsSpCliM365_GetOneModernSiteCollection
+#-->PsSpCliM365_GetClassicSiteCollections
+#PsSpCliM365_GetPropertiesOneSiteCollection
+#PsSpCliM365_CreateSiteCollection
+#PsSpCliM365_RenameSiteCollection
+#PsSpCliM365_UpdateSiteCollection
+#PsSpCliM365_DeleteSiteCollection
+#PsSpCliM365_GetRecyclebonSiteCollection
+#PsSpCliM365_GetRecyclebinQuerySiteCollection
+#PsSpCliM365_GetRecyclebinTypeSiteCollection
+#PsSpCliM365_GetRecyclebinRestoreSiteCollection
+#PsSpCliM365_SetChromeSiteCollection
+#PsSpCliM365_GetWebs
+#PsSpCliM365_GetSubWeb
+#PsSpCliM365_CreateSubWeb
+#PsSpCliM365_DeleteSubWeb
+#PsSpCliM365_LanguagesSubWeb
+#PsSpCliM365_ReindexSubWeb
 
 Write-Host "Done" 

@@ -1,4 +1,13 @@
-﻿Function LoginPsSPO()
+﻿
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+function PsSpSpo_Login
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -8,10 +17,13 @@
 	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
 }
 
-#----------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function SpPsSpo_CreateOneSiteCollection()
+function PsSpSpo_CreateOneSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	New-SPOSite -Url $fullSiteUrl `
@@ -27,7 +39,7 @@ Function SpPsSpo_CreateOneSiteCollection()
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function SpPsSpo_TestOneSiteCollection()
+function PsSpSpo_TestOneSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Test-SPOSite $fullSiteUrl
@@ -36,7 +48,7 @@ Function SpPsSpo_TestOneSiteCollection()
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function SpPsSpo_RepairOneSiteCollection()
+function PsSpSpo_RepairOneSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Repair-SPOSite $fullSiteUrl
@@ -45,7 +57,7 @@ Function SpPsSpo_RepairOneSiteCollection()
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function SpPsSpo_GetTemplates()
+function PsSpSpo_GetTemplates
 {
 	Get-SPOWebTemplate
 	Disconnect-SPOService
@@ -53,7 +65,7 @@ Function SpPsSpo_GetTemplates()
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function SpPsSpo_GetSiteCollections()
+function PsSpSpo_GetSiteCollections
 {
 	Get-SPOSite
 	Disconnect-SPOService
@@ -61,7 +73,7 @@ Function SpPsSpo_GetSiteCollections()
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function SpPsSpo_UpdateOneSiteCollection()
+function PsSpSpo_UpdateOneSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Set-SPOSite -Identity $fullSiteUrl -Title "NewSiteCollModernPsSPO Updated"
@@ -70,7 +82,7 @@ Function SpPsSpo_UpdateOneSiteCollection()
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function SpPsSpo_DeleteOneSiteCollections()
+function PsSpSpo_DeleteOneSiteCollections
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Remove-SPOSite -Identity $fullSiteUrl
@@ -79,7 +91,7 @@ Function SpPsSpo_DeleteOneSiteCollections()
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function SpPsSpo_EnumereDeletedOneSiteCollections()
+function PsSpSpo_EnumereDeletedOneSiteCollections
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Get-SPODeletedSite -Identity $fullSiteUrl
@@ -88,7 +100,7 @@ Function SpPsSpo_EnumereDeletedOneSiteCollections()
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function SpPsSpo_RestoreOneSiteCollection()
+function PsSpSpo_RestoreOneSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Restore-SPODeletedSite -Identity $fullSiteUrl
@@ -97,7 +109,7 @@ Function SpPsSpo_RestoreOneSiteCollection()
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function SpPsSpo_RemoveDeletedOneSiteCollection()
+function PsSpSpo_RemoveDeletedOneSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Remove-SPODeletedSite -Identity $fullSiteUrl
@@ -106,7 +118,7 @@ Function SpPsSpo_RemoveDeletedOneSiteCollection()
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function SpPsSpo_RegisterHubSiteCollection()
+function PsSpSpo_RegisterHubSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Register-SPOHubSite -Site $fullSiteUrl -Principals $null
@@ -115,7 +127,7 @@ Function SpPsSpo_RegisterHubSiteCollection()
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function SpPsSpo_GetHubSiteCollections()
+function PsSpSpo_GetHubSiteCollections
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Get-SPOHubSite
@@ -124,7 +136,7 @@ Function SpPsSpo_GetHubSiteCollections()
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function SpPsSpo_UpdateHubSiteCollections()
+function PsSpSpo_UpdateHubSiteCollections
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Set-SPOHubSite -Identity $fullSiteUrl -Description "NewSiteCollModernPsSPO Descr."
@@ -133,7 +145,7 @@ Function SpPsSpo_UpdateHubSiteCollections()
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function SpPsSpo_SetSiteInHubSiteCollections()
+function PsSpSpo_SetSiteInHubSiteCollections
 {
 	$fullHubSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/modernsitecoll"
@@ -144,7 +156,7 @@ Function SpPsSpo_SetSiteInHubSiteCollections()
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function SpPsSpo_RemoveSiteFromHubSiteCollections()
+function PsSpSpo_RemoveSiteFromHubSiteCollections
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/modernsitecoll"
 	Remove-SPOHubSiteAssociation -Site $fullSiteUrl
@@ -153,7 +165,7 @@ Function SpPsSpo_RemoveSiteFromHubSiteCollections()
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function SpPsSpo_UnregisterHubSiteCollection()
+function PsSpSpo_UnregisterHubSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Unregister-SPOHubSite -Identity $fullSiteUrl
@@ -162,7 +174,7 @@ Function SpPsSpo_UnregisterHubSiteCollection()
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function SpPsSpo_AddUserToSiteCollection()
+function PsSpSpo_AddUserToSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Add-SPOUser -Site $fullSiteUrl `
@@ -173,7 +185,7 @@ Function SpPsSpo_AddUserToSiteCollection()
 #gavdcodeend 017
 
 #gavdcodebegin 018
-Function SpPsSpo_GetAllUsersInSiteCollection()
+function PsSpSpo_GetAllUsersInSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Get-SPOUser -Site $fullSiteUrl
@@ -182,7 +194,7 @@ Function SpPsSpo_GetAllUsersInSiteCollection()
 #gavdcodeend 018
 
 #gavdcodebegin 019
-Function SpPsSpo_AllUsersInGroupSiteCollection()
+function PsSpSpo_AllUsersInGroupSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Get-SPOUser -Site $fullSiteUrl `
@@ -192,7 +204,7 @@ Function SpPsSpo_AllUsersInGroupSiteCollection()
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function SpPsSpo_OneUserInSiteCollection()
+function PsSpSpo_OneUserInSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Get-SPOUser -Site $fullSiteUrl `
@@ -202,7 +214,7 @@ Function SpPsSpo_OneUserInSiteCollection()
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function SpPsSpo_SetUserAsAdminInSiteCollection()
+function PsSpSpo_SetUserAsAdminInSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Set-SPOUser -Site $fullSiteUrl `
@@ -213,7 +225,7 @@ Function SpPsSpo_SetUserAsAdminInSiteCollection()
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function SpPsSpo_RemoveOneUserFromSiteCollection()
+function PsSpSpo_RemoveOneUserFromSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Remove-SPOUser -Site $fullSiteUrl `
@@ -223,7 +235,7 @@ Function SpPsSpo_RemoveOneUserFromSiteCollection()
 #gavdcodeend 022
 
 #gavdcodebegin 023
-Function SpPsSpo_AddSecurityGroupToSiteCollection()
+function PsSpSpo_AddSecurityGroupToSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	New-SPOSiteGroup -Site $fullSiteUrl `
@@ -234,7 +246,7 @@ Function SpPsSpo_AddSecurityGroupToSiteCollection()
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function SpPsSpo_GetSecurityGroupsInSiteCollection()
+function PsSpSpo_GetSecurityGroupsInSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Get-SPOSiteGroup -Site $fullSiteUrl `
@@ -244,7 +256,7 @@ Function SpPsSpo_GetSecurityGroupsInSiteCollection()
 #gavdcodeend 024
 
 #gavdcodebegin 025
-Function SpPsSpo_UpdateSecurityGroupInSiteCollection()
+function PsSpSpo_UpdateSecurityGroupInSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Set-SPOSiteGroup -Site $fullSiteUrl `
@@ -256,7 +268,7 @@ Function SpPsSpo_UpdateSecurityGroupInSiteCollection()
 #gavdcodeend 025
 
 #gavdcodebegin 026
-Function SpPsSpo_RemoveOneSecurityGroupFromSiteCollection()
+function PsSpSpo_RemoveOneSecurityGroupFromSiteCollection
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsSPO"
 	Remove-SPOSiteGroup -Site $fullSiteUrl `
@@ -265,37 +277,41 @@ Function SpPsSpo_RemoveOneSecurityGroupFromSiteCollection()
 }
 #gavdcodeend 026
 
-#----------------------------------------------------------------------------------------
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
+
+# *** Latest Source Code Index: 026 ***
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-LoginPsSPO
+PsSpSpo_Login
 
-#SpPsSpo_CreateOneSiteCollection
-#SpPsSpo_TestOneSiteCollection
-#SpPsSpo_RepairOneSiteCollection
-#SpPsSpo_GetTemplates
-#SpPsSpo_GetSiteCollections
-#SpPsSpo_UpdateOneSiteCollection
-#SpPsSpo_DeleteOneSiteCollection
-#SpPsSpo_EnumereDeletedOneSiteCollections
-#SpPsSpo_RestoreOneSiteCollection
-#SpPsSpo_RemoveDeletedOneSiteCollection
-#SpPsSpo_RegisterHubSiteCollection
-#SpPsSpo_GetHubSiteCollections
-#SpPsSpo_UpdateHubSiteCollections
-#SpPsSpo_SetSiteInHubSiteCollections
-#SpPsSpo_RemoveSiteFromHubSiteCollections
-#SpPsSpo_UnregisterHubSiteCollection
-#SpPsSpo_AddUserToSiteCollection
-#SpPsSpo_GetAllUsersInSiteCollection
-#SpPsSpo_AllUsersInGroupSiteCollection
-#SpPsSpo_OneUserInSiteCollection
-#SpPsSpo_SetUserAsAdminInSiteCollection
-#SpPsSpo_RemoveOneUserFromSiteCollection
-#SpPsSpo_AddSecurityGroupToSiteCollection
-#SpPsSpo_GetSecurityGroupsInSiteCollection
-#SpPsSpo_UpdateSecurityGroupInSiteCollection
-#SpPsSpo_RemoveOneSecurityGroupFromSiteCollection
+#PsSpSpo_CreateOneSiteCollection
+#PsSpSpo_TestOneSiteCollection
+#PsSpSpo_RepairOneSiteCollection
+#PsSpSpo_GetTemplates
+#PsSpSpo_GetSiteCollections
+#PsSpSpo_UpdateOneSiteCollection
+#PsSpSpo_DeleteOneSiteCollection
+#PsSpSpo_EnumereDeletedOneSiteCollections
+#PsSpSpo_RestoreOneSiteCollection
+#PsSpSpo_RemoveDeletedOneSiteCollection
+#PsSpSpo_RegisterHubSiteCollection
+#PsSpSpo_GetHubSiteCollections
+#PsSpSpo_UpdateHubSiteCollections
+#PsSpSpo_SetSiteInHubSiteCollections
+#PsSpSpo_RemoveSiteFromHubSiteCollections
+#PsSpSpo_UnregisterHubSiteCollection
+#PsSpSpo_AddUserToSiteCollection
+#PsSpSpo_GetAllUsersInSiteCollection
+#PsSpSpo_AllUsersInGroupSiteCollection
+#PsSpSpo_OneUserInSiteCollection
+#PsSpSpo_SetUserAsAdminInSiteCollection
+#PsSpSpo_RemoveOneUserFromSiteCollection
+#PsSpSpo_AddSecurityGroupToSiteCollection
+#PsSpSpo_GetSecurityGroupsInSiteCollection
+#PsSpSpo_UpdateSecurityGroupInSiteCollection
+#PsSpSpo_RemoveOneSecurityGroupFromSiteCollection
 
 Write-Host "Done"

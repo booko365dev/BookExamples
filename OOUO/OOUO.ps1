@@ -1,4 +1,14 @@
-﻿Function LoginPsCsom()
+﻿
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+
+function PsSpCsom_Login
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -12,7 +22,7 @@
 	return $rtnContext
 }
 
-Function LoginCsom($WebFullUrl)
+function PsSpCsom_LoginWithUrl($WebFullUrl)
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -25,7 +35,7 @@ Function LoginCsom($WebFullUrl)
 	return $rtnContext
 }
 
-Function LoginAdminCsom()
+function PsSpCsom_LoginAdmin
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -39,10 +49,13 @@ Function LoginAdminCsom()
 	return $rtnContext
 }
 
-#----------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function SpCsCsom_CreateOneSiteCollection($spAdminCtx)
+function PsSpCsom_CreateOneSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -64,7 +77,7 @@ Function SpCsCsom_CreateOneSiteCollection($spAdminCtx)
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function SpCsCsom_FindWebTemplates($spAdminCtx)
+function PsSpCsom_GetWebTemplates($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -81,7 +94,7 @@ Function SpCsCsom_FindWebTemplates($spAdminCtx)
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function SpCsCsom_ReadAllSiteCollections($spAdminCtx)
+function PsSpCsom_ReadAllSiteCollections($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -98,7 +111,7 @@ Function SpCsCsom_ReadAllSiteCollections($spAdminCtx)
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function SpCsCsom_RemoveSiteCollection($spAdminCtx)
+function PsSpCsom_RemoveSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -110,7 +123,7 @@ Function SpCsCsom_RemoveSiteCollection($spAdminCtx)
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function SpCsCsom_RestoreSiteCollection($spAdminCtx)
+function PsSpCsom_RestoreSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -122,7 +135,7 @@ Function SpCsCsom_RestoreSiteCollection($spAdminCtx)
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function SpCsCsom_RemoveDeletedSiteCollection($spAdminCtx)
+function PsSpCsom_RemoveDeletedSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -134,7 +147,7 @@ Function SpCsCsom_RemoveDeletedSiteCollection($spAdminCtx)
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function SpCsCsom_CreateGroupForSite($spAdminCtx)
+function PsSpCsom_CreateGroupForSite($spAdminCtx)
 {
     $myOwners = @( "user@domain.onmicrosoft.com" )
     $myGroupParams = New-Object `
@@ -154,7 +167,7 @@ Function SpCsCsom_CreateGroupForSite($spAdminCtx)
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function SpCsCsom_SetAdministratorSiteCollection($spAdminCtx)
+function PsSpCsom_SetAdministratorSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -168,7 +181,7 @@ Function SpCsCsom_SetAdministratorSiteCollection($spAdminCtx)
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function SpCsCsom_RegisterAsHubSiteCollection($spAdminCtx)
+function PsSpCsom_RegisterAsHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -180,7 +193,7 @@ Function SpCsCsom_RegisterAsHubSiteCollection($spAdminCtx)
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function SpCsCsom_UnregisterAsHubSiteCollection($spAdminCtx)
+function PsSpCsom_UnregisterAsHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -192,7 +205,7 @@ Function SpCsCsom_UnregisterAsHubSiteCollection($spAdminCtx)
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function SpCsCsom_GetHubSiteCollectionProperties($spAdminCtx)
+function PsSpCsom_GetHubSiteCollectionProperties($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -207,7 +220,7 @@ Function SpCsCsom_GetHubSiteCollectionProperties($spAdminCtx)
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function SpCsCsom_UpdateHubSiteCollectionProperties($spAdminCtx)
+function PsSpCsom_UpdateHubSiteCollectionProperties($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -228,7 +241,7 @@ Function SpCsCsom_UpdateHubSiteCollectionProperties($spAdminCtx)
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function SpCsCsom_AddSiteToHubSiteCollection($spAdminCtx)
+function PsSpCsom_AddSiteToHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -241,7 +254,7 @@ Function SpCsCsom_AddSiteToHubSiteCollection($spAdminCtx)
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function SpCsCsom_removeSiteFromHubSiteCollection($spAdminCtx)
+function PsSpCsom_removeSiteFromHubSiteCollection($spAdminCtx)
 {
 	$myTenant = New-Object `
 					Microsoft.Online.SharePoint.TenantAdministration.Tenant($spAdminCtx)
@@ -253,7 +266,7 @@ Function SpCsCsom_removeSiteFromHubSiteCollection($spAdminCtx)
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function SpCsCsom_CreateOneWebInSiteCollection($spCtx)
+function PsSpCsom_CreateOneWebInSiteCollection($spCtx)
 {
     $mySite = $spCtx.Site
 
@@ -271,7 +284,7 @@ Function SpCsCsom_CreateOneWebInSiteCollection($spCtx)
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function SpCsCsom_GetWebsInSiteCollection($spCtx)
+function PsSpCsom_GetWebsInSiteCollection($spCtx)
 {
     $mySite = $spCtx.Site
 
@@ -287,10 +300,10 @@ Function SpCsCsom_GetWebsInSiteCollection($spCtx)
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function SpCsCsom_GetOneWebInSiteCollection()
+function PsSpCsom_GetOneWebInSiteCollection
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
     $spCtx.Load($myWeb)
@@ -301,10 +314,10 @@ Function SpCsCsom_GetOneWebInSiteCollection()
 #gavdcodeend 017
 
 #gavdcodebegin 018
-Function SpCsCsom_UpdateOneWebInSiteCollection()
+function PsSpCsom_UpdateOneWebInSiteCollection
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
     $myWeb.Description = "NewWebSiteModernPsCsom Description Updated"
@@ -314,10 +327,10 @@ Function SpCsCsom_UpdateOneWebInSiteCollection()
 #gavdcodeend 018
 
 #gavdcodebegin 019
-Function SpCsCsom_DeleteOneWebInSiteCollection()
+function PsSpCsom_DeleteOneWebInSiteCollection
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
     $myWeb.DeleteObject()
@@ -326,10 +339,10 @@ Function SpCsCsom_DeleteOneWebInSiteCollection()
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function SpCsCsom_BreakSecurityInheritanceWeb()
+function PsSpCsom_BreakSecurityInheritanceWeb()
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
     $spCtx.Load($myWeb)
@@ -342,10 +355,10 @@ Function SpCsCsom_BreakSecurityInheritanceWeb()
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function SpCsCsom_ResetSecurityInheritanceWeb()
+function PsSpCsom_ResetSecurityInheritanceWeb
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
     $spCtx.Load($myWeb)
@@ -358,10 +371,10 @@ Function SpCsCsom_ResetSecurityInheritanceWeb()
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function SpCsCsom_AddUserToSecurityRoleInWeb()
+function PsSpCsom_AddUserToSecurityRoleInWeb
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
 
@@ -377,10 +390,10 @@ Function SpCsCsom_AddUserToSecurityRoleInWeb()
 #gavdcodeend 022
 
 #gavdcodebegin 023
-Function SpCsCsom_UpdateUserSecurityRoleInWeb()
+function PsSpCsom_UpdateUserSecurityRoleInWeb
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
 
@@ -399,10 +412,10 @@ Function SpCsCsom_UpdateUserSecurityRoleInWeb()
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function SpCsCsom_DeleteUserFromSecurityRoleInWeb()
+function PsSpCsom_DeleteUserFromSecurityRoleInWeb
 {
     $myWebFullUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsCsom"
-    $spCtx = LoginCsom($myWebFullUrl)
+    $spCtx = PsSpCsom_LoginWithUrl($myWebFullUrl)
 
     $myWeb = $spCtx.Web
 
@@ -413,7 +426,11 @@ Function SpCsCsom_DeleteUserFromSecurityRoleInWeb()
 }
 #gavdcodeend 024
 
-#-----------------------------------------------------------------------------------------
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
+
+# *** Latest Source Code Index: 024 ***
 
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
@@ -421,32 +438,32 @@ Add-Type -Path "C:\Program Files\SharePoint Online Management Shell\Microsoft.On
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-$spCtx = LoginPsCsom
-$spAdminCtx = LoginAdminCsom
+$spCtx = PsSpCsom_Login
+$spAdminCtx = PsSpCsom_LoginAdmin
 
-#SpCsCsom_CreateOneSiteCollection $spAdminCtx
-#SpCsCsom_FindWebTemplates $spAdminCtx
-#SpCsCsom_ReadAllSiteCollections $spAdminCtx
-#SpCsCsom_RemoveSiteCollection $spAdminCtx
-#SpCsCsom_RestoreSiteCollection $spAdminCtx
-#SpCsCsom_RemoveDeletedSiteCollection $spAdminCtx
-#SpCsCsom_CreateGroupForSite $spAdminCtx
-#SpCsCsom_RegisterAsHubSiteCollection $spAdminCtx
-#SpCsCsom_UnregisterAsHubSiteCollection $spAdminCtx
-#SpCsCsom_GetHubSiteCollectionProperties $spAdminCtx
-#SpCsCsom_UpdateHubSiteCollectionProperties $spAdminCtx
-#SpCsCsom_AddSiteToHubSiteCollection $spAdminCtx
-#SpCsCsom_removeSiteFromHubSiteCollection $spAdminCtx
+#PsSpCsom_CreateOneSiteCollection $spAdminCtx
+#PsSpCsom_GetWebTemplates $spAdminCtx
+#PsSpCsom_ReadAllSiteCollections $spAdminCtx
+#PsSpCsom_RemoveSiteCollection $spAdminCtx
+#PsSpCsom_RestoreSiteCollection $spAdminCtx
+#PsSpCsom_RemoveDeletedSiteCollection $spAdminCtx
+#PsSpCsom_CreateGroupForSite $spAdminCtx
+#PsSpCsom_RegisterAsHubSiteCollection $spAdminCtx
+#PsSpCsom_UnregisterAsHubSiteCollection $spAdminCtx
+#PsSpCsom_GetHubSiteCollectionProperties $spAdminCtx
+#PsSpCsom_UpdateHubSiteCollectionProperties $spAdminCtx
+#PsSpCsom_AddSiteToHubSiteCollection $spAdminCtx
+#PsSpCsom_removeSiteFromHubSiteCollection $spAdminCtx
 
-#SpCsCsom_CreateOneWebInSiteCollection $spCtx
-#SpCsCsom_GetWebsInSiteCollection $spCtx
-#SpCsCsom_GetOneWebInSiteCollection
-#SpCsCsom_UpdateOneWebInSiteCollection
-#SpCsCsom_DeleteOneWebInSiteCollection
-#SpCsCsom_BreakSecurityInheritanceWeb
-#SpCsCsom_ResetSecurityInheritanceWeb
-#SpCsCsom_AddUserToSecurityRoleInWeb
-#SpCsCsom_UpdateUserSecurityRoleInWeb
-#SpCsCsom_DeleteUserFromSecurityRoleInWeb
+#PsSpCsom_CreateOneWebInSiteCollection $spCtx
+#PsSpCsom_GetWebsInSiteCollection $spCtx
+#PsSpCsom_GetOneWebInSiteCollection
+#PsSpCsom_UpdateOneWebInSiteCollection
+#PsSpCsom_DeleteOneWebInSiteCollection
+#PsSpCsom_BreakSecurityInheritanceWeb
+#PsSpCsom_ResetSecurityInheritanceWeb
+#PsSpCsom_AddUserToSecurityRoleInWeb
+#PsSpCsom_UpdateUserSecurityRoleInWeb
+#PsSpCsom_DeleteUserFromSecurityRoleInWeb
 
 Write-Host "Done"

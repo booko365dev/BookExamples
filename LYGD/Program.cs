@@ -9,9 +9,10 @@ using System.Text.Json;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
@@ -25,9 +26,9 @@ using System.Web;
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsCsom_GetPropertiesTenant(ClientContext spCtx)
+static void CsSpCsom_GetPropertiesTenant(ClientContext spCtx)
 {
-    Tenant myTenant = new Tenant(spCtx);
+    Tenant myTenant = new(spCtx);
 
     foreach (PropertyInfo oneProperty in myTenant.GetType().GetProperties())
     {
@@ -37,9 +38,9 @@ static void SpCsCsom_GetPropertiesTenant(ClientContext spCtx)
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsCsom_GetValuePropertyTenant(ClientContext spCtx)
+static void CsSpCsom_GetValuePropertyTenant(ClientContext spCtx)
 {
-    Tenant myTenant = new Tenant(spCtx);
+    Tenant myTenant = new(spCtx);
 
     spCtx.Load(myTenant);
     spCtx.ExecuteQuery();
@@ -50,11 +51,12 @@ static void SpCsCsom_GetValuePropertyTenant(ClientContext spCtx)
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsCsom_UpdateValuePropertyTenant(ClientContext spCtx)
+static void CsSpCsom_UpdateValuePropertyTenant(ClientContext spCtx)
 {
-    Tenant myTenant = new Tenant(spCtx);
-
-    myTenant.BlockAccessOnUnmanagedDevices = false;
+    Tenant myTenant = new(spCtx)
+    {
+        BlockAccessOnUnmanagedDevices = true
+    };
     myTenant.Update();
     spCtx.ExecuteQuery();
 }
@@ -65,21 +67,22 @@ static void SpCsCsom_UpdateValuePropertyTenant(ClientContext spCtx)
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-SecureString usrPw = new SecureString();
+//# *** Latest Source Code Index: 003 ***
+
+SecureString usrPw = new();
 foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
     usrPw.AppendChar(oneChar);
 
-using (AuthenticationManager authenticationManager =
-            new AuthenticationManager())
+using (AuthenticationManager authenticationManager = new())
 using (ClientContext spCtx = authenticationManager.GetContext(
             new Uri(ConfigurationManager.AppSettings["SiteAdminUrl"]),
             ConfigurationManager.AppSettings["UserName"],
             usrPw,
             ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 {
-    //SpCsCsom_GetPropertiesTenant(spCtx);
-    //SpCsCsom_GetValuePropertyTenant(spCtx);
-    //SpCsCsom_UpdateValuePropertyTenant(spCtx);
+    //CsSpCsom_GetPropertiesTenant(spCtx);
+    //CsSpCsom_GetValuePropertyTenant(spCtx);
+    //CsSpCsom_UpdateValuePropertyTenant(spCtx);
 
     Console.WriteLine("Done");
 }
@@ -91,14 +94,13 @@ using (ClientContext spCtx = authenticationManager.GetContext(
 
 public class AuthenticationManager : IDisposable
 {
-    private static readonly HttpClient httpClient = new HttpClient();
+    private static readonly HttpClient httpClient = new();
     private const string tokenEndpoint =
                             "https://login.microsoftonline.com/common/oauth2/token";
 
-    private static readonly SemaphoreSlim semaphoreSlimTokens = new SemaphoreSlim(1);
+    private static readonly SemaphoreSlim semaphoreSlimTokens = new(1);
     private AutoResetEvent tokenResetEvent = null;
-    private readonly ConcurrentDictionary<string, string> tokenCache =
-                                            new ConcurrentDictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> tokenCache = new();
     private bool disposedValue;
 
     internal class TokenWaitInfo
@@ -148,8 +150,8 @@ public class AuthenticationManager : IDisposable
 
                 AddTokenToCache(resourceUri, tokenCache, accessToken);
 
-                tokenResetEvent = new AutoResetEvent(false);
-                TokenWaitInfo wi = new TokenWaitInfo();
+                tokenResetEvent = new(false);
+                TokenWaitInfo wi = new();
                 wi.Handle = ThreadPool.RegisterWaitForSingleObject(
                     tokenResetEvent,
                     async (state, timedOut) =>
@@ -170,7 +172,7 @@ public class AuthenticationManager : IDisposable
                                                             ConfigureAwait(false);
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
@@ -198,7 +200,7 @@ public class AuthenticationManager : IDisposable
         }
     }
 
-    private async Task<string> AcquireTokenAsync(Uri resourceUri,
+    private static async Task<string> AcquireTokenAsync(Uri resourceUri,
                                         string username, string password, string clientId)
     {
         string resource = $"{resourceUri.Scheme}://{resourceUri.DnsSafeHost}";
@@ -208,32 +210,30 @@ public class AuthenticationManager : IDisposable
         body += $"grant_type=password&";
         body += $"username={HttpUtility.UrlEncode(username)}&";
         body += $"password={HttpUtility.UrlEncode(password)}";
-        using (var stringContent = new StringContent(body,
-                            Encoding.UTF8, "application/x-www-form-urlencoded"))
-        {
-            var result = await httpClient.PostAsync(tokenEndpoint,
-                            stringContent).ContinueWith((response) =>
-                            {
-                                return response.Result.Content.ReadAsStringAsync().Result;
-                            }).ConfigureAwait(false);
+        using var stringContent = new StringContent(body,
+                            Encoding.UTF8, "application/x-www-form-urlencoded");
+        var result = await httpClient.PostAsync(tokenEndpoint,
+                        stringContent).ContinueWith((response) =>
+                        {
+                            return response.Result.Content.ReadAsStringAsync().Result;
+                        }).ConfigureAwait(false);
 
-            var tokenResult = JsonSerializer.Deserialize<JsonElement>(result);
-            try
-            { // Check for an error returned by Azure AD
-                var tokenError = tokenResult.GetProperty("error").GetString();
+        var tokenResult = JsonSerializer.Deserialize<JsonElement>(result);
+        try
+        { // Check for an error returned by Azure AD
+            var tokenError = tokenResult.GetProperty("error").GetString();
 
-                string strError = "TokenErrorException - " +
-                            tokenResult.GetProperty("error").GetString() + " - " +
-                            tokenResult.GetProperty("error_description").GetString();
+            string strError = "TokenErrorException - " +
+                        tokenResult.GetProperty("error").GetString() + " - " +
+                        tokenResult.GetProperty("error_description").GetString();
 
-                return strError;
-            }
-            catch
-            { } // Nothing to catch, the response is giving correctly the token 
-
-            var token = tokenResult.GetProperty("access_token").GetString();
-            return token;
+            return strError;
         }
+        catch
+        { } // Nothing to catch, the response is giving correctly the token 
+
+        var token = tokenResult.GetProperty("access_token").GetString();
+        return token;
     }
 
     private static string TokenFromCache(Uri web, ConcurrentDictionary<string,
@@ -261,7 +261,7 @@ public class AuthenticationManager : IDisposable
     }
 
     private static void RemoveTokenFromCache(Uri web, ConcurrentDictionary<string,
-                                                                    string> tokenCache)
+                                                                string> tokenCache)
     {
         tokenCache.TryRemove(web.DnsSafeHost, out string currentAccessToken);
     }
@@ -312,4 +312,5 @@ public class AuthenticationManager : IDisposable
 
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
 

@@ -5,9 +5,10 @@ using PnP.Framework;
 using PnP.Framework.Sites;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
@@ -15,12 +16,11 @@ using PnP.Framework.Sites;
 
 static ClientContext LoginPnPFramework_WithAccPw()
 {
-    SecureString mySecurePw = new SecureString();
+    SecureString mySecurePw = new();
     foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
     { mySecurePw.AppendChar(oneChr); }
 
-    AuthenticationManager myAuthManager = new
-        AuthenticationManager(
+    AuthenticationManager myAuthManager = new(
                             ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                             ConfigurationManager.AppSettings["UserName"],
                             mySecurePw);
@@ -31,10 +31,9 @@ static ClientContext LoginPnPFramework_WithAccPw()
     return rtnContext;
 }
 
-static ClientContext LoginPnPFramework_WithCertificate()
+static ClientContext CsSpPnpFramework_LoginWithCertificate()
 {
-    AuthenticationManager myAuthManager = new
-        AuthenticationManager(
+    AuthenticationManager myAuthManager = new(
                             ConfigurationManager.AppSettings["ClientIdWithCert"],
                             @"[PathForThePfxCertificateFile]",
                             "[PasswordForTheCertificate]",
@@ -46,14 +45,13 @@ static ClientContext LoginPnPFramework_WithCertificate()
     return rtnContext;
 }
 
-static ClientContext LoginPnPFramework_PnPManagementShell()
+static ClientContext CsSpPnPFramework_PnPManagementShell()
 {
-    SecureString mySecurePw = new SecureString();
+    SecureString mySecurePw = new();
     foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
     { mySecurePw.AppendChar(oneChr); }
 
-    AuthenticationManager myAuthManager = new
-        AuthenticationManager(
+    AuthenticationManager myAuthManager = new(
                             ConfigurationManager.AppSettings["UserName"],
                             mySecurePw);
 
@@ -63,7 +61,7 @@ static ClientContext LoginPnPFramework_PnPManagementShell()
     return rtnContext;
 }
 
-static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
+static ClientContext CsSpPnPFramework_LoginWithSecret()  //*** LEGACY CODE ***
 {
     // NOTE: Microsoft stopped AzureAD App access for authentication of SharePoint
     //  using secrets. This method does not work anymore for any SharePoint query
@@ -82,116 +80,102 @@ static ClientContext LoginPnPFramework_WithSecret()  //*** LEGACY CODE ***
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsPnpFramework_SiteIsCommunication()
+static void CsSpPnpFramework_SiteIsCommunication()
 {
-    using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
-    {
-        bool SiteIsCommnication = spPnpCtx.Site.IsCommunicationSite();
-        Console.WriteLine(SiteIsCommnication);
-    }
+    using ClientContext spPnpCtx = LoginPnPFramework_WithAccPw();
+    bool SiteIsCommunication = spPnpCtx.Site.IsCommunicationSite();
+    Console.WriteLine(SiteIsCommunication);
 }
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsPnpFramework_CreateOneCommunicationSiteCollection()
+static void CsSpPnpFramework_CreateOneCommunicationSiteCollection()
 {
-    using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
-    {
-        string myBaseUrl = ConfigurationManager.AppSettings["SiteBaseUrl"];
+    using ClientContext spPnpCtx = LoginPnPFramework_WithAccPw();
+    string myBaseUrl = ConfigurationManager.AppSettings["SiteBaseUrl"];
 
-        CommunicationSiteCollectionCreationInformation mySiteCreationProps =
-                                new CommunicationSiteCollectionCreationInformation
-                                {
-                                    Url = myBaseUrl + "/sites/NewCommSiteCollectionCsPnP",
-                                    Title = "NewCommSiteCollectionCsPnP",
-                                    Lcid = 1033,
-                                    ShareByEmailEnabled = false,
-                                    SiteDesign = CommunicationSiteDesign.Topic
-                                };
+    CommunicationSiteCollectionCreationInformation mySiteCreationProps = new()
+                    {
+                        Url = myBaseUrl + "/sites/NewCommSiteCollectionCsPnP",
+                        Title = "NewCommSiteCollectionCsPnP",
+                        Lcid = 1033,
+                        ShareByEmailEnabled = false,
+                        SiteDesign = CommunicationSiteDesign.Topic
+                    };
 
-        ClientContext spCommCtx = spPnpCtx.CreateSiteAsync(mySiteCreationProps).Result;
-    }
+    ClientContext spCommCtx = spPnpCtx.CreateSiteAsync(mySiteCreationProps).Result;
 }
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsPnpFramework_FindWebTemplates()
+static void CsSpPnpFramework_FindWebTemplates()
 {
-    using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
-    {
-        Site mySite = spPnpCtx.Site;
-        WebTemplateCollection myTemplates = mySite.GetWebTemplates(1033, 0);
-        spPnpCtx.Load(myTemplates);
-        spPnpCtx.ExecuteQuery();
+    using ClientContext spPnpCtx = LoginPnPFramework_WithAccPw();
+    Site mySite = spPnpCtx.Site;
+    WebTemplateCollection myTemplates = mySite.GetWebTemplates(1033, 0);
+    spPnpCtx.Load(myTemplates);
+    spPnpCtx.ExecuteQuery();
 
-        foreach (WebTemplate oneTemplate in myTemplates)
-        {
-            Console.WriteLine(oneTemplate.Name + " - " + oneTemplate.Title);
-        }
+    foreach (WebTemplate oneTemplate in myTemplates)
+    {
+        Console.WriteLine(oneTemplate.Name + " - " + oneTemplate.Title);
     }
 }
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void SpCsPnpFramework_CreateOneWebInSiteCollection()
+static void CsSpPnpFramework_CreateOneWebInSiteCollection()
 {
-    using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
-    {
-        Site mySite = spPnpCtx.Site;
+    using ClientContext spPnpCtx = LoginPnPFramework_WithAccPw();
+    Site mySite = spPnpCtx.Site;
 
-        Web myWeb = mySite.RootWeb.CreateWeb("NewWebSiteModernCsPnP",
-                                            "NewWebSiteModernCsPnP",
-                                            "NewWebSiteModernCsPnP Description",
-                                            "STS#3", 1033, true, true);
-    }
+    Web myWeb = mySite.RootWeb.CreateWeb("NewWebSiteModernCsPnP",
+                                        "NewWebSiteModernCsPnP",
+                                        "NewWebSiteModernCsPnP Description",
+                                        "STS#3", 1033, true, true);
 }
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsPnpFramework_GetWebsInSiteCollection()
+static void CsSpPnpFramework_GetWebsInSiteCollection()
 {
-    using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
+    using ClientContext spPnpCtx = LoginPnPFramework_WithAccPw();
+    Site mySite = spPnpCtx.Site;
+
+    IEnumerable<string> myWebs = mySite.GetAllWebUrls();
+
+    foreach (string oneWeb in myWebs)
     {
-        Site mySite = spPnpCtx.Site;
-
-        IEnumerable<string> myWebs = mySite.GetAllWebUrls();
-
-        foreach (string oneWeb in myWebs)
-        {
-            Console.WriteLine(oneWeb);
-        }
+        Console.WriteLine(oneWeb);
     }
 }
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void SpCsPnpFramework_WebExists()
+static void CsSpPnpFramework_WebExists()
 {
-    using (ClientContext spPnpCtx = LoginPnPFramework_WithAccPw())
-    {
-        Site mySite = spPnpCtx.Site;
-        spPnpCtx.Load(mySite);
-        spPnpCtx.ExecuteQuery();
+    using ClientContext spPnpCtx = LoginPnPFramework_WithAccPw();
+    Site mySite = spPnpCtx.Site;
+    spPnpCtx.Load(mySite);
+    spPnpCtx.ExecuteQuery();
 
-        string webFullUrl = spPnpCtx.Site.Url + "/NewWebSiteModernCsPnP";
-        bool webExists = spPnpCtx.WebExistsFullUrl(webFullUrl);
-        Console.WriteLine(webExists);
-    }
+    string webFullUrl = spPnpCtx.Site.Url + "/NewWebSiteModernCsPnP";
+    bool webExists = spPnpCtx.WebExistsFullUrl(webFullUrl);
+    Console.WriteLine(webExists);
 }
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void SpCsPnpFramework_ExportSearchSettings()
+static void CsSpPnpFramework_ExportSearchSettings()
 {
     string fullWebUrl = ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                                     "/sites/NewCommSiteCollectionCsPnP";
 
-    SecureString mySecurePw = new SecureString();
+    SecureString mySecurePw = new();
     foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
     { mySecurePw.AppendChar(oneChr); }
 
-    AuthenticationManager myAuthManager = new
-        AuthenticationManager(
+    AuthenticationManager myAuthManager = new(
                             ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                             ConfigurationManager.AppSettings["UserName"],
                             mySecurePw);
@@ -211,13 +195,15 @@ static void SpCsPnpFramework_ExportSearchSettings()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsPnpFramework_SiteIsCommunication();
-//SpCsPnpFramework_CreateOneCommunicationSiteCollection();
-//SpCsPnpFramework_FindWebTemplates();
-//SpCsPnpFramework_CreateOneWebInSiteCollection();
-//SpCsPnpFramework_GetWebsInSiteCollection();
-//SpCsPnpFramework_WebExists();
-//SpCsPnpFramework_ExportSearchSettings();
+//# *** Latest Source Code Index: 007 ***
+
+//CsSpPnpFramework_SiteIsCommunication();
+//CsSpPnpFramework_CreateOneCommunicationSiteCollection();
+//CsSpPnpFramework_FindWebTemplates();
+//CsSpPnpFramework_CreateOneWebInSiteCollection();
+//CsSpPnpFramework_GetWebsInSiteCollection();
+//CsSpPnpFramework_WebExists();
+//CsSpPnpFramework_ExportSearchSettings();
 
 Console.WriteLine("Done");
 
@@ -227,4 +213,5 @@ Console.WriteLine("Done");
 
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
 

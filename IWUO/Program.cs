@@ -9,9 +9,10 @@ using System.Text.Json;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
@@ -25,11 +26,11 @@ using System.Web;
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsCsom_CreateOneSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_CreateOneSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     string myUser = ConfigurationManager.AppSettings["UserName"];
-    SiteCreationProperties mySiteCreationProps = new SiteCreationProperties
+    SiteCreationProperties mySiteCreationProps = new()
     {
         Url = ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/sites/NewSiteCollectionModernCsCsom01",
@@ -54,9 +55,9 @@ static void SpCsCsom_CreateOneSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsCsom_FindWebTemplates(ClientContext spAdminCtx)
+static void CsSpCsom_FindWebTemplates(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     SPOTenantWebTemplateCollection myTemplates =
                                         myTenant.GetSPOTenantWebTemplates(1033, 0);
     spAdminCtx.Load(myTemplates);
@@ -70,9 +71,9 @@ static void SpCsCsom_FindWebTemplates(ClientContext spAdminCtx)
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsCsom_ReadAllSiteCollections(ClientContext spAdminCtx)
+static void CsSpCsom_ReadAllSiteCollections(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.GetSiteProperties(0, true);
 
     SPOSitePropertiesEnumerable myProps = myTenant.GetSiteProperties(0, true);
@@ -87,9 +88,9 @@ static void SpCsCsom_ReadAllSiteCollections(ClientContext spAdminCtx)
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void SpCsCsom_RemoveSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_RemoveSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.RemoveSite(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/sites/NewSiteCollectionModernCsCsom02");
@@ -99,9 +100,9 @@ static void SpCsCsom_RemoveSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsCsom_RestoreSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_RestoreSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.RestoreDeletedSite(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/sites/NewSiteCollectionModernCsCsom02");
@@ -111,9 +112,9 @@ static void SpCsCsom_RestoreSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void SpCsCsom_RemoveDeletedSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_RemoveDeletedSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.RemoveDeletedSite(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/sites/NewSiteCollectionModernCsCsom02");
@@ -123,13 +124,15 @@ static void SpCsCsom_RemoveDeletedSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void SpCsCsom_CreateGroupForSite(ClientContext spAdminCtx)
+static void CsSpCsom_CreateGroupForSite(ClientContext spAdminCtx)
 {
-    string[] myOwners = new string[] { "user@domain.onmicrosoft.com" };
-    GroupCreationParams myGroupParams = new GroupCreationParams(spAdminCtx);
-    myGroupParams.Owners = myOwners;
+    string[] myOwners = ["user@domain.onmicrosoft.com"];
+    GroupCreationParams myGroupParams = new(spAdminCtx)
+    {
+        Owners = myOwners
+    };
 
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.CreateGroupForSite(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/sites/NewSiteCollectionModernCsCsom01",
@@ -143,9 +146,9 @@ static void SpCsCsom_CreateGroupForSite(ClientContext spAdminCtx)
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void SpCsCsom_SetAdministratorSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_SetAdministratorSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.SetSiteAdmin(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                         "/sites/NewSiteCollectionModernCsCsom01",
@@ -157,9 +160,9 @@ static void SpCsCsom_SetAdministratorSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void SpCsCsom_RegisterAsHubSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_RegisterAsHubSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.RegisterHubSite(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                      "/sites/NewHubSiteCollCsCsom");
@@ -169,9 +172,9 @@ static void SpCsCsom_RegisterAsHubSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void SpCsCsom_UnregisterAsHubSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_UnregisterAsHubSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.UnregisterHubSite(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                      "/sites/NewHubSiteCollCsCsom");
@@ -181,9 +184,9 @@ static void SpCsCsom_UnregisterAsHubSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void SpCsCsom_GetHubSiteCollectionProperties(ClientContext spAdminCtx)
+static void CsSpCsom_GetHubSiteCollectionProperties(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     HubSiteProperties myProps = myTenant.GetHubSitePropertiesByUrl(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                      "/sites/NewHubSiteCollCsCsom");
@@ -196,9 +199,9 @@ static void SpCsCsom_GetHubSiteCollectionProperties(ClientContext spAdminCtx)
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void SpCsCsom_UpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
+static void CsSpCsom_UpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     HubSiteProperties myProps = myTenant.GetHubSitePropertiesByUrl(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                      "/sites/NewHubSiteCollCsCsom");
@@ -206,7 +209,7 @@ static void SpCsCsom_UpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
     spAdminCtx.Load(myProps);
     spAdminCtx.ExecuteQuery();
 
-    myProps.Title = myProps.Title + "_Updated";
+    myProps.Title += "_Updated";
     myProps.Update();
 
     spAdminCtx.Load(myProps);
@@ -217,9 +220,9 @@ static void SpCsCsom_UpdateHubSiteCollectionProperties(ClientContext spAdminCtx)
 //gavdcodeend 012
 
 //gavdcodebegin 013
-static void SpCsCsom_AddSiteToHubSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_AddSiteToHubSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.ConnectSiteToHubSite(
             ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                      "/sites/NewSiteForHub",
@@ -230,9 +233,9 @@ static void SpCsCsom_AddSiteToHubSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 013
 
 //gavdcodebegin 014
-static void SpCsCsom_RemoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
+static void CsSpCsom_RemoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
 {
-    Tenant myTenant = new Tenant(spAdminCtx);
+    Tenant myTenant = new(spAdminCtx);
     myTenant.DisconnectSiteFromHubSite(
         ConfigurationManager.AppSettings["SiteBaseUrl"] +
                                      "/sites/NewSiteForHub");
@@ -241,11 +244,11 @@ static void SpCsCsom_RemoveSiteFromHubSiteCollection(ClientContext spAdminCtx)
 //gavdcodeend 014
 
 //gavdcodebegin 015
-static void SpCsCsom_CreateOneWebInSiteCollection(ClientContext spCtx)
+static void CsSpCsom_CreateOneWebInSiteCollection(ClientContext spCtx)
 {
     Site mySite = spCtx.Site;
 
-    WebCreationInformation myWebCreationInfo = new WebCreationInformation
+    WebCreationInformation myWebCreationInfo = new()
     {
         Url = "NewWebSiteModernCsCsom",
         Title = "NewWebSiteModernCsCsom",
@@ -261,7 +264,7 @@ static void SpCsCsom_CreateOneWebInSiteCollection(ClientContext spCtx)
 //gavdcodeend 015
 
 //gavdcodebegin 016
-static void SpCsCsom_GetWebsInSiteCollection(ClientContext spCtx)
+static void CsSpCsom_GetWebsInSiteCollection(ClientContext spCtx)
 {
     Site mySite = spCtx.Site;
 
@@ -277,238 +280,216 @@ static void SpCsCsom_GetWebsInSiteCollection(ClientContext spCtx)
 //gavdcodeend 016
 
 //gavdcodebegin 017
-static void SpCsCsom_GetOneWebInSiteCollection()
+static void CsSpCsom_GetOneWebInSiteCollection()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
-        spCtx.Load(myWeb);
-        spCtx.ExecuteQuery();
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
+    spCtx.Load(myWeb);
+    spCtx.ExecuteQuery();
 
-        Console.WriteLine(myWeb.Title + " - " + myWeb.Url + " - " + myWeb.Id);
-    }
+    Console.WriteLine(myWeb.Title + " - " + myWeb.Url + " - " + myWeb.Id);
 }
 //gavdcodeend 017
 
 //gavdcodebegin 018
-static void SpCsCsom_UpdateOneWebInSiteCollection()
+static void CsSpCsom_UpdateOneWebInSiteCollection()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
-        myWeb.Description = "NewWebSiteModernCsCsom Description Updated";
-        myWeb.Update();
-        spCtx.ExecuteQuery();
-    }
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
+    myWeb.Description = "NewWebSiteModernCsCsom Description Updated";
+    myWeb.Update();
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 018
 
 //gavdcodebegin 019
-static void SpCsCsom_DeleteOneWebInSiteCollection()
+static void CsSpCsom_DeleteOneWebInSiteCollection()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
-        myWeb.DeleteObject();
-        spCtx.ExecuteQuery();
-    }
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
+    myWeb.DeleteObject();
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 019
 
 //gavdcodebegin 020
-static void SpCsCsom_BreakSecurityInheritanceWeb()
+static void CsSpCsom_BreakSecurityInheritanceWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
-        spCtx.Load(myWeb, hura => hura.HasUniqueRoleAssignments);
-        spCtx.ExecuteQuery();
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
+    spCtx.Load(myWeb, a => a.HasUniqueRoleAssignments);
+    spCtx.ExecuteQuery();
 
-        if (myWeb.HasUniqueRoleAssignments == false)
-        {
-            myWeb.BreakRoleInheritance(false, true);
-        }
-        myWeb.Update();
-        spCtx.ExecuteQuery();
+    if (myWeb.HasUniqueRoleAssignments == false)
+    {
+        myWeb.BreakRoleInheritance(false, true);
     }
+    myWeb.Update();
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 020
 
 //gavdcodebegin 021
-static void SpCsCsom_ResetSecurityInheritanceWeb()
+static void CsSpCsom_ResetSecurityInheritanceWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
-        spCtx.Load(myWeb, hura => hura.HasUniqueRoleAssignments);
-        spCtx.ExecuteQuery();
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
+    spCtx.Load(myWeb, a => a.HasUniqueRoleAssignments);
+    spCtx.ExecuteQuery();
 
-        if (myWeb.HasUniqueRoleAssignments == true)
-        {
-            myWeb.ResetRoleInheritance();
-        }
-        myWeb.Update();
-        spCtx.ExecuteQuery();
+    if (myWeb.HasUniqueRoleAssignments == true)
+    {
+        myWeb.ResetRoleInheritance();
     }
+    myWeb.Update();
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 021
 
 //gavdcodebegin 022
-static void SpCsCsom_AddUserToSecurityRoleInWeb()
+static void CsSpCsom_AddUserToSecurityRoleInWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
 
-        User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
-        RoleDefinitionBindingCollection roleDefinition =
-                new RoleDefinitionBindingCollection(spCtx);
-        roleDefinition.Add(myWeb.RoleDefinitions.GetByType(RoleType.Reader));
-        myWeb.RoleAssignments.Add(myUser, roleDefinition);
+    User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
+    RoleDefinitionBindingCollection roleDefinition = new(spCtx)
+        {
+                myWeb.RoleDefinitions.GetByType(RoleType.Reader)
+        };
+    myWeb.RoleAssignments.Add(myUser, roleDefinition);
 
-        spCtx.ExecuteQuery();
-    }
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 022
 
 //gavdcodebegin 023
-static void SpCsCsom_UpdateUserSecurityRoleInWeb()
+static void CsSpCsom_UpdateUserSecurityRoleInWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
 
-        User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
-        RoleDefinitionBindingCollection roleDefinition =
-                new RoleDefinitionBindingCollection(spCtx);
-        roleDefinition.Add(myWeb.RoleDefinitions.GetByType(RoleType.Contributor));
+    User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
+    RoleDefinitionBindingCollection roleDefinition = new(spCtx)
+        {
+            myWeb.RoleDefinitions.GetByType(RoleType.Contributor)
+        };
 
-        RoleAssignment myRoleAssignment = myWeb.RoleAssignments.GetByPrincipal(myUser);
-        myRoleAssignment.ImportRoleDefinitionBindings(roleDefinition);
+    RoleAssignment myRoleAssignment = myWeb.RoleAssignments.GetByPrincipal(myUser);
+    myRoleAssignment.ImportRoleDefinitionBindings(roleDefinition);
 
-        myRoleAssignment.Update();
-        spCtx.ExecuteQuery();
-    }
+    myRoleAssignment.Update();
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 023
 
 //gavdcodebegin 024
-static void SpCsCsom_DeleteUserFromSecurityRoleInWeb()
+static void CsSpCsom_DeleteUserFromSecurityRoleInWeb()
 {
     string myWebFullUrl = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                     "/NewWebSiteModernCsCsom";
 
-    SecureString usrPw = new SecureString();
+    SecureString usrPw = new();
     foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
         usrPw.AppendChar(oneChar);
 
-    using (AuthenticationManager myAuthenticationManager =
-                new AuthenticationManager())
-    using (ClientContext spCtx = myAuthenticationManager.GetContext(
+    using AuthenticationManager myAuthenticationManager = new();
+    using ClientContext spCtx = myAuthenticationManager.GetContext(
                 new Uri(myWebFullUrl),
                 ConfigurationManager.AppSettings["UserName"],
                 usrPw,
-                ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-    {
-        Web myWeb = spCtx.Web;
+                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+    Web myWeb = spCtx.Web;
 
-        User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
-        myWeb.RoleAssignments.GetByPrincipal(myUser).DeleteObject();
+    User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
+    myWeb.RoleAssignments.GetByPrincipal(myUser).DeleteObject();
 
-        spCtx.ExecuteQuery();
-        spCtx.Dispose();
-    }
+    spCtx.ExecuteQuery();
+    spCtx.Dispose();
 }
 //gavdcodeend 024
 
@@ -516,6 +497,8 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInWeb()
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
+
+//# *** Latest Source Code Index: 024 ***
 
 ////--> Working with Site Collections 
 //SecureString usrPw = new SecureString();
@@ -530,22 +513,22 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInWeb()
 //            usrPw,
 //            ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 //{
-//SpCsCsom_CreateOneSiteCollection(spAdminCtx);
-//SpCsCsom_CreateGroupForSite(spAdminCtx);
-//SpCsCsom_FindWebTemplates(spAdminCtx);
-//SpCsCsom_ReadAllSiteCollections(spAdminCtx);
-//SpCsCsom_RemoveSiteCollection(spAdminCtx);
-//SpCsCsom_RestoreSiteCollection(spAdminCtx);
-//SpCsCsom_RemoveDeletedSiteCollection(spAdminCtx);
-//SpCsCsom_SetAdministratorSiteCollection(spAdminCtx);
-//SpCsCsom_RegisterAsHubSiteCollection(spAdminCtx);
-//SpCsCsom_UnregisterAsHubSiteCollection(spAdminCtx);
-//SpCsCsom_GetHubSiteCollectionProperties(spAdminCtx);
-//SpCsCsom_UpdateHubSiteCollectionProperties(spAdminCtx);
-//SpCsCsom_AddSiteToHubSiteCollection(spAdminCtx);
-//SpCsCsom_removeSiteFromHubSiteCollection(spAdminCtx);
+    //CsSpCsom_CreateOneSiteCollection(spAdminCtx);
+    //CsSpCsom_CreateGroupForSite(spAdminCtx);
+    //CsSpCsom_FindWebTemplates(spAdminCtx);
+    //CsSpCsom_ReadAllSiteCollections(spAdminCtx);
+    //CsSpCsom_RemoveSiteCollection(spAdminCtx);
+    //CsSpCsom_RestoreSiteCollection(spAdminCtx);
+    //CsSpCsom_RemoveDeletedSiteCollection(spAdminCtx);
+    //CsSpCsom_SetAdministratorSiteCollection(spAdminCtx);
+    //CsSpCsom_RegisterAsHubSiteCollection(spAdminCtx);
+    //CsSpCsom_UnregisterAsHubSiteCollection(spAdminCtx);
+    //CsSpCsom_GetHubSiteCollectionProperties(spAdminCtx);
+    //CsSpCsom_UpdateHubSiteCollectionProperties(spAdminCtx);
+    //CsSpCsom_AddSiteToHubSiteCollection(spAdminCtx);
+    //CsSpCsom_RemoveSiteFromHubSiteCollection(spAdminCtx);
 
-//Console.WriteLine("Done");
+//    Console.WriteLine("Done");
 //}
 
 ////--> Working with Web Sites
@@ -561,17 +544,17 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInWeb()
 //            usrPw,
 //            ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 //{
-//SpCsCsom_CreateOneWebInSiteCollection(spCtx);
-//SpCsCsom_GetWebsInSiteCollection(spCtx);
-//SpCsCsom_GetOneWebInSiteCollection();
-//SpCsCsom_UpdateOneWebInSiteCollection();
-//SpCsCsom_DeleteOneWebInSiteCollection();
-//SpCsCsom_BreakSecurityInheritanceWeb();
-//SpCsCsom_ResetSecurityInheritanceWeb();
-//SpCsCsom_AddUserToSecurityRoleInWeb();
-//SpCsCsom_UpdateUserSecurityRoleInWeb();
-//SpCsCsom_DeleteUserFromSecurityRoleInWeb();
-//SpCsCsom_DeleteUserFromSecurityRoleInWeb();
+//CsSpCsom_CreateOneWebInSiteCollection(spCtx);
+//CsSpCsom_GetWebsInSiteCollection(spCtx);
+//CsSpCsom_GetOneWebInSiteCollection();
+//CsSpCsom_UpdateOneWebInSiteCollection();
+//CsSpCsom_DeleteOneWebInSiteCollection();
+//CsSpCsom_BreakSecurityInheritanceWeb();
+//CsSpCsom_ResetSecurityInheritanceWeb();
+//CsSpCsom_AddUserToSecurityRoleInWeb();
+//CsSpCsom_UpdateUserSecurityRoleInWeb();
+//CsSpCsom_DeleteUserFromSecurityRoleInWeb();
+//CsSpCsom_DeleteUserFromSecurityRoleInWeb();
 
 //    Console.WriteLine("Done");
 //}
@@ -583,14 +566,13 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInWeb()
 
 public class AuthenticationManager : IDisposable
 {
-    private static readonly HttpClient httpClient = new HttpClient();
+    private static readonly HttpClient httpClient = new();
     private const string tokenEndpoint =
                             "https://login.microsoftonline.com/common/oauth2/token";
 
-    private static readonly SemaphoreSlim semaphoreSlimTokens = new SemaphoreSlim(1);
+    private static readonly SemaphoreSlim semaphoreSlimTokens = new(1);
     private AutoResetEvent tokenResetEvent = null;
-    private readonly ConcurrentDictionary<string, string> tokenCache =
-                                            new ConcurrentDictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> tokenCache = new();
     private bool disposedValue;
 
     internal class TokenWaitInfo
@@ -641,7 +623,7 @@ public class AuthenticationManager : IDisposable
                 AddTokenToCache(resourceUri, tokenCache, accessToken);
 
                 tokenResetEvent = new AutoResetEvent(false);
-                TokenWaitInfo wi = new TokenWaitInfo();
+                TokenWaitInfo wi = new ();
                 wi.Handle = ThreadPool.RegisterWaitForSingleObject(
                     tokenResetEvent,
                     async (state, timedOut) =>
@@ -662,7 +644,7 @@ public class AuthenticationManager : IDisposable
                                                             ConfigureAwait(false);
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
-                            catch (Exception ex)
+                            catch
                             {
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
@@ -691,7 +673,7 @@ public class AuthenticationManager : IDisposable
     }
 
     private async Task<string> AcquireTokenAsync(Uri resourceUri,
-                                        string username, string password, string clientId)
+                                      string username, string password, string clientId)
     {
         string resource = $"{resourceUri.Scheme}://{resourceUri.DnsSafeHost}";
 
@@ -704,10 +686,10 @@ public class AuthenticationManager : IDisposable
                             Encoding.UTF8, "application/x-www-form-urlencoded"))
         {
             var result = await httpClient.PostAsync(tokenEndpoint,
-                            stringContent).ContinueWith((response) =>
-                            {
-                                return response.Result.Content.ReadAsStringAsync().Result;
-                            }).ConfigureAwait(false);
+                        stringContent).ContinueWith((response) =>
+                        {
+                            return response.Result.Content.ReadAsStringAsync().Result;
+                        }).ConfigureAwait(false);
 
             var tokenResult = JsonSerializer.Deserialize<JsonElement>(result);
             try
@@ -804,4 +786,5 @@ public class AuthenticationManager : IDisposable
 
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
 

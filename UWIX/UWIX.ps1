@@ -23,7 +23,7 @@ Function LoginPsPnP($fullSiteUrl)  #*** LEGACY CODE ***
 #----------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function SpPsPnp_CreateOneSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_CreateOneSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP"
 	New-PnPSite -Type CommunicationSite `
@@ -34,7 +34,7 @@ Function SpPsPnp_CreateOneSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function SpPsPnp_CreateOneSiteCollection01()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_CreateOneSiteCollection01()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
 	New-PnPTenantSite -Title "NewSiteCollModernPsPnP01" `
@@ -46,21 +46,21 @@ Function SpPsPnp_CreateOneSiteCollection01()  #*** LEGACY CODE ***
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function SpPsPnp_GetAllSiteCollections()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_GetAllSiteCollections()  #*** LEGACY CODE *** 
 {
 	Get-PnPTenantSite
 }
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function SpPsPnp_GetOneSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_GetOneSiteCollection()  #*** LEGACY CODE *** 
 {
 	Get-PnPSite
 }
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function SpPsPnp_GetAllSiteCollectionsFiltered()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_GetAllSiteCollectionsFiltered()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP"
 	Get-PnPTenantSite -Template "SITEPAGEPUBLISHING#0" -Detailed
@@ -68,14 +68,14 @@ Function SpPsPnp_GetAllSiteCollectionsFiltered()  #*** LEGACY CODE ***
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function SpPsPnp_GetHubSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_GetHubSiteCollection()  #*** LEGACY CODE *** 
 {
 	Get-PnPHubSite
 }
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function SpPsPnp_UpdateOneSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_UpdateOneSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
 	LoginPsPnP $fullSiteUrl
@@ -84,7 +84,7 @@ Function SpPsPnp_UpdateOneSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function SpPsPnp_UpdateOneSiteCollection01()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_UpdateOneSiteCollection01()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
 	Set-PnPTenantSite -Url $fullSiteUrl -Title "NewSiteCollModernPsPnP01_Updated"
@@ -92,7 +92,7 @@ Function SpPsPnp_UpdateOneSiteCollection01()  #*** LEGACY CODE ***
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function SpPsPnp_DeleteOneSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_DeleteOneSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/NewSiteCollModernPsPnP01"
 	Remove-PnPTenantSite -Url $fullSiteUrl -Force -SkipRecycleBin
@@ -100,7 +100,7 @@ Function SpPsPnp_DeleteOneSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function SpPsPnp_RegisterHubSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_RegisterHubSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrlHub = $configFile.appsettings.SiteBaseUrl + "/sites/NewHubSite"
 	Register-PnPHubSite -Site $fullSiteUrlHub
@@ -108,7 +108,7 @@ Function SpPsPnp_RegisterHubSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function SpPsPnp_UnregisterHubSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_UnregisterHubSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrlHub = $configFile.appsettings.SiteBaseUrl + "/sites/NewHubSite"
 	Unregister-PnPHubSite -Site $fullSiteUrlHub
@@ -116,7 +116,7 @@ Function SpPsPnp_UnregisterHubSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function SpPsPnp_AddSiteToHubSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_AddSiteToHubSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrlHub = $configFile.appsettings.SiteBaseUrl + "/sites/NewHubSite"
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/OneSite"
@@ -125,7 +125,7 @@ Function SpPsPnp_AddSiteToHubSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function SpPsPnp_RemoveSiteFromHubSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_RemoveSiteFromHubSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/OneSite"
 	Remove-PnPHubSiteAssociation -Site $fullSiteUrl
@@ -133,7 +133,7 @@ Function SpPsPnp_RemoveSiteFromHubSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function SpPsPnp_GetAdminsInSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_GetAdminsInSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/classicsitecoll"
 	LoginPsPnP $fullSiteUrl
@@ -143,7 +143,7 @@ Function SpPsPnp_GetAdminsInSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function SpPsPnp_AddAdminsToSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_AddAdminsToSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/classicsitecoll"
 	LoginPsPnP $fullSiteUrl
@@ -153,7 +153,7 @@ Function SpPsPnp_AddAdminsToSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function SpPsPnp_RemoveAdminsFromSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_RemoveAdminsFromSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteBaseUrl + "/sites/classicsitecoll"
 	LoginPsPnP $fullSiteUrl
@@ -163,7 +163,7 @@ Function SpPsPnp_RemoveAdminsFromSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function SpPsPnp_CreateWebInSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_CreateWebInSiteCollection()  #*** LEGACY CODE *** 
 {
 	New-PnPWeb -Title "NewWebSiteModernPsPnP" `
 			   -Url "NewWebSiteModernPsPnP" `
@@ -174,21 +174,21 @@ Function SpPsPnp_CreateWebInSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 017
 
 #gavdcodebegin 018
-Function SpPsPnp_GetOneWebInSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_GetOneWebInSiteCollection()  #*** LEGACY CODE *** 
 {
 	Get-PnPWeb
 }
 #gavdcodeend 018
 
 #gavdcodebegin 019
-Function SpPsPnp_GetWebsInSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_GetWebsInSiteCollection()  #*** LEGACY CODE *** 
 {
 	Get-PnPSubWebs -Recurse
 }
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function SpPsPnp_UpdateOneWebInSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_UpdateOneWebInSiteCollection()  #*** LEGACY CODE *** 
 {
 	$fullSiteUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsPnP"
 	LoginPsPnP $fullSiteUrl
@@ -198,7 +198,7 @@ Function SpPsPnp_UpdateOneWebInSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function SpPsPnp_AddPermissionsInWebInSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_AddPermissionsInWebInSiteCollection()  #*** LEGACY CODE *** 
 {
 	Set-PnPWebPermission -Url "NewWebSiteModernPsPnP" `
 						 -User 'user@domain.onmicrosoft.com' `
@@ -207,7 +207,7 @@ Function SpPsPnp_AddPermissionsInWebInSiteCollection()  #*** LEGACY CODE ***
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function SpPsPnp_RemoveOneWebFromSiteCollection()  #*** LEGACY CODE *** 
+Function PsSpPnpLegacy_RemoveOneWebFromSiteCollection()  #*** LEGACY CODE *** 
 {
 	Remove-PnPWeb -Url "NewWebSiteModernPsPnP"
 }
@@ -219,29 +219,29 @@ Function SpPsPnp_RemoveOneWebFromSiteCollection()  #*** LEGACY CODE ***
 
 $spCtx = LoginPsPnP
 
-#SpPsPnp_CreateOneSiteCollection
-#SpPsPnp_CreateOneSiteCollection01
-#SpPsPnp_GetAllSiteCollections
-#SpPsPnp_GetOneSiteCollection
-#SpPsPnp_GetAllSiteCollectionsFiltered
-#SpPsPnp_GetHubSiteCollection
-#SpPsPnp_UpdateOneSiteCollection
-#SpPsPnp_UpdateOneSiteCollection01
-#SpPsPnp_DeleteOneSiteCollection
-#SpPsPnp_RegisterHubSiteCollection
-#SpPsPnp_UnregisterHubSiteCollection
-#SpPsPnp_AddSiteToHubSiteCollection
-#SpPsPnp_RemoveSiteFromHubSiteCollection
-#SpPsPnp_GetAdminsInSiteCollection
-#SpPsPnp_AddAdminsToSiteCollection
-#SpPsPnp_RemoveAdminsFromSiteCollection
-#SpPsPnp_GrantRightsHubSiteCollection
+#PsSpPnpLegacy_CreateOneSiteCollection
+#PsSpPnpLegacy_CreateOneSiteCollection01
+#PsSpPnpLegacy_GetAllSiteCollections
+#PsSpPnpLegacy_GetOneSiteCollection
+#PsSpPnpLegacy_GetAllSiteCollectionsFiltered
+#PsSpPnpLegacy_GetHubSiteCollection
+#PsSpPnpLegacy_UpdateOneSiteCollection
+#PsSpPnpLegacy_UpdateOneSiteCollection01
+#PsSpPnpLegacy_DeleteOneSiteCollection
+#PsSpPnpLegacy_RegisterHubSiteCollection
+#PsSpPnpLegacy_UnregisterHubSiteCollection
+#PsSpPnpLegacy_AddSiteToHubSiteCollection
+#PsSpPnpLegacy_RemoveSiteFromHubSiteCollection
+#PsSpPnpLegacy_GetAdminsInSiteCollection
+#PsSpPnpLegacy_AddAdminsToSiteCollection
+#PsSpPnpLegacy_RemoveAdminsFromSiteCollection
+#PsSpPnpLegacy_GrantRightsHubSiteCollection
 
-#SpPsPnp_CreateWebInSiteCollection
-#SpPsPnp_GetOneWebInSiteCollection
-#SpPsPnp_GetWebsInSiteCollection
-#SpPsPnp_UpdateOneWebInSiteCollection
-#SpPsPnp_AddPermissionsInWebInSiteCollection
-#SpPsPnp_RemoveOneWebFromSiteCollection
+#PsSpPnpLegacy_CreateWebInSiteCollection
+#PsSpPnpLegacy_GetOneWebInSiteCollection
+#PsSpPnpLegacy_GetWebsInSiteCollection
+#PsSpPnpLegacy_UpdateOneWebInSiteCollection
+#PsSpPnpLegacy_AddPermissionsInWebInSiteCollection
+#PsSpPnpLegacy_RemoveOneWebFromSiteCollection
 
 Write-Host "Done"
