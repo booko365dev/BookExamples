@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PnP.Core.Auth;
-using PnP.Core.Model.SharePoint;
 using PnP.Core.Model.Security;
+using PnP.Core.Model.SharePoint;
 using PnP.Core.QueryModel;
 using PnP.Core.Services;
 using System.Configuration;
@@ -11,15 +11,16 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
+static PnPContext CsPnpCoreSdk_GetContextWithInteraction(string TenantId, string ClientId,
                                                    string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
@@ -45,7 +46,7 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
                                                 .GetRequiredService<IPnPContextFactory>();
-    Uri mySiteCollUri = new Uri(SiteCollUrl);
+    Uri mySiteCollUri = new(SiteCollUrl);
     PnPContext myContext = myPnpContextFactory.CreateAsync(mySiteCollUri).Result;
 
     myHost.Dispose();
@@ -53,7 +54,7 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
     return myContext;
 }
 
-static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
+static PnPContext CsPnpCoreSdk_GetContextWithAccPw(string TenantId, string ClientId,
                   string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
@@ -61,7 +62,7 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
         {
             services.AddPnPCore(options =>
             {
-                SecureString secPw = new SecureString();
+                SecureString secPw = new();
                 foreach (char oneChar in UserPw)
                     secPw.AppendChar(oneChar);
 
@@ -90,7 +91,7 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
     return myContext;
 }
 
-static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
+static PnPContext CsPnpCoreSdk_GetContextWithCertificate(string TenantId, string ClientId,
                     string CertificateThumbprint, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
@@ -130,7 +131,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 
 
 //gavdcodebegin 001
-static void SpCsPnPCoreSdk_GetAllLists()
+static void CsSpPnPCoreSdk_GetAllLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -138,8 +139,8 @@ static void SpCsPnPCoreSdk_GetAllLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IListCollection myLists = myContext.Web.Lists;
 
@@ -154,7 +155,7 @@ static void SpCsPnPCoreSdk_GetAllLists()
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsPnPCoreSdk_GetOneList()
+static void CsSpPnPCoreSdk_GetOneList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -162,8 +163,8 @@ static void SpCsPnPCoreSdk_GetOneList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myOneList = myContext.Web.Lists.GetByTitle("Documents");
         //IList myOneList = myContext.Web.Lists.Where(
@@ -181,7 +182,7 @@ static void SpCsPnPCoreSdk_GetOneList()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsPnPCoreSdk_GetOneListProperties()
+static void CsSpPnPCoreSdk_GetOneListProperties()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -189,11 +190,11 @@ static void SpCsPnPCoreSdk_GetOneListProperties()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        IList myList = myContext.Web.Lists.GetByTitle("Documents", 
-                                                      lst => lst.Id, 
+        IList myList = myContext.Web.Lists.GetByTitle("Documents",
+                                                      lst => lst.Id,
                                                       lst => lst.TemplateType);
 
         Console.WriteLine(myList.Id + " - " + myList.TemplateType);
@@ -204,7 +205,7 @@ static void SpCsPnPCoreSdk_GetOneListProperties()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void SpCsPnPCoreSdk_CreateList()
+static void CsSpPnPCoreSdk_CreateList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -212,8 +213,8 @@ static void SpCsPnPCoreSdk_CreateList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.Add(
                                     "NewListPnPCoreSDK", ListTemplateType.GenericList);
@@ -226,7 +227,7 @@ static void SpCsPnPCoreSdk_CreateList()
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsPnPCoreSdk_UpdateList()
+static void CsSpPnPCoreSdk_UpdateList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -234,8 +235,8 @@ static void SpCsPnPCoreSdk_UpdateList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
         myList.Description = "New Description for List";
@@ -249,7 +250,7 @@ static void SpCsPnPCoreSdk_UpdateList()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void SpCsPnPCoreSdk_RecycleList()
+static void CsSpPnPCoreSdk_RecycleList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -257,8 +258,8 @@ static void SpCsPnPCoreSdk_RecycleList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
         myList.Recycle();
@@ -269,7 +270,7 @@ static void SpCsPnPCoreSdk_RecycleList()
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void SpCsPnPCoreSdk_DeleteList()
+static void CsSpPnPCoreSdk_DeleteList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -277,8 +278,8 @@ static void SpCsPnPCoreSdk_DeleteList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
         myList.Delete();
@@ -289,7 +290,7 @@ static void SpCsPnPCoreSdk_DeleteList()
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void SpCsPnPCoreSdk_GetAllFieldsInLists()
+static void CsSpPnPCoreSdk_GetAllFieldsInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -297,8 +298,8 @@ static void SpCsPnPCoreSdk_GetAllFieldsInLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFieldCollection myListFields = myContext.Web.Lists.GetByTitle(
                                                             "NewListPnPCoreSDK").Fields;
@@ -314,7 +315,7 @@ static void SpCsPnPCoreSdk_GetAllFieldsInLists()
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void SpCsPnPCoreSdk_GetPropertiesFieldsInLists()
+static void CsSpPnPCoreSdk_GetPropertiesFieldsInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -322,19 +323,19 @@ static void SpCsPnPCoreSdk_GetPropertiesFieldsInLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK", 
+        IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK",
                             lst => lst.Fields.QueryProperties(
-                                lst => lst.Id, 
-                                lst => lst.InternalName, 
+                                lst => lst.Id,
+                                lst => lst.InternalName,
                                 lst => lst.FieldTypeKind));
 
         foreach (IField oneField in myList.Fields.AsRequested())
         {
-            Console.WriteLine(oneField.InternalName + " - " + 
-                              oneField.Id + " - " + 
+            Console.WriteLine(oneField.InternalName + " - " +
+                              oneField.Id + " - " +
                               oneField.FieldTypeKind);
         }
     }
@@ -344,7 +345,7 @@ static void SpCsPnPCoreSdk_GetPropertiesFieldsInLists()
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void SpCsPnPCoreSdk_CreateFieldByXmlToLists()
+static void CsSpPnPCoreSdk_CreateFieldByXmlToLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -352,10 +353,10 @@ static void SpCsPnPCoreSdk_CreateFieldByXmlToLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
-        string myFieldXml = 
+        string myFieldXml =
           @"<Field Type=""Text"" Name=""myTextField"" DisplayName=""My Text Field""/>";
 
         IField myListField = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
@@ -369,7 +370,7 @@ static void SpCsPnPCoreSdk_CreateFieldByXmlToLists()
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void SpCsPnPCoreSdk_CreateFieldByApiToLists()
+static void CsSpPnPCoreSdk_CreateFieldByApiToLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -377,11 +378,11 @@ static void SpCsPnPCoreSdk_CreateFieldByApiToLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IField myListField = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
-                                Fields.AddMultilineText("My MultilineField", 
+                                Fields.AddMultilineText("My Multiline Field",
                                                     new FieldMultilineTextOptions()
                                                     {
                                                         Group = "Custom Fields",
@@ -397,7 +398,7 @@ static void SpCsPnPCoreSdk_CreateFieldByApiToLists()
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void SpCsPnPCoreSdk_UpdateFieldInLists()
+static void CsSpPnPCoreSdk_UpdateFieldInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -405,8 +406,8 @@ static void SpCsPnPCoreSdk_UpdateFieldInLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IField myField = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
             Fields.Where(fld => fld.Title == "My Text Field").FirstOrDefault();
@@ -423,7 +424,7 @@ static void SpCsPnPCoreSdk_UpdateFieldInLists()
 //gavdcodeend 012
 
 //gavdcodebegin 013
-static void SpCsPnPCoreSdk_DeleteFieldFromLists()
+static void CsSpPnPCoreSdk_DeleteFieldFromLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -431,8 +432,8 @@ static void SpCsPnPCoreSdk_DeleteFieldFromLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IField myField = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
             Fields.Where(fld => fld.Title == "My Text Field").FirstOrDefault();
@@ -448,7 +449,7 @@ static void SpCsPnPCoreSdk_DeleteFieldFromLists()
 //gavdcodeend 013
 
 //gavdcodebegin 014
-static void SpCsPnPCoreSdk_GetAllViewsInLists()
+static void CsSpPnPCoreSdk_GetAllViewsInLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -456,11 +457,11 @@ static void SpCsPnPCoreSdk_GetAllViewsInLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IViewCollection myListViews = myContext.Web.Lists.GetByTitle(
-                                                            "NewListPnPCoreSDK").Views;
+                                                         "NewListPnPCoreSDK").Views;
 
         foreach (IView oneView in myListViews)
         {
@@ -473,7 +474,7 @@ static void SpCsPnPCoreSdk_GetAllViewsInLists()
 //gavdcodeend 014
 
 //gavdcodebegin 015
-static void SpCsPnPCoreSdk_CreateViewForLists()
+static void CsSpPnPCoreSdk_CreateViewForLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -481,17 +482,17 @@ static void SpCsPnPCoreSdk_CreateViewForLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IView myListView = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
                                 Views.Add(new ViewOptions()
-                                                    {
+                                {
                                     Title = "My View",
                                     RowLimit = 10,
                                     SetAsDefaultView = true,
-                                    ViewFields = new string[] { 
-                                        "DocIcon", "LinkFilenameNoMenu", "Modified" }
+                                    ViewFields = 
+                                       [ "DocIcon", "LinkFilenameNoMenu", "Modified" ]
                                 });
 
         Console.WriteLine(myListView.Id);
@@ -502,7 +503,7 @@ static void SpCsPnPCoreSdk_CreateViewForLists()
 //gavdcodeend 015
 
 //gavdcodebegin 016
-static void SpCsPnPCoreSdk_UpdateViewForLists()
+static void CsSpPnPCoreSdk_UpdateViewForLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -510,8 +511,8 @@ static void SpCsPnPCoreSdk_UpdateViewForLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IView myView = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
             Views.Where(vw => vw.Title == "My View").FirstOrDefault();
@@ -528,7 +529,7 @@ static void SpCsPnPCoreSdk_UpdateViewForLists()
 //gavdcodeend 016
 
 //gavdcodebegin 017
-static void SpCsPnPCoreSdk_DeleteViewFromLists()
+static void CsSpPnPCoreSdk_DeleteViewFromLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -536,8 +537,8 @@ static void SpCsPnPCoreSdk_DeleteViewFromLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IView myView = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK").
             Views.Where(vw => vw.Title == "My View").FirstOrDefault();
@@ -553,7 +554,7 @@ static void SpCsPnPCoreSdk_DeleteViewFromLists()
 //gavdcodeend 017
 
 //gavdcodebegin 018
-static void SpCsPnPCoreSdk_GetAllContentTypesLists()
+static void CsSpPnPCoreSdk_GetAllContentTypesLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -561,11 +562,11 @@ static void SpCsPnPCoreSdk_GetAllContentTypesLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IContentTypeCollection myListContentTypes = myContext.Web.Lists.GetByTitle(
-                                                       "NewListPnPCoreSDK").ContentTypes;
+                                                    "NewListPnPCoreSDK").ContentTypes;
 
         foreach (IContentType oneContentType in myListContentTypes)
         {
@@ -578,7 +579,7 @@ static void SpCsPnPCoreSdk_GetAllContentTypesLists()
 //gavdcodeend 018
 
 //gavdcodebegin 019
-static void SpCsPnPCoreSdk_EnableContentTypesListProperty()
+static void CsSpPnPCoreSdk_EnableContentTypesListProperty()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -586,13 +587,13 @@ static void SpCsPnPCoreSdk_EnableContentTypesListProperty()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK",
                                                       lst => lst.ContentTypesEnabled);
 
-        if(myList.ContentTypesEnabled == false)
+        if (myList.ContentTypesEnabled == false)
         {
             myList.ContentTypesEnabled = true;
             myList.Update();
@@ -604,7 +605,7 @@ static void SpCsPnPCoreSdk_EnableContentTypesListProperty()
 //gavdcodeend 019
 
 //gavdcodebegin 020
-static void SpCsPnPCoreSdk_CreateContentTypeList()
+static void CsSpPnPCoreSdk_CreateContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -612,15 +613,15 @@ static void SpCsPnPCoreSdk_CreateContentTypeList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IContentType mySiteContentType = myContext.Web.ContentTypes.Add(
                     "0x010200A6A06C797CAAA84084CCA91D774D3B27", "MySiteContentType");
 
         IContentType myListContentType = myContext.Web.Lists
             .GetByTitle("NewListPnPCoreSDK").ContentTypes.AddAvailableContentType(
-                                            "0x010200A6A06C797CAAA84084CCA91D774D3B27");
+                                          "0x010200A6A06C797CAAA84084CCA91D774D3B27");
 
         Console.WriteLine(myListContentType.Id);
     }
@@ -630,7 +631,7 @@ static void SpCsPnPCoreSdk_CreateContentTypeList()
 //gavdcodeend 020
 
 //gavdcodebegin 021
-static void SpCsPnPCoreSdk_UpdateContentTypeList()
+static void CsSpPnPCoreSdk_UpdateContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -638,8 +639,8 @@ static void SpCsPnPCoreSdk_UpdateContentTypeList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IContentType myListContentType = myContext.Web.Lists
             .GetByTitle("NewListPnPCoreSDK").ContentTypes
@@ -657,7 +658,7 @@ static void SpCsPnPCoreSdk_UpdateContentTypeList()
 //gavdcodeend 021
 
 //gavdcodebegin 022
-static void SpCsPnPCoreSdk_AddFieldToContentTypeList()
+static void CsSpPnPCoreSdk_AddFieldToContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -665,8 +666,8 @@ static void SpCsPnPCoreSdk_AddFieldToContentTypeList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IContentType myListContentType = myContext.Web.Lists
             .GetByTitle("NewListPnPCoreSDK").ContentTypes
@@ -687,7 +688,7 @@ static void SpCsPnPCoreSdk_AddFieldToContentTypeList()
 //gavdcodeend 022
 
 //gavdcodebegin 023
-static void SpCsPnPCoreSdk_DeleteContentTypeList()
+static void CsSpPnPCoreSdk_DeleteContentTypeList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -695,8 +696,8 @@ static void SpCsPnPCoreSdk_DeleteContentTypeList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                   myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IContentType myListContentType = myContext.Web.Lists
             .GetByTitle("NewListPnPCoreSDK").ContentTypes
@@ -713,7 +714,7 @@ static void SpCsPnPCoreSdk_DeleteContentTypeList()
 //gavdcodeend 023
 
 //gavdcodebegin 024
-static void SpCsPnPCoreSdk_BreakeInheritanceList()
+static void CsSpPnPCoreSdk_BreakInheritanceList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -721,8 +722,8 @@ static void SpCsPnPCoreSdk_BreakeInheritanceList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
 
@@ -737,7 +738,7 @@ static void SpCsPnPCoreSdk_BreakeInheritanceList()
 //gavdcodeend 024
 
 //gavdcodebegin 025
-static async void SpCsPnPCoreSdk_HasInheritanceList()
+static void CsSpPnPCoreSdk_HasInheritanceList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -745,8 +746,8 @@ static async void SpCsPnPCoreSdk_HasInheritanceList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
         myList.EnsureProperties(hur => hur.HasUniqueRoleAssignments);
@@ -759,7 +760,7 @@ static async void SpCsPnPCoreSdk_HasInheritanceList()
 //gavdcodeend 025
 
 //gavdcodebegin 026
-static void SpCsPnPCoreSdk_RestoreInheritanceList()
+static void CsSpPnPCoreSdk_RestoreInheritanceList()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -767,8 +768,8 @@ static void SpCsPnPCoreSdk_RestoreInheritanceList()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
 
@@ -783,7 +784,7 @@ static void SpCsPnPCoreSdk_RestoreInheritanceList()
 //gavdcodeend 026
 
 //gavdcodebegin 027
-static void SpCsPnPCoreSdk_GetAllSecurityRolesLists()
+static void CsSpPnPCoreSdk_GetAllSecurityRolesLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -791,8 +792,8 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
 
@@ -801,7 +802,7 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesLists()
             IRoleDefinitionCollection permLevels = myList.GetRoleDefinitions(
                                                                 oneRole.PrincipalId);
 
-            foreach(IRoleDefinition onePermLevel in permLevels)
+            foreach (IRoleDefinition onePermLevel in permLevels)
             {
                 Console.WriteLine(onePermLevel.Name);
             }
@@ -813,7 +814,7 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesLists()
 //gavdcodeend 027
 
 //gavdcodebegin 028
-static void SpCsPnPCoreSdk_AddSecurityRoleToLists()
+static void CsSpPnPCoreSdk_AddSecurityRoleToLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -821,13 +822,13 @@ static void SpCsPnPCoreSdk_AddSecurityRoleToLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ISharePointUser myUser = myContext.Web.GetCurrentUser();
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
 
-        myList.AddRoleDefinitions(myUser.Id, new string[] { "Read", "Edit" });
+        myList.AddRoleDefinitions(myUser.Id, ["Read", "Edit"]);
         myList.Update();
     }
 
@@ -836,7 +837,7 @@ static void SpCsPnPCoreSdk_AddSecurityRoleToLists()
 //gavdcodeend 028
 
 //gavdcodebegin 029
-static void SpCsPnPCoreSdk_DeleteSecurityRoleFromLists()
+static void CsSpPnPCoreSdk_DeleteSecurityRoleFromLists()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -844,13 +845,13 @@ static void SpCsPnPCoreSdk_DeleteSecurityRoleFromLists()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPnpCoreSdk_GetContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ISharePointUser myUser = myContext.Web.GetCurrentUser();
         IList myList = myContext.Web.Lists.GetByTitle("NewListPnPCoreSDK");
 
-        myList.RemoveRoleDefinitions(myUser.Id, new string[] { "Read" });
+        myList.RemoveRoleDefinitions(myUser.Id, ["Read"]);
         myList.Update();
     }
 
@@ -863,38 +864,42 @@ static void SpCsPnPCoreSdk_DeleteSecurityRoleFromLists()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsPnPCoreSdk_GetAllLists();
-//SpCsPnPCoreSdk_GetOneList();
-//SpCsPnPCoreSdk_GetOneListProperties();
-//SpCsPnPCoreSdk_CreateList();
-//SpCsPnPCoreSdk_UpdateList();
-//SpCsPnPCoreSdk_RecycleList();
-//SpCsPnPCoreSdk_DeleteList();
-//SpCsPnPCoreSdk_GetAllFieldsInLists();
-//SpCsPnPCoreSdk_GetPropertiesFieldsInLists();
-//SpCsPnPCoreSdk_CreateFieldByXmlToLists();
-//SpCsPnPCoreSdk_CreateFieldByApiToLists();
-//SpCsPnPCoreSdk_UpdateFieldInLists();
-//SpCsPnPCoreSdk_DeleteFieldFromLists();
-//SpCsPnPCoreSdk_GetAllViewsInLists();
-//SpCsPnPCoreSdk_CreateViewForLists();
-//SpCsPnPCoreSdk_UpdateViewForLists();
-//SpCsPnPCoreSdk_DeleteViewFromLists();
-//SpCsPnPCoreSdk_GetAllContentTypesLists();
-//SpCsPnPCoreSdk_EnableContentTypesListProperty();
-//SpCsPnPCoreSdk_CreateContentTypeList();
-//SpCsPnPCoreSdk_UpdateContentTypeList();
-//SpCsPnPCoreSdk_AddFieldToContentTypeList();
-//SpCsPnPCoreSdk_DeleteContentTypeList();
-//SpCsPnPCoreSdk_BreakeInheritanceList();
-//SpCsPnPCoreSdk_HasInheritanceList();
-//SpCsPnPCoreSdk_RestoreInheritanceList();
-//SpCsPnPCoreSdk_GetAllSecurityRolesLists();
-//SpCsPnPCoreSdk_AddSecurityRoleToLists();
-//SpCsPnPCoreSdk_DeleteSecurityRoleFromLists();
+//# *** Latest Source Code Index: 029 ***
+
+//CsSpPnPCoreSdk_GetAllLists();
+//CsSpPnPCoreSdk_GetOneList();
+//CsSpPnPCoreSdk_GetOneListProperties();
+//CsSpPnPCoreSdk_CreateList();
+//CsSpPnPCoreSdk_UpdateList();
+//CsSpPnPCoreSdk_RecycleList();
+//CsSpPnPCoreSdk_DeleteList();
+//CsSpPnPCoreSdk_GetAllFieldsInLists();
+//CsSpPnPCoreSdk_GetPropertiesFieldsInLists();
+//CsSpPnPCoreSdk_CreateFieldByXmlToLists();
+//CsSpPnPCoreSdk_CreateFieldByApiToLists();
+//CsSpPnPCoreSdk_UpdateFieldInLists();
+//CsSpPnPCoreSdk_DeleteFieldFromLists();
+//CsSpPnPCoreSdk_GetAllViewsInLists();
+//CsSpPnPCoreSdk_CreateViewForLists();
+//CsSpPnPCoreSdk_UpdateViewForLists();
+//CsSpPnPCoreSdk_DeleteViewFromLists();
+//CsSpPnPCoreSdk_GetAllContentTypesLists();
+//CsSpPnPCoreSdk_EnableContentTypesListProperty();
+//CsSpPnPCoreSdk_CreateContentTypeList();
+//CsSpPnPCoreSdk_UpdateContentTypeList();
+//CsSpPnPCoreSdk_AddFieldToContentTypeList();
+//CsSpPnPCoreSdk_DeleteContentTypeList();
+//CsSpPnPCoreSdk_BreakInheritanceList();
+//CsSpPnPCoreSdk_HasInheritanceList();
+//CsSpPnPCoreSdk_RestoreInheritanceList();
+//CsSpPnPCoreSdk_GetAllSecurityRolesLists();
+//CsSpPnPCoreSdk_AddSecurityRoleToLists();
+//CsSpPnPCoreSdk_DeleteSecurityRoleFromLists();
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
+
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used

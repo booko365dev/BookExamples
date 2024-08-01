@@ -7,7 +7,7 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-function PsGraphRest_GetAzureTokenApplication
+function PsSpGraphRest_GetAzureTokenApplication
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -36,7 +36,7 @@ function PsGraphRest_GetAzureTokenApplication
 	return $myOAuth
 }
 
-function PsGraphRest_GetAzureTokenDelegation
+function PsSpGraphRest_GetAzureTokenDelegation
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -82,7 +82,7 @@ function PsSpGraphRest_GetAllSites
 
 	$Url = "https://graph.microsoft.com/v1.0/sites"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -106,7 +106,7 @@ function PsSpGraphRest_GetOneSiteById
 	$SiteId = "ec8c7d0f-c887-4318-8c0b-b2b88b12bc29"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -130,7 +130,7 @@ function PsSpGraphRest_GetOneSiteByPath
 	$SitePath = "[domain].sharepoint.com:/sites/[SiteName]"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SitePath
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -153,7 +153,7 @@ function PsSpGraphRest_GetSitesBySearch
 
 	$Url = "https://graph.microsoft.com/v1.0/sites?search='My Site'"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -177,7 +177,7 @@ function PsSpGraphRest_GetOneSiteAnalytics
 	$SiteId = "ec8c7d0f-c887-4318-8c0b-b2b88b12bc29"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/analytics"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -201,7 +201,7 @@ function PsSpGraphRest_GetSitesFollowed
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + $userName + "/followedSites"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -226,7 +226,7 @@ function PsSpGraphRest_SitesUnfollow
 	$WebId = "cfaf31a6-f73f-4d7d-af24-6e530c022b5c"
 	$Url = "https://graph.microsoft.com/v1.0/users/" + $userName + "/followedSites/remove"
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -237,7 +237,7 @@ function PsSpGraphRest_SitesUnfollow
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -253,7 +253,7 @@ function PsSpGraphRest_SitesFollow()
 	$WebId = "cfaf31a6-f73f-4d7d-af24-6e530c022b5c"
 	$Url = "https://graph.microsoft.com/v1.0/users/" + $userName + "/followedSites/add"
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -264,7 +264,7 @@ function PsSpGraphRest_SitesFollow()
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -279,7 +279,7 @@ function PsSpGraphRest_GetAllListsInSite
 	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -304,7 +304,7 @@ function PsSpGraphRest_GetOneListInSite
 	$ListTitle = "Documents"   #Use the DisplayName or the ListId
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListTitle
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -328,7 +328,7 @@ function PsSpGraphRest_CreateList
 	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists"
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -340,7 +340,7 @@ function PsSpGraphRest_CreateList
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -356,7 +356,7 @@ function PsSpGraphRest_UpdateList
 	$ListId = "List Created with GraphApi"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -370,7 +370,7 @@ function PsSpGraphRest_UpdateList
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Patch `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -386,7 +386,7 @@ function PsSpGraphRest_DeleteList
 	$ListId = "List Created with GraphApi"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -396,7 +396,7 @@ function PsSpGraphRest_DeleteList
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -413,7 +413,7 @@ function PsSpGraphRest_GetAllColumnsInLists
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + 
 								$ListId + "/columns"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -440,7 +440,7 @@ function PsSpGraphRest_GetOneColumnInList
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + 
 								$ListId + "/columns/" + $ColumnId
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -466,7 +466,7 @@ function PsSpGraphRest_CreateColumnInList
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + 
 														$ListId + "/columns"
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 
@@ -486,7 +486,7 @@ function PsSpGraphRest_CreateColumnInList
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -503,7 +503,7 @@ function PsSpGraphRest_UpdateColumn
 	$ColumnId = "MyTextColumn"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -514,7 +514,7 @@ function PsSpGraphRest_UpdateColumn
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Patch `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -532,7 +532,7 @@ function PsSpGraphRest_DeleteColumn
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 													"/columns/" + $ColumnId
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -542,7 +542,7 @@ function PsSpGraphRest_DeleteColumn
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -559,7 +559,7 @@ function PsSpGraphRest_GetAllContentTypesInLists
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + 
 								$ListId + "/contentTypes"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -586,7 +586,7 @@ function PsSpGraphRest_GetOneContentTypeInList
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + 
 								$ListId + "/contentTypes/" + $ContentTypeId
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -612,7 +612,7 @@ function PsSpGraphRest_CreateContentTypeInList
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + 
 														$ListId + "/contentTypes"
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -629,7 +629,7 @@ function PsSpGraphRest_CreateContentTypeInList
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -647,7 +647,7 @@ function PsSpGraphRest_UpdateContentType
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 													"/contentTypes/" + $ContentTypeId
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -658,7 +658,7 @@ function PsSpGraphRest_UpdateContentType
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Patch `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -676,7 +676,7 @@ function PsSpGraphRest_DeleteContentType
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 													"/contentType/" + $ContentTypeId
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -686,7 +686,7 @@ function PsSpGraphRest_DeleteContentType
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -699,11 +699,11 @@ function PsSpGraphRest_GetAllItemsInList
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
 	$SiteId = "3d93e562-aeb0-4316-a2b1-914aff04ad1a"
-	$ListId = "Documents"
+	$ListId = "TestList"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 																				"/items"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -725,12 +725,12 @@ function PsSpGraphRest_GetOneItemInList
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
 	$SiteId = "3d93e562-aeb0-4316-a2b1-914aff04ad1a"
-	$ListId = "Documents"
+	$ListId = "TestList"
 	$ItemId = "11"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 																 "/items/" + $ItemId
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -752,12 +752,12 @@ function PsSpGraphRest_GetOneItemAnalytics
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
 	$SiteId = "3d93e562-aeb0-4316-a2b1-914aff04ad1a"
-	$ListId = "Documents"
+	$ListId = "TestList"
 	$ItemId = "11"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 													"/items/" + $ItemId + "/analytics"
 	
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -779,11 +779,11 @@ function PsSpGraphRest_CreateItem
 	# App Registration permissions: Sites.FullControl.All
 
 	$SiteId = "3d93e562-aeb0-4316-a2b1-914aff04ad1a"
-	$ListId = "MyList"
+	$ListId = "TestList"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 																 "/items"
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -794,7 +794,7 @@ function PsSpGraphRest_CreateItem
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -807,12 +807,12 @@ function PsSpGraphRest_UpdateItem
 	# App Registration permissions: Sites.FullControl.All
 
 	$SiteId = "3d93e562-aeb0-4316-a2b1-914aff04ad1a"
-	$ListId = "MyList"
+	$ListId = "TestList"
 	$ItemId = "1"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 													"/items/" + $ItemId + "/fields"
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -823,7 +823,7 @@ function PsSpGraphRest_UpdateItem
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Patch `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
@@ -836,12 +836,12 @@ function PsSpGraphRest_DeleteItem
 	# App Registration permissions: Sites.FullControl.All
 
 	$SiteId = "3d93e562-aeb0-4316-a2b1-914aff04ad1a"
-	$ListId = "MyList"
+	$ListId = "TestList"
 	$ItemId = "1"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/lists/" + $ListId + 
 													"/items/" + $ItemId
 
-	$myOAuth = PsGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
@@ -851,17 +851,407 @@ function PsSpGraphRest_DeleteItem
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
 	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete `
-												-Body $myBody -ContentType $myContentType
+											-Body $myBody -ContentType $myContentType
 
 	Write-Host $myResult
 }
 #gavdcodeend 015 
 
+#gavdcodebegin 030
+function PsSpGraphRest_GetDocumentsDriveInSite
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drive"
+	
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$myObject = ConvertFrom-Json –InputObject $myResult
+	$myObject.value.subject
+}
+#gavdcodeend 030 
+
+#gavdcodebegin 031
+function PsSpGraphRest_GetDrivesInSite
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives"
+	
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$myObject = ConvertFrom-Json –InputObject $myResult
+	$myObject.value.subject
+}
+#gavdcodeend 031
+
+#gavdcodebegin 032
+function PsSpGraphRest_UploadFileToDocumentsLibrary
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DocPath = "C:\Temporary\TestDocument.docx"
+	$DocName = "TestDocument.docx"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drive/root:/" + `
+												$DocName + ":/content"
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myBody = Get-Content $DocPath -Raw
+
+	$myContentType = "application/octet-stream"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Put `
+											-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 032
+
+#gavdcodebegin 033
+function PsSpGraphRest_UploadFileToLibrary
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$DocPath = "C:\Temporary\TestDocument.docx"
+	$DocName = "TestDocument.docx"
+	$Url = "https://graph.microsoft.com/v1.0/drives/" + $DriveId + "/root:/" + `
+								$DocName + ":/content"
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myBody = Get-Content $DocPath -Raw
+
+	$myContentType = "application/octet-stream"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Put `
+											-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 033
+
+#gavdcodebegin 034
+function PsSpGraphRest_DownloadFileFromDocumentsLibraryInSite
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DocName = "TestDocument.docx"
+	$DownloadPath = "C:\Temporary"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drive/root:/" + `
+													   $DocName + ":/content"
+	
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -OutFile $DownloadPath
+	
+	Write-Host $myResult
+}
+#gavdcodeend 034
+
+#gavdcodebegin 035
+function PsSpGraphRest_DownloadFileFromDriveInSite
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$DocName = "TestDocument.docx"
+	$DownloadPath = "C:\Temporary"
+	$Url = "https://graph.microsoft.com/v1.0/drives/" + $DriveId + "/root:/" + `
+								$DocName + ":/content"
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -OutFile $DownloadPath
+	
+	Write-Host $myResult
+}
+#gavdcodeend 035
+
+#gavdcodebegin 036
+function PsSpGraphRest_CheckOutFileInDocumentsLibrary
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.FullControl.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$ItemId = "b699ae4a-7fcb-4aab-91ef-b4745123c25f"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+								$DriveId + "/items/" + $ItemId + "/checkout"
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myBody = @{ } | ConvertTo-Json
+	
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
+											-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 036 
+
+#gavdcodebegin 037
+function PsSpGraphRest_CheckInFileInDocumentsLibrary
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.FullControl.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$ItemId = "b699ae4a-7fcb-4aab-91ef-b4745123c25f"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+								$DriveId + "/items/" + $ItemId + "/checkin"
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myBody = @{ } | ConvertTo-Json
+	
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
+											-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 037
+
+#gavdcodebegin 038
+function PsSpGraphRest_CreateFolderInLibrary
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.FullControl.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+													   $DriveId + "/root/children"
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myBody = @{ 'name' = 'NewFolderGraphApi'; 
+				 'folder' = { };
+				 '@microsoft.graph.conflictBehavior' = 'rename'
+				} | ConvertTo-Json
+	
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
+											-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 038
+
+#gavdcodebegin 039
+function PsSpGraphRest_GetFoldersInLibrary
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+													   $DriveId + "/root/children"
+	
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$myObject = ConvertFrom-Json –InputObject $myResult
+	$myObject.value.subject
+}
+#gavdcodeend 039
+
+#gavdcodebegin 040
+function PsSpGraphRest_GetFileVersions
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$ItemId = "b699ae4a-7fcb-4aab-91ef-b4745123c25f"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+													   $DriveId + "/items/" + `
+													   $ItemId + "/versions"
+	
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$myObject = ConvertFrom-Json –InputObject $myResult
+	$myObject.value.subject
+}
+#gavdcodeend 040
+
+#gavdcodebegin 041
+function PsSpGraphRest_GetFilePermissions
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$ItemId = "b699ae4a-7fcb-4aab-91ef-b4745123c25f"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+													   $DriveId + "/items/" + `
+													   $ItemId + "/permissions"
+	
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url
+	
+	Write-Host $myResult
+
+	$myObject = ConvertFrom-Json –InputObject $myResult
+	$myObject.value.subject
+}
+#gavdcodeend 041
+
+#gavdcodebegin 042
+function PsSpGraphRest_AddPermissionsToFile
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.FullControl.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$ItemId = "b699ae4a-7fcb-4aab-91ef-b4745123c25f"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+													   $DriveId + "/items/" + `
+													   $ItemId + "/invite"
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+
+	$myBody = @{ 'recipients' = @(@{
+					  'email' = 'adelev@guitacadev.onmicrosoft.com'
+					});
+				 'message' = 'Sending invite for file';
+				 'requireSignIn' = 'true';
+				 'sendInvitation' = 'true';
+				 'roles' = @( 'write' );
+				 'password' = 'password123';
+				 'expirationDateTime' = '2024-12-31T59:00:00.000Z'
+				} | ConvertTo-Json
+	
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Post `
+											-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 042
+
+#gavdcodebegin 043
+function PsSpGraphRest_DeletePermissionsFromFile
+{
+	# App Registration type:		Application
+	# App Registration permissions: Sites.FullControl.All
+
+	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
+	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
+	$ItemId = "b699ae4a-7fcb-4aab-91ef-b4745123c25f"
+	$PermissionId = "VGVzdF9HdWl0YWNhIFZpc2l0b3Jz"
+	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drives/" + `
+													   $DriveId + "/items/" + `
+													   $ItemId + "/permissions" + `
+													   $PermissionId
+
+	$myOAuth = PsSpGraphRest_GetAzureTokenApplication -ClientID $ClientIDApp `
+										 -ClientSecret $ClientSecretApp `
+										 -TenantName $TenantName
+	
+	$myBody = @{ } | ConvertTo-Json
+	
+	$myContentType = "application/json"
+	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
+	
+	$myResult = Invoke-WebRequest -Headers $myHeader -Uri $Url -Method Delete `
+											-Body $myBody -ContentType $myContentType
+
+	Write-Host $myResult
+}
+#gavdcodeend 043 
+
+
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 029 ***
+# *** Latest Source Code Index: 043 ***
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
@@ -899,5 +1289,19 @@ $UserName = $configFile.appsettings.UserName
 #PsSpGraphRest_CreateItem
 #PsSpGraphRest_UpdateItem
 #PsSpGraphRest_DeleteItem
+#PsSpGraphRest_GetDocumentsDriveInSite
+#PsSpGraphRest_GetDrivesInSite
+#PsSpGraphRest_UploadFileToDocumentsLibrary
+#PsSpGraphRest_UploadFileToLibrary
+#PsSpGraphRest_DownloadFileFromDocumentsLibraryInSite
+#PsSpGraphRest_DownloadFileFromDriveInSite
+#PsSpGraphRest_CheckOutFileInDocumentsLibrary
+#PsSpGraphRest_CheckInFileInDocumentsLibrary
+#PsSpGraphRest_CreateFolderInLibrary
+#PsSpGraphRest_GetFoldersInLibrary
+#PsSpGraphRest_GetFileVersions
+#PsSpGraphRest_GetFilePermissions
+#PsSpGraphRest_AddPermissionsToFile
+#PsSpGraphRest_DeletePermissionsFromFile
 
 Write-Host "Done" 

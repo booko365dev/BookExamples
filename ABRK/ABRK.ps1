@@ -6,12 +6,12 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-Function GrPsLoginGraphSDKWithInteraction
+Function PsSpGraphSdk_LoginWithInteraction
 {
 	Connect-Graph
 }
 
-Function GrPsLoginGraphSDKWithAccPw
+Function PsSpGraphSdk_LoginWithAccPwMsal
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -35,11 +35,13 @@ Function GrPsLoginGraphSDKWithAccPw
 	$myToken = Get-MsalToken -TenantId $TenantName `
 							 -ClientId $ClientId `
 							 -UserCredential $myCredentials 
+	$myTokenSecure = ConvertTo-SecureString -String $myToken.AccessToken `
+											-AsPlainText -Force
 
-	Connect-Graph -AccessToken $myToken.AccessToken
+	Connect-Graph -AccessToken $myTokenSecure
 }
 
-Function GrPsLoginGraphSDKWithSecret
+Function PsSpGraphSdk_LoginWithSecretMsal
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -58,11 +60,35 @@ Function GrPsLoginGraphSDKWithSecret
 	$myToken = Get-MsalToken -TenantId $TenantName `
 							 -ClientId $ClientId `
 							 -ClientSecret ($secureSecret)
+	$myTokenSecure = ConvertTo-SecureString -String $myToken.AccessToken `
+											-AsPlainText -Force
 
-	Connect-Graph -AccessToken $myToken.AccessToken
+	Connect-Graph -AccessToken $myTokenSecure
 }
 
-Function GrPsLoginGraphSDKWithCertificate
+function PsSpGraphSdk_LoginWithSecret
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientID,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientSecret
+	)
+
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+									$ClientSecret -AsPlainText -Force
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+							-argumentlist $ClientID, $securePW
+
+	Connect-MgGraph -TenantId $TenantName `
+					-ClientSecretCredential $myCredentials
+}
+
+Function PsSpGraphSdk_LoginWithCertificate
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -80,7 +106,7 @@ Function GrPsLoginGraphSDKWithCertificate
 					-CertificateThumbprint $CertificateThumbprint
 }
 
-Function GrPsLoginGraphSDKWithCertificateFile
+Function PsSpGraphSdk_LoginWithCertificateFile
 {
 	[SecureString]$secureCertPw = ConvertTo-SecureString -String `
 							$configFile.appSettings.CertificateFilePw -AsPlainText -Force
@@ -97,20 +123,20 @@ Function GrPsLoginGraphSDKWithCertificateFile
 ##***-----------------------------------*** Other routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-Function GrPsLoginGraphSDKSetVersion
+Function PsSpGraphSdk_LoginSetVersion
 {
 	#Select-MgProfile -Name "beta"
 	#Select-MgProfile -Name "v1.0"
 }
 
-Function GrPsLoginGraphSDKAssignRights
+Function PsSpGraphSdk_LoginAssignRights
 {
 	Connect-Graph -Scopes "Directory.AccessAsUser.All, Directory.ReadWrite.All"
 	Get-MgUser
 	Disconnect-MgGraph
 }
 
-Function GrPsLoginGraphSDKCheckAvailableRights
+Function PsSpGraphSdk_LoginCheckAvailableRights
 {
 	Find-MgGraphPermission "user" -PermissionType Application
 }
@@ -121,52 +147,52 @@ Function GrPsLoginGraphSDKCheckAvailableRights
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function SpPsGraphSdk_GetAllLists
+Function PsSpGraphSdk_GetAllLists
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Get-MgSiteList -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e"
+	Get-MgSiteList -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab"
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function SpPsGraphSdk_GetOneList
+Function PsSpGraphSdk_GetOneList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Get-MgSiteList -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-				   -ListId "cb3841d2-6561-452c-bbaf-08338bfa0029"
+	Get-MgSiteList -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+				   -ListId "73de12ba-40e6-426c-890f-952cc9b3c74c"
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function SpPsGraphSdk_CreateOneList
+Function PsSpGraphSdk_CreateOneList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	New-MgSiteList -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
+	New-MgSiteList -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
 				   -Description "New List" `
 				   -DisplayName "NewListGraphSdk"
 
@@ -175,18 +201,18 @@ Function SpPsGraphSdk_CreateOneList
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function SpPsGraphSdk_UpdateOneList
+Function PsSpGraphSdk_UpdateOneList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Update-MgSiteList -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-					  -ListId "f4c8f7ea-62ec-4e64-9aaf-a66c5e12134b" `
+	Update-MgSiteList -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+					  -ListId "0b423122-1a90-4451-bc92-5d25433c6962" `
 					  -Description "List Updated"
 
 	Disconnect-MgGraph
@@ -194,74 +220,74 @@ Function SpPsGraphSdk_UpdateOneList
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function SpPsGraphSdk_DeleteOneList
+Function PsSpGraphSdk_DeleteOneList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Remove-MgSiteList -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-					  -ListId "f4c8f7ea-62ec-4e64-9aaf-a66c5e12134b"
+	Remove-MgSiteList -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+					  -ListId "0b423122-1a90-4451-bc92-5d25433c6962"
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function SpPsGraphSdk_GetAllFieldsList
+Function PsSpGraphSdk_GetAllFieldsList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Get-MgSiteListColumn -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-						 -ListId "f4c8f7ea-62ec-4e64-9aaf-a66c5e12134b"
+	Get-MgSiteListColumn -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+						 -ListId "0b423122-1a90-4451-bc92-5d25433c6962"
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function SpPsGraphSdk_GetOneFieldList
+Function PsSpGraphSdk_GetOneFieldList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Get-MgSiteListColumn -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-						 -ListId "f4c8f7ea-62ec-4e64-9aaf-a66c5e12134b" `
-						 -ColumnDefinitionId "bc91a437-52e7-49e1-8c4e-4698904b2b6d"
+	Get-MgSiteListColumn -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+						 -ListId "0b423122-1a90-4451-bc92-5d25433c6962" `
+						 -ColumnDefinitionId "fa564e0f-0c70-4ab9-b863-0177e6ddd247"
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function SpPsGraphSdk_CreateOneFieldList
+Function PsSpGraphSdk_CreateOneFieldList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
 	$myField = @{ AllowMultipleLines="true"; TextType="plain" }
-	New-MgSiteListColumn -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-						 -ListId "f4c8f7ea-62ec-4e64-9aaf-a66c5e12134b" `
+	New-MgSiteListColumn -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+						 -ListId "0b423122-1a90-4451-bc92-5d25433c6962" `
 						 -DisplayName "MyTextField" `
 						 -Name "MyTextField" `
 						 -Text $myField
@@ -271,19 +297,19 @@ Function SpPsGraphSdk_CreateOneFieldList
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function SpPsGraphSdk_UpdateOneFieldList
+Function PsSpGraphSdk_UpdateOneFieldList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Update-MgSiteListColumn -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-							-ListId "f4c8f7ea-62ec-4e64-9aaf-a66c5e12134b" `
-							-ColumnDefinitionId "0f8ccb8b-ecb7-437c-a2e8-fbab08a6b544" `
+	Update-MgSiteListColumn -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+							-ListId "0b423122-1a90-4451-bc92-5d25433c6962" `
+							-ColumnDefinitionId "fb5f4740-bf6f-4753-b98c-5c583bb4fd1e" `
 							-Description "Field Description Updated"
 
 	Disconnect-MgGraph
@@ -291,41 +317,146 @@ Function SpPsGraphSdk_UpdateOneFieldList
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function SpPsGraphSdk_DeleteOneFieldList
+Function PsSpGraphSdk_DeleteOneFieldList
 {
 	# Requires Delegated rights: 
 	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
 
-	GrPsLoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
 							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
 							   -UserName $configFile.appsettings.UserName `
 							   -UserPw $configFile.appsettings.UserPw
 
-	Remove-MgSiteListColumn -SiteId "870ae987-120f-45ed-aa6e-b4a6b7bc226e" `
-						    -ListId "f4c8f7ea-62ec-4e64-9aaf-a66c5e12134b" `
-						    -ColumnDefinitionId "0f8ccb8b-ecb7-437c-a2e8-fbab08a6b544"
+	Remove-MgSiteListColumn -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+							-ListId "0b423122-1a90-4451-bc92-5d25433c6962" `
+						    -ColumnDefinitionId "fb5f4740-bf6f-4753-b98c-5c583bb4fd1e"
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 010
+
+#gavdcodebegin 011
+Function PsSpGraphSdk_GetAllContentTypesSite
+{
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
+
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgSiteContentType -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 011
+
+#gavdcodebegin 012
+Function PsSpGraphSdk_GetAllContentTypesList
+{
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
+
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgSiteListContentType -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+							  -ListId "0b423122-1a90-4451-bc92-5d25433c6962"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 012
+
+#gavdcodebegin 013
+Function PsSpGraphSdk_GetOneContentTypeSite
+{
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
+
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Get-MgSiteContentType -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+						  -ContentTypeId "0x01010B"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 013
+
+#gavdcodebegin 014
+Function PsSpGraphSdk_CreateOneContentTypeSite
+{
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
+
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	$ContentTypeParams = @{
+		name = "docSet"
+		description = "My custom ContentType"
+		base = @{
+			name = "My ContentType"
+			id = "0x010101"
+		}
+		group = "Document Content Types"
+	}
+
+	New-MgSiteContentType -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+						  -BodyParameter $ContentTypeParams
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 014
+
+#gavdcodebegin 015
+Function PsSpGraphSdk_DeleteOneContentTypeSite
+{
+	# Requires Delegated rights: 
+	#						Sites.Read.All, Sites.ReadWrite.All, Sites.FullControl.All
+
+	PsSpGraphSdk_LoginWithAccPwMsal -TenantName $configFile.appsettings.TenantName `
+							   -ClientID $configFile.appsettings.ClientIdWithAccPw `
+							   -UserName $configFile.appsettings.UserName `
+							   -UserPw $configFile.appsettings.UserPw
+
+	Remove-MgSiteContentType -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab" `
+							 -ContentTypeId "0x01010100044D900EDE741843A113CA8148553442"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 015
 
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
+# *** Latest Source Code Index: 015 ***
+
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
-#SpPsGraphSdk_GetAllLists
-#SpPsGraphSdk_GetOneList
-#SpPsGraphSdk_CreateOneList
-#SpPsGraphSdk_UpdateOneList
-#SpPsGraphSdk_DeleteOneList
-#SpPsGraphSdk_GetAllFieldsList
-#SpPsGraphSdk_GetOneFieldList
-#SpPsGraphSdk_CreateOneFieldList
-#SpPsGraphSdk_UpdateOneFieldList
-#SpPsGraphSdk_DeleteOneFieldList
+#PsSpGraphSdk_GetAllLists
+#PsSpGraphSdk_GetOneList
+#PsSpGraphSdk_CreateOneList
+#PsSpGraphSdk_UpdateOneList
+#PsSpGraphSdk_DeleteOneList
+#PsSpGraphSdk_GetAllFieldsList
+#PsSpGraphSdk_GetOneFieldList
+#PsSpGraphSdk_CreateOneFieldList
+#PsSpGraphSdk_UpdateOneFieldList
+#PsSpGraphSdk_DeleteOneFieldList
+#PsSpGraphSdk_GetAllContentTypesSite
+#PsSpGraphSdk_GetAllContentTypesList
+#PsSpGraphSdk_GetOneContentTypeSite
+#PsSpGraphSdk_DeleteOneContentTypeSite
 
 Write-Host "Done" 
 

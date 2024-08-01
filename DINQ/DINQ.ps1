@@ -1,4 +1,13 @@
-﻿Function Invoke-RestSPO 
+﻿
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+Function Invoke-RestSPO 
 {  #*** LEGACY CODE ***
 	Param (
 		[Parameter(Mandatory=$True)]
@@ -132,7 +141,7 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
     }
 }
 
-Function LoginPsPnPPowerShellWithAccPwDefault
+Function PsSpPnpPowerShell_LoginWithAccPw
 {
 	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
@@ -143,12 +152,15 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
 }
 
-#----------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
 
 # Using Basic Authentication, this is Legacy code, and cannot be used anymore
 
 #gavdcodebegin 001
-Function SpPsRest_CreateOneList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_CreateOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/web/lists"
 	$myPayload = @{ 
@@ -170,7 +182,7 @@ Function SpPsRest_CreateOneList  #*** LEGACY CODE ***
 #gavdcodeend 001 
 
 #gavdcodebegin 002
-Function SpPsRest_ReadAllLists  #*** LEGACY CODE ***
+Function PsSpSpRestApi_ReadAllLists  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists?$select=Title,Id"
 	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
@@ -181,7 +193,7 @@ Function SpPsRest_ReadAllLists  #*** LEGACY CODE ***
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function SpPsRest_ReadOneList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_ReadOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
 	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
@@ -192,7 +204,7 @@ Function SpPsRest_ReadOneList  #*** LEGACY CODE ***
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function SpPsRest_UpdateOneList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_UpdateOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
 	$myPayload = @{ 
@@ -211,7 +223,7 @@ Function SpPsRest_UpdateOneList  #*** LEGACY CODE ***
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function SpPsRest_DeleteOneList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_DeleteOneList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')"
 	$contextInfo = Get-SPOContextInfo -WebUrl $WebUrl -UserName $userName `
@@ -226,7 +238,7 @@ Function SpPsRest_DeleteOneList  #*** LEGACY CODE ***
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function SpPsRest_AddOneFieldToList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_AddOneFieldToList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
 	$myPayload = @{ 
@@ -245,7 +257,7 @@ Function SpPsRest_AddOneFieldToList  #*** LEGACY CODE ***
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function SpPsRest_ReadAllFieldsFromList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_ReadAllFieldsFromList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields"
 	$data = Invoke-RestSPO -Url $endpointUrl -Method GET -UserName $userName `
@@ -256,7 +268,7 @@ Function SpPsRest_ReadAllFieldsFromList  #*** LEGACY CODE ***
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function SpPsRest_ReadOneFieldFromList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_ReadOneFieldFromList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
 					                                "getbytitle('MyMultilineField')"
@@ -268,7 +280,7 @@ Function SpPsRest_ReadOneFieldFromList  #*** LEGACY CODE ***
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function SpPsRest_UpdateOneFieldInList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_UpdateOneFieldInList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
 													"getbytitle('MyMultilineField')"
@@ -288,7 +300,7 @@ Function SpPsRest_UpdateOneFieldInList  #*** LEGACY CODE ***
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function SpPsRest_DeleteOneFieldFromList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_DeleteOneFieldFromList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/fields/" +
 													"getbytitle('MyMultilineField')"
@@ -304,7 +316,7 @@ Function SpPsRest_DeleteOneFieldFromList  #*** LEGACY CODE ***
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function SpPsRest_BreakSecurityInheritanceList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_BreakSecurityInheritanceList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
 				"breakroleinheritance(copyRoleAssignments=false, clearSubscopes=true)"
@@ -320,7 +332,7 @@ Function SpPsRest_BreakSecurityInheritanceList  #*** LEGACY CODE ***
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function SpPsRest_ResetSecurityInheritanceList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_ResetSecurityInheritanceList  #*** LEGACY CODE ***
 {
 	$endpointUrl = $WebUrl + "/_api/lists/getbytitle('NewListRestPs')/" +
 				"resetroleinheritance"
@@ -335,7 +347,7 @@ Function SpPsRest_ResetSecurityInheritanceList  #*** LEGACY CODE ***
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function SpPsRest_AddUserToSecurityRoleInList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_AddUserToSecurityRoleInList  #*** LEGACY CODE ***
 {
 	# Inheritance MUST be broken
     # Find the User
@@ -368,7 +380,7 @@ Function SpPsRest_AddUserToSecurityRoleInList  #*** LEGACY CODE ***
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function SpPsRest_UpdateUserSecurityRoleInList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_UpdateUserSecurityRoleInList  #*** LEGACY CODE ***
 {
 	# Inheritance MUST be broken
     # Find the User
@@ -401,7 +413,7 @@ Function SpPsRest_UpdateUserSecurityRoleInList  #*** LEGACY CODE ***
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function SpPsRest_DeleteUserFromSecurityRoleInList  #*** LEGACY CODE ***
+Function PsSpSpRestApi_DeleteUserFromSecurityRoleInList  #*** LEGACY CODE ***
 {
     # Find the User
 	$endpointUrl = $WebUrl + "/_api/web/siteusers?$select=Id&" +
@@ -429,9 +441,9 @@ Function SpPsRest_DeleteUserFromSecurityRoleInList  #*** LEGACY CODE ***
 # Using Azure AD Authentication through Connect-PnPOnline and an Account/PW App Registration
 
 #gavdcodebegin 101
-Function SpPsRest_CreateOneListAD
+Function PsSpSpRestApi_CreateOneListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web/lists"
@@ -457,9 +469,9 @@ Function SpPsRest_CreateOneListAD
 #gavdcodeend 101 
 
 #gavdcodebegin 102
-Function SpPsRest_ReadAllListsAD
+Function PsSpSpRestApi_ReadAllListsAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/lists?$select=Title,Id"
@@ -476,9 +488,9 @@ Function SpPsRest_ReadAllListsAD
 #gavdcodeend 102
 
 #gavdcodebegin 103
-Function SpPsRest_ReadOneListAD
+Function PsSpSpRestApi_ReadOneListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -496,9 +508,9 @@ Function SpPsRest_ReadOneListAD
 #gavdcodeend 103
 
 #gavdcodebegin 104
-Function SpPsRest_UpdateOneListAD
+Function PsSpSpRestApi_UpdateOneListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -522,9 +534,9 @@ Function SpPsRest_UpdateOneListAD
 #gavdcodeend 104
 
 #gavdcodebegin 105
-Function SpPsRest_DeleteOneListAD
+Function PsSpSpRestApi_DeleteOneListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -544,9 +556,9 @@ Function SpPsRest_DeleteOneListAD
 #gavdcodeend 105
 
 #gavdcodebegin 106
-Function SpPsRest_AddOneFieldToListAD
+Function PsSpSpRestApi_AddOneFieldToListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -570,9 +582,9 @@ Function SpPsRest_AddOneFieldToListAD
 #gavdcodeend 106
 
 #gavdcodebegin 107
-Function SpPsRest_ReadAllFieldsFromListAD
+Function PsSpSpRestApi_ReadAllFieldsFromListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -591,9 +603,9 @@ Function SpPsRest_ReadAllFieldsFromListAD
 #gavdcodeend 107
 
 #gavdcodebegin 108
-Function SpPsRest_ReadOneFieldFromListAD
+Function PsSpSpRestApi_ReadOneFieldFromListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -613,9 +625,9 @@ Function SpPsRest_ReadOneFieldFromListAD
 #gavdcodeend 108
 
 #gavdcodebegin 109
-Function SpPsRest_UpdateOneFieldInListAD
+Function PsSpSpRestApi_UpdateOneFieldInListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -640,9 +652,9 @@ Function SpPsRest_UpdateOneFieldInListAD
 #gavdcodeend 109
 
 #gavdcodebegin 110
-Function SpPsRest_DeleteOneFieldFromListAD
+Function PsSpSpRestApi_DeleteOneFieldFromListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -662,9 +674,9 @@ Function SpPsRest_DeleteOneFieldFromListAD
 #gavdcodeend 110
 
 #gavdcodebegin 111
-Function SpPsRest_BreakSecurityInheritanceListAD
+Function PsSpSpRestApi_BreakSecurityInheritanceListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -683,9 +695,9 @@ Function SpPsRest_BreakSecurityInheritanceListAD
 #gavdcodeend 111
 
 #gavdcodebegin 112
-Function SpPsRest_ResetSecurityInheritanceListAD
+Function PsSpSpRestApi_ResetSecurityInheritanceListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -703,11 +715,11 @@ Function SpPsRest_ResetSecurityInheritanceListAD
 #gavdcodeend 112
 
 #gavdcodebegin 113
-Function SpPsRest_AddUserToSecurityRoleInListAD
+Function PsSpSpRestApi_AddUserToSecurityRoleInListAD
 {
 	# Inheritance MUST be broken
     # Find the User
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + `
@@ -751,10 +763,10 @@ Function SpPsRest_AddUserToSecurityRoleInListAD
 #gavdcodeend 113
 
 #gavdcodebegin 114
-Function SpPsRest_UpdateUserSecurityRoleInListAD
+Function PsSpSpRestApi_UpdateUserSecurityRoleInListAD
 {
 	# Inheritance MUST be broken
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     # Find the User
@@ -799,9 +811,9 @@ Function SpPsRest_UpdateUserSecurityRoleInListAD
 #gavdcodeend 114
 
 #gavdcodebegin 115
-Function SpPsRest_DeleteUserFromSecurityRoleInListAD
+Function PsSpSpRestApi_DeleteUserFromSecurityRoleInListAD
 {
-	LoginPsPnPPowerShellWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     # Find the User
@@ -832,47 +844,51 @@ Function SpPsRest_DeleteUserFromSecurityRoleInListAD
 }
 #gavdcodeend 115
 
-#----------------------------------------------------------------------------------------
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
+
+# *** Latest Source Code Index: 115
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-## Using Legacy Classic Authentication
+## Using LEGACY Classic Authentication (Do not use this code anymore)
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 #$webUrl = $configFile.appsettings.spUrl
 #$userName = $configFile.appsettings.spUserName
 #$password = $configFile.appsettings.spUserPw
-#SpPsRest_CreateOneList
-#SpPsRest_ReadAllLists
-#SpPsRest_ReadOneList
-#SpPsRest_UpdateOneList
-#SpPsRest_DeleteOneList
-#SpPsRest_AddOneFieldToList
-#SpPsRest_ReadAllFieldsFromList
-#SpPsRest_ReadOneFieldFromList
-#SpPsRest_UpdateOneFieldInList
-#SpPsRest_DeleteOneFieldFromList
-#SpPsRest_BreakSecurityInheritanceList
-#SpPsRest_ResetSecurityInheritanceList
-#SpPsRest_AddUserToSecurityRoleInList
-#SpPsRest_UpdateUserSecurityRoleInList
-#SpPsRest_DeleteUserFromSecurityRoleInList
+#PsSpSpRestApi_CreateOneList
+#PsSpSpRestApi_ReadAllLists
+#PsSpSpRestApi_ReadOneList
+#PsSpSpRestApi_UpdateOneList
+#PsSpSpRestApi_DeleteOneList
+#PsSpSpRestApi_AddOneFieldToList
+#PsSpSpRestApi_ReadAllFieldsFromList
+#PsSpSpRestApi_ReadOneFieldFromList
+#PsSpSpRestApi_UpdateOneFieldInList
+#PsSpSpRestApi_DeleteOneFieldFromList
+#PsSpSpRestApi_BreakSecurityInheritanceList
+#PsSpSpRestApi_ResetSecurityInheritanceList
+#PsSpSpRestApi_AddUserToSecurityRoleInList
+#PsSpSpRestApi_UpdateUserSecurityRoleInList
+#PsSpSpRestApi_DeleteUserFromSecurityRoleInList
 
 ## Using Azure AD Authentication
-#SpPsRest_CreateOneListAD
-#SpPsRest_ReadAllListsAD
-#SpPsRest_ReadOneListAD
-#SpPsRest_UpdateOneListAD
-#SpPsRest_DeleteOneListAD
-#SpPsRest_AddOneFieldToListAD
-#SpPsRest_ReadAllFieldsFromListAD
-#SpPsRest_ReadOneFieldFromListAD
-#SpPsRest_UpdateOneFieldInListAD
-#SpPsRest_DeleteOneFieldFromListAD
-#SpPsRest_BreakSecurityInheritanceListAD
-#SpPsRest_ResetSecurityInheritanceListAD
-#SpPsRest_AddUserToSecurityRoleInListAD
-#SpPsRest_UpdateUserSecurityRoleInListAD
-#SpPsRest_DeleteUserFromSecurityRoleInListAD
+#PsSpSpRestApi_CreateOneListAD
+#PsSpSpRestApi_ReadAllListsAD
+#PsSpSpRestApi_ReadOneListAD
+#PsSpSpRestApi_UpdateOneListAD
+#PsSpSpRestApi_DeleteOneListAD
+#PsSpSpRestApi_AddOneFieldToListAD
+#PsSpSpRestApi_ReadAllFieldsFromListAD
+#PsSpSpRestApi_ReadOneFieldFromListAD
+#PsSpSpRestApi_UpdateOneFieldInListAD
+#PsSpSpRestApi_DeleteOneFieldFromListAD
+#PsSpSpRestApi_BreakSecurityInheritanceListAD
+#PsSpSpRestApi_ResetSecurityInheritanceListAD
+#PsSpSpRestApi_AddUserToSecurityRoleInListAD
+#PsSpSpRestApi_UpdateUserSecurityRoleInListAD
+#PsSpSpRestApi_DeleteUserFromSecurityRoleInListAD
 
 Write-Host "Done" 

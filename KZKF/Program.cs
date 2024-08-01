@@ -1,6 +1,4 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.Online.SharePoint.TenantManagement;
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using System.Collections.Concurrent;
 using System.Configuration;
 using System.Security;
@@ -9,9 +7,10 @@ using System.Text.Json;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
@@ -25,12 +24,14 @@ using System.Web;
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsCsom_CreateOneList(ClientContext spCtx)
+static void CsSpCsom_CreateOneList(ClientContext spCtx)
 {
-    ListCreationInformation myListCreationInfo = new ListCreationInformation();
-    myListCreationInfo.Title = "NewListCsCsom";
-    myListCreationInfo.Description = "New List created using CSharp CSOM";
-    myListCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
+    ListCreationInformation myListCreationInfo = new()
+    {
+        Title = "NewListCsCsom",
+        Description = "New List created using CSharp CSOM",
+        TemplateType = (int)ListTemplateType.GenericList
+    };
 
     List newList = spCtx.Web.Lists.Add(myListCreationInfo);
     newList.OnQuickLaunch = true;
@@ -40,7 +41,7 @@ static void SpCsCsom_CreateOneList(ClientContext spCtx)
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsCsom_ReadAllList(ClientContext spCtx)
+static void CsSpCsom_ReadAllList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     ListCollection allLists = myWeb.Lists;
@@ -56,7 +57,7 @@ static void SpCsCsom_ReadAllList(ClientContext spCtx)
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsCsom_ReadOneList(ClientContext spCtx)
+static void CsSpCsom_ReadOneList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -68,7 +69,7 @@ static void SpCsCsom_ReadOneList(ClientContext spCtx)
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void SpCsCsom_UpdateOneList(ClientContext spCtx)
+static void CsSpCsom_UpdateOneList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -82,7 +83,7 @@ static void SpCsCsom_UpdateOneList(ClientContext spCtx)
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsCsom_DeleteOneList(ClientContext spCtx)
+static void CsSpCsom_DeleteOneList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -91,8 +92,8 @@ static void SpCsCsom_DeleteOneList(ClientContext spCtx)
 }
 //gavdcodeend 005
 
-//gavdcodebegin 06
-static void SpCsCsom_AddOneFieldToList(ClientContext spCtx)
+//gavdcodebegin 006
+static void CsSpCsom_AddOneFieldToList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -102,16 +103,16 @@ static void SpCsCsom_AddOneFieldToList(ClientContext spCtx)
                                                AddFieldOptions.DefaultValue);
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 06
+//gavdcodeend 006
 
 //gavdcodebegin 007
-static void SpCsCsom_ReadAllFieldsFromList(ClientContext spCtx)
+static void CsSpCsom_ReadAllFieldsFromList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
     FieldCollection allFields = myList.Fields;
-    spCtx.Load(allFields, flds => flds.Include(fld => fld.Title,
-                                               fld => fld.TypeAsString));
+    spCtx.Load(allFields, fields => fields.Include(field => field.Title,
+                                                    field => field.TypeAsString));
     spCtx.ExecuteQuery();
 
     foreach (Field oneField in allFields)
@@ -122,7 +123,7 @@ static void SpCsCsom_ReadAllFieldsFromList(ClientContext spCtx)
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void SpCsCsom_ReadOneFieldFromList(ClientContext spCtx)
+static void CsSpCsom_ReadOneFieldFromList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -135,7 +136,7 @@ static void SpCsCsom_ReadOneFieldFromList(ClientContext spCtx)
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void SpCsCsom_UpdateOneFieldInList(ClientContext spCtx)
+static void CsSpCsom_UpdateOneFieldInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -155,7 +156,7 @@ static void SpCsCsom_UpdateOneFieldInList(ClientContext spCtx)
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void SpCsCsom_DeleteOneFieldFromList(ClientContext spCtx)
+static void CsSpCsom_DeleteOneFieldFromList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -166,7 +167,7 @@ static void SpCsCsom_DeleteOneFieldFromList(ClientContext spCtx)
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void SpCsCsom_BreakSecurityInheritanceList(ClientContext spCtx)
+static void CsSpCsom_BreakSecurityInheritanceList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -183,15 +184,16 @@ static void SpCsCsom_BreakSecurityInheritanceList(ClientContext spCtx)
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void SpCsCsom_AddUserToSecurityRoleInList(ClientContext spCtx)
+static void CsSpCsom_AddUserToSecurityRoleInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
 
     User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
-    RoleDefinitionBindingCollection roleDefinition =
-                                        new RoleDefinitionBindingCollection(spCtx);
-    roleDefinition.Add(myWeb.RoleDefinitions.GetByType(RoleType.Reader));
+    RoleDefinitionBindingCollection roleDefinition = new(spCtx)
+    {
+        myWeb.RoleDefinitions.GetByType(RoleType.Reader)
+    };
     myList.RoleAssignments.Add(myUser, roleDefinition);
 
     spCtx.ExecuteQuery();
@@ -199,15 +201,16 @@ static void SpCsCsom_AddUserToSecurityRoleInList(ClientContext spCtx)
 //gavdcodeend 012
 
 //gavdcodebegin 013
-static void SpCsCsom_UpdateUserSecurityRoleInList(ClientContext spCtx)
+static void CsSpCsom_UpdateUserSecurityRoleInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
 
     User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
-    RoleDefinitionBindingCollection roleDefinition =
-                                        new RoleDefinitionBindingCollection(spCtx);
-    roleDefinition.Add(myWeb.RoleDefinitions.GetByType(RoleType.Contributor));
+    RoleDefinitionBindingCollection roleDefinition = new(spCtx)
+    {
+        myWeb.RoleDefinitions.GetByType(RoleType.Contributor)
+    };
 
     RoleAssignment myRoleAssignment = myList.RoleAssignments.GetByPrincipal(myUser);
     myRoleAssignment.ImportRoleDefinitionBindings(roleDefinition);
@@ -218,7 +221,7 @@ static void SpCsCsom_UpdateUserSecurityRoleInList(ClientContext spCtx)
 //gavdcodeend 013
 
 //gavdcodebegin 014
-static void SpCsCsom_DeleteUserFromSecurityRoleInList(ClientContext spCtx)
+static void CsSpCsom_DeleteUserFromSecurityRoleInList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -231,7 +234,7 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInList(ClientContext spCtx)
 //gavdcodeend 014
 
 //gavdcodebegin 015
-static void SpCsCsom_ResetSecurityInheritanceList(ClientContext spCtx)
+static void CsSpCsom_ResetSecurityInheritanceList(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -248,7 +251,7 @@ static void SpCsCsom_ResetSecurityInheritanceList(ClientContext spCtx)
 //gavdcodeend 015
 
 //gavdcodebegin 016
-static void SpCsCsom_FieldCreateText(ClientContext spCtx)
+static void CsSpCsom_CreateFieldText(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -264,14 +267,14 @@ static void SpCsCsom_FieldCreateText(ClientContext spCtx)
 }
 //gavdcodeend 016
 
-//gavdcodebegin 17
-static void SpCsCsom_ReadAllSiteColumns(ClientContext spCtx)
+//gavdcodebegin 017
+static void CsSpCsom_ReadAllSiteColumns(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     FieldCollection allSiteColls = myWeb.Fields;
 
-    spCtx.Load(allSiteColls, flds => flds.Include(fld => fld.Title,
-                                               fld => fld.Group));
+    spCtx.Load(allSiteColls, fields => fields.Include(field => field.Title,
+                                               field => field.Group));
     spCtx.ExecuteQuery();
 
     foreach (Field oneColl in allSiteColls)
@@ -279,10 +282,10 @@ static void SpCsCsom_ReadAllSiteColumns(ClientContext spCtx)
         Console.WriteLine(oneColl.Title + " - " + oneColl.Group);
     }
 }
-//gavdcodeend 17
+//gavdcodeend 017
 
-//gavdcodebegin 18
-static void SpCsCsom_AddOneSiteColumn(ClientContext spCtx)
+//gavdcodebegin 018
+static void CsSpCsom_AddOneSiteColumn(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
 
@@ -293,10 +296,10 @@ static void SpCsCsom_AddOneSiteColumn(ClientContext spCtx)
                                                AddFieldOptions.DefaultValue);
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 18
+//gavdcodeend 018
 
-//gavdcodebegin 19
-static void SpCsCsom_ColumnIndex(ClientContext spCtx)
+//gavdcodebegin 019
+static void CsSpCsom_ColumnIndex(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("NewListCsCsom");
@@ -308,45 +311,45 @@ static void SpCsCsom_ColumnIndex(ClientContext spCtx)
 
     spCtx.ExecuteQuery();
 }
-//gavdcodeend 19
+//gavdcodeend 019
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
+//# *** Latest Source Code Index: 019 ***
 
 //--> Working with Lists and Libraries
-SecureString usrPw = new SecureString();
+SecureString usrPw = new();
 foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
     usrPw.AppendChar(oneChar);
 
-using (AuthenticationManager myAuthenticationManager =
-            new AuthenticationManager())
+using (AuthenticationManager myAuthenticationManager = new())
 using (ClientContext spCtx = myAuthenticationManager.GetContext(
             new Uri(ConfigurationManager.AppSettings["SiteCollUrl"]),
             ConfigurationManager.AppSettings["UserName"],
             usrPw,
             ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
 {
-    //SpCsCsom_CreateOneList(spCtx);
-    //SpCsCsom_ReadAllList(spCtx);
-    //SpCsCsom_ReadOneList(spCtx);
-    //SpCsCsom_UpdateOneList(spCtx);
-    //SpCsCsom_DeleteOneList(spCtx);
-    //SpCsCsom_AddOneFieldToList(spCtx);
-    //SpCsCsom_ReadAllFieldsFromList(spCtx);
-    //SpCsCsom_ReadOneFieldFromList(spCtx);
-    //SpCsCsom_UpdateOneFieldInList(spCtx);
-    //SpCsCsom_DeleteOneFieldFromList(spCtx);
-    //SpCsCsom_BreakSecurityInheritanceList(spCtx);
-    //SpCsCsom_AddUserToSecurityRoleInList(spCtx);
-    //SpCsCsom_UpdateUserSecurityRoleInList(spCtx);
-    //SpCsCsom_DeleteUserFromSecurityRoleInList(spCtx);
-    //SpCsCsom_ResetSecurityInheritanceList(spCtx);
-    //SpCsCsom_FieldCreateText(spCtx);
-    //SpCsCsom_ReadAllSiteColumns(spCtx);
-    //SpCsCsom_AddOneSiteColumn(spCtx);
-    //SpCsCsom_ColumnIndex(spCtx);
+    //CsSpCsom_CreateOneList(spCtx);
+    //CsSpCsom_ReadAllList(spCtx);
+    //CsSpCsom_ReadOneList(spCtx);
+    //CsSpCsom_UpdateOneList(spCtx);
+    //CsSpCsom_DeleteOneList(spCtx);
+    //CsSpCsom_AddOneFieldToList(spCtx);
+    //CsSpCsom_ReadAllFieldsFromList(spCtx);
+    //CsSpCsom_ReadOneFieldFromList(spCtx);
+    //CsSpCsom_UpdateOneFieldInList(spCtx);
+    //CsSpCsom_DeleteOneFieldFromList(spCtx);
+    //CsSpCsom_BreakSecurityInheritanceList(spCtx);
+    //CsSpCsom_AddUserToSecurityRoleInList(spCtx);
+    //CsSpCsom_UpdateUserSecurityRoleInList(spCtx);
+    //CsSpCsom_DeleteUserFromSecurityRoleInList(spCtx);
+    //CsSpCsom_ResetSecurityInheritanceList(spCtx);
+    //CsSpCsom_CreateFieldText(spCtx);
+    //CsSpCsom_ReadAllSiteColumns(spCtx);
+    //CsSpCsom_AddOneSiteColumn(spCtx);
+    //CsSpCsom_ColumnIndex(spCtx);
 
     Console.WriteLine("Done");
 }
@@ -358,14 +361,13 @@ using (ClientContext spCtx = myAuthenticationManager.GetContext(
 
 public class AuthenticationManager : IDisposable
 {
-    private static readonly HttpClient httpClient = new HttpClient();
+    private static readonly HttpClient httpClient = new();
     private const string tokenEndpoint =
                             "https://login.microsoftonline.com/common/oauth2/token";
 
-    private static readonly SemaphoreSlim semaphoreSlimTokens = new SemaphoreSlim(1);
+    private static readonly SemaphoreSlim semaphoreSlimTokens = new(1);
     private AutoResetEvent tokenResetEvent = null;
-    private readonly ConcurrentDictionary<string, string> tokenCache =
-                                            new ConcurrentDictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> tokenCache = new();
     private bool disposedValue;
 
     internal class TokenWaitInfo
@@ -416,7 +418,7 @@ public class AuthenticationManager : IDisposable
                 AddTokenToCache(resourceUri, tokenCache, accessToken);
 
                 tokenResetEvent = new AutoResetEvent(false);
-                TokenWaitInfo wi = new TokenWaitInfo();
+                TokenWaitInfo wi = new();
                 wi.Handle = ThreadPool.RegisterWaitForSingleObject(
                     tokenResetEvent,
                     async (state, timedOut) =>
@@ -437,7 +439,7 @@ public class AuthenticationManager : IDisposable
                                                             ConfigureAwait(false);
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
-                            catch (Exception ex)
+                            catch
                             {
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
@@ -465,7 +467,7 @@ public class AuthenticationManager : IDisposable
         }
     }
 
-    private async Task<string> AcquireTokenAsync(Uri resourceUri,
+    private static async Task<string> AcquireTokenAsync(Uri resourceUri,
                                         string username, string password, string clientId)
     {
         string resource = $"{resourceUri.Scheme}://{resourceUri.DnsSafeHost}";
@@ -475,32 +477,30 @@ public class AuthenticationManager : IDisposable
         body += $"grant_type=password&";
         body += $"username={HttpUtility.UrlEncode(username)}&";
         body += $"password={HttpUtility.UrlEncode(password)}";
-        using (var stringContent = new StringContent(body,
-                            Encoding.UTF8, "application/x-www-form-urlencoded"))
-        {
-            var result = await httpClient.PostAsync(tokenEndpoint,
-                            stringContent).ContinueWith((response) =>
-                            {
-                                return response.Result.Content.ReadAsStringAsync().Result;
-                            }).ConfigureAwait(false);
+        using var stringContent = new StringContent(body,
+                            Encoding.UTF8, "application/x-www-form-urlencoded");
+        var result = await httpClient.PostAsync(tokenEndpoint,
+                        stringContent).ContinueWith((response) =>
+                        {
+                            return response.Result.Content.ReadAsStringAsync().Result;
+                        }).ConfigureAwait(false);
 
-            var tokenResult = JsonSerializer.Deserialize<JsonElement>(result);
-            try
-            { // Check for an error returned by Azure AD
-                var tokenError = tokenResult.GetProperty("error").GetString();
+        var tokenResult = JsonSerializer.Deserialize<JsonElement>(result);
+        try
+        { // Check for an error returned by Azure AD
+            var tokenError = tokenResult.GetProperty("error").GetString();
 
-                string strError = "TokenErrorException - " +
-                            tokenResult.GetProperty("error").GetString() + " - " +
-                            tokenResult.GetProperty("error_description").GetString();
+            string strError = "TokenErrorException - " +
+                        tokenResult.GetProperty("error").GetString() + " - " +
+                        tokenResult.GetProperty("error_description").GetString();
 
-                return strError;
-            }
-            catch
-            { } // Nothing to catch, the response is giving correctly the token 
-
-            var token = tokenResult.GetProperty("access_token").GetString();
-            return token;
+            return strError;
         }
+        catch
+        { } // Nothing to catch, the response is giving correctly the token 
+
+        var token = tokenResult.GetProperty("access_token").GetString();
+        return token;
     }
 
     private static string TokenFromCache(Uri web, ConcurrentDictionary<string,
@@ -579,4 +579,5 @@ public class AuthenticationManager : IDisposable
 
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
 

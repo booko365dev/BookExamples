@@ -1,5 +1,14 @@
 ﻿
-Function LoginPsCsom()
+
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+function PsSpCsom_Login
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -12,10 +21,13 @@ Function LoginPsCsom()
 
 	return $rtnContext
 }
-#-----------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function SpPsCsom_CreateOneList($spCtx)
+function PsSpCsom_CreateOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
 
@@ -33,7 +45,7 @@ Function SpPsCsom_CreateOneList($spCtx)
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function SpPsCsom_ReadAllList($spCtx)
+function PsSpCsom_ReadAllList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$allLists = $myWeb.Lists
@@ -48,7 +60,7 @@ Function SpPsCsom_ReadAllList($spCtx)
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function SpPsCsom_ReadOneList($spCtx)
+function PsSpCsom_ReadOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -60,7 +72,7 @@ Function SpPsCsom_ReadOneList($spCtx)
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function SpPsCsom_UpdateOneList($spCtx)
+function PsSpCsom_UpdateOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -74,7 +86,7 @@ Function SpPsCsom_UpdateOneList($spCtx)
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function SpPsCsom_DeleteOneList($spCtx)
+function PsSpCsom_DeleteOneList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -84,7 +96,7 @@ Function SpPsCsom_DeleteOneList($spCtx)
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function SpPsCsom_AddOneFieldToList($spCtx)
+function PsSpCsom_AddOneFieldToList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -97,7 +109,7 @@ Function SpPsCsom_AddOneFieldToList($spCtx)
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function SpPsCsom_ReadAllFieldsFromList($spCtx)
+function PsSpCsom_ReadAllFieldsFromList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -113,7 +125,7 @@ Function SpPsCsom_ReadAllFieldsFromList($spCtx)
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function SpPsCsom_ReadOneFieldFromList($spCtx)
+function PsSpCsom_ReadOneFieldFromList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -126,7 +138,7 @@ Function SpPsCsom_ReadOneFieldFromList($spCtx)
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function SpPsCsom_UpdateOneFieldInList($spCtx)
+function PsSpCsom_UpdateOneFieldInList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -144,7 +156,7 @@ Function SpPsCsom_UpdateOneFieldInList($spCtx)
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function SpPsCsom_DeleteOneFieldFromList($spCtx)
+function PsSpCsom_DeleteOneFieldFromList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -155,7 +167,7 @@ Function SpPsCsom_DeleteOneFieldFromList($spCtx)
 #gavdcodeend 010
 
 #gavdcodebegin 012
-Function SpPsCsom_RetrieveProperties() 
+function PsSpCsom_RetrieveProperties
 {
 	param(
    [Microsoft.SharePoint.Client.ClientObject]$Object = 
@@ -182,7 +194,7 @@ Function SpPsCsom_RetrieveProperties()
 #gavdcodeend 012
 
 #gavdcodebegin 011
-Function SpPsCsom_BreakSecurityInheritanceList($spCtx)
+function PsSpCsom_BreakSecurityInheritanceList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -202,7 +214,7 @@ Function SpPsCsom_BreakSecurityInheritanceList($spCtx)
 #gavdcodeend 011
 
 #gavdcodebegin 013
-Function SpPsCsom_ResetSecurityInheritanceList($spCtx)
+function PsSpCsom_ResetSecurityInheritanceList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -222,7 +234,7 @@ Function SpPsCsom_ResetSecurityInheritanceList($spCtx)
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function SpPsCsomAddUserToSecurityRoleInList($spCtx)
+function SpPsCsomAddUserToSecurityRoleInList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -239,7 +251,7 @@ Function SpPsCsomAddUserToSecurityRoleInList($spCtx)
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function SpPsCsom_UpdateUserSecurityRoleInList($spCtx)
+function PsSpCsom_UpdateUserSecurityRoleInList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -259,7 +271,7 @@ Function SpPsCsom_UpdateUserSecurityRoleInList($spCtx)
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function SpPsCsom_DeleteUserFromSecurityRoleInList($spCtx)
+function PsSpCsom_DeleteUserFromSecurityRoleInList($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListPsCsom")
@@ -273,7 +285,7 @@ Function SpPsCsom_DeleteUserFromSecurityRoleInList($spCtx)
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function SpPsCsom_ColumnIndex($spCtx)
+function PsSpCsom_ColumnIndex($spCtx)
 {
 	$myWeb = $spCtx.Web
 	$myList = $myWeb.Lists.GetByTitle("NewListCsCsom")
@@ -289,31 +301,34 @@ Function SpPsCsom_ColumnIndex($spCtx)
 }
 #gavdcodeend 017
 
-#-----------------------------------------------------------------------------------------
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
 
+# *** Latest Source Code Index: 017 ***
 
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-$spCtx = LoginPsCsom
+$spCtx = PsSpCsom_Login
 
-#SpPsCsom_CreateOneList $spCtx
-#SpPsCsom_ReadAllList $spCtx
-#SpPsCsom_ReadOneList $spCtx
-#SpPsCsom_UpdateOneList $spCtx
-#SpPsCsom_DeleteOneList $spCtx
-#SpPsCsom_AddOneFieldToList $spCtx
-#SpPsCsom_ReadAllFieldsFromList $spCtx
-#SpPsCsom_ReadOneFieldFromList $spCtx
-#SpPsCsom_UpdateOneFieldInList $spCtx
-#SpPsCsom_DeleteOneFieldFromList $spCtx
-#SpPsCsom_BreakSecurityInheritanceList $spCtx
-#SpPsCsom_ResetSecurityInheritanceList $spCtx
-#SpPsCsom_AddUserToSecurityRoleInList $spCtx
-#SpPsCsom_UpdateUserSecurityRoleInList $spCtx
-#SpPsCsom_DeleteUserFromSecurityRoleInList $spCtx
-#SpPsCsom_ColumnIndex $spCtx
+#PsSpCsom_CreateOneList $spCtx
+#PsSpCsom_ReadAllList $spCtx
+#PsSpCsom_ReadOneList $spCtx
+#PsSpCsom_UpdateOneList $spCtx
+#PsSpCsom_DeleteOneList $spCtx
+#PsSpCsom_AddOneFieldToList $spCtx
+#PsSpCsom_ReadAllFieldsFromList $spCtx
+#PsSpCsom_ReadOneFieldFromList $spCtx
+#PsSpCsom_UpdateOneFieldInList $spCtx
+#PsSpCsom_DeleteOneFieldFromList $spCtx
+#PsSpCsom_BreakSecurityInheritanceList $spCtx
+#PsSpCsom_ResetSecurityInheritanceList $spCtx
+#PsSpCsom_AddUserToSecurityRoleInList $spCtx
+#PsSpCsom_UpdateUserSecurityRoleInList $spCtx
+#PsSpCsom_DeleteUserFromSecurityRoleInList $spCtx
+#PsSpCsom_ColumnIndex $spCtx
 
 Write-Host "Done"

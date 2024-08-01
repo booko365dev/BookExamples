@@ -8,17 +8,18 @@ using System.Web;
 using System.Xml;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-static Tuple<string, string> GetTokenWithAccPw()
+static Tuple<string, string> CsSpRest_GetTokenWithAccPw()
 {
-    Tuple<string, string> tplReturn = new Tuple<string, string>(string.Empty, string.Empty);
+    Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
 
     string myEndpoint = "https://login.microsoftonline.com/" +
                         ConfigurationManager.AppSettings["TenantName"] + "/oauth2/token";
@@ -32,10 +33,10 @@ static Tuple<string, string> GetTokenWithAccPw()
     reqBody += $"password=" +
                 $"{HttpUtility.UrlEncode(ConfigurationManager.AppSettings["UserPw"])}";
 
-    using (StringContent myStrContent = new StringContent(reqBody, Encoding.UTF8,
+    using (StringContent myStrContent = new(reqBody, Encoding.UTF8,
                                                     "application/x-www-form-urlencoded"))
     {
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         string tokenStr = myHttpClient.PostAsync(myEndpoint,
                             myStrContent).ContinueWith((myResponse) =>
                             {
@@ -44,8 +45,7 @@ static Tuple<string, string> GetTokenWithAccPw()
                             }).Result;
 
         var tokenObj = System.Text.Json.JsonSerializer.Deserialize<JsonElement>(tokenStr);
-        JsonElement myError;
-        bool hasError = tokenObj.TryGetProperty("error", out myError);
+        bool hasError = tokenObj.TryGetProperty("error", out JsonElement myError);
 
         if (hasError == true)
         {
@@ -74,7 +74,7 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 
     if (AuthToken == null)
     {
-        myTokenWithAccPw = GetTokenWithAccPw();
+        myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
     }
     else
     {
@@ -86,10 +86,9 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 
     string myBody = "{}";
 
-    using (StringContent myStrContent = new StringContent(myBody, Encoding.UTF8,
-                                             "application/json"))
+    using (StringContent myStrContent = new(myBody, Encoding.UTF8, "application/json"))
     {
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
 
@@ -100,7 +99,7 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
                                                         .ReadAsStringAsync().Result;
                             }).Result;
 
-        XmlDocument myDocXml = new XmlDocument();
+        XmlDocument myDocXml = new();
         myDocXml.LoadXml(digestXml);
 
         XmlNodeList allNodes = myDocXml.SelectNodes("/");
@@ -116,11 +115,11 @@ static string GetRequestDigest(Tuple<string, string> AuthToken)
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsRest_CreateOneList()
+static void CsSpRest_CreateOneList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists";
@@ -136,13 +135,13 @@ static void SpCsRest_CreateOneList()
         };
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -159,8 +158,7 @@ static void SpCsRest_CreateOneList()
 
             var resultObj = System.Text.Json.JsonSerializer
                                                  .Deserialize<JsonElement>(resultStr);
-            JsonElement myError;
-            bool hasError = resultObj.TryGetProperty("error", out myError);
+            bool hasError = resultObj.TryGetProperty("error", out JsonElement myError);
 
             if (hasError == true)
             {
@@ -176,16 +174,16 @@ static void SpCsRest_CreateOneList()
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsRest_ReadeAllLists()
+static void CsSpRest_ReadAllLists()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                    "/_api/lists?$select=Title,Id";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -202,16 +200,16 @@ static void SpCsRest_ReadeAllLists()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsRest_ReadeOneList()
+static void CsSpRest_ReadOneList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                    "/_api/lists/getbytitle('NewListRestCs')";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -228,11 +226,11 @@ static void SpCsRest_ReadeOneList()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void SpCsRest_UpdateOneList()
+static void CsSpRest_UpdateOneList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                                "/_api/lists/getbytitle('NewListRestCs')";
@@ -244,13 +242,13 @@ static void SpCsRest_UpdateOneList()
         };
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -285,11 +283,11 @@ static void SpCsRest_UpdateOneList()
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsRest_DeleteOneList()
+static void CsSpRest_DeleteOneList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                              "/_api/lists/getbytitle('NewListRestCs')";
@@ -297,13 +295,13 @@ static void SpCsRest_DeleteOneList()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -338,11 +336,11 @@ static void SpCsRest_DeleteOneList()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void SpCsRest_AddOneFieldToList()
+static void CsSpRest_AddOneFieldToList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/lists/getbytitle('NewListRestCs')/fields";
@@ -355,13 +353,13 @@ static void SpCsRest_AddOneFieldToList()
         };
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -378,8 +376,7 @@ static void SpCsRest_AddOneFieldToList()
 
             var resultObj = System.Text.Json.JsonSerializer
                                                   .Deserialize<JsonElement>(resultStr);
-            JsonElement myError;
-            bool hasError = resultObj.TryGetProperty("error", out myError);
+            bool hasError = resultObj.TryGetProperty("error", out JsonElement myError);
 
             if (hasError == true)
             {
@@ -395,16 +392,16 @@ static void SpCsRest_AddOneFieldToList()
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void SpCsRest_ReadAllFieldsFromList()
+static void CsSpRest_ReadAllFieldsFromList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                    "/_api/lists/getbytitle('NewListRestCs')/fields";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -421,16 +418,16 @@ static void SpCsRest_ReadAllFieldsFromList()
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void SpCsRest_ReadOneFieldFromList()
+static void CsSpRest_ReadOneFieldFromList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
           "/_api/lists/getbytitle('NewListRestCs')/fields/getbytitle('MyMultilineField')";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                     "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -447,11 +444,11 @@ static void SpCsRest_ReadOneFieldFromList()
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void SpCsRest_UpdateOneFieldInList()
+static void CsSpRest_UpdateOneFieldInList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
           "/_api/lists/getbytitle('NewListRestCs')/fields/getbytitle('MyMultilineField')";
@@ -463,13 +460,13 @@ static void SpCsRest_UpdateOneFieldInList()
         };
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -504,11 +501,11 @@ static void SpCsRest_UpdateOneFieldInList()
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void SpCsRest_DeleteOneFieldFromList()
+static void CsSpRest_DeleteOneFieldFromList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
          "/_api/lists/getbytitle('NewListRestCs')/fields/getbytitle('MyMultilineField')";
@@ -516,13 +513,13 @@ static void SpCsRest_DeleteOneFieldFromList()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -557,11 +554,11 @@ static void SpCsRest_DeleteOneFieldFromList()
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void SpCsRest_BreakSecurityInheritanceList()
+static void CsSpRest_BreakSecurityInheritanceList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                  "/_api/lists/getbytitle('NewListRestCs')/" +
@@ -570,13 +567,13 @@ static void SpCsRest_BreakSecurityInheritanceList()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -602,11 +599,11 @@ static void SpCsRest_BreakSecurityInheritanceList()
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void SpCsRest_ResetSecurityInheritanceList()
+static void CsSpRest_ResetSecurityInheritanceList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                        "/_api/lists/getbytitle('NewListRestCs')/resetroleinheritance";
@@ -614,13 +611,13 @@ static void SpCsRest_ResetSecurityInheritanceList()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                     "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -637,8 +634,7 @@ static void SpCsRest_ResetSecurityInheritanceList()
 
             var resultObj = System.Text.Json.JsonSerializer
                                                  .Deserialize<JsonElement>(resultStr);
-            JsonElement myError;
-            bool hasError = resultObj.TryGetProperty("error", out myError);
+            bool hasError = resultObj.TryGetProperty("error", out JsonElement myError);
 
             if (hasError == true)
             {
@@ -654,18 +650,18 @@ static void SpCsRest_ResetSecurityInheritanceList()
 //gavdcodeend 012
 
 //gavdcodebegin 013
-static void SpCsRest_AddUserToSecurityRoleInList()
+static void CsSpRest_AddUserToSecurityRoleInList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
     // Find the User
     int userId = 0;
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
              "/_api/web/siteusers?$select=Id&$filter=startswith(Title,'System Admin')";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -683,12 +679,12 @@ static void SpCsRest_AddUserToSecurityRoleInList()
 
     // Find the RoleDefinitions
     int roleId = 0;
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
          "/_api/web/roledefinitions?$select=Id&$filter=startswith(Name,'Full Control')";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                  "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -704,8 +700,8 @@ static void SpCsRest_AddUserToSecurityRoleInList()
         Console.WriteLine(roleId);
     }
 
-    // Add the User in the RoleDefinion to the List
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    // Add the User in the RoleDefinition to the List
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
           "/_api/lists/getbytitle('NewListRestCs')/roleassignments/addroleassignment" +
@@ -714,13 +710,13 @@ static void SpCsRest_AddUserToSecurityRoleInList()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                    "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -746,18 +742,18 @@ static void SpCsRest_AddUserToSecurityRoleInList()
 //gavdcodeend 013
 
 //gavdcodebegin 014
-static void SpCsRest_UpdateUserSecurityRoleInList()
+static void CsSpRest_UpdateUserSecurityRoleInList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
     // Find the User
     int userId = 0;
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
              "/_api/web/siteusers?$select=Id&$filter=startswith(Title,'System Admin')";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -775,12 +771,12 @@ static void SpCsRest_UpdateUserSecurityRoleInList()
 
     // Find the RoleDefinitions
     int roleId = 0;
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
           "/_api/web/roledefinitions/getbyname('Edit')/Id";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                    "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -796,8 +792,8 @@ static void SpCsRest_UpdateUserSecurityRoleInList()
         Console.WriteLine(roleId);
     }
 
-    // Add the User in the RoleDefinion to the List
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    // Add the User in the RoleDefinition to the List
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
           "/_api/lists/getbytitle('NewListRestCs')/roleassignments/addroleassignment" +
@@ -806,13 +802,13 @@ static void SpCsRest_UpdateUserSecurityRoleInList()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                    "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -838,18 +834,18 @@ static void SpCsRest_UpdateUserSecurityRoleInList()
 //gavdcodeend 014
 
 //gavdcodebegin 015
-static void SpCsRest_DeleteUserFromSecurityRoleInList()
+static void CsSpRest_DeleteUserFromSecurityRoleInList()
 {
-    Tuple<string, string> myTokenWithAccPw = GetTokenWithAccPw();
+    Tuple<string, string> myTokenWithAccPw = CsSpRest_GetTokenWithAccPw();
 
     // Find the User
     int userId = 0;
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
             "/_api/web/siteusers?$select=Id&$filter=startswith(Title,'System Admin')";
 
-        HttpClient myHttpClient = new HttpClient();
+        HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
                                   "Authorization", "Bearer " + myTokenWithAccPw.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
@@ -866,7 +862,7 @@ static void SpCsRest_DeleteUserFromSecurityRoleInList()
     }
 
     // Remove the User from the List
-    if (myTokenWithAccPw.Item1.ToLower() == "ok")
+    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
           "/_api/lists/getbytitle('NewListRestCs')/roleassignments/" +
@@ -875,13 +871,13 @@ static void SpCsRest_DeleteUserFromSecurityRoleInList()
         object myPayloadObj = null;
         string myPayLoadJson = JsonConvert.SerializeObject(myPayloadObj);
 
-        StringContent myStrContent = new StringContent(myPayLoadJson);
+        StringContent myStrContent = new(myPayLoadJson);
         myStrContent.Headers.ContentType = MediaTypeHeaderValue.Parse(
                                                    "application/json;odata=verbose");
 
         using (myStrContent)
         {
-            HttpClient myHttpClient = new HttpClient();
+            HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
@@ -920,21 +916,23 @@ static void SpCsRest_DeleteUserFromSecurityRoleInList()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//SpCsRest_CreateOneList();
-//SpCsRest_ReadeAllLists();
-//SpCsRest_ReadeOneList();
-//SpCsRest_UpdateOneList();
-//SpCsRest_DeleteOneList();
-//SpCsRest_AddOneFieldToList();
-//SpCsRest_ReadAllFieldsFromList();
-//SpCsRest_ReadOneFieldFromList();
-//SpCsRest_UpdateOneFieldInList();
-//SpCsRest_DeleteOneFieldFromList();
-//SpCsRest_BreakSecurityInheritanceList();
-//SpCsRest_ResetSecurityInheritanceList();
-//SpCsRest_AddUserToSecurityRoleInList();
-//SpCsRest_UpdateUserSecurityRoleInList();
-//SpCsRest_DeleteUserFromSecurityRoleInList();
+//# *** Latest Source Code Index: 015 ***
+
+//CsSpRest_CreateOneList();
+//CsSpRest_ReadAllLists();
+//CsSpRest_ReadOneList();
+//CsSpRest_UpdateOneList();
+//CsSpRest_DeleteOneList();
+//CsSpRest_AddOneFieldToList();
+//CsSpRest_ReadAllFieldsFromList();
+//CsSpRest_ReadOneFieldFromList();
+//CsSpRest_UpdateOneFieldInList();
+//CsSpRest_DeleteOneFieldFromList();
+//CsSpRest_BreakSecurityInheritanceList();
+//CsSpRest_ResetSecurityInheritanceList();
+//CsSpRest_AddUserToSecurityRoleInList();
+//CsSpRest_UpdateUserSecurityRoleInList();
+//CsSpRest_DeleteUserFromSecurityRoleInList();
 
 
 //---------------------------------------------------------------------------------------
@@ -944,4 +942,5 @@ static void SpCsRest_DeleteUserFromSecurityRoleInList()
 
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
 

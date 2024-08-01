@@ -7,7 +7,7 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-Function LoginPsCLI
+Function PsSpCliM365_LoginWithAccPw
 {
 	m365 login --authType password `
 			   --userName $configFile.appsettings.UserName `
@@ -19,9 +19,9 @@ Function LoginPsCLI
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-function SpPsCliM365_CreateListWithParameters
+function PsSpCliM365_CreateListWithParameters
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo list add --title "NewListPsCli" `
 					  --baseTemplate GenericList `
@@ -32,9 +32,9 @@ function SpPsCliM365_CreateListWithParameters
 #gavdcodeend 001
 
 #gavdcodebegin 002
-function SpPsCliM365_CreateListWithSchema
+function PsSpCliM365_CreateListWithSchema
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	$listSchema = "<List xmlns:ows='Microsoft SharePoint' `
 						Title='NewListPsCliWithSchema' `
@@ -57,9 +57,9 @@ function SpPsCliM365_CreateListWithSchema
 #gavdcodeend 002
 
 #gavdcodebegin 003
-function SpPsCliM365_GetAllLists
+function PsSpCliM365_GetAllLists
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo list list --webUrl $configFile.appsettings.SiteCollUrl
 	
@@ -68,11 +68,11 @@ function SpPsCliM365_GetAllLists
 #gavdcodeend 003
 
 #gavdcodebegin 004
-function SpPsCliM365_GetOneList
+function PsSpCliM365_GetOneList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
-	m365 spo list get --id "cb3841d2-6561-452c-bbaf-08338bfa0029" `
+	m365 spo list get --id "97ee9e5c-a332-468e-bfcd-252b1cee3b5c" `
 					  --webUrl $configFile.appsettings.SiteCollUrl
 #	m365 spo list get --title "NewListPsCli" `
 #					  --webUrl $configFile.appsettings.SiteCollUrl
@@ -85,11 +85,11 @@ function SpPsCliM365_GetOneList
 #gavdcodeend 004
 
 #gavdcodebegin 005
-function SpPsCliM365_UpdateOneList
+function PsSpCliM365_UpdateOneList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
-	m365 spo list set --id "bf830e20-8288-45c8-901f-68e14ac61075" `
+	m365 spo list set --id "97ee9e5c-a332-468e-bfcd-252b1cee3b5c" `
 					  --webUrl $configFile.appsettings.SiteCollUrl `
 					  --description "List updated"
 	
@@ -98,11 +98,11 @@ function SpPsCliM365_UpdateOneList
 #gavdcodeend 005
 
 #gavdcodebegin 006
-function SpPsCliM365_DeleteOneList
+function PsSpCliM365_DeleteOneList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
-	m365 spo list remove --id "bf830e20-8288-45c8-901f-68e14ac61075" `
+	m365 spo list remove --title "NewListPsCli" `
 						 --webUrl $configFile.appsettings.SiteCollUrl
 	
 	m365 logout
@@ -110,9 +110,9 @@ function SpPsCliM365_DeleteOneList
 #gavdcodeend 006
 
 #gavdcodebegin 007
-function SpPsCliM365_GetAllFieldsInList
+function PsSpCliM365_GetAllFieldsInList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo field list --listTitle "NewListPsCli" `
 					    --webUrl $configFile.appsettings.SiteCollUrl
@@ -122,9 +122,9 @@ function SpPsCliM365_GetAllFieldsInList
 #gavdcodeend 007
 
 #gavdcodebegin 008
-function SpPsCliM365_GetOneFieldInList
+function PsSpCliM365_GetOneFieldInList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo field get --listTitle "NewListPsCli" `
 					   --fieldTitle "Title" `
@@ -135,9 +135,9 @@ function SpPsCliM365_GetOneFieldInList
 #gavdcodeend 008
 
 #gavdcodebegin 009
-function SpPsCliM365_CreateOneFieldInList
+function PsSpCliM365_CreateOneFieldInList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	$fieldXml = `
 			"<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
@@ -151,12 +151,12 @@ function SpPsCliM365_CreateOneFieldInList
 #gavdcodeend 009
 
 #gavdcodebegin 010
-function SpPsCliM365_UpdateOneFieldInList
+function PsSpCliM365_UpdateOneFieldInList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo field set --listTitle "NewListPsCli" `
-					   --name "MyMultilineField" `
+					   --title "MyMultilineField" `
 					   --Description "New Field Description" `
 					   --webUrl $configFile.appsettings.SiteCollUrl
 
@@ -165,23 +165,23 @@ function SpPsCliM365_UpdateOneFieldInList
 #gavdcodeend 010
 
 #gavdcodebegin 011
-function SpPsCliM365_DeleteOneFieldFromList
+function PsSpCliM365_DeleteOneFieldFromList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo field remove --listTitle "NewListPsCli" `
-						  --fieldTitle "MyMultilineField" `
+						  --title "MyMultilineField" `
 						  --webUrl $configFile.appsettings.SiteCollUrl `
-						  --confirm
+						  --force
 
 	m365 logout
 }
 #gavdcodeend 011
 
 #gavdcodebegin 012
-function SpPsCliM365_BreakInheritanceList
+function PsSpCliM365_BreakInheritanceList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo list roleinheritance break --listTitle "NewListPsCli" `
 										--webUrl $configFile.appsettings.SiteCollUrl `
@@ -192,9 +192,9 @@ function SpPsCliM365_BreakInheritanceList
 #gavdcodeend 012
 
 #gavdcodebegin 013
-function SpPsCliM365_RestoreInheritanceList
+function PsSpCliM365_RestoreInheritanceList
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo list roleinheritance reset --listTitle "NewListPsCli" `
 										--webUrl $configFile.appsettings.SiteCollUrl
@@ -204,9 +204,9 @@ function SpPsCliM365_RestoreInheritanceList
 #gavdcodeend 013
 
 #gavdcodebegin 014
-function SpPsCliM365_GetAllRoledefinition
+function PsSpCliM365_GetAllRoledefinition
 {
-	$spCtx = LoginPsCLI
+	$spCtx = PsSpCliM365_LoginWithAccPw
 
 	m365 spo roledefinition list --webUrl $configFile.appsettings.SiteCollUrl
 
@@ -214,27 +214,273 @@ function SpPsCliM365_GetAllRoledefinition
 }
 #gavdcodeend 014
 
+#gavdcodebegin 015
+function PsSpCliM365_GetOneRoledefinition
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo roledefinition get --webUrl $configFile.appsettings.SiteCollUrl `
+								--id "1073741924"
+
+	m365 logout
+}
+#gavdcodeend 015
+
+#gavdcodebegin 016
+function PsSpCliM365_AddRoledefinition
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo roledefinition add --webUrl $configFile.appsettings.SiteCollUrl `
+								--name "NewRoleDefinitionFromM365" `
+								--description "Is is my description" `
+					--rights "ViewListItems,AddListItems,EditListItems,DeleteListItems"
+
+	m365 logout
+}
+#gavdcodeend 016
+
+#gavdcodebegin 017
+function PsSpCliM365_RemoveRoledefinition
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo roledefinition remove --webUrl $configFile.appsettings.SiteCollUrl `
+								--id "1073741924" `
+								--force
+
+	m365 logout
+}
+#gavdcodeend 017
+
+#gavdcodebegin 018
+function PsSpCliM365_AssignRoledefinitionToListAndUser
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list roleassignment add --webUrl $configFile.appsettings.SiteCollUrl `
+									 --listTitle "NewListPsCli" `
+									 --upn $configFile.appsettings.UserName `
+									 --roleDefinitionId "1073741924"
+
+	m365 logout
+}
+#gavdcodeend 018
+
+#gavdcodebegin 019
+function PsSpCliM365_RemoveRoledefinitionFromListForUser
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list roleassignment remove --webUrl $configFile.appsettings.SiteCollUrl `
+										--listTitle "NewListPsCli" `
+										--upn $configFile.appsettings.UserName
+
+	m365 logout
+}
+#gavdcodeend 019
+
+#gavdcodebegin 020
+function PsSpCliM365_GetAllContentTypesList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list contenttype list --webUrl $configFile.appsettings.SiteCollUrl `
+								   --listTitle "NewListPsCli"
+
+	m365 logout
+}
+#gavdcodeend 020
+
+#gavdcodebegin 021
+function PsSpCliM365_AddOneContentTypeToList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list contenttype add --webUrl $configFile.appsettings.SiteCollUrl `
+								  --listTitle "NewListPsCli" `
+								  --id "0x010101"
+
+	m365 logout
+}
+#gavdcodeend 021
+
+#gavdcodebegin 022
+function PsSpCliM365_SetDefaultContentTypeInList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list contenttype default set --webUrl $configFile.appsettings.SiteCollUrl `
+										  --listTitle "NewListPsCli" `
+										  --contentTypeId "0x010101"
+
+	m365 logout
+}
+#gavdcodeend 022
+
+#gavdcodebegin 023
+function PsSpCliM365_DeleteContentTypeFromList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list contenttype remove --webUrl $configFile.appsettings.SiteCollUrl `
+								     --listTitle "NewListPsCli" `
+								     --id "0x010101"
+
+	m365 logout
+}
+#gavdcodeend 023
+
+#gavdcodebegin 024
+function PsSpCliM365_GetAllViewsInList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list view list --webUrl $configFile.appsettings.SiteCollUrl `
+								     --listTitle "NewListPsCli"
+
+	m365 logout
+}
+#gavdcodeend 024
+
+#gavdcodebegin 025
+function PsSpCliM365_GetOneViewInList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list view get --webUrl $configFile.appsettings.SiteCollUrl `
+						   --listTitle "NewListPsCli" `
+						   --title "All Items"
+
+	m365 logout
+}
+#gavdcodeend 025
+
+#gavdcodebegin 026
+function PsSpCliM365_AddOneViewToList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list view add --webUrl $configFile.appsettings.SiteCollUrl `
+						   --listTitle "NewListPsCli" `
+						   --title "My View" `
+						   --fields "Title,MyMultilineField" `
+						   --paged --default
+
+	m365 logout
+}
+#gavdcodeend 026
+
+#gavdcodebegin 027
+function PsSpCliM365_UpdateOneViewInList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list view set --webUrl $configFile.appsettings.SiteCollUrl `
+						   --listTitle "NewListPsCli" `
+						   --title "My View" `
+						   --Title "My View Updated"
+
+	m365 logout
+}
+#gavdcodeend 027
+
+#gavdcodebegin 028
+function PsSpCliM365_AddOneFieldToViewForList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list view field add --webUrl $configFile.appsettings.SiteCollUrl `
+								 --listTitle "NewListPsCli" `
+								 --viewTitle "My View Updated" `
+								 --title "My Text Field"
+
+	m365 logout
+}
+#gavdcodeend 028
+
+#gavdcodebegin 029
+function PsSpCliM365_UpdateOneFieldForViewForList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+
+	m365 spo list view field set --webUrl $configFile.appsettings.SiteCollUrl `
+								 --listTitle "NewListPsCli" `
+								 --viewTitle "My View Updated" `
+								 --title "My Text Field" `
+								 --position 1
+
+	m365 logout
+}
+#gavdcodeend 029
+
+#gavdcodebegin 030
+function PsSpCliM365_DeleteOneFieldFromViewForList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list view field remove --webUrl $configFile.appsettings.SiteCollUrl `
+									--listTitle "NewListPsCli" `
+									--viewTitle "My View Updated" `
+									--title "My Text Field"
+
+	m365 logout
+}
+#gavdcodeend 030
+
+#gavdcodebegin 031
+function PsSpCliM365_DeleteOneViewFromList
+{
+	$spCtx = PsSpCliM365_LoginWithAccPw
+
+	m365 spo list view remove --webUrl $configFile.appsettings.SiteCollUrl `
+									--listTitle "NewListPsCli" `
+									--title "My View Updated"
+
+	m365 logout
+}
+#gavdcodeend 031
+
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
+# *** Latest Source Code Index: 031 ***
+
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 #------- Using the CLI for Microsoft 365 --------
-#SpPsCliM365_CreateListWithParameters
-#SpPsCliM365_CreateListWithSchema
-#SpPsCliM365_GetAllLists
-#SpPsCliM365_GetOneList
-#SpPsCliM365_UpdateOneList
-#SpPsCliM365_DeleteOneList
-#SpPsCliM365_GetAllFieldsInList
-#SpPsCliM365_GetOneFieldInList
-#SpPsCliM365_CreateOneFieldInList
-#SpPsCliM365_UpdateOneFieldInList
-#SpPsCliM365_DeleteOneFieldFromList
-#SpPsCliM365_BreakInheritanceList
-#SpPsCliM365_RestoreInheritanceList
-#SpPsCliM365_GetAllRoledefinition
+#PsSpCliM365_CreateListWithParameters
+#PsSpCliM365_CreateListWithSchema
+#PsSpCliM365_GetAllLists
+#PsSpCliM365_GetOneList
+#PsSpCliM365_UpdateOneList
+#PsSpCliM365_DeleteOneList
+#PsSpCliM365_GetAllFieldsInList
+#PsSpCliM365_GetOneFieldInList
+#PsSpCliM365_CreateOneFieldInList
+#PsSpCliM365_UpdateOneFieldInList
+#PsSpCliM365_DeleteOneFieldFromList
+#PsSpCliM365_BreakInheritanceList
+#PsSpCliM365_RestoreInheritanceList
+#PsSpCliM365_GetAllRoledefinition
+#PsSpCliM365_GetOneRoledefinition
+#PsSpCliM365_AddRoledefinition
+#PsSpCliM365_AssignRoledefinitionToListAndUser
+#PsSpCliM365_RemoveRoledefinitionFromListForUser
+#PsSpCliM365_GetAllContentTypesList
+#PsSpCliM365_AddOneContentTypeToList
+#PsSpCliM365_SetDefaultContentTypeInList
+#PsSpCliM365_DeleteContentTypeFromList
+#PsSpCliM365_GetAllViewsInList
+#PsSpCliM365_GetOneViewInList
+#PsSpCliM365_AddOneViewToList
+#PsSpCliM365_UpdateOneViewInList
+#PsSpCliM365_AddOneFieldToViewForList
+#PsSpCliM365_UpdateOneFieldForViewForList
+#PsSpCliM365_DeleteOneFieldFromViewForList
+#PsSpCliM365_DeleteOneViewFromList
 
 Write-Host "Done" 
