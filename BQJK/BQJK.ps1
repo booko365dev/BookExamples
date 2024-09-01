@@ -1,25 +1,37 @@
-﻿Function LoginPsCsom
+﻿
+##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+Function PsSpCsom_Login
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.spUserPw -AsPlainText -Force
+			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials `
-			($configFile.appsettings.spUserName, $securePW)
+			($configFile.appsettings.UserName, $securePW)
 	$rtnContext = New-Object Microsoft.SharePoint.Client.ClientContext `
-			($configFile.appsettings.spUrl) 
+			($configFile.appsettings.SiteCollUrl) 
 	$rtnContext.Credentials = $myCredentials
 
 	return $rtnContext
 }
-#----------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function SpPsCsom_CreateOneListItem($spCtx)
+Function PsSpCsom_CreateOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
 	$myListItemCreationInfo = `
-					New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
+				New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
 	$newListItem = $myList.AddItem($myListItemCreationInfo)
 	$newListItem["Title"] = "NewListItemPsCsom"
 	$newListItem.Update()
@@ -28,13 +40,13 @@ Function SpPsCsom_CreateOneListItem($spCtx)
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function SpPsCsom_CreateMultipleItem($spCtx)
+Function PsSpCsom_CreateMultipleItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
 	for($intCounter = 0; $intCounter -lt 4; $intCounter++) {
 		$myListItemCreationInfo = `
-					New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
+				New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
 		$newListItem = $myList.AddItem($myListItemCreationInfo)
 		$newListItem["Title"] = $intCounter.ToString() + "-NewListItemPsCsom"
 		$newListItem.Update()
@@ -45,7 +57,7 @@ Function SpPsCsom_CreateMultipleItem($spCtx)
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function SpPsCsom_UploadOneDocument($spCtx)
+Function PsSpCsom_UploadOneDocument($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
@@ -61,12 +73,12 @@ Function SpPsCsom_UploadOneDocument($spCtx)
 	$fileMode = [System.IO.FileMode]::Open
 	$myFileStream = New-Object System.IO.FileStream $fileFullPath, $fileMode
 	[Microsoft.SharePoint.Client.File]::SaveBinaryDirect($spCtx, $fileUrl, `
-																$myFileStream, $true)
+															$myFileStream, $true)
 }
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function SpPsCsom_UploadOneDocumentFileCrInfo($spCtx)
+Function PsSpCsom_UploadOneDocumentFileCrInfo($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
@@ -92,7 +104,7 @@ Function SpPsCsom_UploadOneDocumentFileCrInfo($spCtx)
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function SpPsCsom_DownloadOneDocument($spCtx)
+Function PsSpCsom_DownloadOneDocument($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
@@ -115,12 +127,12 @@ Function SpPsCsom_DownloadOneDocument($spCtx)
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function SpPsCsom_ReadAllListItems($spCtx)
+Function PsSpCsom_ReadAllListItems($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
     $allItems = $myList.GetItems(`
-						[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
+					[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
     $spCtx.Load($allItems)
     $spCtx.ExecuteQuery()
 
@@ -131,12 +143,12 @@ Function SpPsCsom_ReadAllListItems($spCtx)
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function SpPsCsom_ReadAllLibraryDocs($spCtx)
+Function PsSpCsom_ReadAllLibraryDocs($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
     $allItems = $myList.GetItems(`
-						[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
+					[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
     $spCtx.Load($allItems)
     $spCtx.ExecuteQuery()
 
@@ -147,7 +159,7 @@ Function SpPsCsom_ReadAllLibraryDocs($spCtx)
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function SpPsCsom_ReadOneListItem($spCtx)
+Function PsSpCsom_ReadOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
@@ -183,7 +195,7 @@ Function SpPsCsom_ReadOneListItem($spCtx)
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function SpPsCsom_ReadOneLibraryDoc($spCtx)
+Function PsSpCsom_ReadOneLibraryDoc($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
@@ -217,7 +229,7 @@ Function SpPsCsom_ReadOneLibraryDoc($spCtx)
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function SpPsCsom_UpdateOneListItem($spCtx)
+Function PsSpCsom_UpdateOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
@@ -232,7 +244,7 @@ Function SpPsCsom_UpdateOneListItem($spCtx)
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function SpPsCsom_UpdateOneLibraryDoc($spCtx)
+Function PsSpCsom_UpdateOneLibraryDoc($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
@@ -247,7 +259,7 @@ Function SpPsCsom_UpdateOneLibraryDoc($spCtx)
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function SpPsCsom_DeleteOneListItem($spCtx)
+Function PsSpCsom_DeleteOneListItem($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
@@ -258,12 +270,12 @@ Function SpPsCsom_DeleteOneListItem($spCtx)
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function SpPsCsom_DeleteAllListItems($spCtx)
+Function PsSpCsom_DeleteAllListItems($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
 	$myListItems = $myList.GetItems(`
-						[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
+					[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
 	$spCtx.Load($myListItems)
     $spCtx.ExecuteQuery()
 
@@ -277,7 +289,7 @@ Function SpPsCsom_DeleteAllListItems($spCtx)
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function SpPsCsom_DeleteOneLibraryDoc($spCtx)
+Function PsSpCsom_DeleteOneLibraryDoc($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
@@ -288,12 +300,12 @@ Function SpPsCsom_DeleteOneLibraryDoc($spCtx)
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function SpPsCsom_DeleteAllLibraryDocs($spCtx)
+Function PsSpCsom_DeleteAllLibraryDocs($spCtx)
 {
 	$myList = $spCtx.Web.Lists.GetByTitle("TestLibrary")
 
 	$myListItems = $myList.GetItems(`
-						[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
+					[Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery())
 	$spCtx.Load($myListItems)
     $spCtx.ExecuteQuery()
 
@@ -307,7 +319,7 @@ Function SpPsCsom_DeleteAllLibraryDocs($spCtx)
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function SpPsCsom_BreakSecurityInheritanceListItem($spCtx)
+Function PsSpCsom_BreakSecurityInheritanceListItem($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
@@ -322,7 +334,7 @@ Function SpPsCsom_BreakSecurityInheritanceListItem($spCtx)
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function SpPsCsom_ResetSecurityInheritanceListItem($spCtx)
+Function PsSpCsom_ResetSecurityInheritanceListItem($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
@@ -337,7 +349,7 @@ Function SpPsCsom_ResetSecurityInheritanceListItem($spCtx)
 #gavdcodeend 017
 
  #gavdcodebegin 018
-Function SpPsCsom_AddUserToSecurityRoleInListItem($spCtx)
+Function PsSpCsom_AddUserToSecurityRoleInListItem($spCtx)
 {
 	$myWeb = $spCtx.Web
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -345,9 +357,9 @@ Function SpPsCsom_AddUserToSecurityRoleInListItem($spCtx)
 
     $myUser = $myWeb.EnsureUser($configFile.appsettings.spUserName)
     $roleDefinition = `
-           New-Object Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
+        New-Object Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
     $roleDefinition.Add($myWeb.RoleDefinitions.GetByType(`
-										[Microsoft.SharePoint.Client.RoleType]::Reader))
+									[Microsoft.SharePoint.Client.RoleType]::Reader))
 
     $myListItem.RoleAssignments.Add($myUser, $roleDefinition)
     $spCtx.ExecuteQuery()
@@ -355,7 +367,7 @@ Function SpPsCsom_AddUserToSecurityRoleInListItem($spCtx)
 #gavdcodeend 018
 
 #gavdcodebegin 019
-Function SpPsCsom_UpdateUserSecurityRoleInListItem($spCtx)
+Function PsSpCsom_UpdateUserSecurityRoleInListItem($spCtx)
 {
 	$myWeb = $spCtx.Web
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -363,9 +375,9 @@ Function SpPsCsom_UpdateUserSecurityRoleInListItem($spCtx)
 
     $myUser = $myWeb.EnsureUser($configFile.appsettings.spUserName)
     $roleDefinition = `
-           New-Object Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
+        New-Object Microsoft.SharePoint.Client.RoleDefinitionBindingCollection($spCtx)
     $roleDefinition.Add($myWeb.RoleDefinitions.GetByType(`
-								[Microsoft.SharePoint.Client.RoleType]::Administrator))
+							[Microsoft.SharePoint.Client.RoleType]::Administrator))
 
     $myRoleAssignment = $myListItem.RoleAssignments.GetByPrincipal($myUser)
     $myRoleAssignment.ImportRoleDefinitionBindings($roleDefinition)
@@ -376,7 +388,7 @@ Function SpPsCsom_UpdateUserSecurityRoleInListItem($spCtx)
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function SpPsCsom_DeleteUserFromSecurityRoleInListItem($spCtx)
+Function PsSpCsom_DeleteUserFromSecurityRoleInListItem($spCtx)
 {
     $myWeb = $spCtx.Web
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
@@ -390,7 +402,7 @@ Function SpPsCsom_DeleteUserFromSecurityRoleInListItem($spCtx)
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function SpPsCsom_CreateFolderInLibrary($spCtx)
+Function PsSpCsom_CreateFolderInLibrary($spCtx)
 {
     $myWeb = $spCtx.Web
     $myList = $myWeb.Lists.GetByTitle("TestDocuments")
@@ -405,14 +417,14 @@ Function SpPsCsom_CreateFolderInLibrary($spCtx)
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function SpPsCsom_CreateFolderWithInfo($spCtx)
+Function PsSpCsom_CreateFolderWithInfo($spCtx)
 {
     $myWeb = $spCtx.Web
     $myList = $myWeb.Lists.GetByTitle("TestList")
 
     $infoFolder = New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
     $infoFolder.UnderlyingObjectType = `
-                            [Microsoft.SharePoint.Client.FileSystemObjectType]::Folder
+                          [Microsoft.SharePoint.Client.FileSystemObjectType]::Folder
     $infoFolder.LeafName = "FolderWithInfoPS"
     $newItem = $myList.AddItem($infoFolder)
     $newItem["Title"] = "FolderWithInfoPS"
@@ -423,13 +435,13 @@ Function SpPsCsom_CreateFolderWithInfo($spCtx)
 #gavdcodeend 022
 
 #gavdcodebegin 023
-Function SpPsCsom_AddItemInFolder($spCtx)
+Function PsSpCsom_AddItemInFolder($spCtx)
 {
     $myWeb = $spCtx.Web
     $myList = $myWeb.Lists.GetByTitle("TestList")
 
     $myListItemCreationInfo =
-                    New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
+                  New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
     $myListItemCreationInfo.FolderUrl = $spCtx.Url + "/lists/TestList/FolderWithInfoPS"
     $newListItem = $myList.AddItem($myListItemCreationInfo)
     $newListItem["Title"] = "NewListItemInFolderPsCsom"
@@ -440,7 +452,7 @@ Function SpPsCsom_AddItemInFolder($spCtx)
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function SpPsCsom_UploadOneDocumentInFolder($spCtx)
+Function PsSpCsom_UploadOneDocumentInFolder($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestDocuments")
 
@@ -454,10 +466,12 @@ Function SpPsCsom_UploadOneDocumentInFolder($spCtx)
 	$fileMode = [System.IO.FileMode]::Open
 	$myFileStream = New-Object System.IO.FileStream $fileFullPath, $fileMode
 
-	$myFileCreationInfo = New-Object Microsoft.SharePoint.Client.FileCreationInformation
+	$myFileCreationInfo = 
+                    New-Object Microsoft.SharePoint.Client.FileCreationInformation
 	$myFileCreationInfo.Overwrite = $true
 	$myFileCreationInfo.ContentStream = $myFileStream
-	$myFileCreationInfo.Url = $spCtx.Url + "/TestDocuments/FirstLevelFolderPS/" + $fileName
+	$myFileCreationInfo.Url = 
+                    $spCtx.Url + "/TestDocuments/FirstLevelFolderPS/" + $fileName
 
 	$newFile = $myList.RootFolder.Files.Add($myFileCreationInfo)
     $spCtx.Load($newFile)
@@ -466,12 +480,12 @@ Function SpPsCsom_UploadOneDocumentInFolder($spCtx)
 #gavdcodeend 024
 
 #gavdcodebegin 025
-Function SpPsCsom_ReadAllFolders($spCtx)
+Function PsSpCsom_ReadAllFolders($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
 
     $allFolders = $myList.GetItems(`
-                        [Microsoft.SharePoint.Client.CamlQuery]::CreateAllFoldersQuery())
+                    [Microsoft.SharePoint.Client.CamlQuery]::CreateAllFoldersQuery())
     $spCtx.Load($allFolders)
     $spCtx.ExecuteQuery()
 
@@ -482,11 +496,12 @@ Function SpPsCsom_ReadAllFolders($spCtx)
 #gavdcodeend 025
 
 #gavdcodebegin 026
-Function SpPsCsom_ReadAllItemsInFolder($spCtx)
+Function PsSpCsom_ReadAllItemsInFolder($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
     $myQuery = [Microsoft.SharePoint.Client.CamlQuery]::CreateAllItemsQuery()
-    $myQuery.FolderServerRelativeUrl = "/sites/[SiteNm]/Lists/TestList/FolderWithInfoPS"
+    $myQuery.FolderServerRelativeUrl = 
+                            "/sites/[SiteNm]/Lists/TestList/FolderWithInfoPS"
     $allItems = $myList.GetItems($myQuery)
     $spCtx.Load($allItems)
     $spCtx.ExecuteQuery()
@@ -498,7 +513,7 @@ Function SpPsCsom_ReadAllItemsInFolder($spCtx)
 #gavdcodeend 026
 
 #gavdcodebegin 027
-Function SpPsCsom_DeleteOneFolder($spCtx)
+Function PsSpCsom_DeleteOneFolder($spCtx)
 {
     $folderRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfoPS"
     $myFolder = $spCtx.Web.GetFolderByServerRelativeUrl($folderRelativeUrl)
@@ -509,7 +524,7 @@ Function SpPsCsom_DeleteOneFolder($spCtx)
 #gavdcodeend 027
 
 #gavdcodebegin 028
-Function SpPsCsom_CreateOneAttachment($spCtx)
+Function PsSpCsom_CreateOneAttachment($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
     $listItemId = 3
@@ -518,7 +533,7 @@ Function SpPsCsom_CreateOneAttachment($spCtx)
     $myFilePath = "C:\Temporary\Test.csv"
     $myFileName = "Test.csv"
     $myAttachmentInfo = 
-                New-Object Microsoft.SharePoint.Client.AttachmentCreationInformation
+             New-Object Microsoft.SharePoint.Client.AttachmentCreationInformation
     $myAttachmentInfo.FileName = $myFileName
     
     $fileMode = [System.IO.FileMode]::Open
@@ -531,7 +546,7 @@ Function SpPsCsom_CreateOneAttachment($spCtx)
 #gavdcodeend 028
 
 #gavdcodebegin 029
-Function SpPsCsom_ReadAllAttachments($spCtx)
+Function PsSpCsom_ReadAllAttachments($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
     $listItemId = 3
@@ -548,7 +563,7 @@ Function SpPsCsom_ReadAllAttachments($spCtx)
 #gavdcodeend 029
 
 #gavdcodebegin 030
-Function SpPsCsom_DownloadAllAttachments($spCtx)
+Function PsSpCsom_DownloadAllAttachments($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
     $listItemId = 3
@@ -562,10 +577,11 @@ Function SpPsCsom_DownloadAllAttachments($spCtx)
     foreach ($oneAttachment in $allAttachments) {
         Write-Host "File Name - " $oneAttachment.FileName
         $myFileInfo = [Microsoft.SharePoint.Client.File]::
-                            OpenBinaryDirect($spCtx, $oneAttachment.ServerRelativeUrl)
+                         OpenBinaryDirect($spCtx, $oneAttachment.ServerRelativeUrl)
         $spCtx.ExecuteQuery()
 
-        $myFileStream = [System.IO.File]::Create($myFilesPath + $oneAttachment.FileName)
+        $myFileStream = 
+                    [System.IO.File]::Create($myFilesPath + $oneAttachment.FileName)
         $myFileInfo.Stream.CopyTo($myFileStream)
         $myFileStream.Close()
     }
@@ -573,7 +589,7 @@ Function SpPsCsom_DownloadAllAttachments($spCtx)
 #gavdcodeend 030
 
 #gavdcodebegin 031
-Function SpPsCsom_DeleteAllAttachments($spCtx)
+Function PsSpCsom_DeleteAllAttachments($spCtx)
 {
     $myList = $spCtx.Web.Lists.GetByTitle("TestList")
     $listItemId = 3
@@ -591,46 +607,49 @@ Function SpPsCsom_DeleteAllAttachments($spCtx)
 }
 #gavdcodeend 031
 
-#-----------------------------------------------------------------------------------------
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
 
+# *** Latest Source Code Index: 031 ***
 
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
-[xml]$configFile = get-content "C:\Projects\spPs.values.config"
+[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
 
-$spCtx = LoginPsCsom
+$spCtx = PsSpCsom_Login
 
-#SpPsCsom_CreateOneListItem $spCtx
-#SpPsCsom_CreateMultipleItem $spCtx
-#SpPsCsom_UploadOneDocument $spCtx
-#SpPsCsom_UploadOneDocumentFileCrInfo $spCtx
-#SpPsCsom_DownloadOneDocument $spCtx
-#SpPsCsom_ReadAllListItems $spCtx
-#SpPsCsom_ReadAllLibraryDocs $spCtx
-#SpPsCsom_ReadOneListItem $spCtx
-#SpPsCsom_ReadOneLibraryDoc $spCtx
-#SpPsCsom_UpdateOneListItem $spCtx
-#SpPsCsom_UpdateOneLibraryDoc $spCtx
-#SpPsCsom_DeleteOneListItem $spCtx
-#SpPsCsom_DeleteAllListItems $spCtx
-#SpPsCsom_DeleteOneLibraryDoc $spCtx
-#SpPsCsom_DeleteAllLibraryDocs $spCtx
-#SpPsCsom_BreakSecurityInheritanceListItem $spCtx
-#SpPsCsom_ResetSecurityInheritanceListItem $spCtx
-#SpPsCsom_AddUserToSecurityRoleInListItem $spCtx
-#SpPsCsom_UpdateUserSecurityRoleInListItem $spCtx
-#SpPsCsom_DeleteUserFromSecurityRoleInListItem $spCtx
-#SpPsCsom_CreateFolderInLibrary $spCtx
-#SpPsCsom_CreateFolderWithInfo $spCtx
-#SpPsCsom_AddItemInFolder $spCtx
-#SpPsCsom_UploadOneDocumentInFolder $spCtx
-#SpPsCsom_ReadAllFolders $spCtx
-#SpPsCsom_ReadAllItemsInFolder $spCtx
-#SpPsCsom_DeleteOneFolder $spCtx
-#SpPsCsom_CreateOneAttachment $spCtx
-#SpPsCsom_ReadAllAttachments $spCtx
-#SpPsCsom_DownloadAllAttachments $spCtx
-#SpPsCsom_DeleteAllAttachments $spCtx
+#PsSpCsom_CreateOneListItem $spCtx
+#PsSpCsom_CreateMultipleItem $spCtx
+#PsSpCsom_UploadOneDocument $spCtx
+#PsSpCsom_UploadOneDocumentFileCrInfo $spCtx
+#PsSpCsom_DownloadOneDocument $spCtx
+#PsSpCsom_ReadAllListItems $spCtx
+#PsSpCsom_ReadAllLibraryDocs $spCtx
+#PsSpCsom_ReadOneListItem $spCtx
+#PsSpCsom_ReadOneLibraryDoc $spCtx
+#PsSpCsom_UpdateOneListItem $spCtx
+#PsSpCsom_UpdateOneLibraryDoc $spCtx
+#PsSpCsom_DeleteOneListItem $spCtx
+#PsSpCsom_DeleteAllListItems $spCtx
+#PsSpCsom_DeleteOneLibraryDoc $spCtx
+#PsSpCsom_DeleteAllLibraryDocs $spCtx
+#PsSpCsom_BreakSecurityInheritanceListItem $spCtx
+#PsSpCsom_ResetSecurityInheritanceListItem $spCtx
+#PsSpCsom_AddUserToSecurityRoleInListItem $spCtx
+#PsSpCsom_UpdateUserSecurityRoleInListItem $spCtx
+#PsSpCsom_DeleteUserFromSecurityRoleInListItem $spCtx
+#PsSpCsom_CreateFolderInLibrary $spCtx
+#PsSpCsom_CreateFolderWithInfo $spCtx
+#PsSpCsom_AddItemInFolder $spCtx
+#PsSpCsom_UploadOneDocumentInFolder $spCtx
+#PsSpCsom_ReadAllFolders $spCtx
+#PsSpCsom_ReadAllItemsInFolder $spCtx
+#PsSpCsom_DeleteOneFolder $spCtx
+#PsSpCsom_CreateOneAttachment $spCtx
+#PsSpCsom_ReadAllAttachments $spCtx
+#PsSpCsom_DownloadAllAttachments $spCtx
+#PsSpCsom_DeleteAllAttachments $spCtx
 
 Write-Host "Done"

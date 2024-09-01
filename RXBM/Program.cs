@@ -11,16 +11,17 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
-static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
-                                                   string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsPsPnpCoreSdk_CreateContextWithInteraction(
+    string TenantId, string ClientId, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
@@ -44,8 +45,8 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                                .GetRequiredService<IPnPContextFactory>();
-    Uri mySiteCollUri = new Uri(SiteCollUrl);
+                                            .GetRequiredService<IPnPContextFactory>();
+    Uri mySiteCollUri = new(SiteCollUrl);
     PnPContext myContext = myPnpContextFactory.CreateAsync(mySiteCollUri).Result;
 
     myHost.Dispose();
@@ -53,22 +54,23 @@ static PnPContext CreateContextWithInteraction(string TenantId, string ClientId,
     return myContext;
 }
 
-static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
-                  string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsPsPnpCoreSdk_CreateContextWithAccPw(
+    string TenantId, string ClientId, string UserAcc, string UserPw, 
+    string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
         {
             services.AddPnPCore(options =>
             {
-                SecureString secPw = new SecureString();
+                SecureString secPw = new();
                 foreach (char oneChar in UserPw)
                     secPw.AppendChar(oneChar);
 
                 options.DefaultAuthenticationProvider =
-                                    new UsernamePasswordAuthenticationProvider(ClientId,
-                                    TenantId,
-                                    UserAcc, secPw);
+                                new UsernamePasswordAuthenticationProvider(ClientId,
+                                TenantId,
+                                UserAcc, secPw);
             });
         })
         .ConfigureLogging((hostingContext, logging) =>
@@ -90,8 +92,9 @@ static PnPContext CreateContextWithAccPw(string TenantId, string ClientId,
     return myContext;
 }
 
-static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
-                    string CertificateThumbprint, string SiteCollUrl, LogLevel ShowLogs)
+static PnPContext CsPsPnpCoreSdk_CreateContextWithCertificate(
+    string TenantId, string ClientId, string CertificateThumbprint, 
+    string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
@@ -99,10 +102,10 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
             services.AddPnPCore(options =>
             {
                 options.DefaultAuthenticationProvider =
-                                    new X509CertificateAuthenticationProvider(ClientId,
-                                    TenantId,
-                                    StoreName.My, StoreLocation.CurrentUser,
-                                    CertificateThumbprint);
+                                new X509CertificateAuthenticationProvider(ClientId,
+                                TenantId,
+                                StoreName.My, StoreLocation.CurrentUser,
+                                CertificateThumbprint);
             });
         })
         .ConfigureLogging((hostingContext, logging) =>
@@ -116,7 +119,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                                .GetRequiredService<IPnPContextFactory>();
+                                             .GetRequiredService<IPnPContextFactory>();
     PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
 
     myHost.Dispose();
@@ -129,7 +132,7 @@ static PnPContext CreateContextWithCertificate(string TenantId, string ClientId,
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void SpCsPnPCoreSdk_GetItemsDocuments()
+static void CsSpPnpCoreSdk_GetItemsDocuments()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -137,8 +140,8 @@ static void SpCsPnPCoreSdk_GetItemsDocuments()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
 
@@ -157,7 +160,7 @@ static void SpCsPnPCoreSdk_GetItemsDocuments()
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void SpCsPnPCoreSdk_GetItemsByCaml()
+static void CsSpPnpCoreSdk_GetItemsByCaml()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -165,8 +168,8 @@ static void SpCsPnPCoreSdk_GetItemsByCaml()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         string viewXml = @"<View>
                     <ViewFields>
@@ -198,7 +201,7 @@ static void SpCsPnPCoreSdk_GetItemsByCaml()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void SpCsPnPCoreSdk_GetOneItem()
+static void CsSpPnpCoreSdk_GetOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -206,12 +209,12 @@ static void SpCsPnPCoreSdk_GetOneItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                               .FirstOrDefault(p => p.Title == "ItemOne");
+                                            .FirstOrDefault(p => p.Title == "ItemOne");
 
         string itemTitle = (myItem["Title"] != null) ? myItem["Title"].ToString() : "";
         Console.WriteLine(itemTitle + " - " +
@@ -224,7 +227,7 @@ static void SpCsPnPCoreSdk_GetOneItem()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void SpCsPnPCoreSdk_GetOneDocumentByRelative()
+static void CsSpPnpCoreSdk_GetOneDocumentByRelative()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -232,8 +235,8 @@ static void SpCsPnPCoreSdk_GetOneDocumentByRelative()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFile myDoc = myContext.Web
             .GetFileByServerRelativeUrl("/sites/[Site]/[Library]/TestText.txt");
@@ -246,7 +249,7 @@ static void SpCsPnPCoreSdk_GetOneDocumentByRelative()
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsPnPCoreSdk_GetOneDocumentByFind()
+static void CsSpPnpCoreSdk_GetOneDocumentByFind()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -254,8 +257,8 @@ static void SpCsPnPCoreSdk_GetOneDocumentByFind()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitleAsync("TestLibrary").Result;
         //List<IFile> myFiles = myList.FindFiles("TestText.txt");
@@ -271,7 +274,7 @@ static void SpCsPnPCoreSdk_GetOneDocumentByFind()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void SpCsPnPCoreSdk_CreateOneItem()
+static void CsSpPnpCoreSdk_CreateOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -279,11 +282,11 @@ static void SpCsPnPCoreSdk_CreateOneItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList");
-        Dictionary<string, object> itemToAdd = new Dictionary<string, object>()
+        Dictionary<string, object> itemToAdd = new()
         {
             { "Title", "ItemFromSpCsPnPCoreSdk" },
             { "ColumnText", "This is a text" }
@@ -297,7 +300,7 @@ static void SpCsPnPCoreSdk_CreateOneItem()
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void SpCsPnPCoreSdk_CreateMultipleItem()
+static void CsSpPnpCoreSdk_CreateMultipleItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -305,13 +308,13 @@ static void SpCsPnPCoreSdk_CreateMultipleItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList");
         for (int itemCounter = 1; itemCounter <= 2; itemCounter++)
         {
-            Dictionary<string, object> itemsToAdd = new Dictionary<string, object>
+            Dictionary<string, object> itemsToAdd = new()
             {
                 { "Title", $"NewItem_{itemCounter}" }
             };
@@ -327,7 +330,7 @@ static void SpCsPnPCoreSdk_CreateMultipleItem()
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void SpCsPnPCoreSdk_UploadOneDocument()
+static void CsSpPnpCoreSdk_UploadOneDocument()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -335,11 +338,11 @@ static void SpCsPnPCoreSdk_UploadOneDocument()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         string filePath = @"C:\Temporary\TestText.txt";
-        FileInfo myFileInfo = new FileInfo(filePath);
+        FileInfo myFileInfo = new(filePath);
 
         FileStream fileToUpload = System.IO.File.OpenRead(myFileInfo.FullName);
         IFolder folderOfLibrary = myContext.Web.Folders
@@ -354,7 +357,7 @@ static void SpCsPnPCoreSdk_UploadOneDocument()
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void SpCsPnPCoreSdk_DownloadOneDocument()
+static void CsSpPnpCoreSdk_DownloadOneDocument()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -362,8 +365,8 @@ static void SpCsPnPCoreSdk_DownloadOneDocument()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         string filePath = @"C:\Temporary\TestText.txt";
         string fileUrl = $"{myContext.Uri.PathAndQuery}/TestLibrary/TestText.txt";
@@ -372,10 +375,10 @@ static void SpCsPnPCoreSdk_DownloadOneDocument()
 
         // Using a Stream
         Stream myFileStream = myFile.GetContent();
-        using (var fileStrm = File.Create(filePath))
+        using (FileStream fileStream = File.Create(filePath))
         {
             myFileStream.Seek(0, SeekOrigin.Begin);
-            myFileStream.CopyTo(fileStrm);
+            myFileStream.CopyTo(fileStream);
         }
 
         // Using a Byte Array
@@ -388,7 +391,7 @@ static void SpCsPnPCoreSdk_DownloadOneDocument()
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void SpCsPnPCoreSdk_UpdateOneItem()
+static void CsSpPnpCoreSdk_UpdateOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -396,12 +399,12 @@ static void SpCsPnPCoreSdk_UpdateOneItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                           .FirstOrDefault(p => p.Title == "ItemOne");
         myItem["ColumnText"] = "This is an update";
 
         myItem.Update();
@@ -414,7 +417,7 @@ static void SpCsPnPCoreSdk_UpdateOneItem()
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void SpCsPnPCoreSdk_UpdateOneDocumentByRelative()
+static void CsSpPnpCoreSdk_UpdateOneDocumentByRelative()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -422,11 +425,11 @@ static void SpCsPnPCoreSdk_UpdateOneDocumentByRelative()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFile myDoc = myContext.Web
-            .GetFileByServerRelativeUrl("/sites/[Site]/[Library]/TestText.txt");
+                .GetFileByServerRelativeUrl("/sites/[Site]/[Library]/TestText.txt");
         myDoc.ListItemAllFields["Title"] = "Document updated";
 
         myDoc.ListItemAllFields.Update();
@@ -439,7 +442,7 @@ static void SpCsPnPCoreSdk_UpdateOneDocumentByRelative()
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void SpCsPnPCoreSdk_DeleteOneItem()
+static void CsSpPnpCoreSdk_DeleteOneItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -447,12 +450,12 @@ static void SpCsPnPCoreSdk_DeleteOneItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                          .FirstOrDefault(p => p.Title == "ItemOne");
 
         myItem.Delete();
     }
@@ -462,7 +465,7 @@ static void SpCsPnPCoreSdk_DeleteOneItem()
 //gavdcodeend 012
 
 //gavdcodebegin 013
-static void SpCsPnPCoreSdk_DeleteAllItems()
+static void CsSpPnpCoreSdk_DeleteAllItems()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -470,8 +473,8 @@ static void SpCsPnPCoreSdk_DeleteAllItems()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         foreach (var oneItem in myList.Items.AsRequested())
@@ -487,7 +490,7 @@ static void SpCsPnPCoreSdk_DeleteAllItems()
 //gavdcodeend 013
 
 //gavdcodebegin 014
-static void SpCsPnPCoreSdk_DeleteOneDocumentByRelative()
+static void CsSpPnpCoreSdk_DeleteOneDocumentByRelative()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -495,8 +498,8 @@ static void SpCsPnPCoreSdk_DeleteOneDocumentByRelative()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFile myDoc = myContext.Web
             .GetFileByServerRelativeUrl("/sites/[Site]/[Library]/TestText.txt");
@@ -509,7 +512,7 @@ static void SpCsPnPCoreSdk_DeleteOneDocumentByRelative()
 //gavdcodeend 014
 
 //gavdcodebegin 015
-static void SpCsPnPCoreSdk_GetFolders()
+static void CsSpPnpCoreSdk_GetFolders()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -517,18 +520,18 @@ static void SpCsPnPCoreSdk_GetFolders()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFolder myRootFolder = myContext.Web.Lists.GetByTitle("TestList",
                                                     p => p.RootFolder).RootFolder;
-        var myFolders = myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
+        var myFolders = 
+                myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
 
         foreach (IFolder oneFolder in myFolders)
         {
             string itemTitle = (oneFolder.Name != null) ? oneFolder.Name : "";
-            Console.WriteLine(itemTitle + " - " +
-                              oneFolder.UniqueId);
+            Console.WriteLine(itemTitle + " - " + oneFolder.UniqueId);
         }
     }
 
@@ -537,7 +540,7 @@ static void SpCsPnPCoreSdk_GetFolders()
 //gavdcodeend 015
 
 //gavdcodebegin 016
-static void SpCsPnPCoreSdk_GetOneFolder()
+static void CsSpPnpCoreSdk_GetOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -545,13 +548,15 @@ static void SpCsPnPCoreSdk_GetOneFolder()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFolder myRootFolder = myContext.Web.Lists.GetByTitle("TestLibrary",
                                                     p => p.RootFolder).RootFolder;
-        var myFolders = myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
-        IFolder myFolder = myFolders.Where(f => f.Name == "NewFolder").FirstOrDefault();
+        var myFolders = 
+                myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
+        IFolder myFolder = 
+                myFolders.Where(f => f.Name == "NewFolder").FirstOrDefault();
 
         Console.WriteLine(myFolder.Name + " - " + myFolder.UniqueId);
     }
@@ -561,7 +566,7 @@ static void SpCsPnPCoreSdk_GetOneFolder()
 //gavdcodeend 016
 
 //gavdcodebegin 017
-static void SpCsPnPCoreSdk_EnsureOneFolder()
+static void CsSpPnpCoreSdk_EnsureOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -569,8 +574,8 @@ static void SpCsPnPCoreSdk_EnsureOneFolder()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFolder myRootFolder = myContext.Web.Lists.GetByTitle("TestList",
                                                     p => p.RootFolder).RootFolder;
@@ -584,7 +589,7 @@ static void SpCsPnPCoreSdk_EnsureOneFolder()
 //gavdcodeend 017
 
 //gavdcodebegin 018
-static void SpCsPnPCoreSdk_AddOneFolder()
+static void CsSpPnpCoreSdk_AddOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -592,8 +597,8 @@ static void SpCsPnPCoreSdk_AddOneFolder()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFolder myRootFolder = myContext.Web.Lists.GetByTitle("TestLibrary",
                                                     p => p.RootFolder).RootFolder;
@@ -605,7 +610,7 @@ static void SpCsPnPCoreSdk_AddOneFolder()
 //gavdcodeend 018
 
 //gavdcodebegin 019
-static void SpCsPnPCoreSdk_UploadOneFileToOneFolder()
+static void CsSpPnpCoreSdk_UploadOneFileToOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -613,13 +618,15 @@ static void SpCsPnPCoreSdk_UploadOneFileToOneFolder()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFolder myRootFolder = myContext.Web.Lists.GetByTitle("TestLibrary",
                                             p => p.RootFolder).RootFolder;
-        var myFolders = myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
-        IFolder myFolder = myFolders.Where(f => f.Name == "NewFolder").FirstOrDefault();
+        var myFolders = 
+                myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
+        IFolder myFolder = 
+                myFolders.Where(f => f.Name == "NewFolder").FirstOrDefault();
 
         IFile newFileInFolder = myFolder.Files.Add("TestText.txt",
                           System.IO.File.OpenRead(@"C:\Temporary\TestText.txt"));
@@ -630,7 +637,7 @@ static void SpCsPnPCoreSdk_UploadOneFileToOneFolder()
 //gavdcodeend 019
 
 //gavdcodebegin 020
-static void SpCsPnPCoreSdk_DownloadOneFileFromOneFolder()
+static void CsSpPnpCoreSdk_DownloadOneFileFromOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -638,21 +645,21 @@ static void SpCsPnPCoreSdk_DownloadOneFileFromOneFolder()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         string filePath = @"C:\Temporary\TestText.txt";
         string fileUrl = 
-                    $"{myContext.Uri.PathAndQuery}/TestLibrary/NewFolder/TestText.txt";
+                  $"{myContext.Uri.PathAndQuery}/TestLibrary/NewFolder/TestText.txt";
 
         IFile myFile = myContext.Web.GetFileByServerRelativeUrl(fileUrl);
 
         // Using a Stream
         Stream myFileStream = myFile.GetContent();
-        using (var fileStrm = File.Create(filePath))
+        using (var fileStream = File.Create(filePath))
         {
             myFileStream.Seek(0, SeekOrigin.Begin);
-            myFileStream.CopyTo(fileStrm);
+            myFileStream.CopyTo(fileStream);
         }
 
         // Using a Byte Array
@@ -665,7 +672,7 @@ static void SpCsPnPCoreSdk_DownloadOneFileFromOneFolder()
 //gavdcodeend 020
 
 //gavdcodebegin 021
-static void SpCsPnPCoreSdk_DeleteOneFolder()
+static void CsSpPnpCoreSdk_DeleteOneFolder()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -673,13 +680,15 @@ static void SpCsPnPCoreSdk_DeleteOneFolder()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IFolder myRootFolder = myContext.Web.Lists.GetByTitle("TestLibrary",
                                                     p => p.RootFolder).RootFolder;
-        var myFolders = myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
-        IFolder myFolder = myFolders.Where(f => f.Name == "NewFolder").FirstOrDefault();
+        var myFolders = 
+                myRootFolder.Folders.QueryProperties(p => p.Folders, p => p.Name);
+        IFolder myFolder = 
+                myFolders.Where(f => f.Name == "NewFolder").FirstOrDefault();
 
         myFolder.Delete();
     }
@@ -689,7 +698,7 @@ static void SpCsPnPCoreSdk_DeleteOneFolder()
 //gavdcodeend 021
 
 //gavdcodebegin 022
-static void SpCsPnPCoreSdk_AddAttachmentsToItem()
+static void CsSpPnpCoreSdk_AddAttachmentsToItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -697,12 +706,12 @@ static void SpCsPnPCoreSdk_AddAttachmentsToItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                          .FirstOrDefault(p => p.Title == "ItemOne");
 
         IAttachment addedAttachment = myItem.AttachmentFiles.Add("TestText.txt", 
                 System.IO.File.OpenRead(@"C:\Temporary\TestText.txt"));
@@ -713,7 +722,7 @@ static void SpCsPnPCoreSdk_AddAttachmentsToItem()
 //gavdcodeend 022
 
 //gavdcodebegin 023
-static void SpCsPnPCoreSdk_GetAttachmentsInItem()
+static void CsSpPnpCoreSdk_GetAttachmentsInItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -721,12 +730,12 @@ static void SpCsPnPCoreSdk_GetAttachmentsInItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                         .FirstOrDefault(p => p.Title == "ItemOne");
         IAttachmentCollection myAttachments = myItem.AttachmentFiles;
 
         foreach(IAttachment oneAttachment in myAttachments)
@@ -740,7 +749,7 @@ static void SpCsPnPCoreSdk_GetAttachmentsInItem()
 //gavdcodeend 023
 
 //gavdcodebegin 024
-static void SpCsPnPCoreSdk_UpdateAttachmentsInItem()
+static void CsSpPnpCoreSdk_UpdateAttachmentsInItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -748,12 +757,12 @@ static void SpCsPnPCoreSdk_UpdateAttachmentsInItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                            .FirstOrDefault(p => p.Title == "ItemOne");
+                                        .FirstOrDefault(p => p.Title == "ItemOne");
         IAttachmentCollection myAttachments = myItem.AttachmentFiles;
 
         foreach (IAttachment oneAttachment in myAttachments)
@@ -770,7 +779,7 @@ static void SpCsPnPCoreSdk_UpdateAttachmentsInItem()
 //gavdcodeend 024
 
 //gavdcodebegin 025
-static void SpCsPnPCoreSdk_BreakeInheritanceItem()
+static void CsSpPnpCoreSdk_BreakInheritanceItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -778,12 +787,12 @@ static void SpCsPnPCoreSdk_BreakeInheritanceItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                         .FirstOrDefault(p => p.Title == "ItemOne");
 
         if (myItem != null)
         {
@@ -796,7 +805,7 @@ static void SpCsPnPCoreSdk_BreakeInheritanceItem()
 //gavdcodeend 025
 
 //gavdcodebegin 026
-static async void SpCsPnPCoreSdk_HasInheritanceItem()
+static void CsSpPnpCoreSdk_HasInheritanceItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -804,12 +813,12 @@ static async void SpCsPnPCoreSdk_HasInheritanceItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                          .FirstOrDefault(p => p.Title == "ItemOne");
         myItem.EnsureProperties(hur => hur.HasUniqueRoleAssignments);
 
         Console.WriteLine(myItem.HasUniqueRoleAssignments.ToString());
@@ -820,7 +829,7 @@ static async void SpCsPnPCoreSdk_HasInheritanceItem()
 //gavdcodeend 026
 
 //gavdcodebegin 027
-static void SpCsPnPCoreSdk_RestoreInheritanceItem()
+static void CsSpPnpCoreSdk_RestoreInheritanceItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -828,12 +837,12 @@ static void SpCsPnPCoreSdk_RestoreInheritanceItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                          .FirstOrDefault(p => p.Title == "ItemOne");
 
         if (myItem != null)
         {
@@ -846,7 +855,7 @@ static void SpCsPnPCoreSdk_RestoreInheritanceItem()
 //gavdcodeend 027
 
 //gavdcodebegin 028
-static void SpCsPnPCoreSdk_GetAllSecurityRolesItem()
+static void CsSpPnpCoreSdk_GetAllSecurityRolesItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -854,12 +863,12 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                          .FirstOrDefault(p => p.Title == "ItemOne");
 
         foreach (IRoleAssignment oneRole in myItem.RoleAssignments)
         {
@@ -878,7 +887,7 @@ static void SpCsPnPCoreSdk_GetAllSecurityRolesItem()
 //gavdcodeend 028
 
 //gavdcodebegin 029
-static void SpCsPnPCoreSdk_AddSecurityRoleToItem()
+static void CsSpPnpCoreSdk_AddSecurityRoleToItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -886,13 +895,13 @@ static void SpCsPnPCoreSdk_AddSecurityRoleToItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ISharePointUser myUser = myContext.Web.GetCurrentUser();
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                          .FirstOrDefault(p => p.Title == "ItemOne");
 
         myItem.AddRoleDefinitions(myUser.Id, new string[] { "Read", "Edit" });
         myItem.Update();
@@ -903,7 +912,7 @@ static void SpCsPnPCoreSdk_AddSecurityRoleToItem()
 //gavdcodeend 029
 
 //gavdcodebegin 030
-static void SpCsPnPCoreSdk_DeleteSecurityRoleFromItem()
+static void CsSpPnpCoreSdk_DeleteSecurityRoleFromItem()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -911,13 +920,13 @@ static void SpCsPnPCoreSdk_DeleteSecurityRoleFromItem()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using (PnPContext myContext = CreateContextWithAccPw(myTenantId, myClientId,
-                                    myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
+    using (PnPContext myContext = CsPsPnpCoreSdk_CreateContextWithAccPw(
+        myTenantId, myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None))
     {
         ISharePointUser myUser = myContext.Web.GetCurrentUser();
         IList myList = myContext.Web.Lists.GetByTitle("TestList", p => p.Items);
         IListItem myItem = myList.Items.AsRequested()
-                                             .FirstOrDefault(p => p.Title == "ItemOne");
+                                         .FirstOrDefault(p => p.Title == "ItemOne");
 
         myItem.RemoveRoleDefinitions(myUser.Id, new string[] { "Read" });
         myItem.Update();
@@ -934,39 +943,41 @@ static void SpCsPnPCoreSdk_DeleteSecurityRoleFromItem()
 
 // *** Latest Source Code Index: 30 ***
 
-//SpCsPnPCoreSdk_GetItemsDocuments();
-//SpCsPnPCoreSdk_GetItemsByCaml();
-//SpCsPnPCoreSdk_GetOneItem();
-//SpCsPnPCoreSdk_GetOneDocumentByRelative();
-//SpCsPnPCoreSdk_GetOneDocumentByFind();
-//SpCsPnPCoreSdk_CreateOneItem();
-//SpCsPnPCoreSdk_CreateMultipleItem();
-//SpCsPnPCoreSdk_UploadOneDocument();
-//SpCsPnPCoreSdk_DownloadOneDocument();
-//SpCsPnPCoreSdk_UpdateOneItem();
-//SpCsPnPCoreSdk_UpdateOneDocumentByRelative();
-//SpCsPnPCoreSdk_DeleteOneItem();
-//SpCsPnPCoreSdk_DeleteAllItems();
-//SpCsPnPCoreSdk_DeleteOneDocumentByRelative();
-//SpCsPnPCoreSdk_GetFolders();
-//SpCsPnPCoreSdk_GetOneFolder();
-//SpCsPnPCoreSdk_EnsureOneFolder();
-//SpCsPnPCoreSdk_AddOneFolder();
-//SpCsPnPCoreSdk_UploadOneFileToOneFolder();
-//SpCsPnPCoreSdk_DownloadOneFileFromOneFolder();
-//SpCsPnPCoreSdk_DeleteOneFolder();
-//SpCsPnPCoreSdk_AddAttachmentsToItem();
-//SpCsPnPCoreSdk_GetAttachmentsInItem();
-//SpCsPnPCoreSdk_UpdateAttachmentsInItem();
-//SpCsPnPCoreSdk_BreakeInheritanceItem();
-//SpCsPnPCoreSdk_HasInheritanceItem();
-//SpCsPnPCoreSdk_RestoreInheritanceItem();
-//SpCsPnPCoreSdk_GetAllSecurityRolesItem();
-//SpCsPnPCoreSdk_AddSecurityRoleToItem();
-//SpCsPnPCoreSdk_DeleteSecurityRoleFromItem();
+//CsSpPnpCoreSdk_GetItemsDocuments();
+//CsSpPnpCoreSdk_GetItemsByCaml();
+//CsSpPnpCoreSdk_GetOneItem();
+//CsSpPnpCoreSdk_GetOneDocumentByRelative();
+//CsSpPnpCoreSdk_GetOneDocumentByFind();
+//CsSpPnpCoreSdk_CreateOneItem();
+//CsSpPnpCoreSdk_CreateMultipleItem();
+//CsSpPnpCoreSdk_UploadOneDocument();
+//CsSpPnpCoreSdk_DownloadOneDocument();
+//CsSpPnpCoreSdk_UpdateOneItem();
+//CsSpPnpCoreSdk_UpdateOneDocumentByRelative();
+//CsSpPnpCoreSdk_DeleteOneItem();
+//CsSpPnpCoreSdk_DeleteAllItems();
+//CsSpPnpCoreSdk_DeleteOneDocumentByRelative();
+//CsSpPnpCoreSdk_GetFolders();
+//CsSpPnpCoreSdk_GetOneFolder();
+//CsSpPnpCoreSdk_EnsureOneFolder();
+//CsSpPnpCoreSdk_AddOneFolder();
+//CsSpPnpCoreSdk_UploadOneFileToOneFolder();
+//CsSpPnpCoreSdk_DownloadOneFileFromOneFolder();
+//CsSpPnpCoreSdk_DeleteOneFolder();
+//CsSpPnpCoreSdk_AddAttachmentsToItem();
+//CsSpPnpCoreSdk_GetAttachmentsInItem();
+//CsSpPnpCoreSdk_UpdateAttachmentsInItem();
+//CsSpPnpCoreSdk_BreakInheritanceItem();
+//CsSpPnpCoreSdk_HasInheritanceItem();
+//CsSpPnpCoreSdk_RestoreInheritanceItem();
+//CsSpPnpCoreSdk_GetAllSecurityRolesItem();
+//CsSpPnpCoreSdk_AddSecurityRoleToItem();
+//CsSpPnpCoreSdk_DeleteSecurityRoleFromItem();
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
+

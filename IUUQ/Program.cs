@@ -7,9 +7,10 @@ using System.Text.Json;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
+#pragma warning disable CS8321 // Local function is declared but never used
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
@@ -23,70 +24,12 @@ using System.Web;
 //---------------------------------------------------------------------------------------
 
 
-
-
-//---------------------------------------------------------------------------------------
-//***-----------------------------------*** Running the routines ***---------------------
-//---------------------------------------------------------------------------------------
-
-// *** Latest Source Code Index: 33 ***
-
-SecureString usrPw = new SecureString();
-foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
-    usrPw.AppendChar(oneChar);
-
-using (AuthenticationManager authenticationManager =
-            new AuthenticationManager())
-using (ClientContext spCtx = authenticationManager.GetContext(
-            new Uri(ConfigurationManager.AppSettings["SiteCollUrl"]),
-            ConfigurationManager.AppSettings["UserName"],
-            usrPw,
-            ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
-{
-    //SpCsCsom_CreateOneItem(spCtx);
-    //SpCsCsom_CreateMultipleItem(spCtx);
-    //SpCsCsom_UploadOneDocument(spCtx);
-    //SpCsCsom_UploadOneDocumentFileStream(spCtx);
-    //SpCsCsom_UploadMultipleDocs(spCtx);
-    //SpCsCsom_DownloadOneDoc(spCtx);
-    //SpCsCsom_DownloadMultipleDocs(spCtx);
-    //SpCsCsom_ReadAllListItems(spCtx);
-    //SpCsCsom_ReadOneListItem(spCtx);
-    //SpCsCsom_ReadAllLibraryDocs(spCtx);
-    //SpCsCsom_ReadOneLibraryDoc(spCtx);
-    //SpCsCsom_UpdateOneListItem(spCtx);
-    //SpCsCsom_UpdateOneLibraryDoc(spCtx);
-    //SpCsCsom_DeleteOneListItem(spCtx);
-    //SpCsCsom_DeleteAllListItems(spCtx);
-    //SpCsCsom_DeleteOneLibraryDoc(spCtx);
-    //SpCsCsom_DeleteAllLibraryDocs(spCtx);
-    //SpCsCsom_CreateFolderInLibrary(spCtx);
-    //SpCsCsom_CreateFolderWithInfo(spCtx);
-    //SpCsCsom_AddItemInFolder(spCtx);
-    //SpCsCsom_UploadOneDocumentInFolder(spCtx);
-    //SpCsCsom_ReadAllFolders(spCtx);
-    //SpCsCsom_ReadAllItemsInFolder(spCtx);
-    //SpCsCsom_DeleteOneFolder(spCtx);
-    //SpCsCsom_CreateOneAttachment(spCtx);
-    //SpCsCsom_ReadAllAttachments(spCtx);
-    //SpCsCsom_DownloadAllAttachments(spCtx);
-    //SpCsCsom_DeleteAllAttachments(spCtx);
-    //SpCsCsom_BreakSecurityInheritanceListItem(spCtx);
-    //SpCsCsom_ResetSecurityInheritanceListItem(spCtx);
-    //SpCsCsom_AddUserToSecurityRoleInListItem(spCtx);
-    //SpCsCsom_UpdateUserSecurityRoleInListItem(spCtx);
-    //SpCsCsom_DeleteUserFromSecurityRoleInListItem(spCtx);
-
-    Console.WriteLine("Done");
-}
-
 //gavdcodebegin 001
-static void SpCsCsom_CreateOneItem(ClientContext spCtx)
+static void CsSpCsom_CreateOneItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
 
-    ListItemCreationInformation myListItemCreationInfo =
-                                    new ListItemCreationInformation();
+    ListItemCreationInformation myListItemCreationInfo = new();
     ListItem newListItem = myList.AddItem(myListItemCreationInfo);
     newListItem["Title"] = "NewListItemCsCsom";
 
@@ -96,14 +39,13 @@ static void SpCsCsom_CreateOneItem(ClientContext spCtx)
 //gavdcodeend 001
 
 //gavdcodebegin 012
-static void SpCsCsom_CreateMultipleItem(ClientContext spCtx)
+static void CsSpCsom_CreateMultipleItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
 
     for (int intCounter = 0; intCounter < 4; intCounter++)
     {
-        ListItemCreationInformation myListItemCreationInfo =
-                                        new ListItemCreationInformation();
+        ListItemCreationInformation myListItemCreationInfo = new();
         ListItem newListItem = myList.AddItem(myListItemCreationInfo);
         newListItem["Title"] = intCounter.ToString() + "-NewListItemCsCsom";
         newListItem.Update();
@@ -114,7 +56,7 @@ static void SpCsCsom_CreateMultipleItem(ClientContext spCtx)
 //gavdcodeend 012
 
 //gavdcodebegin 002
-static void SpCsCsom_UploadOneDocument(ClientContext spCtx)
+static void CsSpCsom_UploadOneDocument(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
 
@@ -122,7 +64,7 @@ static void SpCsCsom_UploadOneDocument(ClientContext spCtx)
     string fileName = @"TestDocument.docx";
 
     byte[] myFileContent = System.IO.File.ReadAllBytes(filePath + fileName);
-    FileCreationInformation myFileInfo = new FileCreationInformation
+    FileCreationInformation myFileInfo = new()
     {
         Overwrite = true,
         ContentStream = new MemoryStream(myFileContent),
@@ -137,33 +79,30 @@ static void SpCsCsom_UploadOneDocument(ClientContext spCtx)
 //gavdcodeend 002
 
 //gavdcodebegin 022
-static void SpCsCsom_UploadOneDocumentFileStream(ClientContext spCtx)
+static void CsSpCsom_UploadOneDocumentFileStream(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
 
     string filePath = @"C:\Temporary\";
     string fileName = @"TestDocument.docx";
 
-    using (FileStream myFileStream = new
-                            FileStream(filePath + fileName, FileMode.Open))
+    using FileStream myFileStream = new(filePath + fileName, FileMode.Open);
+    FileCreationInformation myFileInfo = new()
     {
-        FileCreationInformation myFileInfo = new FileCreationInformation
-        {
-            Overwrite = true,
-            ContentStream = myFileStream,
-            Url = fileName
-        };
+        Overwrite = true,
+        ContentStream = myFileStream,
+        Url = fileName
+    };
 
-        Microsoft.SharePoint.Client.File newFile =
-                                myList.RootFolder.Files.Add(myFileInfo);
-        spCtx.Load(newFile);
-        spCtx.ExecuteQuery();
-    }
+    Microsoft.SharePoint.Client.File newFile =
+                            myList.RootFolder.Files.Add(myFileInfo);
+    spCtx.Load(newFile);
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 022
 
 //gavdcodebegin 013
-static void SpCsCsom_UploadMultipleDocs(ClientContext spCtx)
+static void CsSpCsom_UploadMultipleDocs(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
 
@@ -172,28 +111,25 @@ static void SpCsCsom_UploadMultipleDocs(ClientContext spCtx)
 
     foreach (string oneFile in myFiles)
     {
-        using (FileStream myFileStream = new
-                                FileStream(oneFile, FileMode.Open))
+        using FileStream myFileStream = new(oneFile, FileMode.Open);
+        FileCreationInformation myFileInfo = new()
         {
-            FileCreationInformation myFileInfo = new FileCreationInformation
-            {
-                Overwrite = true,
-                ContentStream = myFileStream,
-                Url = oneFile.Replace(filesPath, "")
-            };
+            Overwrite = true,
+            ContentStream = myFileStream,
+            Url = oneFile.Replace(filesPath, "")
+        };
 
-            Microsoft.SharePoint.Client.File newFile =
-                                    myList.RootFolder.Files.Add(myFileInfo);
+        Microsoft.SharePoint.Client.File newFile =
+                                myList.RootFolder.Files.Add(myFileInfo);
 
-            spCtx.Load(newFile);
-            spCtx.ExecuteQuery();
-        }
+        spCtx.Load(newFile);
+        spCtx.ExecuteQuery();
     }
 }
 //gavdcodeend 013
 
 //gavdcodebegin 003
-static void SpCsCsom_DownloadOneDoc(ClientContext spCtx)
+static void CsSpCsom_DownloadOneDoc(ClientContext spCtx)
 {
     //// Using File ID and File GetByUrl
     //List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
@@ -212,8 +148,8 @@ static void SpCsCsom_DownloadOneDoc(ClientContext spCtx)
 
     // Using File Relative URL
     string fileRelUrl = "/sites/Test_Guitaca/TestLibrary/TestText.txt";
-    Microsoft.SharePoint.Client.File filetoDownload = 
-                                        spCtx.Web.GetFileByServerRelativeUrl(fileRelUrl);
+    Microsoft.SharePoint.Client.File filetoDownload =
+                                      spCtx.Web.GetFileByServerRelativeUrl(fileRelUrl);
     spCtx.Load(filetoDownload);
     spCtx.ExecuteQuery();
 
@@ -223,15 +159,13 @@ static void SpCsCsom_DownloadOneDoc(ClientContext spCtx)
     string filePath = @"C:\Temporary";
     string fileName = "abc.txt";
     string localPath = Path.Combine(filePath, fileName);
-    using (FileStream outputFileStream = new FileStream(localPath, FileMode.Create))
-    {
-        fileStream.Value.CopyTo(outputFileStream);
-    }
+    using FileStream outputFileStream = new(localPath, FileMode.Create);
+    fileStream.Value.CopyTo(outputFileStream);
 }
 //gavdcodeend 003
 
 //gavdcodebegin 014
-static void SpCsCsom_DownloadMultipleDocs(ClientContext spCtx)
+static void CsSpCsom_DownloadMultipleDocs(ClientContext spCtx)
 {
     string filePath = @"C:\Temporary";
 
@@ -256,16 +190,14 @@ static void SpCsCsom_DownloadMultipleDocs(ClientContext spCtx)
 
         string fileName = oneFile.Name;
         string localPath = Path.Combine(filePath, fileName);
-        using (FileStream outputFileStream = new FileStream(localPath, FileMode.Create))
-        {
-            fileStream.Value.CopyTo(outputFileStream);
-        }
+        using FileStream outputFileStream = new(localPath, FileMode.Create);
+        fileStream.Value.CopyTo(outputFileStream);
     }
 }
 //gavdcodeend 014
 
 //gavdcodebegin 004
-static void SpCsCsom_ReadAllListItems(ClientContext spCtx)
+static void CsSpCsom_ReadAllListItems(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     ListItemCollection allItems = myList.GetItems(CamlQuery.CreateAllItemsQuery());
@@ -281,7 +213,7 @@ static void SpCsCsom_ReadAllListItems(ClientContext spCtx)
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void SpCsCsom_ReadOneListItem(ClientContext spCtx)
+static void CsSpCsom_ReadOneListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
 
@@ -303,8 +235,10 @@ static void SpCsCsom_ReadOneListItem(ClientContext spCtx)
                     <RowLimit>{1}</RowLimit>
                 </View>", filterField, rowLimit);
 
-    CamlQuery myCamlQuery = new CamlQuery();
-    myCamlQuery.ViewXml = myViewXml;
+    CamlQuery myCamlQuery = new()
+    {
+        ViewXml = myViewXml
+    };
     ListItemCollection allItems = myList.GetItems(myCamlQuery);
     spCtx.Load(allItems, itms => itms.Include(itm => itm["Title"],
                                              itm => itm.Id));
@@ -315,7 +249,7 @@ static void SpCsCsom_ReadOneListItem(ClientContext spCtx)
 //gavdcodeend 005
 
 //gavdcodebegin 008
-static void SpCsCsom_ReadAllLibraryDocs(ClientContext spCtx)
+static void CsSpCsom_ReadAllLibraryDocs(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
     ListItemCollection allItems = myList.GetItems(CamlQuery.CreateAllItemsQuery());
@@ -331,7 +265,7 @@ static void SpCsCsom_ReadAllLibraryDocs(ClientContext spCtx)
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void SpCsCsom_ReadOneLibraryDoc(ClientContext spCtx)
+static void CsSpCsom_ReadOneLibraryDoc(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
 
@@ -353,8 +287,10 @@ static void SpCsCsom_ReadOneLibraryDoc(ClientContext spCtx)
                     <RowLimit>{1}</RowLimit>
                 </View>", filterField, rowLimit);
 
-    CamlQuery myCamlQuery = new CamlQuery();
-    myCamlQuery.ViewXml = myViewXml;
+    CamlQuery myCamlQuery = new()
+    {
+        ViewXml = myViewXml
+    };
     ListItemCollection allItems = myList.GetItems(myCamlQuery);
     spCtx.Load(allItems, itms => itms.Include(itm => itm["FileLeafRef"],
                                              itm => itm.Id));
@@ -365,7 +301,7 @@ static void SpCsCsom_ReadOneLibraryDoc(ClientContext spCtx)
 //gavdcodeend 009
 
 //gavdcodebegin 006
-static void SpCsCsom_UpdateOneListItem(ClientContext spCtx)
+static void CsSpCsom_UpdateOneListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     ListItem myListItem = myList.GetItemById(6);
@@ -380,7 +316,7 @@ static void SpCsCsom_UpdateOneListItem(ClientContext spCtx)
 //gavdcodeend 006
 
 //gavdcodebegin 010
-static void SpCsCsom_UpdateOneLibraryDoc(ClientContext spCtx)
+static void CsSpCsom_UpdateOneLibraryDoc(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
     ListItem myListItem = myList.GetItemById(5);
@@ -395,7 +331,7 @@ static void SpCsCsom_UpdateOneLibraryDoc(ClientContext spCtx)
 //gavdcodeend 010
 
 //gavdcodebegin 007
-static void SpCsCsom_DeleteOneListItem(ClientContext spCtx)
+static void CsSpCsom_DeleteOneListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     ListItem myListItem = myList.GetItemById(6);
@@ -405,7 +341,7 @@ static void SpCsCsom_DeleteOneListItem(ClientContext spCtx)
 //gavdcodeend 007
 
 //gavdcodebegin 015
-static void SpCsCsom_DeleteAllListItems(ClientContext spCtx)
+static void CsSpCsom_DeleteAllListItems(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     ListItemCollection myListItems = myList.GetItems(
@@ -424,7 +360,7 @@ static void SpCsCsom_DeleteAllListItems(ClientContext spCtx)
 //gavdcodeend 015
 
 //gavdcodebegin 011
-static void SpCsCsom_DeleteOneLibraryDoc(ClientContext spCtx)
+static void CsSpCsom_DeleteOneLibraryDoc(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
     ListItem myListItem = myList.GetItemById(6);
@@ -434,7 +370,7 @@ static void SpCsCsom_DeleteOneLibraryDoc(ClientContext spCtx)
 //gavdcodeend 011
 
 //gavdcodebegin 016
-static void SpCsCsom_DeleteAllLibraryDocs(ClientContext spCtx)
+static void CsSpCsom_DeleteAllLibraryDocs(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
     ListItemCollection myListItems = myList.GetItems(
@@ -453,7 +389,7 @@ static void SpCsCsom_DeleteAllLibraryDocs(ClientContext spCtx)
 //gavdcodeend 016
 
 //gavdcodebegin 023
-static void SpCsCsom_CreateFolderInLibrary(ClientContext spCtx)
+static void CsSpCsom_CreateFolderInLibrary(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("TestLibrary");
@@ -469,14 +405,16 @@ static void SpCsCsom_CreateFolderInLibrary(ClientContext spCtx)
 //gavdcodeend 023
 
 //gavdcodebegin 024
-static void SpCsCsom_CreateFolderWithInfo(ClientContext spCtx)
+static void CsSpCsom_CreateFolderWithInfo(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("TestList");
 
-    ListItemCreationInformation infoFolder = new ListItemCreationInformation();
-    infoFolder.UnderlyingObjectType = FileSystemObjectType.Folder;
-    infoFolder.LeafName = "FolderWithInfo";
+    ListItemCreationInformation infoFolder = new()
+    {
+        UnderlyingObjectType = FileSystemObjectType.Folder,
+        LeafName = "FolderWithInfo"
+    };
     ListItem newItem = myList.AddItem(infoFolder);
     newItem["Title"] = "FolderWithInfo";
     newItem.Update();
@@ -487,13 +425,13 @@ static void SpCsCsom_CreateFolderWithInfo(ClientContext spCtx)
 //gavdcodeend 024
 
 //gavdcodebegin 025
-static void SpCsCsom_AddItemInFolder(ClientContext spCtx)
+static void CsSpCsom_AddItemInFolder(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("TestList");
 
     ListItemCreationInformation myListItemCreationInfo =
-        new ListItemCreationInformation
+        new()
         {
             FolderUrl = string.Format("{0}/lists/{1}/{2}", spCtx.Url,
                                                 "TestList", "FolderWithInfo")
@@ -508,34 +446,31 @@ static void SpCsCsom_AddItemInFolder(ClientContext spCtx)
 //gavdcodeend 025
 
 //gavdcodebegin 026
-static void SpCsCsom_UploadOneDocumentInFolder(ClientContext spCtx)
+static void CsSpCsom_UploadOneDocumentInFolder(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestLibrary");
 
     string filePath = @"C:\Temporary\";
     string fileName = @"TestDocument.docx";
 
-    using (FileStream myFileStream = new
-                            FileStream(filePath + fileName, FileMode.Open))
+    using FileStream myFileStream = new(filePath + fileName, FileMode.Open);
+    FileCreationInformation myFileCreationInfo = new()
     {
-        FileCreationInformation myFileCreationInfo = new FileCreationInformation
-        {
-            Overwrite = true,
-            ContentStream = myFileStream,
-            Url = string.Format("{0}/{1}/{2}/{3}", spCtx.Url, "TestLibrary",
-                                                "FirstLevelFolder", fileName)
-        };
+        Overwrite = true,
+        ContentStream = myFileStream,
+        Url = string.Format("{0}/{1}/{2}/{3}", spCtx.Url, "TestLibrary",
+                                            "FirstLevelFolder", fileName)
+    };
 
-        Microsoft.SharePoint.Client.File newFile =
-                                myList.RootFolder.Files.Add(myFileCreationInfo);
-        spCtx.Load(newFile);
-        spCtx.ExecuteQuery();
-    }
+    Microsoft.SharePoint.Client.File newFile =
+                            myList.RootFolder.Files.Add(myFileCreationInfo);
+    spCtx.Load(newFile);
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 026
 
 //gavdcodebegin 027
-static void SpCsCsom_ReadAllFolders(ClientContext spCtx)
+static void CsSpCsom_ReadAllFolders(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     ListItemCollection allItems = myList.GetItems(CamlQuery.CreateAllFoldersQuery());
@@ -553,7 +488,7 @@ static void SpCsCsom_ReadAllFolders(ClientContext spCtx)
 //gavdcodeend 027
 
 //gavdcodebegin 028
-static void SpCsCsom_ReadAllItemsInFolder(ClientContext spCtx)
+static void CsSpCsom_ReadAllItemsInFolder(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     CamlQuery myQuery = CamlQuery.CreateAllItemsQuery();
@@ -571,7 +506,7 @@ static void SpCsCsom_ReadAllItemsInFolder(ClientContext spCtx)
 //gavdcodeend 028
 
 //gavdcodebegin 029
-static void SpCsCsom_DeleteOneFolder(ClientContext spCtx)
+static void CsSpCsom_DeleteOneFolder(ClientContext spCtx)
 {
     string folderRelativeUrl = "/sites/[SiteName]/Lists/TestList/FolderWithInfo";
     Folder myFolder = spCtx.Web.GetFolderByServerRelativeUrl(folderRelativeUrl);
@@ -582,27 +517,27 @@ static void SpCsCsom_DeleteOneFolder(ClientContext spCtx)
 //gavdcodeend 029
 
 //gavdcodebegin 030
-static void SpCsCsom_CreateOneAttachment(ClientContext spCtx)
+static void CsSpCsom_CreateOneAttachment(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     int listItemId = 13;
     ListItem myListItem = myList.GetItemById(listItemId);
 
     string myFilePath = @"C:\Temporary\TestDocument.docx";
-    var myAttachmentInfo = new AttachmentCreationInformation();
-    myAttachmentInfo.FileName = Path.GetFileName(myFilePath);
-    using (FileStream myFileStream = new FileStream(myFilePath, FileMode.Open))
+    var myAttachmentInfo = new AttachmentCreationInformation
     {
-        myAttachmentInfo.ContentStream = myFileStream;
-        Attachment myAttachment = myListItem.AttachmentFiles.Add(myAttachmentInfo);
-        spCtx.Load(myAttachment);
-        spCtx.ExecuteQuery();
-    }
+        FileName = Path.GetFileName(myFilePath)
+    };
+    using FileStream myFileStream = new(myFilePath, FileMode.Open);
+    myAttachmentInfo.ContentStream = myFileStream;
+    Attachment myAttachment = myListItem.AttachmentFiles.Add(myAttachmentInfo);
+    spCtx.Load(myAttachment);
+    spCtx.ExecuteQuery();
 }
 //gavdcodeend 030
 
 //gavdcodebegin 031
-static void SpCsCsom_ReadAllAttachments(ClientContext spCtx)
+static void CsSpCsom_ReadAllAttachments(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     int listItemId = 13;
@@ -620,7 +555,7 @@ static void SpCsCsom_ReadAllAttachments(ClientContext spCtx)
 //gavdcodeend 031
 
 //gavdcodebegin 032
-static void SpCsCsom_DownloadAllAttachments(ClientContext spCtx)
+static void CsSpCsom_DownloadAllAttachments(ClientContext spCtx)
 {
     string filePath = @"C:\Temporary";
 
@@ -632,7 +567,6 @@ static void SpCsCsom_DownloadAllAttachments(ClientContext spCtx)
     spCtx.Load(allAttachments);
     spCtx.ExecuteQuery();
 
-    string myFilesPath = @"C:\Temporary\";
     foreach (Attachment oneAttachment in allAttachments)
     {
         string fileRef = oneAttachment.ServerRelativeUrl;
@@ -646,16 +580,14 @@ static void SpCsCsom_DownloadAllAttachments(ClientContext spCtx)
 
         string fileName = oneAttachment.FileName;
         string localPath = Path.Combine(filePath, fileName);
-        using (FileStream outputFileStream = new FileStream(localPath, FileMode.Create))
-        {
-            fileStream.Value.CopyTo(outputFileStream);
-        }
+        using FileStream outputFileStream = new(localPath, FileMode.Create);
+        fileStream.Value.CopyTo(outputFileStream);
     }
 }
 //gavdcodeend 032
 
 //gavdcodebegin 033
-static void SpCsCsom_DeleteAllAttachments(ClientContext spCtx)
+static void CsSpCsom_DeleteAllAttachments(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     int listItemId = 13;
@@ -675,7 +607,7 @@ static void SpCsCsom_DeleteAllAttachments(ClientContext spCtx)
 //gavdcodeend 033
 
 //gavdcodebegin 017
-static void SpCsCsom_BreakSecurityInheritanceListItem(ClientContext spCtx)
+static void CsSpCsom_BreakSecurityInheritanceListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     ListItem myListItem = myList.GetItemById(13);
@@ -692,7 +624,7 @@ static void SpCsCsom_BreakSecurityInheritanceListItem(ClientContext spCtx)
 //gavdcodeend 017
 
 //gavdcodebegin 018
-static void SpCsCsom_ResetSecurityInheritanceListItem(ClientContext spCtx)
+static void CsSpCsom_ResetSecurityInheritanceListItem(ClientContext spCtx)
 {
     List myList = spCtx.Web.Lists.GetByTitle("TestList");
     ListItem myListItem = myList.GetItemById(13);
@@ -709,16 +641,17 @@ static void SpCsCsom_ResetSecurityInheritanceListItem(ClientContext spCtx)
 //gavdcodeend 018
 
 //gavdcodebegin 019
-static void SpCsCsom_AddUserToSecurityRoleInListItem(ClientContext spCtx)
+static void CsSpCsom_AddUserToSecurityRoleInListItem(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("TestList");
     ListItem myListItem = myList.GetItemById(13);
 
     User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
-    RoleDefinitionBindingCollection roleDefinition =
-            new RoleDefinitionBindingCollection(spCtx);
-    roleDefinition.Add(myWeb.RoleDefinitions.GetByType(RoleType.Reader));
+    RoleDefinitionBindingCollection roleDefinition = new(spCtx)
+    {
+        myWeb.RoleDefinitions.GetByType(RoleType.Reader)
+    };
     myListItem.RoleAssignments.Add(myUser, roleDefinition);
 
     spCtx.ExecuteQuery();
@@ -726,16 +659,17 @@ static void SpCsCsom_AddUserToSecurityRoleInListItem(ClientContext spCtx)
 //gavdcodeend 019
 
 //gavdcodebegin 020
-static void SpCsCsom_UpdateUserSecurityRoleInListItem(ClientContext spCtx)
+static void CsSpCsom_UpdateUserSecurityRoleInListItem(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("TestList");
     ListItem myListItem = myList.GetItemById(13);
 
     User myUser = myWeb.EnsureUser(ConfigurationManager.AppSettings["UserName"]);
-    RoleDefinitionBindingCollection roleDefinition =
-            new RoleDefinitionBindingCollection(spCtx);
-    roleDefinition.Add(myWeb.RoleDefinitions.GetByType(RoleType.Contributor));
+    RoleDefinitionBindingCollection roleDefinition = new(spCtx)
+    {
+        myWeb.RoleDefinitions.GetByType(RoleType.Contributor)
+    };
 
     RoleAssignment myRoleAssignment = myListItem.RoleAssignments.GetByPrincipal(
                                                                         myUser);
@@ -747,7 +681,7 @@ static void SpCsCsom_UpdateUserSecurityRoleInListItem(ClientContext spCtx)
 //gavdcodeend 020
 
 //gavdcodebegin 021
-static void SpCsCsom_DeleteUserFromSecurityRoleInListItem(ClientContext spCtx)
+static void CsSpCsom_DeleteUserFromSecurityRoleInListItem(ClientContext spCtx)
 {
     Web myWeb = spCtx.Web;
     List myList = myWeb.Lists.GetByTitle("TestList");
@@ -761,20 +695,76 @@ static void SpCsCsom_DeleteUserFromSecurityRoleInListItem(ClientContext spCtx)
 }
 //gavdcodeend 021
 
+
+
+//---------------------------------------------------------------------------------------
+//***-----------------------------------*** Running the routines ***---------------------
+//---------------------------------------------------------------------------------------
+
+// *** Latest Source Code Index: 33 ***
+
+SecureString usrPw = new();
+foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
+    usrPw.AppendChar(oneChar);
+
+using (AuthenticationManager authenticationManager = new())
+using (ClientContext spCtx = authenticationManager.GetContext(
+            new Uri(ConfigurationManager.AppSettings["SiteCollUrl"]),
+            ConfigurationManager.AppSettings["UserName"],
+            usrPw,
+            ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
+{
+    //CsSpCsom_CreateOneItem(spCtx);
+    //CsSpCsom_CreateMultipleItem(spCtx);
+    //CsSpCsom_UploadOneDocument(spCtx);
+    //CsSpCsom_UploadOneDocumentFileStream(spCtx);
+    //CsSpCsom_UploadMultipleDocs(spCtx);
+    //CsSpCsom_DownloadOneDoc(spCtx);
+    //CsSpCsom_DownloadMultipleDocs(spCtx);
+    //CsSpCsom_ReadAllListItems(spCtx);
+    //CsSpCsom_ReadOneListItem(spCtx);
+    //CsSpCsom_ReadAllLibraryDocs(spCtx);
+    //CsSpCsom_ReadOneLibraryDoc(spCtx);
+    //CsSpCsom_UpdateOneListItem(spCtx);
+    //CsSpCsom_UpdateOneLibraryDoc(spCtx);
+    //CsSpCsom_DeleteOneListItem(spCtx);
+    //CsSpCsom_DeleteAllListItems(spCtx);
+    //CsSpCsom_DeleteOneLibraryDoc(spCtx);
+    //CsSpCsom_DeleteAllLibraryDocs(spCtx);
+    //CsSpCsom_CreateFolderInLibrary(spCtx);
+    //CsSpCsom_CreateFolderWithInfo(spCtx);
+    //CsSpCsom_AddItemInFolder(spCtx);
+    //CsSpCsom_UploadOneDocumentInFolder(spCtx);
+    //CsSpCsom_ReadAllFolders(spCtx);
+    //CsSpCsom_ReadAllItemsInFolder(spCtx);
+    //CsSpCsom_DeleteOneFolder(spCtx);
+    //CsSpCsom_CreateOneAttachment(spCtx);
+    //CsSpCsom_ReadAllAttachments(spCtx);
+    //CsSpCsom_DownloadAllAttachments(spCtx);
+    //CsSpCsom_DeleteAllAttachments(spCtx);
+    //CsSpCsom_BreakSecurityInheritanceListItem(spCtx);
+    //CsSpCsom_ResetSecurityInheritanceListItem(spCtx);
+    //CsSpCsom_AddUserToSecurityRoleInListItem(spCtx);
+    //CsSpCsom_UpdateUserSecurityRoleInListItem(spCtx);
+    //CsSpCsom_DeleteUserFromSecurityRoleInListItem(spCtx);
+
+    Console.WriteLine("Done");
+}
+
+
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
 public class AuthenticationManager : IDisposable
 {
-    private static readonly HttpClient httpClient = new HttpClient();
+    private static readonly HttpClient httpClient = new();
     private const string tokenEndpoint =
                             "https://login.microsoftonline.com/common/oauth2/token";
 
-    private static readonly SemaphoreSlim semaphoreSlimTokens = new SemaphoreSlim(1);
+    private static readonly SemaphoreSlim semaphoreSlimTokens = new(1);
     private AutoResetEvent tokenResetEvent = null;
-    private readonly ConcurrentDictionary<string, string> tokenCache =
-                                            new ConcurrentDictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> tokenCache = new();
     private bool disposedValue;
 
     internal class TokenWaitInfo
@@ -825,7 +815,7 @@ public class AuthenticationManager : IDisposable
                 AddTokenToCache(resourceUri, tokenCache, accessToken);
 
                 tokenResetEvent = new AutoResetEvent(false);
-                TokenWaitInfo wi = new TokenWaitInfo();
+                TokenWaitInfo wi = new();
                 wi.Handle = ThreadPool.RegisterWaitForSingleObject(
                     tokenResetEvent,
                     async (state, timedOut) =>
@@ -846,7 +836,7 @@ public class AuthenticationManager : IDisposable
                                                             ConfigureAwait(false);
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
-                            catch (Exception ex)
+                            catch
                             {
                                 RemoveTokenFromCache(resourceUri, tokenCache);
                             }
@@ -884,32 +874,30 @@ public class AuthenticationManager : IDisposable
         body += $"grant_type=password&";
         body += $"username={HttpUtility.UrlEncode(username)}&";
         body += $"password={HttpUtility.UrlEncode(password)}";
-        using (var stringContent = new StringContent(body,
-                            Encoding.UTF8, "application/x-www-form-urlencoded"))
-        {
-            var result = await httpClient.PostAsync(tokenEndpoint,
-                            stringContent).ContinueWith((response) =>
-                            {
-                                return response.Result.Content.ReadAsStringAsync().Result;
-                            }).ConfigureAwait(false);
+        using var stringContent = new StringContent(body,
+                            Encoding.UTF8, "application/x-www-form-urlencoded");
+        var result = await httpClient.PostAsync(tokenEndpoint,
+                        stringContent).ContinueWith((response) =>
+                        {
+                            return response.Result.Content.ReadAsStringAsync().Result;
+                        }).ConfigureAwait(false);
 
-            var tokenResult = JsonSerializer.Deserialize<JsonElement>(result);
-            try
-            { // Check for an error returned by Azure AD
-                var tokenError = tokenResult.GetProperty("error").GetString();
+        var tokenResult = JsonSerializer.Deserialize<JsonElement>(result);
+        try
+        { // Check for an error returned by Azure AD
+            var tokenError = tokenResult.GetProperty("error").GetString();
 
-                string strError = "TokenErrorException - " +
-                            tokenResult.GetProperty("error").GetString() + " - " +
-                            tokenResult.GetProperty("error_description").GetString();
+            string strError = "TokenErrorException - " +
+                        tokenResult.GetProperty("error").GetString() + " - " +
+                        tokenResult.GetProperty("error_description").GetString();
 
-                return strError;
-            }
-            catch
-            { } // Nothing to catch, the response is giving correctly the token 
-
-            var token = tokenResult.GetProperty("access_token").GetString();
-            return token;
+            return strError;
         }
+        catch
+        { } // Nothing to catch, the response is giving correctly the token 
+
+        var token = tokenResult.GetProperty("access_token").GetString();
+        return token;
     }
 
     private static string TokenFromCache(Uri web, ConcurrentDictionary<string,
@@ -986,4 +974,6 @@ public class AuthenticationManager : IDisposable
     }
 }
 
+
 #nullable enable
+#pragma warning restore CS8321 // Local function is declared but never used
