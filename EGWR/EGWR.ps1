@@ -822,17 +822,20 @@ function PsGraphFrea_DeleteChannelWithModule
 }
 #gavdcodeend 016
 
-#*** Using PnP Graph PowerShell ----------------------------------------------------------
+#*** Using PnP PowerShell ----------------------------------------------------------
 
 #gavdcodebegin 042
 function PsPnPPowerShell_LoginWithInteraction
 {
 	Param(
 		[Parameter(Mandatory=$True)]
+		[String]$ClientIdWithAccPw,
+
+		[Parameter(Mandatory=$True)]
 		[String]$SiteBaseUrl
 	)
 
-	Connect-PnPOnline -Url $SiteBaseUrl -Interactive
+	Connect-PnPOnline -ClientId $ClientIdWithAccPw -Url $SiteBaseUrl -Interactive
 
 	#Disconnect-PnPOnline
 }
@@ -855,9 +858,14 @@ function PsPnPPowerShell_LoginWithInteractionMFA
 #gavdcodebegin 018
 function PsPnPPowerShell_GetTeamUsersWithInteraction
 {
-	PsPnPPowerShell_LoginWithInteractionMFA -SiteBaseUrl $configFile.appsettings.SiteBaseUrl
+	PsPnPPowerShell_LoginWithInteraction `
+				-ClientIdWithAccPw $configFile.appsettings.ClientIdWithAccPw `
+				-SiteBaseUrl $configFile.appsettings.SiteBaseUrl
 	
-	Get-PnPTeamsUser -Team "Design"
+#	PsPnPPowerShell_LoginWithInteractionMFA `
+#				-SiteBaseUrl $configFile.appsettings.SiteBaseUrl
+	
+	Get-PnPTeamsUser -Team "Retail"
 
 	Disconnect-PnPOnline
 }
@@ -866,7 +874,8 @@ function PsPnPPowerShell_GetTeamUsersWithInteraction
 #gavdcodebegin 021
 function PsPnPPowerShell_GetToken
 {
-	Connect-PnPOnline -Url $configFile.appsettings.SiteBaseUrl -DeviceLogin -LaunchBrowser
+	Connect-PnPOnline -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Url $configFile.appsettings.SiteBaseUrl -Interactive
 	Get-PnPGraphAccessToken -Decoded
 
 	Disconnect-PnPOnline
@@ -874,7 +883,7 @@ function PsPnPPowerShell_GetToken
 #gavdcodeend 021
 
 #gavdcodebegin 020
-function PsPnPPowerShell_LoginWithAccPw
+function PsPnPPowerShell_LoginWithAccPw  #Does not work anymore
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -886,7 +895,7 @@ function PsPnPPowerShell_LoginWithAccPw
 		[Parameter(Mandatory=$True)]
 		[String]$UserPw
 	)
-	Write-Host $SiteUrl " - " $UserName " - " $UserPw
+
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 									$UserPw -AsPlainText -Force
 	$myCredentials = New-Object System.Management.Automation.PSCredential `
@@ -951,7 +960,7 @@ function PsPnPPowerShell_LoginWithSecret
 		[String]$ClientSecret	
 	)
 
-	$myToken = GrPsLoginGraphMsalWithSecret `
+	$myToken = PsMsal_LoginWithSecret `
 								-TenantName	$configFile.appsettings.TenantName `
 								-ClientId $configFile.appsettings.ClientIdWithSecret `
 								-ClientSecret $configFile.appsettings.ClientSecret
@@ -972,7 +981,7 @@ function PsPnPPowerShell_GetTeamUsersWithSecret
 					-ClientId $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret
 
-	Get-PnPTeamsUser -Team "Design"
+	Get-PnPTeamsUser -Team "Retail"
 
 	Disconnect-PnPOnline
 }
@@ -1017,15 +1026,15 @@ function PsPnPPowerShell_LoginGraphWithCertificateFile
 #gavdcodeend 049
 
 #gavdcodebegin 050
-function PsPnPPowerShell_GetLanguagesWithCertificate
+function PsPnPPowerShell_GetTeamsWithCertificate
 {
 	PsPnPPowerShell_LoginGraphWithCertificate `
 					-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
 					-TenantName $configFile.appsettings.TenantName `
 					-ClientId $configFile.appSettings.ClientIdWithCert `
 					-CertificateThumbprint $configFile.appSettings.CertificateThumbprint
-	
-	Get-PnPAvailableLanguage
+
+	Get-PnPTeamsTeam
 
 	Disconnect-PnPOnline
 }
@@ -1050,6 +1059,17 @@ function PsGraphCli_LoginWithDeviceCode
 			  --strategy DeviceCode
 }
 #gavdcodeend 055
+
+#gavdcodebegin 060
+function PsGraphCli_LoginWithSecret
+{
+	$env:AZURE_TENANT_ID = $configFile.appsettings.TenantName
+	$env:AZURE_CLIENT_ID = $configFile.appsettings.ClientIdWithSecret
+	$env:AZURE_CLIENT_SECRET = $configFile.appsettings.ClientSecret
+	
+	mgc login --strategy Environment
+}
+#gavdcodeend 060
 
 #gavdcodebegin 057
 function PsGraphCli_LoginWithCertificate
@@ -1092,6 +1112,17 @@ function PsGraphCli_ExampleLoginWithDeviceCode
 }
 #gavdcodeend 056
 
+#gavdcodebegin 061
+function PsGraphCli_ExampleLoginWithSecret
+{
+	PsGraphCli_LoginWithSecret
+
+	mgc users onenote notebooks list --user-id "acc28fcb-5162-49f6-930b-711d2fa8a431"
+
+	mgc logout
+}
+#gavdcodeend 061
+
 #gavdcodebegin 058
 function PsGraphCli_ExampleLoginWithCertificate
 {
@@ -1108,10 +1139,10 @@ function PsGraphCli_ExampleLoginWithCertificate
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 059 ***
+# *** Latest Source Code Index: 061 ***
 
-Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
-Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
+#Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
+#Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
@@ -1177,12 +1208,12 @@ $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 #PsGraphFrea_DeleteChannelWithModule
 
 #*** Using PnP Graph PowerShell
-#PsPnPPowerShell_LoginWithInteraction $mySiteBaseUrl
+#PsPnPPowerShell_LoginWithInteraction $myClientIdWithAccPw $mySiteBaseUrl
 #PsPnPPowerShell_LoginWithInteractionMFA $mySiteBaseUrl
 #PsPnPPowerShell_GetTeamUsersWithInteraction
 #PsPnPPowerShell_GetToken
 
-#PsPnPPowerShell_LoginWithAccPw $mySiteCollUrl $myUserName $myUserPw
+#PsPnPPowerShell_LoginWithAccPw $mySiteCollUrl $myUserName $myUserPw   #Does not work anymore
 #PsPnPPowerShell_LoginWithAccPwAndClientId $mySiteBaseUrl $myClientIdWithAccPw $myUserName $myUserPw
 #PsPnPPowerShell_GetContextWithAccPw
 
@@ -1191,13 +1222,14 @@ $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 
 #PsPnPPowerShell_LoginGraphWithCertificate $mySiteBaseUrl $myClientIdWithCert $myCertificateThumbprint
 #PsPnPPowerShell_LoginGraphWithCertificateFile
-#PsPnPPowerShell_GetLanguagesWithCertificate
+#PsPnPPowerShell_GetTeamsWithCertificate
 
 #*** Using the MS Graph CLI
 #		ATTENTION: There is a Windows Environment Variable already configured in the computer
 #					to redirect the commands to the mgc.exe directory (see instructions in the book)
 #PsGraphCli_ExampleLoginWithInteraction
 #PsGraphCli_ExampleLoginWithDeviceCode
+#PsGraphCli_ExampleLoginWithSecret
 #PsGraphCli_ExampleLoginWithCertificate
 
 Write-Host "Done" 

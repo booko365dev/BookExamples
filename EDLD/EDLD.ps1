@@ -143,13 +143,15 @@ Function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
 
 Function PsSpPnpPowerShell_LoginWithAccPw
 {
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 

@@ -56,7 +56,10 @@ function PsSpPnP_LoginWithAccPw
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 #gavdcodeend 016
 
@@ -92,6 +95,7 @@ function PsSpPnP_LoginWithCertificateBase64
 function PsSpPnP_LoginWithInteraction
 {
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
 					  -Credentials (Get-Credential)
 }
 #gavdcodeend 021
@@ -100,6 +104,7 @@ function PsSpPnP_LoginWithInteraction
 function PsCliM365_LoginWithAccPw
 {
 	m365 login --authType password `
+			   --appId $configFile.appsettings.ClientIdWithAccPw `
 			   --userName $configFile.appsettings.UserName `
 			   --password $configFile.appsettings.UserPw
 }
@@ -280,7 +285,10 @@ function PsSpPnP_LoginWithAccPwDefault
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 #----------------------------------------------------------------------------------------

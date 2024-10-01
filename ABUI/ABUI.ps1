@@ -139,15 +139,17 @@ function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
     }
 }
 
-function PsSpPnpPowerShell_LoginWithAccPwDefault
+function PsSpPnpPowerShell_LoginWithAccPw
 {
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 
@@ -475,7 +477,7 @@ function PsSpRest_DeleteUserFromSecurityRoleInWeb   #*** LEGACY CODE ***
 #gavdcodebegin 101
 function PsSpRest_CreateOneCommunicationSiteCollectionAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteBaseUrl + `
@@ -512,7 +514,7 @@ function PsSpRest_CreateOneCommunicationSiteCollectionAD
 #gavdcodebegin 102
 function PsSpRest_CreateOneSiteCollectionAD 
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteBaseUrl + "/_api/SPSiteManager/create"
@@ -547,7 +549,7 @@ function PsSpRest_CreateOneSiteCollectionAD
 #gavdcodebegin 103
 function PsSpRest_CreateOneWebInSiteCollectionAD 
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web/webinfos/add"
@@ -578,7 +580,7 @@ function PsSpRest_CreateOneWebInSiteCollectionAD
 #gavdcodebegin 104
 function PsSpRest_GetAllSiteCollectionsAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteBaseUrl +
@@ -598,7 +600,7 @@ function PsSpRest_GetAllSiteCollectionsAD
 #gavdcodebegin 105
 function PsSpRest_GetAllWebsInSiteCollectionAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web/webs"
@@ -617,7 +619,7 @@ function PsSpRest_GetAllWebsInSiteCollectionAD
 #gavdcodebegin 106
 function PsSpRest_UpdateOneWebAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $subWebUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsRest"
@@ -644,7 +646,7 @@ function PsSpRest_UpdateOneWebAD
 #gavdcodebegin 107
 function PsSpRest_DeleteOneWebFromSiteCollectionAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $subWebUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsRest"
@@ -664,7 +666,7 @@ function PsSpRest_DeleteOneWebFromSiteCollectionAD
 #gavdcodebegin 108
 function PsSpRest_GetRoleDefinitionsSiteAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web/roledefinitions"
@@ -683,7 +685,7 @@ function PsSpRest_GetRoleDefinitionsSiteAD
 #gavdcodebegin 109
 function PsSpRest_GetUserPermissionsSiteAD 
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web/" +
@@ -704,7 +706,7 @@ function PsSpRest_GetUserPermissionsSiteAD
 #gavdcodebegin 110
 function PsSpRest_GetOtherUserPermissionsSiteAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	$userName = $configFile.appsettings.UserName
@@ -726,7 +728,7 @@ function PsSpRest_GetOtherUserPermissionsSiteAD
 #gavdcodebegin 111
 function PsSpRest_BreakSecurityInheritanceWebAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $subWebUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsRest"
@@ -748,7 +750,7 @@ function PsSpRest_BreakSecurityInheritanceWebAD
 #gavdcodebegin 112
 function PsSpRest_ResetSecurityInheritanceWebAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $subWebUrl = $configFile.appsettings.SiteCollUrl + "/NewWebSiteModernPsRest"
@@ -768,7 +770,7 @@ function PsSpRest_ResetSecurityInheritanceWebAD
 #gavdcodebegin 113
 function PsSpRest_AddUserToSecurityRoleInWebAD 
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	# For sub-Webs, inheritance MUST be broken
@@ -816,7 +818,7 @@ function PsSpRest_AddUserToSecurityRoleInWebAD
 #gavdcodebegin 114
 function PsSpRest_UpdateUserSecurityRoleInWebAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	# For sub-Webs, inheritance MUST be broken
@@ -864,7 +866,7 @@ function PsSpRest_UpdateUserSecurityRoleInWebAD
 #gavdcodebegin 115
 function PsSpRest_DeleteUserFromSecurityRoleInWebAD
 {
-	PsSpPnpPowerShell_LoginWithAccPwDefault
+	PsSpPnpPowerShell_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
 	# For sub-Webs, inheritance MUST be broken

@@ -912,8 +912,8 @@ function PsSpGraphRest_UploadFileToDocumentsLibrary
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
 	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
-	$DocPath = "C:\Temporary\TestDocument.docx"
-	$DocName = "TestDocument.docx"
+	$DocPath = "C:\Temporary\TestWordFile.docx"
+	$DocName = "TestWordFile.docx"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drive/root:/" + `
 												$DocName + ":/content"
 
@@ -921,7 +921,7 @@ function PsSpGraphRest_UploadFileToDocumentsLibrary
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
-	$myBody = Get-Content $DocPath -Raw
+    $myBody = Get-Content -Path $DocPath -AsByteStream -Raw
 
 	$myContentType = "application/octet-stream"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
@@ -940,8 +940,8 @@ function PsSpGraphRest_UploadFileToLibrary
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
 	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
-	$DocPath = "C:\Temporary\TestDocument.docx"
-	$DocName = "TestDocument.docx"
+	$DocPath = "C:\Temporary\TestWordFile.docx"
+	$DocName = "TestWordFile.docx"
 	$Url = "https://graph.microsoft.com/v1.0/drives/" + $DriveId + "/root:/" + `
 								$DocName + ":/content"
 
@@ -949,7 +949,7 @@ function PsSpGraphRest_UploadFileToLibrary
 										 -ClientSecret $ClientSecretApp `
 										 -TenantName $TenantName
 	
-	$myBody = Get-Content $DocPath -Raw
+    $myBody = Get-Content -Path $DocPath -AsByteStream -Raw
 
 	$myContentType = "application/octet-stream"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
@@ -968,7 +968,7 @@ function PsSpGraphRest_DownloadFileFromDocumentsLibraryInSite
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
 	$SiteId = "91ee115a-8a5b-49ad-9627-99dae04394ab"
-	$DocName = "TestDocument.docx"
+	$DocName = "TestWordFile.docx"
 	$DownloadPath = "C:\Temporary"
 	$Url = "https://graph.microsoft.com/v1.0/sites/" + $SiteId + "/drive/root:/" + `
 													   $DocName + ":/content"
@@ -992,7 +992,7 @@ function PsSpGraphRest_DownloadFileFromDriveInSite
 	# App Registration permissions: Sites.Read.All, Sites.ReadWrite.All
 
 	$DriveId = "b!WhHukVuKrUmWJ5na4EOUq74PGWyAYoJInwMa9_X4aGQXrzGzw-1YQJCe5vp0q-lG"
-	$DocName = "TestDocument.docx"
+	$DocName = "TestWordFile.docx"
 	$DownloadPath = "C:\Temporary"
 	$Url = "https://graph.microsoft.com/v1.0/drives/" + $DriveId + "/root:/" + `
 								$DocName + ":/content"
@@ -1293,7 +1293,7 @@ $UserName = $configFile.appsettings.UserName
 #PsSpGraphRest_GetDrivesInSite
 #PsSpGraphRest_UploadFileToDocumentsLibrary
 #PsSpGraphRest_UploadFileToLibrary
-#PsSpGraphRest_DownloadFileFromDocumentsLibraryInSite
+PsSpGraphRest_DownloadFileFromDocumentsLibraryInSite
 #PsSpGraphRest_DownloadFileFromDriveInSite
 #PsSpGraphRest_CheckOutFileInDocumentsLibrary
 #PsSpGraphRest_CheckInFileInDocumentsLibrary

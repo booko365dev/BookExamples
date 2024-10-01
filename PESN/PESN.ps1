@@ -9,25 +9,28 @@
 
 function PsSpPnpPowerShell_LoginWithAccPwDefault
 {
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 function PsSpPnpPowerShell_LoginWithAccPw($FullSiteUrl)
 {
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	if($fullSiteUrl -ne $null) {
 		[SecureString]$securePW = ConvertTo-SecureString -String `
 				$configFile.appsettings.UserPw -AsPlainText -Force
 
 		$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 				-argumentlist $configFile.appsettings.UserName, $securePW
-		Connect-PnPOnline -Url $FullSiteUrl -Credentials $myCredentials
+		Connect-PnPOnline -Url $FullSiteUrl `
+						  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+						  -Credentials $myCredentials
 	}
 }
 

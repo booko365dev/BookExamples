@@ -7,15 +7,17 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
-Function LoginPsPnPPowerShell()
+Function PsSpPnP_LoginWithAccPw()
 {
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 
@@ -276,7 +278,7 @@ function SpPsPnPSharePoint_DeleteCDNOrigen
 
 #------- Using the PnP PowerShell module --------
 # Connect to Office 365
-$spCtx = LoginPsPnPPowerShell
+$spCtx = PsSpPnP_LoginWithAccPw
 
 #SpPsPnPSharePoint_GetTenantProps
 #SpPsPnPSharePoint_GetTenantId

@@ -174,15 +174,17 @@ function Stream-CopyTo([System.IO.Stream]$Source, [System.IO.Stream]$Destination
     }
 }
 
-function PsSpPnP_LoginWithAccPwDefault
+function PsSpPnP_LoginWithAccPw
 {
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 #----------------------------------------------------------------------------------------
 
@@ -254,7 +256,7 @@ function PsSpRest_FindTenantProps  #*** LEGACY CODE ***
 #gavdcodebegin 104
 function PsSpRest_FindAppCatalogAD
 {
-	PsSpPnP_LoginWithAccPwDefault
+	PsSpPnP_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $endpointUrl = $configFile.appsettings.SiteBaseUrl + "/_api/SP_TenantSettings_Current"
@@ -273,7 +275,7 @@ function PsSpRest_FindAppCatalogAD
 #gavdcodebegin 105
 function PsSpRest_FindTenantPropsAD
 {
-	PsSpPnP_LoginWithAccPwDefault
+	PsSpPnP_LoginWithAccPw
 	$myOAuth = Get-PnPAppAuthAccessToken
 
     $endpointUrl = $configFile.appsettings.SiteBaseUrl + `

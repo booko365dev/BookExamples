@@ -49,7 +49,7 @@ static ClientContext CsSpPnPFramework_GetContextWithCertificate()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static ClientContext CsSpPnPFramework_GetContextWithManagementShell()
+static ClientContext CsSpPnPFramework_GetContextWithManagShell()  //*** LEGACY CODE ***
 {
     SecureString mySecurePw = new ();
     foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
@@ -126,9 +126,9 @@ static void CsSpPnPFramework_ExampleWithCertificate()
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void CsSpPnPFramework_ExampleWithManagementShell()
+static void CsSpPnPFramework_ExampleWithManagementShell()  //*** LEGACY CODE ***
 {
-    using ClientContext spPnpCtx = CsSpPnPFramework_GetContextWithManagementShell();
+    using ClientContext spPnpCtx = CsSpPnPFramework_GetContextWithManagShell();
 
     Web myWeb = spPnpCtx.Web;
     spPnpCtx.Load(myWeb, mw => mw.Id, mw => mw.Title);
@@ -172,7 +172,7 @@ static void CsSpPnPFramework_ExampleWithSecret()  //*** LEGACY CODE ***
 
 //CsSpPnPFramework_ExampleWithAccPw();             //==> PnP Framework Delegate permissions
 //CsSpPnPFramework_ExampleWithCertificate();       //==> PnP Framework Application permissions
-//CsSpPnPFramework_ExampleWithManagementShell();   //==> PnP Framework Management Shell
+//CsSpPnPFramework_ExampleWithManagementShell();   //==> PnP Framework Management Shell  //*** LEGACY CODE ***
 //CsSpPnPFramework_ExampleWithSecret();            //==> PnP Framework using Secret
 
 //LoginPnPFramework_UrlAppIdAppSecret();

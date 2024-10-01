@@ -5,7 +5,10 @@
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.spUserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.spUrl -Credentials $myCredentials
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 #----------------------------------------------------------------------------------------
@@ -223,6 +226,6 @@ $spCtx = LoginPsPnP
 #SpPsPnpUpdateWebPartInModernPage
 #SpPsPnpPromotePageToNewsPage
 #SpPsPnpUpdatePage
-SpPsPnpGetAllPropertiesPage
+#SpPsPnpGetAllPropertiesPage
 
 Write-Host "Done"
