@@ -1,5 +1,5 @@
 ﻿
-Function LoginPsPnP()  #*** LEGACY CODE *** 
+Function LoginPsPnP  #*** LEGACY CODE *** 
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -10,15 +10,15 @@ Function LoginPsPnP()  #*** LEGACY CODE ***
 }
 #----------------------------------------------------------------------------------------
 
-#gavdcodebegin 01
-Function SpPsPnp_CreateOneList()  #*** LEGACY CODE *** 
+#gavdcodebegin 001
+Function SpPsPnp_CreateOneList  #*** LEGACY CODE *** 
 {
 	New-PnPList -Title "NewListPsPnp" -Template GenericList
 }
-#gavdcodeend 01
+#gavdcodeend 001
 
-#gavdcodebegin 02
-Function SpPsPnp_ReadAllList()  #*** LEGACY CODE *** 
+#gavdcodebegin 002
+Function SpPsPnp_ReadAllList  #*** LEGACY CODE *** 
 {
 	$allLists = Get-PnPList
 
@@ -27,41 +27,42 @@ Function SpPsPnp_ReadAllList()  #*** LEGACY CODE ***
 		Write-Host $oneList.Title + " - " + $oneList.Id
 	}
 }
-#gavdcodeend 02
+#gavdcodeend 002
 
-#gavdcodebegin 03
-Function SpPsPnp_ReadOneList()  #*** LEGACY CODE *** 
+#gavdcodebegin 003
+Function SpPsPnp_ReadOneList  #*** LEGACY CODE *** 
 {
 	$myList = Get-PnPList -Identity "NewListPsPnp"
 
 	Write-Host "List Description -" $myList.Description
 }
-#gavdcodeend 03
+#gavdcodeend 003
 
-#gavdcodebegin 04
-Function SpPsPnp_UpdateOneList()  #*** LEGACY CODE *** 
+#gavdcodebegin 004
+Function SpPsPnp_UpdateOneList  #*** LEGACY CODE *** 
 {
 	Set-PnPList -Identity "NewListPsPnp" -Description "New List Description"
 }
-#gavdcodeend 04
+#gavdcodeend 004
 
-#gavdcodebegin 05
-Function SpPsPnp_DeleteOneList()  #*** LEGACY CODE *** 
+#gavdcodebegin 005
+Function SpPsPnp_DeleteOneList  #*** LEGACY CODE *** 
 {
 	 Remove-PnPList -Identity "NewListPsPnp" -Force
 }
-#gavdcodeend 05
+#gavdcodeend 005
 
-#gavdcodebegin 06
-Function SpPsPnp_AddOneFieldToList()  #*** LEGACY CODE *** 
+#gavdcodebegin 006
+Function SpPsPnp_AddOneFieldToList  #*** LEGACY CODE *** 
 {
-	$fieldXml = "<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
+	$fieldXml = `
+			"<Field Name='PSCmdletTest' DisplayName='MyMultilineField' Type='Note' />"
 	Add-PnPFieldFromXml -List "NewListPsPnp" -FieldXml $fieldXml
 }
-#gavdcodeend 06
+#gavdcodeend 006
 
-#gavdcodebegin 07
-Function SpPsPnp_ReadAllFieldsFromList()  #*** LEGACY CODE *** 
+#gavdcodebegin 007
+Function SpPsPnp_ReadAllFieldsFromList  #*** LEGACY CODE *** 
 {
 	$allFields = Get-PnPField -List "NewListPsPnp"
 
@@ -70,31 +71,31 @@ Function SpPsPnp_ReadAllFieldsFromList()  #*** LEGACY CODE ***
 		Write-Host $oneField.Title "-" $oneField.TypeAsString
 	}
 }
-#gavdcodeend 07
+#gavdcodeend 007
 
-#gavdcodebegin 08
-Function SpPsPnp_ReadOneFieldFromList()  #*** LEGACY CODE *** 
+#gavdcodebegin 008
+Function SpPsPnp_ReadOneFieldFromList  #*** LEGACY CODE *** 
 {
 	$myField = Get-PnPField -List "NewListPsPnp" -Identity "MyMultilineField"
 
 	Write-Host $myField.Id "-" $myField.TypeAsString
 }
-#gavdcodeend 08
+#gavdcodeend 008
 
-#gavdcodebegin 09
-Function SpPsPnp_UpdateOneFieldInList()  #*** LEGACY CODE *** 
+#gavdcodebegin 009
+Function SpPsPnp_UpdateOneFieldInList  #*** LEGACY CODE *** 
 {
 	Set-PnPField -List "NewListPsPnp" -Identity "MyMultilineField" `
 									-Values @{Description="New Field Description"}
 }
-#gavdcodeend 09
+#gavdcodeend 009
 
-#gavdcodebegin 10
-Function SpPsPnp_DeleteOneFieldFromList()  #*** LEGACY CODE *** 
+#gavdcodebegin 010
+Function SpPsPnp_DeleteOneFieldFromList  #*** LEGACY CODE *** 
 {
 	Remove-PnPField -List "NewListPsPnp" -Identity "MyMultilineField" -Force
 }
-#gavdcodeend 10
+#gavdcodeend 010
 
 #----------------------------------------------------------------------------------------
 

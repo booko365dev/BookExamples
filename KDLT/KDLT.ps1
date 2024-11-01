@@ -15,7 +15,9 @@ Function PsSpPnpPowerShell_LoginWithAccPwDefault
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 Function PsSpPnpPowerShell_LoginWithAccPw($FullSiteUrl)
@@ -27,7 +29,9 @@ Function PsSpPnpPowerShell_LoginWithAccPw($FullSiteUrl)
 
 		$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 				-argumentlist $configFile.appsettings.UserName, $securePW
-		Connect-PnPOnline -Url $FullSiteUrl -Credentials $myCredentials
+		Connect-PnPOnline -Url $FullSiteUrl `
+						  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+						  -Credentials $myCredentials
 	}
 }
 

@@ -108,13 +108,16 @@ function PsTeamsPnpPowerShell_LoginPsTeams
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteBaseUrl -Credentials $myCredentials
+	Connect-PnPOnline -Url $configFile.appsettings.SiteBaseUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 #gavdcodeend 037
 
 function PsTeamsCliM365_LoginPsTeams
 {
 	m365 login --authType password `
+			   --appId $configFile.appsettings.ClientIdWithAccPw `
 			   --userName $configFile.appsettings.UserName `
 			   --password $configFile.appsettings.UserPw
 }

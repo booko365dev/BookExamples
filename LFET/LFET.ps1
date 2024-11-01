@@ -21,6 +21,7 @@ Function LoginPsPowerPlatform
 Function LoginPsCLI
 {
 	m365 login --authType password `
+			   --appId $configFile.appsettings.ClientIdWithAccPw `
 			   --userName $configFile.appsettings.UserName `
 			   --password $configFile.appsettings.UserPw
 }
@@ -33,7 +34,9 @@ Function LoginPsPnPPowerShellWithAccPwDefault
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
 			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
 }
 
 
