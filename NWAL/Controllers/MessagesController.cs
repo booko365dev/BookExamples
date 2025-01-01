@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 namespace NWAL.Controllers
 {
     //gavdcodebegin 001
-    public class MessagesController : WebHookHandler
+    public class MessagesController : WebHookHandler  // Legacy code
     {
         //gavdcodeend 001
 
         //gavdcodebegin 002
-        public MessagesController()
+        public MessagesController()  // Legacy code
         {
             this.Receiver = GenericJsonWebHookReceiver.ReceiverName;
         }
 
         public override Task ExecuteAsync(string TheReceiver,
-                                          WebHookHandlerContext TheContext)
+                                     WebHookHandlerContext TheContext) // Legacy code
         {
             string myBodyFormatted = TheContext.Data.ToString();
             dynamic myBodyObj = JsonConvert.DeserializeObject(myBodyFormatted);
@@ -39,7 +39,7 @@ namespace NWAL.Controllers
 
         //gavdcodebegin 004
         static void SendMessageBack(dynamic BodyObj, bool ValidationResult,
-                                    WebHookHandlerContext TheContext)
+                                    WebHookHandlerContext TheContext)  // Legacy code
         {
             string myFrom = BodyObj.from.name;
             string myText = BodyObj.text;
@@ -53,7 +53,7 @@ namespace NWAL.Controllers
         //gavdcodeend 004
 
         //gavdcodebegin 003
-        static bool ValidationIsOk(WebHookHandlerContext TheContext)
+        static bool ValidationIsOk(WebHookHandlerContext TheContext)  // Legacy code
         {
             string myHMAC_Calculated = string.Empty;
             string signingKey = "BVK3o93NuB6y3BA5J5k+mBR9n+mG+qGDWbtcxHcrUYg=";

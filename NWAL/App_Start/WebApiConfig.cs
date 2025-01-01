@@ -5,7 +5,7 @@ namespace NWAL
     public static class WebApiConfig
     {
         //gavdcodebegin 006
-        public static void Register(HttpConfiguration config)
+        public static void Register(HttpConfiguration config)  // Legacy code
         {
             // Web API configuration and services
 
