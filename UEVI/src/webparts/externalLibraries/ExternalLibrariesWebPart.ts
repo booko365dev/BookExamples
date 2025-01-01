@@ -1,12 +1,10 @@
 import { Version } from '@microsoft/sp-core-library';
 import {
-  BaseClientSideWebPart,
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import styles from './ExternalLibrariesWebPart.module.scss';
 import * as strings from 'ExternalLibrariesWebPartStrings';
 
 //gavdcodebegin 015
@@ -29,15 +27,25 @@ export default class ExternalLibrariesWebPart extends BaseClientSideWebPart<IExt
 
 //gavdcodebegin 017
   private ValidateInteger(): void {
-    document.getElementById("divMessage").innerHTML = 
-                      validator.isInt('somestring');  // Should get 'false'
+    const divMessage = document.getElementById("divMessage");
+    if (divMessage) {
+      divMessage.innerHTML = validator.isInt('somestring').toString();  // Should get 'false'
+    }
   }
 //gavdcodeend 017
 
 //gavdcodebegin 019
 private ShowMarkdown(): void {
-  document.getElementById("divMessage").innerHTML = 
-                  marked('This string is __bold__');  // Should show html text
+  const divMessage = document.getElementById("divMessage");
+  if (divMessage) {
+    const result = marked.parse('This string is __bold__');
+    if (result instanceof Promise) {
+      result.then(res => { divMessage.innerHTML = res; })
+      .catch(err => console.error(err));
+    } else {
+      divMessage.innerHTML = result;
+    }
+  }
 }
 //gavdcodeend 019
 
@@ -50,28 +58,40 @@ private ShowWithJquery(): void {
 //gavdcodebegin 016
   public render(): void {
     this.domElement.innerHTML = `
-      <div class="${ styles.externalLibraries }">
-        <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
-              <p><button id="btnValidate" class="${ styles.button }">
-              <span class="${styles.label}">Validate if it is Integer</span></button></p>
-              <p><button id="btnMarked" class="${ styles.button }">
-              <span class="${styles.label}">Show some markdown</span></button></p>
-              <p><button id="btnJquery" class="${ styles.button }">
-              <span class="${styles.label}">Using jQuery</span></button></p>
-              <div id="divMessage" class="${ styles.label }" /></div></p>
-              </div>
-          </div>
+      <div>
+        <p><button id="btnValidate">
+        <span>Validate if it is Integer</span></button></p>
+        <p><button id="btnMarked">
+        <span>Show some markdown</span></button></p>
+        <p><button id="btnJquery">
+        <span>Using jQuery</span></button></p>
+        <p><label id="divMessage">This is a message</label></p>
         </div>
       </div>`;
 
-      document.getElementById("btnValidate").onclick = 
-                                          this.ValidateInteger.bind(this);
-      document.getElementById("btnMarked").onclick = 
-                                          this.ShowMarkdown.bind(this);
-      document.getElementById("btnJquery").onclick = 
-                                          this.ShowWithJquery.bind(this);
+      const btnValidate: HTMLElement | null = this.domElement.querySelector('#btnValidate'); 
+      if (btnValidate) { 
+        btnValidate.addEventListener('click', () => this.handleBtnValidate());
+      }
+
+      const btnMarked: HTMLElement | null = this.domElement.querySelector('#btnMarked'); 
+      if (btnMarked) { 
+        btnMarked.addEventListener('click', () => this.handleBtnMarked());
+      }
+
+      const btnJquery: HTMLElement | null = this.domElement.querySelector('#btnJquery'); 
+      if (btnJquery) { 
+        btnJquery.addEventListener('click', () => this.handleBtnJquery());
+      }
+  }
+  private handleBtnValidate(): void { 
+    this.ValidateInteger();
+  }
+  private handleBtnMarked(): void { 
+    this.ShowMarkdown();
+  }
+  private handleBtnJquery(): void { 
+    this.ShowWithJquery();
   }
 //gavdcodeend 016
 

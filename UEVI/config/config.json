@@ -18,6 +18,22 @@
         }
       ]
     },
+    "list-item-crud-pn-p-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/listItemCrudPnP/ListItemCrudPnPWebPart.js",
+          "manifest": "./src/webparts/listItemCrudPnP/ListItemCrudPnPWebPart.manifest.json"
+        }
+      ]
+    },
+    "other-pn-pjs-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/otherPnPjs/OtherPnPjsWebPart.js",
+          "manifest": "./src/webparts/otherPnPjs/OtherPnPjsWebPart.manifest.json"
+        }
+      ]
+    },
     "external-libraries-web-part": {
       "components": [
         {
@@ -26,11 +42,35 @@
         }
       ]
     },
-    "list-item-crud-pn-p-web-part": {
+    "list-item-crud-graph-web-part": {
       "components": [
         {
-          "entrypoint": "./lib/webparts/listItemCrudPnP/ListItemCrudPnPWebPart.js",
-          "manifest": "./src/webparts/listItemCrudPnP/ListItemCrudPnPWebPart.manifest.json"
+          "entrypoint": "./lib/webparts/listItemCrudGraph/ListItemCrudGraphWebPart.js",
+          "manifest": "./src/webparts/listItemCrudGraph/ListItemCrudGraphWebPart.manifest.json"
+        }
+      ]
+    },
+    "app-cust-extension-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/appCustExtension/AppCustExtensionApplicationCustomizer.js",
+          "manifest": "./src/extensions/appCustExtension/AppCustExtensionApplicationCustomizer.manifest.json"
+        }
+      ]
+    },
+    "field-cust-extension-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/fieldCustExtension/FieldCustExtensionFieldCustomizer.js",
+          "manifest": "./src/extensions/fieldCustExtension/FieldCustExtensionFieldCustomizer.manifest.json"
+        }
+      ]
+    },
+    "list-view-cust-extension-command-set": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/listViewCustExtension/ListViewCustExtensionCommandSet.js",
+          "manifest": "./src/extensions/listViewCustExtension/ListViewCustExtensionCommandSet.manifest.json"
         }
       ]
     }
@@ -44,8 +84,13 @@
   "localizedResources": {
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
     "ListItemCrudJavaScriptWebPartStrings": "lib/webparts/listItemCrudJavaScript/loc/{locale}.js",
+    "ListItemCrudPnPWebPartStrings": "lib/webparts/listItemCrudPnP/loc/{locale}.js",
+    "OtherPnPjsWebPartStrings": "lib/webparts/otherPnPjs/loc/{locale}.js",
     "ExternalLibrariesWebPartStrings": "lib/webparts/externalLibraries/loc/{locale}.js",
     "marked": "node_modules/marked/marked.min.js",
-    "ListItemCrudPnPWebPartStrings": "lib/webparts/listItemCrudPnP/loc/{locale}.js"
+    "ListItemCrudGraphWebPartStrings": "lib/webparts/listItemCrudGraph/loc/{locale}.js",
+    "AppCustExtensionApplicationCustomizerStrings": "lib/extensions/appCustExtension/loc/{locale}.js",
+    "FieldCustExtensionFieldCustomizerStrings": "lib/extensions/fieldCustExtension/loc/{locale}.js",
+    "ListViewCustExtensionCommandSetStrings": "lib/extensions/listViewCustExtension/loc/{locale}.js"
   }
 }

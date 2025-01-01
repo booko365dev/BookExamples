@@ -1,10 +1,55 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://localhost:5432/workbench",
-  "api": {
-    "port": 5432,
-    "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://guitacadev.sharepoint.com/sites/Chapter14/Lists/List03/AllItems.aspx",
+      "customActions": {
+        "41be44c0-c05f-4eff-9fca-690b94eefdd1": {
+          "location": "ClientSideExtension.ListViewCommandSet.ContextMenu",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible.",
+            "sampleTextThree": "Input some text"
+          }
+        }
+      }
+    },
+    "listViewCustExtension": {
+      "pageUrl": "https://guitacadev.sharepoint.com/sites/Chapter14/Lists/List03/AllItems.aspx",
+      "customActions": {
+        "41be44c0-c05f-4eff-9fca-690b94eefdd1": {
+          "location": "ClientSideExtension.ListViewCommandSet.ContextMenu",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible.",
+            "sampleTextThree": "Input some text"
+          }
+        }
+      }
+    },
+    "fieldCustExtension": {
+      "pageUrl": "https://guitacadev.sharepoint.com/sites/Chapter14/Lists/List02/AllItems.aspx",
+      "fieldCustomizers": {
+        "MyNumber": {
+          "id": "6439bbda-edcc-446e-bc4b-0500a885d4a5",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    },
+    "appCustExtension": {
+      "pageUrl": "https://guitacadev.sharepoint.com/sites/Chapter14/SitePages/Page01.aspx",
+      "customActions": {
+        "30cefa02-53d4-4f4e-b484-1cc24085f7a2": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
+    }
   }
 }

@@ -1,17 +1,11 @@
-/* tslint:disable */
+
 require("./ListItemCrudJavaScriptWebPart.module.css");
 const styles = {
-  listItemCrudJavaScript: 'listItemCrudJavaScript_ba6a0c5f',
-  container: 'container_ba6a0c5f',
-  row: 'row_ba6a0c5f',
-  column: 'column_ba6a0c5f',
-  'ms-Grid': 'ms-Grid_ba6a0c5f',
-  title: 'title_ba6a0c5f',
-  subTitle: 'subTitle_ba6a0c5f',
-  description: 'description_ba6a0c5f',
-  button: 'button_ba6a0c5f',
-  label: 'label_ba6a0c5f'
+  listItemCrudJavaScript: 'listItemCrudJavaScript_3dd579a8',
+  teams: 'teams_3dd579a8',
+  welcome: 'welcome_3dd579a8',
+  welcomeImage: 'welcomeImage_3dd579a8',
+  links: 'links_3dd579a8'
 };
 
 export default styles;
-/* tslint:enable */

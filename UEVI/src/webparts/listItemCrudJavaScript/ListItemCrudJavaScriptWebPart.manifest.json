@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
-  "id": "faac45bb-8326-4132-ade2-8cd774bf9489",
+  "id": "6717f940-2847-44eb-bee7-2b13e04f8b21",
   "alias": "ListItemCrudJavaScriptWebPart",
   "componentType": "WebPart",
 
@@ -12,16 +12,17 @@
   // Components that allow authors to embed arbitrary script code should set this to true.
   // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
   "requiresCustomScript": false,
-  "supportedHosts": ["SharePointWebPart"],
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
 
   "preconfiguredEntries": [{
-    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
-    "group": { "default": "Other" },
-    "title": { "default": "ListItemCrudJavaScript" },
-    "description": { "default": "ListItemCrudJavaScript description" },
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "listItemCrudJavaScript" },
+    "description": { "default": "listItemCrudJavaScript description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "ListItemCrudJavaScript"
+      "description": "listItemCrudJavaScript"
     }
   }]
 }

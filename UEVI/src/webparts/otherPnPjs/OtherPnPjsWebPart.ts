@@ -1,84 +1,87 @@
 //gavdcodebegin 040
 import { Version } from '@microsoft/sp-core-library';
 import {
-  BaseClientSideWebPart,
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import { sp, Web, List, ListAddResult, SearchResults } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import { SearchResults } from "@pnp/sp/search";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
+import "@pnp/sp/profiles";
+import "@pnp/sp/search";
 
-import styles from './OtherPnPjsWebPart.module.scss';
 import * as strings from 'OtherPnPjsWebPartStrings';
-import { any } from 'prop-types';
+import { IListInfo } from '@pnp/sp/lists';
+import { IFileInfo } from '@pnp/sp/files';
 
 export interface IOtherPnPjsWebPartProps {
   description: string;
 }
 //gavdcodeend 040
 
-export default class OtherPnPjsWebPart extends BaseClientSideWebPart<IOtherPnPjsWebPartProps> {
+export default class OtherPnPjsWebPart extends 
+            BaseClientSideWebPart<IOtherPnPjsWebPartProps> {
 
 //gavdcodebegin 032
   private GetUrlFromContext(): void {
-    this.ResponseMessage(this.context.pageContext.web.absoluteUrl);
+    alert(this.context.pageContext.web.absoluteUrl);
   }
 //gavdcodeend 032
 
 //gavdcodebegin 034
   private CreateList(): void {
-    let spListTitle = "SPFxPnPjsList";  
-    let spListDescription = "New List created with PnPjs";  
-    let spListTemplateId = 100;  
-    let spEnableCT = false;  
+    const sp = spfi().using(SPFx(this.context));
+    const spListTitle = "SPFxPnPjsList";  
+    const spListDescription = "New List created with PnPjs";  
+    const spListTemplateId = 100;  
+    const spEnableCT = false;  
 
-    sp.web.lists.add(spListTitle, spListDescription, spListTemplateId, spEnableCT)
-    .then((myResult: ListAddResult): void => {
-        this.ResponseMessage(`List created`);
-      }, (myError: any): void => {  
-        this.ResponseMessage('Error creating List: ' + myError);
+    sp.web.lists.add(spListTitle, spListDescription, 
+                     spListTemplateId, spEnableCT)
+    .then((myResult: IListInfo): void => {
+        alert(`List created`);
+      }, (myError: Error): void => {  
+        alert('Error creating List: ' + myError);
     });
   }   
 //gavdcodeend 034
 
 //gavdcodebegin 035
   private UploadFile(): void {
-    var myFiles = (<HTMLInputElement>document.getElementById('inpFile')).files;
-    var myFile = myFiles[0];
+    const sp = spfi().using(SPFx(this.context));
+    const myFiles = (<HTMLInputElement>document
+                          .getElementById('inpFile')).files;
+    const myFile = myFiles![0];
 
-    if (myFile!=undefined || myFile!=null) {
+    if (myFile !== undefined || myFile !== null) {
       if (myFile.size <= 10485760) {
-        sp.web.getFolderByServerRelativeUrl(
-        this.context.pageContext.web.serverRelativeUrl + "/Shared Documents")
-        .files.add(myFile.name, myFile, true)
-        .then((myUploadedFile: any): void => {
-          myUploadedFile.file.getItem()
-          .then((myItem: any): void => {
-            myItem.update({
-              Title:'TestFile'
-            })
-          })
+        sp.web.getFolderByServerRelativePath("Shared Documents")
+        .files.addUsingPath(myFile.name, myFile)
+        .then((myData: IFileInfo): void => {
+          alert(`Small file uploaded`);
         })
-        .then((myData: any): void => {
-          this.ResponseMessage(`Small file uploaded`);
-        })
-        .catch((myError: any): void => {
-          this.ResponseMessage(`Error uploading file` + myError);
+        .catch((myError: Error): void => {
+          alert(`Error uploading file` + myError);
         });
       }
       else {
-        sp.web.getFolderByServerRelativeUrl(
-          this.context.pageContext.web.serverRelativeUrl + "/Shared Documents")
-          .files.addChunked(myFile.name, myFile, myData =>
+        sp.web.getFolderByServerRelativePath("Shared Documents")
+          .files.addChunked(myFile.name, myFile,
             {
-               console.log({ data: myData, message: "progress" });
-            }, true)
-          .then((myData: any): void =>{
-            this.ResponseMessage(`Big file uploaded`);
+              progress: data => { console.log(`progress`); }, 
+              Overwrite: true
+            })
+          .then((myData: IFileInfo): void =>{
+            alert(`Big file uploaded`);
           })
-          .catch((myError: any): void => {
-            this.ResponseMessage(`Error uploading file` + myError);
+          .catch((myError: Error): void => {
+            alert(`Error uploading file` + myError);
         });
       }
     }
@@ -87,149 +90,218 @@ export default class OtherPnPjsWebPart extends BaseClientSideWebPart<IOtherPnPjs
 
 //gavdcodebegin 036
 private GetUserProperties(): void {
-  var userPropertyValues = ""; 
+  const sp = spfi().using(SPFx(this.context));
+  let userPropertyValues = ""; 
 
-  sp.profiles.myProperties.get()
+  sp.profiles.myProperties()
   .then(function(propResult) {  
-    var userProperties = propResult.UserProfileProperties;  
+    const userProperties = propResult.UserProfileProperties;  
 
-    userProperties.forEach(function(oneProperty) {  
-        userPropertyValues += oneProperty.Key + " - " + oneProperty.Value + "<br/>";  
-    })
+    userProperties.forEach((oneProperty: { 
+                          Key: string; Value: string }) => {
+      userPropertyValues += `${oneProperty.Key} - 
+                             ${oneProperty.Value}<br/>`;
+    });
   })
-  .then((myResult: any): void => {
-    this.ResponseMessage(userPropertyValues);
-  }, (myError: any): void => {  
-    this.ResponseMessage('Error geting user: ' + myError);
+   .then((myResult: void): void => {
+    alert(userPropertyValues);
+    }, (myError: Error): void => {  
+      alert('Error geting user: ' + myError);
   });
 }
 //gavdcodeend 036
 
 //gavdcodebegin 037
 private GetOtherUserProperties(): void {  
-  var userPropertyValues = "";
+  const sp = spfi().using(SPFx(this.context));
+  let userPropertyValues = "";
+  const loginName = "i:0#.f|membership|user@domain.onmicrosoft.com";  
 
-  let loginName = "i:0#.f|membership|oneuser@onedomain.onmicrosoft.com";  
   sp.profiles.getPropertiesFor(loginName)
   .then(function(propResult) {  
-    var userProperties = propResult.UserProfileProperties;  
+    const userProperties = propResult.UserProfileProperties;  
 
-    userProperties.forEach(function(oneProperty) {  
-        userPropertyValues += oneProperty.Key + " - " + oneProperty.Value + "<br/>";  
-    })
+    userProperties.forEach((oneProperty: { 
+                          Key: string; Value: string }) => {
+      userPropertyValues += `${oneProperty.Key} - 
+                             ${oneProperty.Value}<br/>`;
+    });
   })
-  .then((myResult: any): void => {
-    this.ResponseMessage(userPropertyValues);
-  }, (myError: any): void => {  
-    this.ResponseMessage('Error getting user: ' + myError);
+  .then((myResult: void): void => {
+    alert(userPropertyValues);
+    }, (myError: Error): void => {  
+      alert('Error getting user: ' + myError);
   });
 }
 //gavdcodeend 037
 
 //gavdcodebegin 038
 private UpdateUserProperties(): void {
-  var userAccName = ""; 
+  const sp = spfi().using(SPFx(this.context));
+  let userAccName = ""; 
 
-  sp.profiles.myProperties.get()
+  sp.profiles.myProperties()
   .then(function(propResult) {
-    var userProperties = propResult.UserProfileProperties;  
+    const userProperties = propResult.UserProfileProperties;  
 
-    userProperties.forEach(function(oneProperty) { 
-      if(oneProperty.Key == "AccountName") {
-        userAccName = oneProperty.Value;
-      } 
-    })
+    userProperties.forEach((oneProperty: { 
+                        Key: string; Value: string }) => {
+      if (oneProperty.Key === "AccountName") {
+      userAccName = oneProperty.Value;
+      }
+    });
   })
-  .then((myResult: any): void => {
-    sp.profiles.setSingleValueProfileProperty(userAccName, 'AboutMe', 'Books writter');
+  .then((myResult: void): void => {
+    sp.profiles.setSingleValueProfileProperty(
+                    userAccName, 'AboutMe', 'Books writter')
+      .then(() => {
+        // handle success
+      })
+      .catch((error: Error) => {
+        alert('Error updating AboutMe property: ' + error);
+      });
   })
-  .then((myResult: any): void => {
-    let mySkills = ["SharePoint", "Office365"]; 
-    sp.profiles.setMultiValuedProfileProperty(userAccName, 'SPS-Skills', mySkills);
+  .then((myResult: void): void => {
+    const mySkills = ["SharePoint", "Microsoft365"]; 
+    sp.profiles.setMultiValuedProfileProperty(
+                    userAccName, 'SPS-Skills', mySkills)
+      .catch((error: Error) => {
+        alert('Error updating SPS-Skills property: ' + error);
+      });
   })
-  .then((myResult: any): void => {
-    this.ResponseMessage("User properties updated");
-  }, (myError: any): void => {  
-    this.ResponseMessage('Error updating user properties: ' + myError);
+  .then((myResult: void): void => {
+    alert("User properties updated");
+  }, (myError: Error): void => {  
+    alert('Error updating user properties: ' + myError);
   });
 }
 //gavdcodeend 038
 
 //gavdcodebegin 039
 private GetSearchResults(): void {
-  var allSearchRes = "";
+  const sp = spfi().using(SPFx(this.context));
+  let allSearchRes = "";
 
   sp.search("SharePoint")  // Search for the word "SharePoint"
   .then((myResult : SearchResults) => {
-    var mySearchRes = myResult.PrimarySearchResults;
+    const mySearchRes = myResult.PrimarySearchResults;
   
-    var counter = 1;
+    let counter = 1;
     mySearchRes.forEach(function(object) {
       allSearchRes += counter++ + 
-                    ". Title - " + object.Title + "<br/>" + 
-                    "Rank - " + object.Rank + "<br/>" + 
-                    "File Type - " + object.FileType + "<br/>" + 
-                    "Original Path - " + object.OriginalPath + "<br/>" + 
-                    "Summary - " + object.HitHighlightedSummary + "<br/>" + 
-                    "<br/>";
+              ". Title - " + object.Title + "<br/>" + 
+              "Rank - " + object.Rank + "<br/>" + 
+              "File Type - " + object.FileType + "<br/>" + 
+              "Original Path - " + object.OriginalPath + "<br/>" + 
+              "Summary - " + object.HitHighlightedSummary + "<br/>" + 
+              "<br/>";
     });
    })
-   .then((myResult: any): void => {
-      this.ResponseMessage(allSearchRes);
-    }, (myError: any): void => {
-      this.ResponseMessage('Error getting search: ' + myError);
+   .then((myResult: void): void => {
+      alert(allSearchRes);
+    }, (myError: Error): void => {
+      alert('Error getting search: ' + myError);
     });
   }
 //gavdcodeend 039
 
 //gavdcodebegin 033
-  private ResponseMessage(myResponse: string): void {  
-    this.domElement.querySelector('.lblMessage').innerHTML = myResponse;  
-  }
+  // private ResponseMessage(myResponse: string): void {  
+  //   this.domElement.querySelector('.lblMessage').innerHTML = myResponse;  
+  // }
 //gavdcodeend 033
 
 //gavdcodebegin 041
 public render(): void {
     this.domElement.innerHTML = `
-      <div class="${ styles.otherPnPjs }">
-        <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
-              <p><button id="btnGetUrlFromContext" class="${ styles.button }">
-              <span class="${styles.label}">Get Url From Context</span></button></p>
-              <p><button id="btnCreateList" class="${ styles.button }">
-              <span class="${styles.label}">Create a Custom List</span></button></p>
-              <input type="file" id="inpFile" class="${ styles.button }"></input>
-              <p><button id="btnUploadFile" class="${ styles.button }">
-              <span class="${styles.label}">Upload a file</span></button></p>
-              <p><button id="btnGetUserProperties" class="${ styles.button }">
-              <span class="${styles.label}">Get User Properties</span></button></p>
-              <p><button id="btnGetOtherUserProperties" class="${ styles.button }">
-              <span class="${styles.label}">Get other User Properties</span></button></p>
-              <p><button id="btnUpdateUserProperties" class="${ styles.button }">
-              <span class="${styles.label}">Update User Properties</span></button></p>
-              <p><button id="btnGetSearchResults" class="${ styles.button }">
-              <span class="${styles.label}">Get search results</span></button></p>
-              <div class="lblMessage"></div>  
-            </div>
-          </div>
-        </div>
+      <div>
+        <p><button id="btnGetUrlFromContext">
+        <span>Get Url From Context</span></button></p>
+        <p><button id="btnCreateList">
+        <span>Create a Custom List</span></button></p>
+        <input type="file" id="inpFile"></input>
+        <p><button id="btnUploadFile">
+        <span>Upload a file</span></button></p>
+        <p><button id="btnGetUserProperties">
+        <span>Get User Properties</span></button></p>
+        <p><button id="btnGetOtherUserProperties">
+        <span>Get other User Properties</span></button></p>
+        <p><button id="btnUpdateUserProperties">
+        <span>Update User Properties</span></button></p>
+        <p><button id="btnGetSearchResults">
+        <span>Get search results</span></button></p>
+        <div class="lblMessage"></div>  
       </div>`;
 
-      document.getElementById("btnGetUrlFromContext").onclick = 
-                                          this.GetUrlFromContext.bind(this);
-      document.getElementById("btnCreateList").onclick = 
-                                          this.CreateList.bind(this);
-      document.getElementById("btnUploadFile").onclick = 
-                                          this.UploadFile.bind(this);
-      document.getElementById("btnGetUserProperties").onclick = 
-                                          this.GetUserProperties.bind(this);
-      document.getElementById("btnGetOtherUserProperties").onclick = 
-                                          this.GetOtherUserProperties.bind(this);
-      document.getElementById("btnUpdateUserProperties").onclick = 
-                                          this.UpdateUserProperties.bind(this);
-      document.getElementById("btnGetSearchResults").onclick = 
-                                          this.GetSearchResults.bind(this);
+      const btnGetUrlFromContext: HTMLElement | null = 
+                this.domElement.querySelector('#btnGetUrlFromContext'); 
+      if (btnGetUrlFromContext) { 
+        btnGetUrlFromContext.addEventListener('click', () => 
+                this.handleBtnGetUrlFromContext());
+      }
+
+      const btnCreateList: HTMLElement | null = 
+                this.domElement.querySelector('#btnCreateList'); 
+      if (btnCreateList) { 
+        btnCreateList.addEventListener('click', () => 
+                this.handleBtnCreateList());
+      }
+
+      const btnUploadFile: HTMLElement | null = 
+                this.domElement.querySelector('#btnUploadFile'); 
+      if (btnUploadFile) { 
+        btnUploadFile.addEventListener('click', () => 
+                this.handleBtnUploadFile());
+      }
+
+      const btnGetUserProperties: HTMLElement | null = 
+                this.domElement.querySelector('#btnGetUserProperties'); 
+      if (btnGetUserProperties) { 
+        btnGetUserProperties.addEventListener('click', () => 
+                this.handleBtnGetUserProperties());
+      }
+
+      const btnGetOtherUserProperties: HTMLElement | null = 
+                this.domElement.querySelector('#btnGetOtherUserProperties'); 
+      if (btnGetOtherUserProperties) { 
+        btnGetOtherUserProperties.addEventListener('click', () => 
+                this.handleBtnGetOtherUserProperties());
+      }
+
+      const btnUpdateUserProperties: HTMLElement | null = 
+                this.domElement.querySelector('#btnUpdateUserProperties'); 
+      if (btnUpdateUserProperties) { 
+        btnUpdateUserProperties.addEventListener('click', () => 
+                this.handleBtnUpdateUserProperties());
+      }
+
+      const btnGetSearchResults: HTMLElement | null = 
+                this.domElement.querySelector('#btnGetSearchResults'); 
+      if (btnGetSearchResults) { 
+        btnGetSearchResults.addEventListener('click', () => 
+                this.handleBbtnGetSearchResults());
+      }
+  }
+  private handleBtnGetUrlFromContext(): void { 
+    this.GetUrlFromContext();
+  }
+  private handleBtnCreateList(): void { 
+    this.CreateList();
+  }
+  private handleBtnUploadFile(): void { 
+    this.UploadFile();
+  }
+  private handleBtnGetUserProperties(): void { 
+    this.GetUserProperties();
+  }
+  private handleBtnGetOtherUserProperties(): void { 
+    this.GetOtherUserProperties();
+  }
+  private handleBtnUpdateUserProperties(): void { 
+    this.UpdateUserProperties();
+  }
+  private handleBbtnGetSearchResults(): void { 
+    this.GetSearchResults();
   }
 //gavdcodeend 041
 

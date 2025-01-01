@@ -1,16 +1,18 @@
 //gavdcodebegin 022
 import { Version } from '@microsoft/sp-core-library';
 import {
-  BaseClientSideWebPart,
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import { sp, ItemAddResult, ItemUpdateResult } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/items";
 import { IListItem } from './IListItem'; 
 
-import styles from './ListItemCrudPnPWebPart.module.scss';
 import * as strings from 'ListItemCrudPnPWebPartStrings';
 
 export interface IListItemCrudPnPWebPartProps {
@@ -19,164 +21,207 @@ export interface IListItemCrudPnPWebPartProps {
 }
 //gavdcodeend 022
 
-export default class ListItemCrudPnPWebPart extends BaseClientSideWebPart<IListItemCrudPnPWebPartProps> {
+export default class ListItemCrudPnPWebPart extends 
+            BaseClientSideWebPart<IListItemCrudPnPWebPartProps> {
+
+private GetAllItems(): void {
+  const sp = spfi().using(SPFx(this.context));
+  
+  sp.web.lists.getByTitle(this.properties.listName).items()
+    .then((allItems: IListItem[]) => {
+      let itemsString = '';
+      allItems.forEach(oneItem => {
+        itemsString += `Title: ${oneItem.Title}, ID: ${oneItem.Id}\n`;
+      });
+      alert(itemsString);
+    })
+    .catch((myError: Error) => {
+      alert(myError);
+    });
+}
 
 //gavdcodebegin 026
-  private CreateItem(): void {
-    var myDate = new Date();
-    sp.web.lists.getByTitle(this.properties.listName).items.add({
-      Title: "Item-" + myDate.getHours() + myDate.getMinutes() + myDate.getSeconds()})
-      .then((myResult: ItemAddResult): void => {
-      const myItem: IListItem = myResult.data as IListItem;
-      this.ResponseMessage(`Item '${myItem.Title}' with ID '${myItem.Id}' created`);
-    }, (myError: any): void => {  
-      this.ResponseMessage('Error creating Item: ' + myError);
-     });
-  }
+private CreateItem(): void {
+  const sp = spfi().using(SPFx(this.context));
+  const myDate = new Date();
+  const myTitle = "Item-" + myDate.getHours() + 
+                            myDate.getMinutes() + myDate.getSeconds();
+
+  sp.web.lists.getByTitle(this.properties.listName).items.add({
+    Title: myTitle
+  })
+  .then((myResult) => {
+    alert(`New item created`);
+  })
+  .catch((myError) => {
+    alert(`Error creating Item: ${myError}`);
+  });
+}
 //gavdcodeend 026
 
 //gavdcodebegin 028
-  private ReadItem(): void {
-    this.GetLatestItemId()  
-      .then((myItemId: number): Promise<IListItem> => {  
-        if (myItemId === -1) {  
-          throw new Error('List has no Items');  
-        }  
+  private ReadLastItem(): void {
+    this.GetLatestItemId()
+      .then((myItemId: number): void => {
+        if (myItemId === -1) {
+          throw new Error('List has no Items');
+        }
   
-        return sp.web.lists.getByTitle(this.properties.listName)  
-          .items.getById(myItemId).select('Title', 'Id').get();  
-      })  
-      .then((myItem: IListItem): void => {  
-        this.ResponseMessage(`Last Item Title: '${myItem.Title}' - Item ID: '${myItem.Id}`);  
-      }, (myError: any): void => {
-        this.ResponseMessage('Error finding Item: ' + myError);  
-      });  
+          alert(`Last Item ID: ${myItemId}`);
+      }
+    )
+    .catch((myError: Error) => {
+      alert(`Error finding Item: ${myError}`);
+    });
   }
 //gavdcodeend 028
 
 //gavdcodebegin 030
   private UpdateItem(): void {
-    let etag: string = undefined;  
-  
-    this.GetLatestItemId()  
-      .then((myItemId: number): Promise<IListItem> => {  
-        if (myItemId === -1) {  
-          throw new Error('List has no Items');  
-        }  
-  
-        return sp.web.lists.getByTitle(this.properties.listName)  
-          .items.getById(myItemId).get(undefined, {  
-            headers: {  
-              'Accept': 'application/json;odata=minimalmetadata'  
-            }  
-          });  
-      })  
-      .then((myItem: IListItem): Promise<IListItem> => {  
-        etag = myItem["odata.etag"];  
-        return Promise.resolve((myItem as any) as IListItem);  
-      })  
-      .then((myItem: IListItem): Promise<ItemUpdateResult> => {  
-        return sp.web.lists.getByTitle(this.properties.listName)  
-          .items.getById(myItem.Id).update({  
-            'Title': `${myItem.Title}_Updated`  
-          }, etag);  
-      })  
-      .then((myResult: ItemUpdateResult): void => {
-        this.ResponseMessage(`Item updated`);  
-      }, (myError: any): void => {  
-        this.ResponseMessage('Error updating Item: ' + myError);  
+    const sp = spfi().using(SPFx(this.context));
+
+    this.GetLatestItemId()
+    .then((myItemId: number): void => {
+      if (myItemId === -1) {
+        throw new Error('List has no Items');
+      }
+
+      const myDate = new Date();
+      const myTitle = "Item-" + myDate.getHours() + 
+                                myDate.getMinutes() + myDate.getSeconds();
+      const myList = sp.web.lists.getByTitle(this.properties.listName);
+
+      myList.items.getById(myItemId).update({
+        Title: `${myTitle}_Updated`
+      })
+      .then(() => {
+        alert("Item updated");
+      })
+      .catch((myError: Error) => {
+        alert(`Error updating Item: ${myError}`);
       });
+    })
+    .catch((myError: Error) => {
+      alert(`Error updating Item: ${myError}`);
+    });
   }
 //gavdcodeend 030
 
 //gavdcodebegin 031
   private DeleteItem(): void {
-    let etag: string = undefined;
+    const sp = spfi().using(SPFx(this.context));
 
-    this.GetLatestItemId()  
-      .then((myItemId: number): Promise<IListItem> => {  
-        if (myItemId === -1) {  
-          throw new Error('List has no Items');  
-        }  
-    
-        return sp.web.lists.getByTitle(this.properties.listName)  
-          .items.getById(myItemId).select('Id').get(undefined, {  
-            headers: {  
-              'Accept': 'application/json;odata=minimalmetadata'  
-            }  
-          });  
-      })  
-      .then((myItem: IListItem): Promise<IListItem> => {  
-        etag = myItem["odata.etag"];  
-        return Promise.resolve((myItem as any) as IListItem);  
-      })  
-      .then((myItem: IListItem): Promise<void> => {  
-        return sp.web.lists.getByTitle(this.properties.listName)  
-          .items.getById(myItem.Id).delete(etag);  
-      })  
-      .then((): void => {  
-        this.ResponseMessage(`Last Item deleted`);  
-      }, (myError: any): void => {  
-        this.ResponseMessage(`Error deleting item: ${myError}`);  
+    this.GetLatestItemId()
+    .then((myItemId: number): void => {
+      if (myItemId === -1) {
+        throw new Error('List has no Items');
+      }
+
+      const myList = sp.web.lists.getByTitle(this.properties.listName);
+
+      myList.items.getById(myItemId).delete()
+      .then(() => {
+        alert("Item deleted");
+      })
+      .catch((myError: Error) => {
+        alert(`Error deleting Item: ${myError}`);
       });
+    })
+    .catch((myError: Error) => {
+      alert(`Error deleting Item: ${myError}`);
+    });
   }
 //gavdcodeend 031
 
 //gavdcodebegin 029
   private GetLatestItemId(): Promise<number> {  
-    return new Promise<number>((resolve: (itemId: number) => 
-                        void, reject: (error: any) => void): void => {  
-      sp.web.lists.getByTitle(this.properties.listName)  
-        .items.orderBy('Id', false).top(1).select('Id').get()  
-        .then((items: { Id: number }[]): void => {  
-          if (items.length === 0) {  
-            resolve(-1);  
-          }  
-          else {  
-            resolve(items[0].Id);  
-          }  
-        }, (error: any): void => {  
-          reject(error);  
-        });  
-    });  
+    const sp = spfi().using(SPFx(this.context));
+
+    return sp.web.lists.getByTitle(this.properties.listName).items()
+      .then((allItems: IListItem[]) => {
+        const lastItemId = 
+            allItems.length > 0 ? allItems[allItems.length - 1].Id : -1;
+        return lastItemId;
+      })
+      .catch((myError: Error) => {
+        console.error(myError);
+        return -1;
+      });
   }  
 //gavdcodeend 029
 
 //gavdcodebegin 027
-  private ResponseMessage(myResponse: string): void {  
-    this.domElement.querySelector('.lblMessage').innerHTML = myResponse;  
-  }
+  // private ResponseMessage(myResponse: string): void {  
+  //   alert(myResponse);  
+  // }
 //gavdcodeend 027
 
 //gavdcodebegin 025
-public render(): void {
+  public render(): void {
     this.domElement.innerHTML = `
-      <div class="${ styles.listItemCrudPnP }">
-        <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
-            <p><button id="btnCreate" class="${ styles.button }">
-            <span class="${styles.label}">Create Item</span></button></p>
-            <p><button id="btnRead" class="${ styles.button }">
-            <span class="${styles.label}">Find Last Item</span></button></p>
-            <p><button id="btnUpdate" class="${ styles.button }">
-            <span class="${styles.label}">Update Last Item</span></button></p>
-            <p><button id="btnDelete" class="${ styles.button }">
-            <span class="${styles.label}">Delete Last Item</span></button></p>
-            <div class="lblMessage"></div>  
-          </div>
-          </div>
-        </div>
+      <div>
+        <p><button id="btnCreate">
+        <span>Create Item</span></button></p>
+        <p><button id="btnRead">
+        <span>Find All Item</span></button></p>
+        <p><button id="btnReadLast">
+        <span>Find Last Item</span></button></p>
+        <p><button id="btnUpdate">
+        <span>Update Last Item</span></button></p>
+        <p><button id="btnDelete">
+        <span>Delete Last Item</span></button></p>
+        <div></div>  
       </div>`;
 
-      document.getElementById("btnCreate").onclick = 
-                                          this.CreateItem.bind(this);
-      document.getElementById("btnRead").onclick = 
-                                          this.ReadItem.bind(this);
-      document.getElementById("btnUpdate").onclick = 
-                                          this.UpdateItem.bind(this);
-      document.getElementById("btnDelete").onclick = 
-                                          this.DeleteItem.bind(this);
+    const btnCreate: HTMLElement | null = 
+              this.domElement.querySelector('#btnCreate'); 
+    if (btnCreate) { 
+      btnCreate.addEventListener('click', () => 
+              this.handleBtnCreate());
+    }
+
+    const btnRead: HTMLElement | null = 
+              this.domElement.querySelector('#btnRead'); 
+    if (btnRead) { 
+      btnRead.addEventListener('click', () => 
+              this.handleBtnRead());
+    }
+
+    const btnReadLast: HTMLElement | null = 
+              this.domElement.querySelector('#btnReadLast'); 
+    if (btnReadLast) { 
+      btnReadLast.addEventListener('click', () => 
+              this.handleBtnReadLast());
+    }
+
+    const btnUpdate: HTMLElement | null = 
+              this.domElement.querySelector('#btnUpdate'); 
+    if (btnUpdate) { 
+      btnUpdate.addEventListener('click', () => 
+              this.handleBtnUpdate());
+    }
+
+    const btnDelete: HTMLElement | null = 
+              this.domElement.querySelector('#btnDelete'); 
+    if (btnDelete) { 
+      btnDelete.addEventListener('click', () => 
+              this.handleBtnDelete());
+    }
+  }
+  private handleBtnCreate(): void { 
+    this.CreateItem();
+  }
+  private handleBtnRead(): void { 
+      this.GetAllItems();
+    }
+  private handleBtnReadLast(): void { 
+      this.ReadLastItem();
+    }
+  private handleBtnUpdate(): void { 
+    this.UpdateItem();
+  }
+  private handleBtnDelete(): void { 
+    this.DeleteItem();
   }
 //gavdcodeend 025
 

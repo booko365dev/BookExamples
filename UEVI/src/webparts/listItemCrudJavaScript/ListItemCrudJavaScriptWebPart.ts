@@ -1,16 +1,14 @@
 //gavdcodebegin 005
 import { Version } from '@microsoft/sp-core-library';
 import {
-  BaseClientSideWebPart,
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';  
-import { IListItem } from './IListItem'; 
+import { IListItem } from './IListItem';
 
-import styles from './ListItemCrudJavaScriptWebPart.module.scss';
 import * as strings from 'ListItemCrudJavaScriptWebPartStrings';
 
 export interface IListItemCrudJavaScriptWebPartProps {
@@ -19,19 +17,23 @@ export interface IListItemCrudJavaScriptWebPartProps {
 }
 //gavdcodeend 005
 
-export default class ListItemCrudJavaScriptWebPart extends BaseClientSideWebPart<IListItemCrudJavaScriptWebPartProps> {
+export default class ListItemCrudJavaScriptWebPart extends 
+            BaseClientSideWebPart<IListItemCrudJavaScriptWebPartProps> {
 
-//gavdcodebegin 009
+  //gavdcodebegin 009
   private CreateItem(): void {
-    var myDate = new Date();
+    const myDate = new Date();
     const myBody: string = JSON.stringify({
-      'Title': `Item-${myDate.getHours()}${myDate.getMinutes()}${myDate.getSeconds()}`
+      'Title': 
+        `Item-${myDate.getHours()}${myDate.getMinutes()}
+                                      ${myDate.getSeconds()}`
     });  
     
-    var myAbsUrl = this.context.pageContext.web.absoluteUrl;
-    var myQuery = '/_api/web/lists/getbytitle(';
-    var myListName = this.properties.listName;
-    var myOdata = ')/items';
+    const myAbsUrl = this.context.pageContext.web.absoluteUrl;
+    const myQuery = '/_api/web/lists/getbytitle(';
+    const myListName = this.properties.listName;
+    const myOdata = ')/items';
+    
     this.context.spHttpClient.post(
             `${myAbsUrl}${myQuery}'${myListName}'${myOdata}`,  
             SPHttpClient.configurations.v1,  
@@ -46,239 +48,273 @@ export default class ListItemCrudJavaScriptWebPart extends BaseClientSideWebPart
     .then((myResponse: SPHttpClientResponse): Promise<IListItem> => {  
       return myResponse.json();  
     })  
-    .then((myItem: IListItem): void => {  
-      this.ResponseMessage(`Item '${myItem.Title}' with ID '${myItem.Id}' created`);  
-    }, (myError: any): void => {  
-      this.ResponseMessage('Error creating Item: ' + myError);  
+    .then((myItem: IListItem): void => { 
+      alert(`Item '${myItem.Title}' with ID '${myItem.Id}' created`); 
+    }, (myError: Error): void => {  
+      alert('Error creating Item: ' + myError);  
     });  
   }  
-//gavdcodeend 009
-    
-//gavdcodebegin 011
-private ReadItem(): void {  
-  this.GetLatestItemId()  
-    .then((myItemId: number): Promise<SPHttpClientResponse> => {  
-      if (myItemId === -1) {  
-        throw new Error('List has no Items');  
-      }
-        
-      var myAbsUrl = this.context.pageContext.web.absoluteUrl;
-      var myQuery = '/_api/web/lists/getbytitle(';
-      var myListName = this.properties.listName;
-      var myOdata1 = ')/items(';
-      var myOdata2 = ')?$select=Title,Id';
-      return this.context.spHttpClient.get(
-              `${myAbsUrl}${myQuery}'${myListName}'${myOdata1}${myItemId}${myOdata2}`,
-              SPHttpClient.configurations.v1,
-        {  
-          headers: {  
-            'Accept': 'application/json;odata=nometadata',  
-            'odata-version': ''  
-          }  
-        });  
-    })  
-    .then((myResponse: SPHttpClientResponse): Promise<IListItem> => {  
-      return myResponse.json();  
-    })  
-    .then((myItem: IListItem): void => {  
-      this.ResponseMessage(`Last Item Title: '${myItem.Title}' - Item ID: '${myItem.Id}'`);  
-    }, (myError: any): void => {  
-      this.ResponseMessage('Error finding Item: ' + myError);  
-    });  
-}  
-//gavdcodeend 011
+  //gavdcodeend 009
+      
+  //gavdcodebegin 011
+  private ReadItem(): void {  
+    this.GetLatestItemId()  
+      .then((myItemId: number): Promise<SPHttpClientResponse> => {  
+        if (myItemId === -1) {  
+          throw new Error('List has no Items');  
+        }
+          
+        const myAbsUrl = this.context.pageContext.web.absoluteUrl;
+        const myQuery = '/_api/web/lists/getbytitle(';
+        const myListName = this.properties.listName;
+        const myOdata1 = ')/items(';
+        const myOdata2 = ')?$select=Title,Id';
 
-//gavdcodebegin 013
-private UpdateItem(): void {
-  this.GetLatestItemId()  
-    .then((myItemId: number): Promise<SPHttpClientResponse> => {  
-      if (myItemId === -1) {  
-        throw new Error('List has no Items');  
-      }
-
-      var myAbsUrl = this.context.pageContext.web.absoluteUrl;
-      var myQuery = '/_api/web/lists/getbytitle(';
-      var myListName = this.properties.listName;
-      var myOdata1 = ')/items(';
-      var myOdata2 = ')?$select=Title,Id';
-      return this.context.spHttpClient.get(
-              `${myAbsUrl}${myQuery}'${myListName}'${myOdata1}${myItemId}${myOdata2}`,
-              SPHttpClient.configurations.v1,
-        {  
-          headers: {  
-            'Accept': 'application/json;odata=nometadata',  
-            'odata-version': ''  
-          }  
-        });  
-    })  
-    .then((myResponse: SPHttpClientResponse): Promise<IListItem> => {  
-      return myResponse.json();  
-    })  
-    .then((myItem: IListItem): void => {
-      const myBody: string = JSON.stringify({  
-        'Title': `${myItem.Title}_Updated`  
-      });
-
-      var myAbsUrl = this.context.pageContext.web.absoluteUrl;
-      var myQuery = '/_api/web/lists/getbytitle(';
-      var myListName = this.properties.listName;
-      var myOdata1 = ')/items(';
-      var myOdata2 = ')';
-      this.context.spHttpClient.post(
-              `${myAbsUrl}${myQuery}'${myListName}'${myOdata1}${myItem.Id}${myOdata2}`,
-              SPHttpClient.configurations.v1,
-        {  
-          headers: {  
-            'Accept': 'application/json;odata=nometadata',  
-            'Content-type': 'application/json;odata=nometadata',  
-            'odata-version': '',  
-            'IF-MATCH': '*',  
-            'X-HTTP-Method': 'MERGE'  
-          },  
-          body: myBody  
-        })  
-        .then((myResponse: SPHttpClientResponse): void => {  
-          this.ResponseMessage(`Item ID '${myItem.Id}' updated`);  
-        }, (myError: any): void => {  
-          this.ResponseMessage(`Error updating Item: ${myError}`);  
-        });  
-    });  
-}  
-//gavdcodeend 013
-
-//gavdcodebegin 014
-private DeleteItem(): void {
-  let etag: string = undefined;  
-  this.GetLatestItemId()  
-    .then((myItemId: number): Promise<SPHttpClientResponse> => {  
-      if (myItemId === -1) {  
-        throw new Error('List has no Items');  
-      }  
-  
-      var myAbsUrl = this.context.pageContext.web.absoluteUrl;
-      var myQuery = '/_api/web/lists/getbytitle(';
-      var myListName = this.properties.listName;
-      var myOdata1 = ')/items(';
-      var myOdata2 = ')?$select=Id';
-      return this.context.spHttpClient.get(
-              `${myAbsUrl}${myQuery}'${myListName}'${myOdata1}${myItemId}${myOdata2}`,
-              SPHttpClient.configurations.v1,
-        {  
-          headers: {  
-            'Accept': 'application/json;odata=nometadata',  
-            'odata-version': ''  
-          }  
-        });  
-    })  
-    .then((myResponse: SPHttpClientResponse): Promise<IListItem> => {  
-      etag = myResponse.headers.get('ETag');  
-      return myResponse.json();  
-    })  
-    .then((myItem: IListItem): Promise<SPHttpClientResponse> => {
-      var myAbsUrl = this.context.pageContext.web.absoluteUrl;
-      var myQuery = '/_api/web/lists/getbytitle(';
-      var myListName = this.properties.listName;
-      var myOdata1 = ')/items(';
-      var myOdata2 = ')';
-      return this.context.spHttpClient.post(
-              `${myAbsUrl}${myQuery}'${myListName}'${myOdata1}${myItem.Id}${myOdata2}`,
-              SPHttpClient.configurations.v1,
-        {  
-          headers: {  
-            'Accept': 'application/json;odata=nometadata',  
-            'Content-type': 'application/json;odata=verbose',  
-            'odata-version': '',  
-            'IF-MATCH': etag,  
-            'X-HTTP-Method': 'DELETE'  
-          }  
-        });  
-    })  
-    .then((myResponse: SPHttpClientResponse): void => {  
-      this.ResponseMessage(`Last Item deleted`);  
-    }, (myError: any): void => {  
-      this.ResponseMessage(`Error deleting Item: ${myError}`);  
-    });  
-} 
-//gavdcodeend 014
-
-//gavdcodebegin 012
-private GetLatestItemId(): Promise<number> {  
-  return new Promise<number>(
-      (resolve: (itemId: number) => void, reject: (error: any) => void): void => {  
-    
-        var myAbsUrl = this.context.pageContext.web.absoluteUrl;
-        var myQuery = '/_api/web/lists/getbytitle(';
-        var myListName = this.properties.listName;
-        var myOdata = ')/items?$orderby=Id desc&$top=1&$select=id';
-        this.context.spHttpClient.get(`${myAbsUrl}${myQuery}'${myListName}'${myOdata}`,  
-                                        SPHttpClient.configurations.v1,
-      {  
-        headers: {  
-          'Accept': 'application/json;odata=nometadata',  
-          'odata-version': ''  
-        }  
+        return this.context.spHttpClient.get(
+              `${myAbsUrl}${myQuery}'${myListName}'
+               ${myOdata1}${myItemId}${myOdata2}`,
+          SPHttpClient.configurations.v1,
+          {  
+            headers: {  
+              'Accept': 'application/json;odata=nometadata',  
+              'odata-version': ''  
+            }  
+          });  
       })  
-      .then((myResponse: SPHttpClientResponse): Promise<{ value: { Id: number }[] }> => {  
+      .then((myResponse: SPHttpClientResponse): Promise<IListItem> => {  
         return myResponse.json();  
-      }, (myError: any): void => {  
-        reject(myError);  
       })  
-      .then((myResponse: { value: { Id: number }[] }): void => {  
-        if (myResponse.value.length === 0) {  
-          resolve(-1);  
-        }  
-        else {  
-          resolve(myResponse.value[0].Id);  
-        }  
+      .then((myItem: IListItem): void => {  
+        alert(`Last Item Title: 
+                  '${myItem.Title}' - Item ID: '${myItem.Id}'`);  
+      }, (myError: Error): void => {  
+        alert('Error finding Item: ' + myError);  
       });  
-  });  
-}  
-//gavdcodeend 012
+  }  
+  //gavdcodeend 011
 
-//gavdcodebegin 010
-  private ResponseMessage(myResponse: string): void {  
-    this.domElement.querySelector('.lblMessage').innerHTML = myResponse;  
+  //gavdcodebegin 013
+  private UpdateItem(): void {
+    this.GetLatestItemId()
+      .then((myItemId: number): Promise<SPHttpClientResponse> => {
+        if (myItemId === -1) {
+          throw new Error('List has no Items');
+        }
+
+        const myAbsUrl = this.context.pageContext.web.absoluteUrl;
+        const myQuery = '/_api/web/lists/getbytitle(';
+        const myListName = this.properties.listName;
+        const myOdata1 = ')/items(';
+        const myOdata2 = ')?$select=Title,Id';
+
+        return this.context.spHttpClient.get(
+              `${myAbsUrl}${myQuery}'${myListName}'
+               ${myOdata1}${myItemId}${myOdata2}`,
+          SPHttpClient.configurations.v1,
+          {
+            headers: {
+              'Accept': 'application/json;odata=nometadata',
+              'odata-version': ''
+            }
+          });
+      })
+      .then((myResponse: SPHttpClientResponse): Promise<IListItem> => {
+        return myResponse.json();
+      })
+      .then((myItem: IListItem): void => {
+        const myBody: string = JSON.stringify({
+          'Title': `${myItem.Title}_Updated`
+        });
+
+        const myAbsUrl = this.context.pageContext.web.absoluteUrl;
+        const myQuery = '/_api/web/lists/getbytitle(';
+        const myListName = this.properties.listName;
+        const myOdata1 = ')/items(';
+        const myOdata2 = ')';
+
+        this.context.spHttpClient.post(
+              `${myAbsUrl}${myQuery}'${myListName}'
+               ${myOdata1}${myItem.Id}${myOdata2}`,
+          SPHttpClient.configurations.v1,
+          {
+            headers: {
+              'Accept': 'application/json;odata=nometadata',
+              'Content-type': 'application/json;odata=nometadata',
+              'odata-version': '',
+              'IF-MATCH': '*',
+              'X-HTTP-Method': 'MERGE'
+            },
+            body: myBody
+          })
+          .then((myResponse: SPHttpClientResponse): void => {
+            alert(`Item ID '${myItem.Id}' updated`);
+          }, (myError: Error): void => {
+            alert(`Error updating Item: ${myError}`);
+          });
+      })
+      .catch((myError: Error): void => {
+        alert(`Error updating Item: ${myError}`);
+      });
   }
-//gavdcodeend 010
+  //gavdcodeend 013
 
-//gavdcodebegin 008
+  //gavdcodebegin 014
+  private DeleteItem(): void {
+    let myEtag: string;  
+    this.GetLatestItemId()  
+      .then((myItemId: number): Promise<SPHttpClientResponse> => {  
+        if (myItemId === -1) {  
+          throw new Error('List has no Items');  
+        }  
+    
+        const myAbsUrl = this.context.pageContext.web.absoluteUrl;
+        const myQuery = '/_api/web/lists/getbytitle(';
+        const myListName = this.properties.listName;
+        const myOdata1 = ')/items(';
+        const myOdata2 = ')?$select=Id';
+
+        return this.context.spHttpClient.get(
+                `${myAbsUrl}${myQuery}'${myListName}'
+                 ${myOdata1}${myItemId}${myOdata2}`,
+            SPHttpClient.configurations.v1,
+          {  
+            headers: {  
+              'Accept': 'application/json;odata=nometadata',  
+              'odata-version': ''  
+            }  
+          });  
+      })  
+      .then((myResponse: SPHttpClientResponse): Promise<IListItem> => {  
+        myEtag = myResponse.headers.get('ETag')!;  
+        return myResponse.json();  
+      })  
+      .then((myItem: IListItem): Promise<SPHttpClientResponse> => {
+        const myAbsUrl = this.context.pageContext.web.absoluteUrl;
+        const myQuery = '/_api/web/lists/getbytitle(';
+        const myListName = this.properties.listName;
+        const myOdata1 = ')/items(';
+        const myOdata2 = ')';
+        return this.context.spHttpClient.post(
+                  `${myAbsUrl}${myQuery}'${myListName}'
+                   ${myOdata1}${myItem.Id}${myOdata2}`,
+            SPHttpClient.configurations.v1,
+          {  
+            headers: {  
+              'Accept': 'application/json;odata=nometadata',  
+              'Content-type': 'application/json;odata=verbose',  
+              'odata-version': '',  
+              'IF-MATCH': myEtag,  
+              'X-HTTP-Method': 'DELETE'  
+            }  
+          });  
+      })  
+      .then((myResponse: SPHttpClientResponse): void => {  
+        alert(`Last Item deleted`);  
+      }, (myError: Error): void => {  
+        alert(`Error deleting Item: ${myError}`);  
+      });  
+  } 
+  //gavdcodeend 014
+
+  //gavdcodebegin 012
+  private GetLatestItemId(): Promise<number> {  
+    return new Promise<number>((resolve, reject) => { 
+
+      const myAbsUrl = this.context.pageContext.web.absoluteUrl;
+      const myQuery = '/_api/web/lists/getbytitle(';
+      const myListName = this.properties.listName;
+      const myOdata = ')/items?$orderby=Id desc&$top=1&$select=Id';
+
+      this.context.spHttpClient.get(
+        `${myAbsUrl}${myQuery}'${myListName}'${myOdata}`,  
+        SPHttpClient.configurations.v1,
+        {  
+          headers: {  
+            'Accept': 'application/json;odata=nometadata',  
+            'odata-version': ''  
+          }  
+        })  
+        .then((myResponse: SPHttpClientResponse): 
+                      Promise<{ value: { Id: number }[] }> => {  
+          return myResponse.json();  
+        })  
+        .then((myResponse: { value: { Id: number }[] }): void => {  
+          if (myResponse.value.length === 0) {  
+            resolve(-1);  
+          } else {  
+            resolve(myResponse.value[0].Id);  
+          }  
+        }, (myError: Error): void => {  
+          reject(myError);  
+        });  
+    });  
+  }
+  //gavdcodeend 012
+  
+  //gavdcodebegin 008
   public render(): void {
     this.domElement.innerHTML = `
-      <div class="${ styles.listItemCrudJavaScript }">
-        <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
-                <p><button id="btnCreate" class="${ styles.button }">
-                <span class="${styles.label}">Create Item</span></button></p>
-                <p><button id="btnRead" class="${ styles.button }">
-                <span class="${styles.label}">Find Last Item</span></button></p>
-                <p><button id="btnUpdate" class="${ styles.button }">
-                <span class="${styles.label}">Update Last Item</span></button></p>
-                <p><button id="btnDelete" class="${ styles.button }">
-                <span class="${styles.label}">Delete Last Item</span></button></p>
-                <div class="lblMessage"></div>  
-            </div>
-          </div>
-        </div>
+      <div>
+        <p><button id="btnCreate">
+        <span>Create Item</span></button></p>
+        <p><button id="btnRead">
+        <span>Find Last Item</span></button></p>
+        <p><button id="btnUpdate">
+        <span>Update Last Item</span></button></p>
+        <p><button id="btnDelete">
+        <span>Delete Last Item</span></button></p>
+        <div></div>  
       </div>`;
 
-      document.getElementById("btnCreate").onclick = 
-                                          this.CreateItem.bind(this);
-      document.getElementById("btnRead").onclick = 
-                                          this.ReadItem.bind(this);
-      document.getElementById("btnUpdate").onclick = 
-                                          this.UpdateItem.bind(this);
-      document.getElementById("btnDelete").onclick = 
-                                          this.DeleteItem.bind(this);
+    const btnCreate: HTMLElement | null = 
+                    this.domElement.querySelector('#btnCreate'); 
+    if (btnCreate) { 
+      btnCreate.addEventListener('click', () => 
+                    this.handleBtnCreate());
+    }
+
+    const btnRead: HTMLElement | null = 
+                    this.domElement.querySelector('#btnRead'); 
+    if (btnRead) { 
+      btnRead.addEventListener('click', () => 
+                    this.handleBtnRead());
+    }
+
+    const btnUpdate: HTMLElement | null = 
+                    this.domElement.querySelector('#btnUpdate'); 
+    if (btnUpdate) { 
+      btnUpdate.addEventListener('click', () => 
+                    this.handleBtnUpdate());
+    }
+
+    const btnDelete: HTMLElement | null = 
+                    this.domElement.querySelector('#btnDelete'); 
+    if (btnDelete) { 
+      btnDelete.addEventListener('click', () => 
+                    this.handleBtnDelete());
+    }
   }
-//gavdcodeend 008
+  private handleBtnCreate(): void { 
+    this.CreateItem();
+  }
+  private handleBtnRead(): void { 
+    this.ReadItem();
+  }
+  private handleBtnUpdate(): void { 
+    this.UpdateItem();
+  }
+  private handleBtnDelete(): void { 
+    this.DeleteItem();
+  }
+  //gavdcodeend 008
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
 
-//gavdcodebegin 007
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+  //gavdcodebegin 007
+  protected getPropertyPaneConfiguration(): 
+                  IPropertyPaneConfiguration {
     return {
       pages: [
         {

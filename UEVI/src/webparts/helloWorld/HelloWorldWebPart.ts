@@ -1,70 +1,55 @@
-
 //gavdcodebegin 001
 import { Version } from '@microsoft/sp-core-library';
 import {
-  BaseClientSideWebPart,
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField,
   PropertyPaneSlider
-} from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import styles from './HelloWorldWebPart.module.scss';
 import * as strings from 'HelloWorldWebPartStrings';
 
 export interface IHelloWorldWebPartProps {
   description: string;
-  maxRandom: string;
+  maxRandom: number
 }
 //gavdcodeend 001
 
-export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
+export default class HelloWorldWebPart extends 
+            BaseClientSideWebPart<IHelloWorldWebPartProps> {
 
 //gavdcodebegin 004
-  private GetSomeRandom(): void {
-    console.log("GetSomeRandom started");
-    var myMax = Number(this.properties.maxRandom);
-    document.getElementById("divRandomString").innerHTML = 
-                      String(Math.floor(Math.random() * myMax));
-  }
+private GetSomeRandom(): string {
+  console.log("GetSomeRandom started");
+  const myMax = Number(this.properties.maxRandom);
+  return String(Math.floor(Math.random() * myMax));
+}
 //gavdcodeend 004
 
 //gavdcodebegin 002
-  public render(): void {
+public render(): void {
     this.domElement.innerHTML = `
-      <div class="${ styles.helloWorld }">
-        <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
-              <span class="${ styles.title }">Welcome to SharePoint!</span>
-              <p class="${ styles.subTitle }">
-                        Customize SharePoint experiences using Web Parts.</p>
-              <p class="${ styles.description }">
-                        ${escape(this.properties.description)}</p>
-              <a href="https://aka.ms/spfx" class="${ styles.button }">
-                <span class="${ styles.label }">Learn more</span>
-              </a>
-                    
-              <p><button id="btnRandom" class="${ styles.button }">
-                          Get Random Number</button>
-              <div id="divRandomString" class="${ styles.label }" /></div></p>
+    <p><button id="btnRandom">
+          Get Random Number</button>
+    </p>`;
 
-            </div>
-          </div>
-        </div>
-      </div>`;
-
-      document.getElementById("btnRandom").onclick = 
-                                          this.GetSomeRandom.bind(this);
+    const btnRandom: HTMLElement | null = this.domElement.querySelector('#btnRandom'); 
+    if (btnRandom) { 
+      btnRandom.addEventListener('click', () => this.handleMyButtonClick());    
+    }
 
   }
-//gavdcodeend 002
+
+  private handleMyButtonClick(): void { 
+    alert(this.GetSomeRandom());
+  }
+  //gavdcodeend 002
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
 
-//gavdcodebegin 003
+  //gavdcodebegin 003
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -81,9 +66,11 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
                 }),
                 PropertyPaneSlider('maxRandom', {
                   label: 'Max Random',
-                  min:1,
-                  max:10
-                })
+                  min: 0, 
+                  max: 100, 
+                  step: 1, 
+                  value: 50, 
+                  showValue: true                })
               ]
             }
           ]
