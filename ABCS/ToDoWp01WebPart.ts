@@ -1,30 +1,28 @@
 //gavdcodebegin 002
 import { Version } from '@microsoft/sp-core-library';
 import {
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
 
-import styles from './ToDoWp01WebPart.module.scss';
-import * as strings from 'ToDoWp01WebPartStrings';
+import * as strings from 'GraphToolkitWp01WebPartStrings';
 
-import { Providers, SharePointProvider } from '@microsoft/mgt';
+import { Providers, SharePointProvider } from '@microsoft/mgt-spfx';
 
 export interface IToDoWp01WebPartProps {
   description: string;
 }
 
-export default class ToDoWp01WebPart extends
-    BaseClientSideWebPart<IToDoWp01WebPartProps> {
+export default class ToDoWp01WebPart extends BaseClientSideWebPart<IToDoWp01WebPartProps> {
 
-  protected async onInit() {
+  protected async onInit(): Promise<void> {
     Providers.globalProvider = new SharePointProvider(this.context)
   }
 
   public render(): void {
     this.domElement.innerHTML = `
+      <mgt-login></mgt-login>
       <mgt-todo></mgt-todo>
     `;
   }
@@ -54,5 +52,5 @@ export default class ToDoWp01WebPart extends
       ]
     };
   }
-}  
+}
 //gavdcodeend 002

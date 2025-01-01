@@ -1,31 +1,24 @@
 //gavdcodebegin 004
 import { Version } from '@microsoft/sp-core-library';
 import {
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
 
-import styles from './PersonWp01WebPart.module.scss';
 import * as strings from 'PersonWp01WebPartStrings';
 
-import { Providers, SharePointProvider } from '@microsoft/mgt';
+import { Providers, SharePointProvider, ProviderState } from '@microsoft/mgt-spfx';
 
 export interface IPersonWp01WebPartProps {
   description: string;
 }
 
-export default class PersonWp01WebPart extends
-    BaseClientSideWebPart<IPersonWp01WebPartProps> {
-
-  protected async onInit() {
-    Providers.globalProvider = new SharePointProvider(this.context)
-  }
+export default class PersonWp01WebPart extends BaseClientSideWebPart<IPersonWp01WebPartProps> {
 
   public render(): void {
     this.domElement.innerHTML = `
-    <h1>Info about Me</h1>
+    <mgt-login></mgt-login>
     <mgt-person person-query="me" view="twolines" show-name show-email person-card="click">
       <template data-type="person-card">
         <mgt-person-card person-details="{{person}}" 
@@ -42,6 +35,20 @@ export default class PersonWp01WebPart extends
       </template>
     </mgt-person>
     `;
+
+    if (!Providers.globalProvider) {
+      Providers.globalProvider = new SharePointProvider(this.context);
+    }
+
+    // Check if the user is signed in 
+    Providers.globalProvider.onStateChanged(() => { 
+      if (Providers.globalProvider.state === ProviderState.SignedIn) { 
+        console.log("-- User is signed in"); 
+      } 
+      else { 
+        console.log("-- User is not signed in"); 
+      }
+    });
   }
 
   protected get dataVersion(): Version {

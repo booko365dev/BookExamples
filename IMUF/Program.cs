@@ -1,12 +1,13 @@
 ﻿using RestSharp;
 
 //gavdcodebegin 001
+// Legacy code
 string myCard = CreateCard();
 PostCard(myCard);
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static string CreateCard()
+static string CreateCard()  // Legacy code
 {
     string picUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/" +
                         "b/b2/Microsoft-teams.jpg/120px-Microsoft-teams.jpg";
@@ -77,7 +78,7 @@ static string CreateCard()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void PostCard(string theCard)
+static void PostCard(string theCard)  // Legacy code
 {
     string WebhookUrl = "https://[domain].webhook.office.com/webhookb2/" +
         "28d184e1-60df-4bd2-9c48-c63b21943fbe@ade56059-89c0-4594-90c3-e4772a8168ca/" +

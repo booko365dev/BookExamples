@@ -1,30 +1,28 @@
 //gavdcodebegin 001
 import { Version } from '@microsoft/sp-core-library';
 import {
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
 
-import styles from './PlannerWp01WebPart.module.scss';
-import * as strings from 'PlannerWp01WebPartStrings';
+import * as strings from 'GraphToolkitWp01WebPartStrings';
 
-import { Providers, SharePointProvider } from '@microsoft/mgt';
+import { Providers, SharePointProvider } from '@microsoft/mgt-spfx';
 
 export interface IPlannerWp01WebPartProps {
   description: string;
 }
 
-export default class PlannerWp01WebPart extends
-    BaseClientSideWebPart<IPlannerWp01WebPartProps> {
+export default class PlannerWp01WebPart extends BaseClientSideWebPart<IPlannerWp01WebPartProps> {
 
-  protected async onInit() {
+  protected async onInit(): Promise<void> {
     Providers.globalProvider = new SharePointProvider(this.context)
   }
 
   public render(): void {
     this.domElement.innerHTML = `
+      <mgt-login></mgt-login>
       <mgt-tasks></mgt-tasks>
     `;
   }

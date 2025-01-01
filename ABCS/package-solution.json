@@ -1,9 +1,9 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "test-hello-world-client-side-solution",
-    "id": "a890abf9-b7e5-495b-8dc7-52eb18722897",
-    "version": "1.0.0.3",
+    "name": "test-spfx-02-client-side-solution",
+    "id": "4781c4e2-410c-4175-b49a-775425ebe0fb",
+    "version": "1.0.0.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -26,11 +26,11 @@
       },
       {
         "resource": "Microsoft Graph",
-        "scope": "Tasks.ReadWrite"
+        "scope": "Group.ReadWrite.All"
       },
       {
         "resource": "Microsoft Graph",
-        "scope": "Group.ReadWrite.All"
+        "scope": "Tasks.ReadWrite"
       }
     ],
     "developer": {
@@ -38,10 +38,29 @@
       "websiteUrl": "",
       "privacyUrl": "",
       "termsOfUseUrl": "",
-      "mpnId": ""
-    }
+      "mpnId": "Undefined-1.20.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "test-spfx-02 description"
+      },
+      "longDescription": {
+        "default": "test-spfx-02 description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "test-spfx-02 Feature",
+        "description": "The feature that activates elements of the test-spfx-02 solution.",
+        "id": "ff4f31d9-fc77-4322-92fc-51e276656c92",
+        "version": "1.0.0.0"
+      }
+    ]
   },
   "paths": {
-    "zippedPackage": "solution/test-hello-world.sppkg"
+    "zippedPackage": "solution/test-spfx-02.sppkg"
   }
 }

@@ -1,32 +1,29 @@
 //gavdcodebegin 003
 import { Version } from '@microsoft/sp-core-library';
 import {
-  IPropertyPaneConfiguration,
+  type IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
 
-import styles from './GraphToolkitWp01WebPart.module.scss';
 import * as strings from 'GraphToolkitWp01WebPartStrings';
 
-import { Providers, SharePointProvider } from '@microsoft/mgt';
+import { Providers, SharePointProvider } from '@microsoft/mgt-spfx';
 
 export interface IGraphToolkitWp01WebPartProps {
   description: string;
 }
 
-export default class GraphToolkitWp01WebPart extends
-    BaseClientSideWebPart<IGraphToolkitWp01WebPartProps> {
+export default class GraphToolkitWp01WebPart extends BaseClientSideWebPart<IGraphToolkitWp01WebPartProps> {
 
-  protected async onInit() {
+  protected async onInit(): Promise<void> {
     Providers.globalProvider = new SharePointProvider(this.context)
   }
 
   public render(): void {
     this.domElement.innerHTML = `
       <h1>People in one Group<h1>  
-      <mgt-people group-id="194b9866-e05c-489e-aaf6-51b31ce22a91"></mgt-people>
+      <mgt-people group-id="b624b3f3-ec54-4e2b-a5d5-2f53197d21ed"></mgt-people>
       <hr>
       <h1>My Agenda</h1>  
       <mgt-agenda group-by-day></mgt-agenda>  
