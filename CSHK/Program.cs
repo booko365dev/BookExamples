@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Identity.Client;
+using Newtonsoft.Json;
 using System.Configuration;
 using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Web;
@@ -17,7 +19,7 @@ using System.Xml;
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw()
+static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw_Rest()
 {
     Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
 
@@ -44,8 +46,7 @@ static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw()
                     }).Result;
 
         var tokenObj = System.Text.Json.JsonSerializer.Deserialize<JsonElement>(tokenStr);
-        JsonElement myError;
-        bool hasError = tokenObj.TryGetProperty("error", out myError);
+        bool hasError = tokenObj.TryGetProperty("error", out JsonElement myError);
 
         if (hasError == true)
         {
@@ -68,19 +69,187 @@ static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw()
 }
 //gavdcodeend 001
 
+//gavdcodebegin 007
+static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw_Msal()
+{
+    Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
+
+    string tenantName = ConfigurationManager.AppSettings["TenantName"];
+    string clientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
+    string userName = ConfigurationManager.AppSettings["UserName"];
+    string userPw = ConfigurationManager.AppSettings["UserPw"];
+    string siteBaseUrl = ConfigurationManager.AppSettings["SiteBaseUrl"]; ;
+    string myAuthority = $"https://login.microsoftonline.com/{tenantName}";
+
+    IPublicClientApplication myApp = PublicClientApplicationBuilder
+        .Create(clientId)
+        .WithAuthority(new Uri(myAuthority))
+        .Build();
+
+    string[] myScopes = [$"{siteBaseUrl}/.default"];
+
+    try
+    {
+        AuthenticationResult myResult = myApp
+            .AcquireTokenByUsernamePassword(myScopes, userName, userPw)
+            .ExecuteAsync().Result;
+        tplReturn = new Tuple<string, string>("OK", myResult.AccessToken);
+    }
+    catch (MsalServiceException ex)
+    {
+        string strError = "TokenErrorException - " + ex.ErrorCode + " - " + ex.Message;
+        tplReturn = new Tuple<string, string>(ex.ErrorCode, strError);
+    }
+
+    return tplReturn;
+}
+//gavdcodeend 007
+
+static Tuple<string, string> CsSpSharePointRest_GetTokenWithSecret_Rest()
+{
+    // ATENTION: This method is not working, because the SharePoint REST API does not
+    //      accept authentication of App Registrations with secrets. The method returns
+    //      a token, but the token is not accepted by the SharePoint REST API
+
+    Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
+
+    string myEndpoint = "https://login.microsoftonline.com/" +
+                        ConfigurationManager.AppSettings["TenantName"] + "/oauth2/token";
+
+    string siteBaseUrl = ConfigurationManager.AppSettings["SiteBaseUrl"];
+    string clientId = ConfigurationManager.AppSettings["ClientIdWithSecret"];
+    string clientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+
+    string reqBody = $"resource={siteBaseUrl}&";
+    reqBody += $"grant_type=client_credentials&";
+    reqBody += $"client_id=" +
+                $"{clientId}&";
+    reqBody += $"client_secret=" +
+                $"{HttpUtility.UrlEncode(clientSecret)}";
+
+    using (StringContent myStrContent = new(reqBody, Encoding.UTF8,
+                                                    "application/x-www-form-urlencoded"))
+    {
+        HttpClient myHttpClient = new();
+        string tokenStr = myHttpClient.PostAsync(myEndpoint,
+                    myStrContent).ContinueWith((myResponse) =>
+                    {
+                        return myResponse.Result.Content.ReadAsStringAsync().Result;
+                    }).Result;
+
+        var tokenObj = System.Text.Json.JsonSerializer.Deserialize<JsonElement>(tokenStr);
+        bool hasError = tokenObj.TryGetProperty("error", out JsonElement myError);
+
+        if (hasError == true)
+        {
+            string strError = "TokenErrorException - " +
+                        tokenObj.GetProperty("error").GetString() + " - " +
+                        tokenObj.GetProperty("error_description").GetString();
+
+            tplReturn = new Tuple<string, string>(
+                        tokenObj.GetProperty("error_codes")[0].GetRawText(), strError);
+        }
+        else
+        {
+            string myToken = tokenObj.GetProperty("access_token").GetString();
+
+            tplReturn = new Tuple<string, string>("OK", myToken);
+        }
+    }
+
+    return tplReturn;
+}
+
+static Tuple<string, string> CsSpSharePointRest_GetTokenWithSecret_Msal()
+{
+    // ATENTION: This method is not working, because the SharePoint REST API does not
+    //      accept authentication of App Registrations with secrets. The method returns
+    //      a token, but the token is not accepted by the SharePoint REST API
+
+    Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
+
+    string tenantName = ConfigurationManager.AppSettings["TenantName"];
+    string clientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
+    string clientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+    string siteBaseUrl = ConfigurationManager.AppSettings["SiteBaseUrl"]; ;
+    string myAuthority = $"https://login.microsoftonline.com/{tenantName}";
+
+    IConfidentialClientApplication myApp = ConfidentialClientApplicationBuilder
+        .Create(clientId)
+        .WithAuthority(new Uri(myAuthority))
+        .WithClientSecret(clientSecret)
+        .Build();
+
+    string[] myScopes = [$"{siteBaseUrl}/.default"];
+
+    try
+    {
+        AuthenticationResult myResult = myApp
+            .AcquireTokenForClient(myScopes)
+            .ExecuteAsync().Result;
+        tplReturn = new Tuple<string, string>("OK", myResult.AccessToken);
+    }
+    catch (MsalServiceException ex)
+    {
+        string strError = "TokenErrorException - " + ex.ErrorCode + " - " + ex.Message;
+        tplReturn = new Tuple<string, string>(ex.ErrorCode, strError);
+    }
+
+    return tplReturn;
+}
+
+//gavdcodebegin 008
+static Tuple<string, string> CsSpSharePointRest_GetTokenWithCert_Msal()
+{
+    Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
+
+    string tenantName = ConfigurationManager.AppSettings["TenantName"];
+    string clientId = ConfigurationManager.AppSettings["ClientIdWithCert"];
+    string certificateFilePath = ConfigurationManager.AppSettings["CertificateFilePath"];
+    string certificateFilePw = ConfigurationManager.AppSettings["CertificateFilePw"];
+    string siteBaseUrl = ConfigurationManager.AppSettings["SiteBaseUrl"]; ;
+    string myAuthority = $"https://login.microsoftonline.com/{tenantName}";
+
+    X509Certificate2 certificate = new(certificateFilePath, certificateFilePw);
+
+    IConfidentialClientApplication myApp = ConfidentialClientApplicationBuilder
+        .Create(clientId)
+        .WithAuthority(new Uri(myAuthority))
+        .WithCertificate(certificate)
+        .Build();
+
+    string[] myScopes = [$"{siteBaseUrl}/.default"];
+
+    try
+    {
+        AuthenticationResult myResult = myApp
+            .AcquireTokenForClient(myScopes)
+            .ExecuteAsync().Result;
+        tplReturn = new Tuple<string, string>("OK", myResult.AccessToken);
+    }
+    catch (MsalServiceException ex)
+    {
+        string strError = "TokenErrorException - " + ex.ErrorCode + " - " + ex.Message;
+        tplReturn = new Tuple<string, string>(ex.ErrorCode, strError);
+    }
+
+    return tplReturn;
+}
+//gavdcodeend 008
+
 //gavdcodebegin 002
 static string CsSpSharePointRest_GetRequestDigest(Tuple<string, string> AuthToken)
 {
     string strReturn = string.Empty;
-    Tuple<string, string> myTokenWithAccPw;
+    Tuple<string, string> myToken;
 
     if (AuthToken == null)
     {
-        myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
+        myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
     }
     else
     {
-        myTokenWithAccPw = AuthToken;
+        myToken = AuthToken;
     }
 
     string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
@@ -92,7 +261,7 @@ static string CsSpSharePointRest_GetRequestDigest(Tuple<string, string> AuthToke
     {
         HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
-                                 "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                 "Authorization", "Bearer " + myToken.Item2);
 
         string digestXml = myHttpClient.PostAsync(myEndpoint,
                             myStrContent).ContinueWith((myResponse) =>
@@ -120,16 +289,18 @@ static string CsSpSharePointRest_GetRequestDigest(Tuple<string, string> AuthToke
 //gavdcodebegin 003
 static void CsSpSharePointRest_TestSpRestGet()
 {
-    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
-    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
+    if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists";
 
         HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
-                                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                                "Authorization", "Bearer " + myToken.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
                                 "Accept", "application/json"); // Output as JSON
 
@@ -138,7 +309,7 @@ static void CsSpSharePointRest_TestSpRestGet()
                             return myResponse.Result.Content.ReadAsStringAsync().Result;
                         }).Result;
 
-        // Reading the query result, but only if the result is a JSON string
+        // Reading the query myResult, but only if the myResult is a JSON string
         dynamic resultObj = JsonConvert.DeserializeObject(resultStr);
         try
         {
@@ -165,7 +336,7 @@ static void CsSpSharePointRest_TestSpRestGet()
     }
     else
     {
-        Console.WriteLine(myTokenWithAccPw.Item2);
+        Console.WriteLine(myToken.Item2);
     }
 }
 //gavdcodeend 003
@@ -173,9 +344,11 @@ static void CsSpSharePointRest_TestSpRestGet()
 //gavdcodebegin 004
 static void CsSpSharePointRest_TestSpRestPost()
 {
-    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
-    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
+    if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists";
@@ -199,11 +372,11 @@ static void CsSpSharePointRest_TestSpRestPost()
         {
             HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
-                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                "Authorization", "Bearer " + myToken.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
                 "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                "X-RequestDigest", CsSpSharePointRest_GetRequestDigest(myTokenWithAccPw));
+                "X-RequestDigest", CsSpSharePointRest_GetRequestDigest(myToken));
 
             string resultStr = myHttpClient.PostAsync(myEndpoint,
                                 myStrContent).ContinueWith((myResponse) =>
@@ -214,8 +387,7 @@ static void CsSpSharePointRest_TestSpRestPost()
 
             var resultObj = System.Text.Json.JsonSerializer
                                         .Deserialize<JsonElement>(resultStr);
-            JsonElement myError;
-            bool hasError = resultObj.TryGetProperty("error", out myError);
+            bool hasError = resultObj.TryGetProperty("error", out JsonElement myError);
 
             if (hasError == true)
             {
@@ -233,9 +405,11 @@ static void CsSpSharePointRest_TestSpRestPost()
 //gavdcodebegin 005
 static void CsSpSharePointRest_TestSpRestUpdate()
 {
-    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
-    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
+    if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists/getbytitle('NewListRestCs')";
@@ -255,7 +429,7 @@ static void CsSpSharePointRest_TestSpRestUpdate()
         {
             HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
-                            "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                            "Authorization", "Bearer " + myToken.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
                             "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
@@ -290,9 +464,11 @@ static void CsSpSharePointRest_TestSpRestUpdate()
 //gavdcodebegin 006
 static void CsSpSharePointRest_TestSpRestDelete()
 {
-    Tuple<string, string> myTokenWithAccPw = CsSpSharePointRest_GetTokenWithAccPw();
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
-    if (myTokenWithAccPw.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
+    if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = ConfigurationManager.AppSettings["SiteCollUrl"] +
                                         "/_api/web/lists/getbytitle('NewListRestCs')";
@@ -308,11 +484,11 @@ static void CsSpSharePointRest_TestSpRestDelete()
         {
             HttpClient myHttpClient = new();
             myHttpClient.DefaultRequestHeaders.Add(
-                "Authorization", "Bearer " + myTokenWithAccPw.Item2);
+                "Authorization", "Bearer " + myToken.Item2);
             myHttpClient.DefaultRequestHeaders.Add(
                 "Accept", "application/json;odata=verbose");
             myHttpClient.DefaultRequestHeaders.Add(
-                "X-RequestDigest", CsSpSharePointRest_GetRequestDigest(myTokenWithAccPw));
+                "X-RequestDigest", CsSpSharePointRest_GetRequestDigest(myToken));
             myHttpClient.DefaultRequestHeaders.Add(
                 "IF-MATCH", "*");
             myHttpClient.DefaultRequestHeaders.Add(
@@ -345,7 +521,7 @@ static void CsSpSharePointRest_TestSpRestDelete()
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-//# *** Latest Source Code Index: 006 ***
+//# *** Latest Source Code Index: 008 ***
 
 //CsSpSharePointRest_TestSpRestGet();
 //CsSpSharePointRest_TestSpRestPost();

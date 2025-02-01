@@ -63,6 +63,20 @@ function PsSpPnP_LoginWithAccPw
 }
 #gavdcodeend 016
 
+function PsSpPnP_LoginWithAccPwDefault
+{
+	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+			$configFile.appsettings.UserPw -AsPlainText -Force
+
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+			-argumentlist $configFile.appsettings.UserName, $securePW
+
+	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+					  -Credentials $myCredentials
+}
+
 #gavdcodebegin 018
 function PsSpPnP_LoginWithCertificate
 {
@@ -130,6 +144,103 @@ function PsCliM365_LoginWithCertificate
 			   --password $configFile.appsettings.CertificateFilePw
 }
 #gavdcodeend 025
+
+#gavdcodebegin 033
+function PsSpRestApiMsal_LoginWithAccPw
+{
+    $clientId = $configFile.appsettings.ClientIdWithAccPw
+    $tenantId = $configFile.appsettings.TenantName
+	$userName = $configFile.appsettings.UserName
+	$userPw = $configFile.appsettings.UserPw
+	$siteBaseUrl = $configFile.appsettings.SiteBaseUrl
+    $myAuthority = "https://login.microsoftonline.com/$tenantId"
+    $myScopes = @("$siteBaseUrl/.default")
+
+    $myApp = New-MsalClientApplication -ClientId $clientId `
+                                     -Authority $myAuthority
+
+    $securePassword = ConvertTo-SecureString $userPw -AsPlainText -Force
+    $userCredential = New-Object -TypeName System.Management.Automation.PSCredential `
+                                 -ArgumentList $userName, $securePassword  
+
+    $myToken = Get-MsalToken -PublicClientApplication $myApp `
+						   -Scopes $myScopes `
+						   -UserCredential $userCredential
+
+    return $myToken.AccessToken
+}
+#gavdcodeend 033
+
+#gavdcodebegin 034
+function PsSpRestApiMsal_LoginWithSecret
+{
+	# The SharePoint REST API does not support client secret authentication
+	# It will get the error "Unsupported app only token"
+
+    $clientId = $configFile.appsettings.ClientIdWithSecret
+    $tenantId = $configFile.appsettings.TenantName
+    $clientSecret = $configFile.appsettings.ClientSecret
+	$siteBaseUrl = $configFile.appsettings.SiteBaseUrl
+    $myAuthority = "https://login.microsoftonline.com/$tenantId"
+    $myScopes = @("$siteBaseUrl/.default")
+
+    $secureClientSecret = ConvertTo-SecureString $clientSecret -AsPlainText -Force
+    $myApp = New-MsalClientApplication -ClientId $clientId `
+                                       -ClientSecret $secureClientSecret `
+                                       -Authority $myAuthority
+
+    $myToken = Get-MsalToken -ConfidentialClientApplication $myApp -Scopes $myScopes
+
+    return $myToken.AccessToken
+}
+#gavdcodeend 034
+
+#gavdcodebegin 035
+function PsSpRestApiMsal_LoginWithCertificateFile
+{
+    $clientId = $configFile.appsettings.ClientIdWithCert
+    $tenantId = $configFile.appsettings.TenantName
+    $certificatePath = $configFile.appsettings.CertificateFilePath
+    $certificatePassword = $configFile.appsettings.CertificateFilePw
+	$siteBaseUrl = $configFile.appsettings.SiteBaseUrl
+    $myAuthority = "https://login.microsoftonline.com/$tenantId"
+    $myScopes = @("$siteBaseUrl/.default")
+
+    $myCertificate = New-Object `
+						System.Security.Cryptography.X509Certificates.X509Certificate2 `
+						-ArgumentList $certificatePath, $certificatePassword
+
+    $myApp = New-MsalClientApplication -ClientId $clientId `
+                                       -ClientCertificate $myCertificate `
+                                       -Authority $myAuthority
+
+    $myToken = Get-MsalToken -ConfidentialClientApplication $myApp -Scopes $myScopes
+
+    return $myToken.AccessToken
+}
+#gavdcodeend 035
+
+#gavdcodebegin 037
+function PsSpRestApiMsal_LoginWithCertificateThumbprint
+{
+    $clientId = $configFile.appsettings.ClientIdWithCert
+    $tenantId = $configFile.appsettings.TenantName
+    $certificateThumbprint = $configFile.appsettings.CertificateThumbprint
+	$siteBaseUrl = $configFile.appsettings.SiteBaseUrl
+    $myAuthority = "https://login.microsoftonline.com/$tenantId"
+    $myScopes = @("$siteBaseUrl/.default")
+
+	$myCertificate = Get-Item -Path Cert:\CurrentUser\My\$certificateThumbprint
+
+    $myApp = New-MsalClientApplication -ClientId $clientId `
+                                       -ClientCertificate $myCertificate `
+                                       -Authority $myAuthority
+
+    $myToken = Get-MsalToken -ConfidentialClientApplication $myApp -Scopes $myScopes
+
+    return $myToken.AccessToken
+}
+#gavdcodeend 037
 
 
 ##---------------------------------------------------------------------------------------
@@ -276,20 +387,6 @@ function Stream-CopyTo(
     }
 }
 #gavdcodeend 005
-
-function PsSpPnP_LoginWithAccPwDefault
-{
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.UserPw -AsPlainText -Force
-
-	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.UserName, $securePW
-
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
-					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
-					  -Credentials $myCredentials
-}
 
 #----------------------------------------------------------------------------------------
 
@@ -586,12 +683,37 @@ function PsCliM365_GetAccessTokenSharePoint
 }
 #gavdcodeend 032
 
+#----------------------------------------------------------------------------------------
+
+#gavdcodebegin 036
+function PsSpRestApiMsal_GetLists 
+{
+    param (
+        [string]$siteUrl,
+        [string]$accessToken
+    )
+
+    $headers = @{
+        Authorization = "Bearer $accessToken"
+        Accept        = "application/json;odata=verbose"
+    }
+
+    $response = Invoke-RestMethod -Method Get `
+								  -Uri "$siteUrl/_api/web/lists" `
+								  -Headers $headers
+
+	foreach ($list in $response.d.results) {
+		Write-Host $list.Title
+	}
+}
+#gavdcodeend 036
+
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 032 ***
+# *** Latest Source Code Index: 037 ***
 
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
@@ -633,5 +755,12 @@ function PsCliM365_GetAccessTokenSharePoint
 #PsCliM365_DeleteRoleAssigments
 #PsCliM365_GetAccessTokenGraph
 #PsCliM365_GetAccessTokenSharePoint
+
+##==> SharePoint REST API with MSAL
+#$myAccessToken = PsSpRestApiMsal_LoginWithAccPw
+#$myAccessToken = PsSpRestApiMsal_LoginWithSecret
+#$myAccessToken = PsSpRestApiMsal_LoginWithCertificateFile
+#$myAccessToken = PsSpRestApiMsal_LoginWithCertificateThumbprint
+#PsSpRestApiMsal_GetLists -siteUrl $configFile.appsettings.SiteCollUrl -accessToken $myAccessToken
 
 Write-Host "Done"

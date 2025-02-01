@@ -1,0 +1,6 @@
+@DYCH_HostAddress = http://localhost:5021
+
+GET {{DYCH_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

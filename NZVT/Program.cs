@@ -1,9 +1,9 @@
-﻿using Azure.Identity;
+﻿using Azure.Core;
+using Azure.Identity;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.Identity.Client;
 using System.Configuration;
-using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ static GraphServiceClient CsGraphSdk_LoginWithSecret(
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static GraphServiceClient CsGraphSdk_LoginWithCertificate(
+static GraphServiceClient CsGraphSdk_LoginWithCertificateThumbprint(
                                 string TenantIdToConn, string ClientIdToConn,
                                 string CertificateThumbprintToConn,
                                 StoreName CertStoreName, StoreLocation CertStoreLocation)
@@ -152,10 +152,45 @@ static GraphServiceClient CsGraphSdk_LoginWithCertificate(
 }
 //gavdcodeend 008
 
+//gavdcodebegin 020
+static GraphServiceClient CsGraphSdk_LoginWithCertificateFile(
+                                string TenantIdToConn, string ClientIdToConn,
+                                string CertPathToConn, string CertPwToConn)
+{
+    X509Certificate2 myCert = new(CertPathToConn, CertPwToConn);
+
+    string[] myScopes = ["https://graph.microsoft.com/.default"];
+
+    ClientCertificateCredentialOptions clientOptionsCredential = new()
+    {
+        AuthorityHost = AzureAuthorityHosts.AzurePublicCloud
+    };
+
+    ClientCertificateCredential certificateCredential =
+                new(TenantIdToConn, ClientIdToConn, myCert, clientOptionsCredential);
+    GraphServiceClient graphClient = new(certificateCredential, myScopes);
+
+    return graphClient;
+}
+//gavdcodeend 020
+
+//gavdcodebegin 022
+static GraphServiceClient CsGraphSdk_LoginWithToken(string AccessToken)
+{
+    string[] myScopes = ["https://graph.microsoft.com/.default"];
+
+    TokenCredential tokenCredential = new AccessTokenCredential(AccessToken);
+    // AccessTokenCredential is a custom class, see below
+    GraphServiceClient graphClient = new(tokenCredential, myScopes);
+
+    return graphClient;
+}
+//gavdcodeend 022
+
 //----------------- Get Tokens
 
 //gavdcodebegin 009
-static void CsGraphSdk_GetTokenWithInteraction(string TenantId, string ClientId)
+static string CsGraphSdk_GetTokenWithInteraction(string TenantId, string ClientId)
 {
     string authorityEndpoint = "https://login.microsoftonline.com/" + TenantId;
 
@@ -165,20 +200,22 @@ static void CsGraphSdk_GetTokenWithInteraction(string TenantId, string ClientId)
                         .WithAuthority(new Uri(authorityEndpoint))
                         .Build();
 
-    List<string> myScopes = ["https://management.azure.com/.default"];
+    List<string> myScopes = ["https://graph.microsoft.com/.default"];
+    //List<string> myScopes = ["https://management.azure.com/.default"];
 
     AuthenticationResult myToken = myPubClientApp
                         .AcquireTokenInteractive(myScopes)
                         .ExecuteAsync()
                         .Result;
 
-    Console.WriteLine("Token for   - " + myToken.Account.Username);
-    Console.WriteLine("Token value - " + myToken.AccessToken);
+    //Console.WriteLine("Token for   - " + myToken.Account.Username);
+    //Console.WriteLine("Token value - " + myToken.AccessToken);
+    return myToken.AccessToken;
 }
 //gavdcodeend 009
 
 //gavdcodebegin 016
-static void CsGraphSdk_GetTokenWithDeviceCode(string TenantId, string ClientId)
+static string CsGraphSdk_GetTokenWithDeviceCode(string TenantId, string ClientId)
 {
     string authorityEndpoint = "https://login.microsoftonline.com/" + TenantId;
 
@@ -187,7 +224,8 @@ static void CsGraphSdk_GetTokenWithDeviceCode(string TenantId, string ClientId)
                         .WithAuthority(new Uri(authorityEndpoint))
                         .Build();
 
-    List<string> myScopes = ["https://management.azure.com/.default"];
+    List<string> myScopes = ["https://graph.microsoft.com/.default"];
+    //List<string> myScopes = ["https://management.azure.com/.default"];
 
     AuthenticationResult myToken = myPubClientApp
                         .AcquireTokenWithDeviceCode(myScopes, code =>
@@ -198,8 +236,9 @@ static void CsGraphSdk_GetTokenWithDeviceCode(string TenantId, string ClientId)
                         .ExecuteAsync()
                         .Result;
 
-    Console.WriteLine("Token for   - " + myToken.Account.Username);
-    Console.WriteLine("Token value - " + myToken.AccessToken);
+    //Console.WriteLine("Token for   - " + myToken.Account.Username);
+    //Console.WriteLine("Token value - " + myToken.AccessToken);
+    return myToken.AccessToken;
 }
 //gavdcodeend 016
 
@@ -214,20 +253,18 @@ static string CsGraphSdk_GetTokenWithAccPw(
                         .WithAuthority(new Uri(authorityEndpoint))
                         .Build();
 
-    List<string> myScopes = ["https://management.azure.com/.default"];
-
-    SecureString usrPw = new();
-    foreach (char oneChar in Password)
-        usrPw.AppendChar(oneChar);
+    List<string> myScopes = ["https://graph.microsoft.com/.default"];
+    //List<string> myScopes = ["https://management.azure.com/.default"];
 
     AuthenticationResult myToken = myPubClientApp
-                        .AcquireTokenByUsernamePassword(myScopes, Account, usrPw)
+                        .AcquireTokenByUsernamePassword(myScopes, Account, Password)
                         .ExecuteAsync()
                         .Result;
 
     Console.WriteLine("Token for   - " + myToken.Account.Username);
     Console.WriteLine("Token value - " + myToken.AccessToken);
 
+    //Console.WriteLine("Token value - " + myToken.AccessToken);
     return myToken.AccessToken;
 }
 //gavdcodeend 010
@@ -244,7 +281,8 @@ static void CsGraphSdk_GetTokenWithSecret(
                         .WithAuthority(new Uri(authorityEndpoint))
                         .Build();
 
-    List<string> myScopes = ["https://management.azure.com/.default"];
+    List<string> myScopes = ["https://graph.microsoft.com/.default"];
+    //List<string> myScopes = ["https://management.azure.com/.default"];
 
     AuthenticationResult myToken = myConfClientApp
                         .AcquireTokenForClient(myScopes)
@@ -256,7 +294,7 @@ static void CsGraphSdk_GetTokenWithSecret(
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void CsGraphSdk_GetTokenWithCertificate(
+static string CsGraphSdk_GetTokenWithCertificateThumbprint(
                         string TenantId, string ClientId, string CertificateThumbprint)
 {
     string authorityEndpoint = "https://login.microsoftonline.com/" + TenantId;
@@ -270,14 +308,16 @@ static void CsGraphSdk_GetTokenWithCertificate(
             .WithAuthority(new Uri(authorityEndpoint))
             .Build();
 
-    List<string> myScopes = ["https://management.azure.com/.default"];
+    List<string> myScopes = ["https://graph.microsoft.com/.default"];
+    //List<string> myScopes = ["https://management.azure.com/.default"];
 
     AuthenticationResult myToken = myConfClientApp
                         .AcquireTokenForClient(myScopes)
                         .ExecuteAsync()
                         .Result;
 
-    Console.WriteLine("Token value - " + myToken.AccessToken);
+    //Console.WriteLine("Token value - " + myToken.AccessToken);
+    return myToken.AccessToken;
 }
 //gavdcodeend 012
 
@@ -322,6 +362,34 @@ static X509Certificate2 CsGraphSdk_GetCertificateByName(
     return myCertificate;
 }
 //gavdcodeend 013
+
+//gavdcodebegin 019
+static string CsGraphSdk_GetTokenWithCertificateFile(
+        string TenantId, string ClientId, string CertificatePath, string CertificatePw)
+{
+    string authorityEndpoint = "https://login.microsoftonline.com/" + TenantId;
+
+    // Load the myCertificate from a .pfx file
+    X509Certificate2 myCertificate = new(CertificatePath, CertificatePw);
+
+    IConfidentialClientApplication myConfClientApp = ConfidentialClientApplicationBuilder
+            .Create(ClientId)
+            .WithCertificate(myCertificate)
+            .WithAuthority(new Uri(authorityEndpoint))
+            .Build();
+
+    List<string> myScopes = ["https://graph.microsoft.com/.default"];
+    //List<string> myScopes = ["https://management.azure.com/.default"];
+
+    AuthenticationResult myToken = myConfClientApp
+                        .AcquireTokenForClient(myScopes)
+                        .ExecuteAsync()
+                        .Result;
+
+    //Console.WriteLine("Token value - " + myToken.AccessToken);
+    return myToken.AccessToken;
+}
+//gavdcodeend 019
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
@@ -427,14 +495,14 @@ static void CsGraphSdk_GetQueryWithSecret()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void CsGraphSdk_GetQueryWithCertificate()
+static void CsGraphSdk_GetQueryWithCertificateThumbprint()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithCert"];
     string myCertThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"];
 
     GraphServiceClient myGraphClient =
-          CsGraphSdk_LoginWithCertificate(myTenantId, myClientId, myCertThumbprint,
+          CsGraphSdk_LoginWithCertificateThumbprint(myTenantId, myClientId, myCertThumbprint,
                                         StoreName.My, StoreLocation.CurrentUser);
 
     UserCollectionResponse myUsers = myGraphClient
@@ -448,11 +516,57 @@ static void CsGraphSdk_GetQueryWithCertificate()
 }
 //gavdcodeend 004
 
+//gavdcodebegin 021
+static void CsGraphSdk_GetQueryWithCertificateFile()
+{
+    string myTenantId = ConfigurationManager.AppSettings["TenantName"];
+    string myClientId = ConfigurationManager.AppSettings["ClientIdWithCert"];
+    string myCertFilePath = ConfigurationManager.AppSettings["CertificateFilePath"];
+    string myCertFilePw = ConfigurationManager.AppSettings["CertificateFilePw"];
+
+    GraphServiceClient myGraphClient =
+          CsGraphSdk_LoginWithCertificateFile(myTenantId, myClientId, myCertFilePath,
+                                        myCertFilePw);
+
+    UserCollectionResponse myUsers = myGraphClient
+                .Users
+                .GetAsync().Result;
+
+    foreach (User oneUser in myUsers.Value)
+    {
+        Console.WriteLine(oneUser.DisplayName);
+    }
+}
+//gavdcodeend 021
+
+//gavdcodebegin 024
+static void CsGraphSdk_GetQueryWithToken()
+{
+    string myTenantId = ConfigurationManager.AppSettings["TenantName"];
+    string myClientId = ConfigurationManager.AppSettings["ClientIdWithCert"];
+    string myCertFilePath = ConfigurationManager.AppSettings["CertificateFilePath"];
+    string myCertFilePw = ConfigurationManager.AppSettings["CertificateFilePw"];
+
+    string myToken = CsGraphSdk_GetTokenWithCertificateFile(myTenantId, myClientId, 
+                                                        myCertFilePath, myCertFilePw);
+    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithToken(myToken);
+
+    UserCollectionResponse myUsers = myGraphClient
+                .Users
+                .GetAsync().Result;
+
+    foreach (User oneUser in myUsers.Value)
+    {
+        Console.WriteLine(oneUser.DisplayName);
+    }
+}
+//gavdcodeend 024
+
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-// *** Latest Source Code Index: 018 ***
+// *** Latest Source Code Index: 024 ***
 
 string myTenantId = ConfigurationManager.AppSettings["TenantName"];
 string myClIdWithSecret = ConfigurationManager.AppSettings["ClientIdWithSecret"];
@@ -462,25 +576,57 @@ string myUserName = ConfigurationManager.AppSettings["UserName"];
 string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 string myClIdWithCert = ConfigurationManager.AppSettings["ClientIdWithCert"];
 string myCertThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"];
+string myCertFilePath = ConfigurationManager.AppSettings["CertificateFilePath"];
+string myCertFilePw = ConfigurationManager.AppSettings["CertificateFilePw"];
 
 //CsGraphSdk_GetQueryWithInteraction();
 //CsGraphSdk_GetQueryWithDeviceCode();
 //CsGraphSdk_GetQueryWithAccPw();
 //CsGraphSdk_GetQueryWithAccPwBeta();
 //CsGraphSdk_GetQueryWithSecret();
-//CsGraphSdk_GetQueryWithCertificate();
+//CsGraphSdk_GetQueryWithCertificateThumbprint();
+//CsGraphSdk_GetQueryWithCertificateFile();
+//CsGraphSdk_GetQueryWithToken();
 
 //CsGraphSdk_GetTokenWithInteraction(myTenantId, myClIdWithAccPw);
 //CsGraphSdk_GetTokenWithDeviceCode(myTenantId, myClIdWithAccPw);
 //CsGraphSdk_GetTokenWithAccPw(myTenantId, myClIdWithAccPw, myUserName, myUserPw);
 //CsGraphSdk_GetTokenWithSecret(myTenantId, myClIdWithSecret, myClSecret);
-//CsGraphSdk_GetTokenWithCertificate(myTenantId, myClIdWithCert, myCertThumbprint);
+//CsGraphSdk_GetTokenWithCertificateThumbprint(myTenantId, myClIdWithCert, myCertThumbprint);
+//CsGraphSdk_GetTokenWithCertificateFile(myTenantId, myClIdWithCert, myCertFilePath, myCertFilePw);
 
 Console.WriteLine("Done");
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
 //---------------------------------------------------------------------------------------
+
+
+//gavdcodebegin 023
+class AccessTokenCredential : TokenCredential
+{
+    private readonly string _accessToken;
+
+    public AccessTokenCredential(string accessToken)
+    {
+        _accessToken = accessToken;
+    }
+
+    public override AccessToken GetToken(TokenRequestContext requestContext, 
+                                         CancellationToken cancellationToken)
+    {
+        return new AccessToken(_accessToken, DateTimeOffset.MaxValue);
+    }
+
+    public override ValueTask<AccessToken> GetTokenAsync(
+                                        TokenRequestContext requestContext, 
+                                        CancellationToken cancellationToken)
+    {
+        return new ValueTask<AccessToken>(new AccessToken(_accessToken, 
+                                                        DateTimeOffset.MaxValue));
+    }
+}
+//gavdcodeend 023
 
 
 #nullable enable

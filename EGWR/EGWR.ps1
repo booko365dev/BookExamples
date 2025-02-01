@@ -359,28 +359,28 @@ function PsClassicalCmd_DeleteChannel
 #*** Logging in using the Graph PowerShell SDK cmdlets -----------------------------------
 
 #gavdcodebegin 008
-function PsGraphSdk_LoginWithInteraction
+function PsGraphPowerShellSdk_LoginWithInteraction
 {
 	Connect-Graph
 }
 #gavdcodeend 008
 
 #gavdcodebegin 023
-function PsGraphSdk_GetContextInfo
+function PsGraphPowerShellSdk_GetContextInfo
 {
 	Get-MgContext
 }
 #gavdcodeend 023
 
 #gavdcodebegin 024
-function PsGraphSdk_GetMe
+function PsGraphPowerShellSdk_GetMe
 {
 	Get-MgUser -UserId "user@domain.onmicrosoft.com"
 }
 #gavdcodeend 024
 
 #gavdcodebegin 025
-function PsGraphSdk_ConnectDisconnect
+function PsGraphPowerShellSdk_ConnectDisconnect
 {
 	Connect-Graph -TenantId "021ee864-951d-4f25-a5c3-b6d4412c4052"
 	Get-MgUser -UserId "user@domain.onmicrosoft.com"
@@ -389,16 +389,16 @@ function PsGraphSdk_ConnectDisconnect
 #gavdcodeend 025
 
 #gavdcodebegin 031
-function PsGraphSdk_CheckRights
+function PsGraphPowerShellSdk_CheckRights
 {
-	PsGraphSdk_LoginWithSecret
+	PsGraphPowerShellSdk_LoginWithSecret
 	(Get-MgContext).Scopes
 	Disconnect-MgGraph
 }
 #gavdcodeend 031
 
 #gavdcodebegin 026
-function PsGraphSdk_SetVersion
+function PsGraphPowerShellSdk_SetVersion
 {
 	Select-MgProfile -Name "beta"
 	Select-MgProfile -Name "v1.0"
@@ -406,7 +406,7 @@ function PsGraphSdk_SetVersion
 #gavdcodeend 026
 
 #gavdcodebegin 009
-function PsGraphSdk_AssignRights
+function PsGraphPowerShellSdk_AssignRights
 {
 	Connect-Graph -Scopes "Directory.AccessAsUser.All, Directory.ReadWrite.All"
 	Get-MgUser
@@ -415,14 +415,14 @@ function PsGraphSdk_AssignRights
 #gavdcodeend 009
 
 #gavdcodebegin 032
-function PsGraphSdk_CheckAvailableRights
+function PsGraphPowerShellSdk_CheckAvailableRights
 {
 	Find-MgGraphPermission "user" -PermissionType Application
 }
 #gavdcodeend 032
 
 #gavdcodebegin 027
-function PsGraphSdk_LoginWithAccPwMSAL
+function PsGraphPowerShellSdk_LoginWithAccPwMSAL
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -454,10 +454,10 @@ function PsGraphSdk_LoginWithAccPwMSAL
 #gavdcodeend 027
 
 #gavdcodebegin 028
-function PsGraphSdk_GetUserWithAccPwMSAL
+function PsGraphPowerShellSdk_GetUserWithAccPwMSAL
 {
 	# Requires Delegated rights for Directory.Read.All
-	PsGraphSdk_LoginWithAccPwMSAL -TenantName $configFile.appsettings.TenantName `
+	PsGraphPowerShellSdk_LoginWithAccPwMSAL -TenantName $configFile.appsettings.TenantName `
 									-ClientID $configFile.appsettings.ClientIdWithAccPw `
 									-UserName $configFile.appsettings.UserName `
 									-UserPw $configFile.appsettings.UserPw
@@ -467,7 +467,7 @@ function PsGraphSdk_GetUserWithAccPwMSAL
 #gavdcodeend 028
 
 #gavdcodebegin 029
-function PsGraphSdk_LoginWithSecretMSAL
+function PsGraphPowerShellSdk_LoginWithSecretMSAL
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -494,10 +494,10 @@ function PsGraphSdk_LoginWithSecretMSAL
 #gavdcodeend 029
 
 #gavdcodebegin 030
-function PsGraphSdk_GetUsersWithSecretMSAL
+function PsGraphPowerShellSdk_GetUsersWithSecretMSAL
 {
 	# Requires Application rights for Directory.Read.All
-	PsGraphSdk_LoginWithSecretMSAL -TenantName $configFile.appsettings.TenantName `
+	PsGraphPowerShellSdk_LoginWithSecretMSAL -TenantName $configFile.appsettings.TenantName `
 									 -ClientID $configFile.appsettings.ClientIdWithSecret `
 									 -ClientSecret $configFile.appsettings.ClientSecret
 	Get-MgUser
@@ -506,7 +506,7 @@ function PsGraphSdk_GetUsersWithSecretMSAL
 #gavdcodeend 030
 
 #gavdcodebegin 051
-function PsGraphSdk_LoginWithSecret
+function PsGraphPowerShellSdk_LoginWithSecret
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -530,10 +530,10 @@ function PsGraphSdk_LoginWithSecret
 #gavdcodeend 051
 
 #gavdcodebegin 052
-function PsGraphSdk_GetUsersWithSecret
+function PsGraphPowerShellSdk_GetUsersWithSecret
 {
 	# Requires Application rights for Directory.Read.All
-	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
 								 -ClientID $configFile.appsettings.ClientIdWithSecret `
 								 -ClientSecret $configFile.appsettings.ClientSecret
 	Get-MgUser
@@ -542,7 +542,7 @@ function PsGraphSdk_GetUsersWithSecret
 #gavdcodeend 052
 
 #gavdcodebegin 033
-function PsGraphSdk_LoginWithCertificate
+function PsGraphPowerShellSdk_LoginWithCertificate
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -562,7 +562,7 @@ function PsGraphSdk_LoginWithCertificate
 #gavdcodeend 033
 
 #gavdcodebegin 034
-function PsGraphSdk_LoginWithCertificateFile
+function PsGraphPowerShellSdk_LoginWithCertificateFile
 {
 	[SecureString]$secureCertPw = ConvertTo-SecureString -String `
 						$configFile.appSettings.CertificateFilePw -AsPlainText -Force
@@ -577,10 +577,10 @@ function PsGraphSdk_LoginWithCertificateFile
 #gavdcodeend 034
 
 #gavdcodebegin 035
-function PsGraphSdk_GetUsersWithCertificate
+function PsGraphPowerShellSdk_GetUsersWithCertificate
 {
 	# Requires Application rights for Directory.Read.All
-	PsGraphSdk_LoginWithCertificate `
+	PsGraphPowerShellSdk_LoginWithCertificate `
 					-TenantName $configFile.appsettings.TenantName `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -592,8 +592,31 @@ function PsGraphSdk_GetUsersWithCertificate
 }
 #gavdcodeend 035
 
+#gavdcodebegin 071
+function PsGraphPowerShellSdk_LoginWithToken
+{
+	$myAccessToken = "eyJ0eXAiOiJKV1Qi...4TYtApBFrZ4g"
+	[SecureString]$secureToken = ConvertTo-SecureString -String `
+											$myAccessToken -AsPlainText -Force
+
+	Connect-MgGraph -AccessToken $secureToken
+}
+#gavdcodeend 071
+
+#gavdcodebegin 072
+function PsGraphPowerShellSdk_GetUsersWithToken
+{
+	# Requires Application rights for Directory.Read.All
+
+	Get-MgUser -Property Id, DisplayName, BusinessPhones | `
+										Format-Table Id, DisplayName, BusinessPhones
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 072
+
 #gavdcodebegin 011
-function PsGraphSdk_GetGroupsSelect #Not Used
+function PsGraphPowerShellSdk_GetGroupsSelect #Not Used
 {
 	Get-MgGroup | Select-Object id, DisplayName, GroupTypes
 }
@@ -704,18 +727,52 @@ function PsMsal_LoginWithCertificate
 							 -ClientId $ClientId `
 							 -ClientCertificate $myCertificate
 	
-	#Write-Host $myToken.AccessToken
+	#Write-Host "-- My Token - " $myToken.AccessToken
 
 	return $myToken
 }
 #gavdcodeend 039
 
+#gavdcodebegin 062
+function PsMsal_LoginWithCertificateFile
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientID,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$CertificateFilePath,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$CertificateFilePw
+	)
+
+	[SecureString]$secureCertificateFilePw = ConvertTo-SecureString -String `
+											$CertificateFilePw -AsPlainText -Force
+
+	$myCertificate = New-Object `
+			System.Security.Cryptography.X509Certificates.X509Certificate2 `
+			-ArgumentList $CertificateFilePath, $secureCertificateFilePw
+
+	$myToken = Get-MsalToken -TenantId $TenantName `
+							 -ClientId $ClientId `
+							 -ClientCertificate $myCertificate
+	
+	#Write-Host $myToken.AccessToken
+
+	return $myToken
+}
+#gavdcodeend 062
+
 #gavdcodebegin 040
-function PsMsal_GetTeam
+function PsMsal_GetTeamWithAccPw
 {
 	$Url = "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037"
 	
-	$myToken = GrPsLoginGraphMsalWithAccPw `
+	$myToken = PsMsal_LoginWithAccPw `
 						-TenantName	$configFile.appsettings.TenantName `
 						-ClientId $configFile.appsettings.ClientIdWithAccPw `
 						-UserName $configFile.appsettings.UserName `
@@ -729,20 +786,62 @@ function PsMsal_GetTeam
 #gavdcodeend 040
 
 #gavdcodebegin 041
-function PsMsal_GetUsers
+function PsMsal_GetUsersWithSecret
 {
 	$myToken = PsMsal_LoginWithSecret `
 						-TenantName	$configFile.appsettings.TenantName `
 						-ClientId $configFile.appsettings.ClientIdWithSecret `
 						-ClientSecret $configFile.appsettings.ClientSecret
 
-	Connect-Graph -AccessToken $myToken.AccessToken
+	[SecureString]$secureToken = ConvertTo-SecureString -String `
+											$myToken.AccessToken -AsPlainText -Force
+
+	Connect-Graph -AccessToken $secureToken
 
 	Get-MgUser
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 041
+
+#gavdcodebegin 063
+function PsMsal_GetSpListsWithCertificate
+{
+	$myToken = PsMsal_LoginWithCertificate `
+					-TenantName	$configFile.appsettings.TenantName `
+					-ClientId $configFile.appsettings.ClientIdWithCert `
+					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
+
+	[SecureString]$secureToken = ConvertTo-SecureString -String `
+											$myToken.AccessToken -AsPlainText -Force
+
+	Connect-Graph -AccessToken $secureToken
+
+	Get-MgSiteList -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 063
+
+#gavdcodebegin 064
+function PsMsal_GetUsersWithCertificateFile
+{
+	$myToken = PsMsal_LoginWithCertificateFile `
+					-TenantName	$configFile.appsettings.TenantName `
+					-ClientId $configFile.appsettings.ClientIdWithCert `
+					-CertificateFilePath $configFile.appsettings.CertificateFilePath `
+					-CertificateFilePw $configFile.appsettings.CertificateFilePw
+
+	[SecureString]$secureToken = ConvertTo-SecureString -String `
+											$myToken.AccessToken -AsPlainText -Force
+
+	Connect-Graph -AccessToken $secureToken
+
+	Get-MgSite -SiteId "91ee115a-8a5b-49ad-9627-99dae04394ab"
+
+	Disconnect-MgGraph
+}
+#gavdcodeend 064
 
 #*** Using PowerShell-MicrosoftGraphAPI module (Other Modules, not from MS) --------------
 
@@ -1040,6 +1139,35 @@ function PsPnPPowerShell_GetTeamsWithCertificate
 }
 #gavdcodeend 050
 
+#gavdcodebegin 073
+function PsPnPPowerShell_LoginGraphWithToken
+{
+    Param(
+        [Parameter(Mandatory=$True)]
+        [String]$SiteBaseUrl,
+
+        [Parameter(Mandatory=$True)]
+        [String]$AccessToken
+    )
+
+    Connect-PnPOnline -Url $SiteBaseUrl `
+                      -AccessToken $AccessToken
+    }
+#gavdcodeend 073
+
+#gavdcodebegin 074
+function PsPnPPowerShell_GetTeamsWithToken
+{
+	PsPnPPowerShell_LoginGraphWithToken `
+					-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
+					-AccessToken "eyJ0eXAiOiJ...b8arb4cJw"
+
+	Get-PnPTeamsTeam
+
+	Disconnect-PnPOnline
+}
+#gavdcodeend 074
+
 #*** Using the Microsoft Graph CLI ----------------------------------------------------------
 #gavdcodebegin 053
 function PsGraphCli_LoginWithInteraction
@@ -1072,7 +1200,7 @@ function PsGraphCli_LoginWithSecret
 #gavdcodeend 060
 
 #gavdcodebegin 057
-function PsGraphCli_LoginWithCertificate
+function PsGraphCli_LoginWithCertificateThumbprint
 {
 	mgc login --tenant-id $configFile.appsettings.TenantName `
 			  --client-id $configFile.appsettings.ClientIdWithCert `
@@ -1080,6 +1208,29 @@ function PsGraphCli_LoginWithCertificate
 			  --strategy ClientCertificate
 }
 #gavdcodeend 057
+
+#gavdcodebegin xxx
+function PsGraphCli_LoginWithCertificateFile   # Does not work
+{
+	# Does not work. No parameters for the certificate pfx and password
+    mgc login --tenant-id $configFile.appsettings.TenantName `
+     --client-id $configFile.appsettings.ClientIdWithCert `
+     --certificate $configFile.appsettings.CertificateFilePath `
+     --password $configFile.appsettings.CertificateFilePw `
+     --strategy ClientCertificate
+    }
+#gavdcodeend xxx
+
+#gavdcodebegin xxx
+function PsGraphCli_LoginWithToken   # Does not work
+{
+	# Does not work. No parameters for the access token
+	mgc login --tenant-id $configFile.appsettings.TenantName `
+			  --client-id $configFile.appsettings.ClientIdWithCert `
+			  --access-token "xxx-xxxxx...xxxx" `
+			  --strategy AccessToken
+}
+#gavdcodeend xxx
 
 #gavdcodebegin 059
 function PsGraphCli_LoginWithManagedIdentity
@@ -1126,7 +1277,7 @@ function PsGraphCli_ExampleLoginWithSecret
 #gavdcodebegin 058
 function PsGraphCli_ExampleLoginWithCertificate
 {
-	PsGraphCli_LoginWithCertificate
+	PsGraphCli_LoginWithCertificateThumbprint
 
 	mgc groups list
 
@@ -1134,12 +1285,288 @@ function PsGraphCli_ExampleLoginWithCertificate
 }
 #gavdcodeend 058
 
+#*** Auxiliary routines ----------------------------------------------------------
+#gavdcodebegin 065
+function Ps_GetJWTAssertionForCertificateFile
+{
+	# Requires the installation of the JWT PoweerShell module;
+	#		Install-Module -Name JWT -Force
+
+	$tenantId = $configFile.appsettings.TenantName
+	$clientId = $configFile.appsettings.ClientIdWithCert
+	$pfxPath = $configFile.appsettings.CertificateFilePath
+	$pfxPassword = $configFile.appsettings.CertificateFilePw
+
+	$myCert = New-Object `
+					System.Security.Cryptography.X509Certificates.X509Certificate2 `
+					-ArgumentList $pfxPath, $pfxPassword
+
+	# Set claim parameters
+	$parNow = [System.DateTime]::UtcNow
+	$parExpiry = $parNow.AddMinutes(60)
+	$parJti = [guid]::NewGuid().ToString()
+
+	# Create the JWT header and payload
+	$jwtHeader = @{
+		alg = "RS256"
+		typ = "JWT"
+		x5t = [Convert]::ToBase64String($myCert.GetCertHash())
+	}
+
+	$jwtPayload = @{
+		aud = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+		iss = $clientId
+		sub = $clientId
+		jti = $parJti
+		nbf = [System.Math]::Floor(`
+			($parNow - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+		exp = [System.Math]::Floor(`
+			($parExpiry - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+	}
+
+	# Encode header and payload to base64
+	$jwtHeaderEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtHeader -Compress)))
+	$jwtPayloadEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtPayload -Compress)))
+
+	# Create the signature
+	$unsignedToken = "$jwtHeaderEncoded.$jwtPayloadEncoded"
+	$myCertPrivateKey = `
+			[System.Security.Cryptography.X509Certificates.RSACertificateExtensions]::`
+					GetRSAPrivateKey($myCert)
+	$jwtSignature = [Convert]::ToBase64String(`
+					$myCertPrivateKey.SignData([System.Text.Encoding]::`
+					UTF8.GetBytes($unsignedToken), `
+					[System.Security.Cryptography.HashAlgorithmName]::SHA256, `
+					[System.Security.Cryptography.RSASignaturePadding]::Pkcs1))
+
+	# Generate the JWT assertion
+	$jwtAssertion = "$unsignedToken.$jwtSignature"
+
+	# Output the JWT assertion
+	$jwtAssertion
+}
+#gavdcodeend 065
+
+#gavdcodebegin 066
+function Ps_GetJWTAssertionForCertificateThumbprint
+{
+	# Requires the installation of the JWT PoweerShell module;
+	#		Install-Module -Name JWT -Force
+
+	$tenantId = $configFile.appsettings.TenantName
+	$clientId = $configFile.appsettings.ClientIdWithCert
+	$certThumbprint = $configFile.appsettings.CertificateThumbprint
+
+	# Retrieve the certificate from the store 
+	$myCert = Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint
+
+	# Set claim parameters
+	$parNow = [System.DateTime]::UtcNow
+	$parExpiry = $parNow.AddMinutes(60)
+	$parJti = [guid]::NewGuid().ToString()
+
+	# Create the JWT header and payload
+	$jwtHeader = @{
+		alg = "RS256"
+		typ = "JWT"
+		x5t = [Convert]::ToBase64String($myCert.GetCertHash())
+	}
+
+	$jwtPayload = @{
+		aud = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+		iss = $clientId
+		sub = $clientId
+		jti = $parJti
+		nbf = [System.Math]::Floor(`
+			($parNow - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+		exp = [System.Math]::Floor(`
+			($parExpiry - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+	}
+
+	# Encode header and payload to base64
+	$jwtHeaderEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtHeader -Compress)))
+	$jwtPayloadEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtPayload -Compress)))
+
+	# Create the signature
+	$unsignedToken = "$jwtHeaderEncoded.$jwtPayloadEncoded"
+	$myCertPrivateKey = `
+			[System.Security.Cryptography.X509Certificates.RSACertificateExtensions]::`
+					GetRSAPrivateKey($myCert)
+	$jwtSignature = [Convert]::ToBase64String(`
+					$myCertPrivateKey.SignData([System.Text.Encoding]::`
+					UTF8.GetBytes($unsignedToken), `
+					[System.Security.Cryptography.HashAlgorithmName]::SHA256, `
+					[System.Security.Cryptography.RSASignaturePadding]::Pkcs1))
+
+	# Generate the JWT assertion
+	$jwtAssertion = "$unsignedToken.$jwtSignature"
+
+	# Output the JWT assertion
+	$jwtAssertion
+}
+#gavdcodeend 066
+
+#gavdcodebegin 067
+function Ps_GetJWTAssertionForSecret
+{
+	# Requires the installation of the JWT PoweerShell module;
+	#		Install-Module -Name JWT -Force
+
+	$tenantId = $configFile.appsettings.TenantName
+	$clientId = $configFile.appsettings.ClientIdWithSecret
+	$clientSecret = $configFile.appsettings.ClientSecret
+
+	# Set claim parameters
+	$parNow = [System.DateTime]::UtcNow
+	$parExpiry = $parNow.AddMinutes(60)
+	$parJti = [guid]::NewGuid().ToString()
+
+	# Create the JWT header and payload
+	$jwtHeader = @{
+		alg = "RS256"
+		typ = "JWT"
+	}
+
+	$jwtPayload = @{
+		aud = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+		iss = $clientId
+		sub = $clientId
+		jti = $parJti
+		nbf = [System.Math]::Floor(`
+			($parNow - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+		exp = [System.Math]::Floor(`
+			($parExpiry - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+	}
+
+	# Encode header and payload to base64
+	$jwtHeaderEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtHeader -Compress)))
+	$jwtPayloadEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtPayload -Compress)))
+
+	# Create the signature
+	$unsignedToken = "$jwtHeaderEncoded.$jwtPayloadEncoded"
+	$myHmacsha256 = New-Object System.Security.Cryptography.HMACSHA256 
+	$myHmacsha256.Key = [System.Text.Encoding]::UTF8.GetBytes($clientSecret)
+	$jwtSignature = [Convert]::ToBase64String(`
+					$myHmacsha256.ComputeHash([System.Text.Encoding]::`
+					UTF8.GetBytes($unsignedToken)))
+
+	# Generate the JWT assertion
+	$jwtAssertion = "$unsignedToken.$jwtSignature"
+
+	# Output the JWT assertion
+	$jwtAssertion
+}
+#gavdcodeend 067
+
+#gavdcodebegin 068
+function Ps_GetJWTAssertionForAccPw
+{
+	# Requires the installation of the JWT PoweerShell module;
+	#		Install-Module -Name JWT -Force
+
+	$tenantId = $configFile.appsettings.TenantName
+	$clientId = $configFile.appsettings.ClientIdWithSecret
+	$userPw = $configFile.appsettings.UserPw
+
+	# Set claim parameters
+	$parNow = [System.DateTime]::UtcNow
+	$parExpiry = $parNow.AddMinutes(60)
+	$parJti = [guid]::NewGuid().ToString()
+
+	# Create the JWT header and payload
+	$jwtHeader = @{
+		alg = "RS256"
+		typ = "JWT"
+	}
+
+	$jwtPayload = @{
+		aud = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+		iss = $clientId
+		sub = $clientId
+		jti = $parJti
+		nbf = [System.Math]::Floor(`
+			($parNow - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+		exp = [System.Math]::Floor(`
+			($parExpiry - [System.DateTime]'1970-01-01T00:00:00Z').TotalSeconds)
+	}
+
+	# Encode header and payload to base64
+	$jwtHeaderEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtHeader -Compress)))
+	$jwtPayloadEncoded = [Convert]::ToBase64String(`
+		[System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $jwtPayload -Compress)))
+
+	# Create the signature
+	$unsignedToken = "$jwtHeaderEncoded.$jwtPayloadEncoded"
+	$myHmacsha256 = New-Object System.Security.Cryptography.HMACSHA256 
+	$myHmacsha256.Key = [System.Text.Encoding]::UTF8.GetBytes($userPw)
+	$jwtSignature = [Convert]::ToBase64String(`
+					$myHmacsha256.ComputeHash([System.Text.Encoding]::`
+					UTF8.GetBytes($unsignedToken)))
+
+	# Generate the JWT assertion
+	$jwtAssertion = "$unsignedToken.$jwtSignature"
+
+	# Output the JWT assertion
+	$jwtAssertion
+}
+#gavdcodeend 068
+
+#gavdcodebegin 069
+function Ps_GetTokenFromJWTAssertion
+{
+	$tenantId = $configFile.appsettings.TenantName
+	$clientId = $configFile.appsettings.ClientIdWithCert
+    $myAudience = "https://login.microsoftonline.com/" + $tenantId + "/oauth2/v2.0/token"
+	$myScope = "https://graph.microsoft.com/.default"
+	$myGrantType = "client_credentials"  # or "password"
+	$myAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+	$myAssertion = "eyJhbGciOiJSUzI1N...XkvBgCsykzHW4HQ=="
+	$encodedAssertion = [System.Web.HttpUtility]::UrlEncode($myAssertion)
+
+	$reqHeaders = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+	$reqHeaders.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	$reqBody = "grant_type=" + $myGrantType + `
+			  "&client_id=" + $clientId + `
+			  "&client_assertion_type=" + $myAssertionType + `
+			  "&client_assertion=" + $encodedAssertion + `
+			  "&scope=" + $myScope
+
+	$myResponse = Invoke-RestMethod $myAudience `
+								-Method 'POST' `
+								-Headers $reqHeaders `
+								-Body $reqBody
+	$myResponse | ConvertTo-Json
+}
+#gavdcodeend 069
+
+#gavdcodebegin 070
+function Ps_UseTokenFromJWTAssertion
+{
+	$myQuery = "https://graph.microsoft.com/v1.0/users"
+	$myAccessToken = "Bearer " + "eyJ0eXAiOiJKV1Qi...4TYtApBFrZ4g"
+
+	$reqHeaders = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+	$reqHeaders.Add("Authorization", $myAccessToken)
+
+	$myResponse = Invoke-RestMethod $myQuery -Method 'GET' -Headers $reqHeaders
+	$myResponse | ConvertTo-Json
+}
+#gavdcodeend 070
+
 
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 061 ***
+# *** Latest Source Code Index: 074 ***
 
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
@@ -1160,6 +1587,7 @@ $myUserPw = $configFile.appsettings.UserPw
 $mySiteCollUrl = $configFile.appsettings.SiteCollUrl
 $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 
+#****************************************************
 #*** Using Classic PowerShell cmdlets
 #PsClassicalCdm_GetTeam
 #PsClassicalCmd_CreateChannel
@@ -1167,39 +1595,48 @@ $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 #PsClassicalCmd_UpdateChannel
 #PsClassicalCmd_DeleteChannel
 
+#****************************************************
 #*** Using Microsoft Graph PowerShell SDK cmdlets
-#PsGraphSdk_LoginWithInteraction
-#PsGraphSdk_GetContextInfo
-#PsGraphSdk_GetMe
-#PsGraphSdk_ConnectDisconnect
-#PsGraphSdk_CheckRights
-#PsGraphSdk_SetVersion
-#PsGraphSdk_AssignRights
-#PsGraphSdk_CheckAvailableRights
+#PsGraphPowerShellSdk_LoginWithInteraction
+#PsGraphPowerShellSdk_GetContextInfo
+#PsGraphPowerShellSdk_GetMe
+#PsGraphPowerShellSdk_ConnectDisconnect
+#PsGraphPowerShellSdk_CheckRights
+#PsGraphPowerShellSdk_SetVersion
+#PsGraphPowerShellSdk_AssignRights
+#PsGraphPowerShellSdk_CheckAvailableRights
 
-#PsGraphSdk_LoginWithAccPwMSAL $myTenantName $myClientIdWithAccPw $myUserName $myUserPw
-#PsGraphSdk_GetUserWithAccPwMSAL
+#PsGraphPowerShellSdk_LoginWithAccPwMSAL $myTenantName $myClientIdWithAccPw $myUserName $myUserPw
+#PsGraphPowerShellSdk_GetUserWithAccPwMSAL
 
-#PsGraphSdk_LoginWithSecretMSAL $myTenantName $myClientIdWithSecret $myClientSecret
-#PsGraphSdk_GetUsersWithSecretMSAL
+#PsGraphPowerShellSdk_LoginWithSecretMSAL $myTenantName $myClientIdWithSecret $myClientSecret
+#PsGraphPowerShellSdk_GetUsersWithSecretMSAL
 
-#PsGraphSdk_LoginWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
-#PsGraphSdk_GetUsersWithSecret
+#PsGraphPowerShellSdk_LoginWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
+#PsGraphPowerShellSdk_GetUsersWithSecret
 
-#PsGraphSdk_LoginWithCertificate $myTenantName $myClientIdWithCert $myCertificateThumbprint
-#PsGraphSdk_LoginWithCertificateFile
-#PsGraphSdk_GetUsersWithCertificate
+#PsGraphPowerShellSdk_LoginWithCertificate $myTenantName $myClientIdWithCert $myCertificateThumbprint
+#PsGraphPowerShellSdk_LoginWithCertificateFile
+#PsGraphPowerShellSdk_GetUsersWithCertificate
 
-#PsGraphSdk_GetGroupsSelect #Not Used
+#PsGraphPowerShellSdk_LoginWithToken
+#PsGraphPowerShellSdk_GetUsersWithToken
 
+#PsGraphPowerShellSdk_GetGroupsSelect #Not Used
+
+#****************************************************
 #*** Using MSAL.PS module to get the token
 #PsMsal_LoginWithInteraction $myTenantName $myClientIdWithAccPw
 #PsMsal_LoginWithAccPw $myTenantName $myClientIdWithAccPw $myUserName $myUserPw
 #PsMsal_LoginWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
 #PsMsal_LoginWithCertificate $myTenantName $myClientIdWithCert $myCertificateThumbprint
-#PsMsal_GetTeam
-#PsMsal_GetUsers
+#PsMsal_LoginWithCertificateFile $myTenantName $myClientIdWithCert $myCertificateFilePath $myCertificateFilePw
+#PsMsal_GetTeamWithAccPw
+#PsMsal_GetUsersWithSecret
+#PsMsal_GetSpListsWithCertificate
+#PsMsal_GetUsersWithCertificateFile
 
+#****************************************************
 #*** Using PowerShell-MicrosoftGraphAPI module (Other modules, not MS)
 #PsGraphFrea_GetToken
 #PsGraphFrea_GetTeamWithModule
@@ -1207,6 +1644,7 @@ $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 #PsGraphFrea_UpdateChannelWithModule
 #PsGraphFrea_DeleteChannelWithModule
 
+#****************************************************
 #*** Using PnP Graph PowerShell
 #PsPnPPowerShell_LoginWithInteraction $myClientIdWithAccPw $mySiteBaseUrl
 #PsPnPPowerShell_LoginWithInteractionMFA $mySiteBaseUrl
@@ -1224,6 +1662,9 @@ $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 #PsPnPPowerShell_LoginGraphWithCertificateFile
 #PsPnPPowerShell_GetTeamsWithCertificate
 
+#PsPnPPowerShell_GetTeamsWithToken
+
+#****************************************************
 #*** Using the MS Graph CLI
 #		ATTENTION: There is a Windows Environment Variable already configured in the computer
 #					to redirect the commands to the mgc.exe directory (see instructions in the book)
@@ -1231,5 +1672,14 @@ $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 #PsGraphCli_ExampleLoginWithDeviceCode
 #PsGraphCli_ExampleLoginWithSecret
 #PsGraphCli_ExampleLoginWithCertificate
+
+#****************************************************
+#*** Auxiliary routines
+#Ps_GetJWTAssertionForCertificateFile
+#Ps_GetJWTAssertionForCertificateThumbprint
+#Ps_GetJWTAssertionForSecret
+#Ps_GetJWTAssertionForAccPw
+#Ps_GetTokenFromJWTAssertion
+#Ps_UseTokenFromJWTAssertion
 
 Write-Host "Done" 

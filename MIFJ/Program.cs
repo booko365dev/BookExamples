@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PnP.Core.Auth;
+using PnP.Core.Model;
 using PnP.Core.Model.SharePoint;
 using PnP.Core.QueryModel;
 using PnP.Core.Services;
@@ -20,7 +21,7 @@ using System.Security.Cryptography.X509Certificates;
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static PnPContext CsPnPCoreSdk_GetContextWithInteraction(string TenantId, 
+static PnPContext CsPnPCoreSdk_GetContextWithInteraction(string TenantId,
                             string ClientId, string SiteCollUrl, LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
@@ -95,8 +96,8 @@ static PnPContext CsPnPCoreSdk_GetContextWithAccPw(string TenantId, string Clien
 //gavdcodeend 003
 
 //gavdcodebegin 005
-static PnPContext CsPnPCoreSdk_GetContextWithCertificate(string TenantId, 
-                string ClientId, string CertificateThumbprint, string SiteCollUrl, 
+static PnPContext CsPnPCoreSdk_GetContextWithCertThumbprint(string TenantId,
+                string ClientId, string CertificateThumbprint, string SiteCollUrl,
                 LogLevel ShowLogs)
 {
     IHost myHost = Host.CreateDefaultBuilder()
@@ -130,6 +131,48 @@ static PnPContext CsPnPCoreSdk_GetContextWithCertificate(string TenantId,
     return myContext;
 }
 //gavdcodeend 005
+
+//gavdcodebegin 007
+static PnPContext CsPnPCoreSdk_GetContextWithCertificateFile(string TenantId,
+                string ClientId, string CertificatePath, string CertificatePw,
+                string SiteCollUrl, LogLevel ShowLogs)
+{
+    IHost myHost = Host.CreateDefaultBuilder()
+        .ConfigureServices((context, services) =>
+        {
+            services.AddPnPCore(options =>
+            {
+                SecureString secPw = new();
+                foreach (char oneChar in CertificatePw)
+                    secPw.AppendChar(oneChar);
+
+                X509Certificate2 certificate = new(CertificatePath, secPw);
+
+                options.DefaultAuthenticationProvider =
+                                    new X509CertificateAuthenticationProvider(ClientId,
+                                    TenantId,
+                                    certificate);
+            });
+        })
+        .ConfigureLogging((hostingContext, logging) =>
+        {
+            logging.SetMinimumLevel(ShowLogs);
+        })
+        .UseConsoleLifetime()   // Listens for Ctrl+C (Windows) or SIGTERM (Linux)
+        .Build();
+
+    myHost.Start();
+
+    IServiceScope myScope = myHost.Services.CreateScope();
+    IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
+                                              .GetRequiredService<IPnPContextFactory>();
+    PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
+
+    myHost.Dispose();
+
+    return myContext;
+}
+//gavdcodeend 007
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
@@ -169,17 +212,16 @@ static void CsPnPCoreSdk_GetListsWithAccPw()
 //gavdcodeend 004
 
 //gavdcodebegin 006
-static void CsPnPCoreSdk_GetItemsWithCertificate()
+static void CsPnPCoreSdk_GetItemsWithCertThumbprint()
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithCert"];
     string mySiteCollUrl = ConfigurationManager.AppSettings["SiteCollUrl"];
     string myCertThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"];
 
-    using PnPContext myContext = CsPnPCoreSdk_GetContextWithCertificate(myTenantId, myClientId,
-                                      myCertThumbprint, mySiteCollUrl, LogLevel.Debug);
-    myContext.Web.LoadAsync(p => p.Title).Wait();
-    Console.WriteLine($"The title of the web is {myContext.Web.Title}");
+    using PnPContext myContext = CsPnPCoreSdk_GetContextWithCertThumbprint(myTenantId,
+                        myClientId, myCertThumbprint, mySiteCollUrl, LogLevel.Debug);
+    myContext.Web.Lists.LoadAsync().Wait();
 
     IList myList = myContext.Web.Lists.GetByTitle("Documents",
                             p => p.Title,
@@ -192,15 +234,40 @@ static void CsPnPCoreSdk_GetItemsWithCertificate()
 }
 //gavdcodeend 006
 
+//gavdcodebegin 008
+static void CsPnPCoreSdk_GetItemsWithCertFile()
+{
+    string myTenantId = ConfigurationManager.AppSettings["TenantName"];
+    string myClientId = ConfigurationManager.AppSettings["ClientIdWithCert"];
+    string mySiteCollUrl = ConfigurationManager.AppSettings["SiteCollUrl"];
+    string myCertPath = ConfigurationManager.AppSettings["CertificateFilePath"];
+    string myCertPw = ConfigurationManager.AppSettings["CertificateFilePw"];
+
+    using PnPContext myContext = CsPnPCoreSdk_GetContextWithCertificateFile(myTenantId,
+                        myClientId, myCertPath, myCertPw, mySiteCollUrl, LogLevel.Debug);
+    myContext.Web.Lists.LoadAsync(p => p.Title).Wait();
+
+    IList myList = myContext.Web.Lists.GetByTitle("Documents",
+                            p => p.Title,
+                            p => p.Items.QueryProperties(p => p.Title));
+
+    foreach (IListItem oneItem in myList.Items)
+    {
+        Console.WriteLine("Item - " + oneItem.Title);
+    }
+}
+//gavdcodeend 008
+
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-// *** Latest Source Code Index: 006 ***
+// *** Latest Source Code Index: 008 ***
 
 //CsPnPCoreSdk_GetWebWithInteraction();
 //CsPnPCoreSdk_GetListsWithAccPw();
-//CsPnPCoreSdk_GetItemsWithCertificate();
+//CsPnPCoreSdk_GetItemsWithCertThumbprint();
+//CsPnPCoreSdk_GetItemsWithCertFile();
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Class routines ***---------------------------
