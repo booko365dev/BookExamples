@@ -7,6 +7,10 @@
 ##***-----------------------------------*** Login routines ***---------------------------
 ##---------------------------------------------------------------------------------------
 
+##----------------------------------------------------------
+##==> CSOM
+##----------------------------------------------------------
+
 #gavdcodebegin 001
 function PsSpCsom_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
@@ -23,6 +27,10 @@ function PsSpCsom_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
 }
 #gavdcodeend 001
 
+##----------------------------------------------------------
+##==> PSO
+##----------------------------------------------------------
+
 #gavdcodebegin 002
 function PsSpPso_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
@@ -34,6 +42,10 @@ function PsSpPso_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
 	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
 }
 #gavdcodeend 002
+
+##----------------------------------------------------------
+##==> PnP-PowerShell (Legacy) Using the deprecated PnP-PowerShell module
+##----------------------------------------------------------
 
 #gavdcodebegin 003
 function PsSpPnP_Login #*** LEGACY CODE *** 
@@ -47,6 +59,10 @@ function PsSpPnP_Login #*** LEGACY CODE ***
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl -Credentials $myCredentials
 }
 #gavdcodeend 003
+
+##----------------------------------------------------------
+##==> PnP PowerShell (Replacement of the legacy PnP-PowerShell)
+##----------------------------------------------------------
 
 #gavdcodebegin 016
 function PsSpPnP_LoginWithAccPw
@@ -114,6 +130,10 @@ function PsSpPnP_LoginWithInteraction
 }
 #gavdcodeend 021
 
+##----------------------------------------------------------
+##==> CLI
+##----------------------------------------------------------
+
 #gavdcodebegin 014
 function PsCliM365_LoginWithAccPw
 {
@@ -144,6 +164,25 @@ function PsCliM365_LoginWithCertificate
 			   --password $configFile.appsettings.CertificateFilePw
 }
 #gavdcodeend 025
+
+#gavdcodebegin 038
+function PsCliM365_LoginWithManagedIdentitySystemAssigned
+{
+	m365 login --authType identity
+}
+#gavdcodeend 038
+
+#gavdcodebegin 039
+function PsCliM365_LoginWithManagedIdentityUserAssigned
+{
+	m365 login --authType identity `
+			   --userName "[ManagedIdentityClientId]"
+}
+#gavdcodeend 039
+
+##----------------------------------------------------------
+##==> SharePoint REST API with MSAL
+##----------------------------------------------------------
 
 #gavdcodebegin 033
 function PsSpRestApiMsal_LoginWithAccPw
@@ -713,7 +752,7 @@ function PsSpRestApiMsal_GetLists
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 037 ***
+# *** Latest Source Code Index: 039 ***
 
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"

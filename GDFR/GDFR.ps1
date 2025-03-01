@@ -55,7 +55,7 @@ function PsGraphSdk_LoginWithSecret
 #-- Using the Microsoft Graph REST API to manage App Registrations ----------------------
 
 #gavdcodebegin 002
-function PsM365GraphRest_GetAllAppRegistrations 
+function PsEntraGraphRest_GetAllAppRegistrations 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -79,7 +79,7 @@ function PsM365GraphRest_GetAllAppRegistrations
 #gavdcodeend 002
 
 #gavdcodebegin 003
-function PsM365GraphRest_GetOneAppRegistrationByObjectId 
+function PsEntraGraphRest_GetOneAppRegistrationByObjectId 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -105,7 +105,7 @@ function PsM365GraphRest_GetOneAppRegistrationByObjectId
 #gavdcodeend 003
 
 #gavdcodebegin 004
-function PsM365GraphRest_GetOneAppRegistrationByClientId
+function PsEntraGraphRest_GetOneAppRegistrationByClientId
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -131,7 +131,7 @@ function PsM365GraphRest_GetOneAppRegistrationByClientId
 #gavdcodeend 004
 
 #gavdcodebegin 005
-function PsM365GraphRest_GetOneAppRegistrationByObjectIdByProperties
+function PsEntraGraphRest_GetOneAppRegistrationByObjectIdByProperties
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -159,7 +159,7 @@ function PsM365GraphRest_GetOneAppRegistrationByObjectIdByProperties
 #gavdcodeend 005
 
 #gavdcodebegin 006
-function PsM365GraphRest_CreateAppRegistrationGraphApi
+function PsEntraGraphRest_CreateAppRegistrationGraphApi
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -196,7 +196,7 @@ function PsM365GraphRest_CreateAppRegistrationGraphApi
 #gavdcodeend 006
 
 #gavdcodebegin 007
-function PsM365GraphRest_AddOwnerToAppRegistration
+function PsEntraGraphRest_AddOwnerToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -252,7 +252,7 @@ function PsM365GraphRest_AddOwnerToAppRegistration
 #gavdcodeend 007
 
 #gavdcodebegin 008
-function PsM365GraphRest_AddDelegatedClaimsToAppRegistration
+function PsEntraGraphRest_AddDelegatedClaimsToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -306,7 +306,7 @@ function PsM365GraphRest_AddDelegatedClaimsToAppRegistration
 #gavdcodeend 008
 
 #gavdcodebegin 009
-function PsM365GraphRest_DeleteDelegatedClaimsFromAppRegistration
+function PsEntraGraphRest_DeleteDelegatedClaimsFromAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -348,7 +348,7 @@ function PsM365GraphRest_DeleteDelegatedClaimsFromAppRegistration
 #gavdcodeend 009
 
 #gavdcodebegin 010
-function PsM365GraphRest_AddApplicationClaimsToAppRegistration
+function PsEntraGraphRest_AddApplicationClaimsToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -401,7 +401,7 @@ function PsM365GraphRest_AddApplicationClaimsToAppRegistration
 #gavdcodeend 010
 
 #gavdcodebegin 011
-function PsM365GraphRest_DeleteApplicationClaimsFromAppRegistration
+function PsEntraGraphRest_DeleteApplicationClaimsFromAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -452,7 +452,7 @@ function PsM365GraphRest_DeleteApplicationClaimsFromAppRegistration
 #gavdcodeend 011
 
 #gavdcodebegin 012
-function PsM365GraphRest_AddSecretToAppRegistration
+function PsEntraGraphRest_AddSecretToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -491,7 +491,7 @@ function PsM365GraphRest_AddSecretToAppRegistration
 #gavdcodeend 012
 
 #gavdcodebegin 013
-function PsM365GraphRest_DeleteSecretFromAppRegistration
+function PsEntraGraphRest_DeleteSecretFromAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -536,7 +536,7 @@ function PsM365GraphRest_DeleteSecretFromAppRegistration
 #gavdcodeend 013
 
 #gavdcodebegin 014
-function PsM365GraphRest_AddCertificateToAppRegistration
+function PsEntraGraphRest_AddCertificateToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -609,7 +609,7 @@ function PsM365GraphRest_AddCertificateToAppRegistration
 #gavdcodeend 014
 
 #gavdcodebegin 015
-function PsM365GraphRest_DeleteCertificateFromAppRegistrationAndComputer
+function PsEntraGraphRest_DeleteCertificateFromAppRegistrationAndComputer
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -668,7 +668,7 @@ function PsM365GraphRest_DeleteCertificateFromAppRegistrationAndComputer
 #gavdcodeend 015
 
 #gavdcodebegin 016
-function PsM365GraphRest_DeleteAppRegistration
+function PsEntraGraphRest_DeleteAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -692,7 +692,7 @@ function PsM365GraphRest_DeleteAppRegistration
 #gavdcodeend 016
 
 #gavdcodebegin 017
-function PsM365GraphRest_OtherRecipesForAppRegistration
+function PsEntraGraphRest_OtherRecipesForAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -722,7 +722,7 @@ function PsM365GraphRest_OtherRecipesForAppRegistration
 #-- Using the Microsoft Graph PowerShell SDK to manage App Registrations ----------------
 
 #gavdcodebegin 018
-function PsM365GraphSdk_GetAllAppRegistrations
+function PsEntraGraphPsSdk_GetAllAppRegistrations
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -733,7 +733,7 @@ function PsM365GraphSdk_GetAllAppRegistrations
 #gavdcodeend 018
 
 #gavdcodebegin 019
-function PsM365GraphSdk_GetOneAppRegistrationByObjectId 
+function PsEntraGraphPsSdk_GetOneAppRegistrationByObjectId 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -746,7 +746,7 @@ function PsM365GraphSdk_GetOneAppRegistrationByObjectId
 #gavdcodeend 019
 
 #gavdcodebegin 020
-function PsM365GraphSdk_GetOneAppRegistrationByClientIdId 
+function PsEntraGraphPsSdk_GetOneAppRegistrationByClientId
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -759,7 +759,7 @@ function PsM365GraphSdk_GetOneAppRegistrationByClientIdId
 #gavdcodeend 020
 
 #gavdcodebegin 021
-function PsM365GraphSdk_GetOneAppRegistrationByObjectIdByProperties 
+function PsEntraGraphPsSdk_GetOneAppRegistrationByObjectIdByProperties 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -772,7 +772,7 @@ function PsM365GraphSdk_GetOneAppRegistrationByObjectIdByProperties
 #gavdcodeend 021
 
 #gavdcodebegin 022
-function PsM365GraphSdk_CreateAppRegistrationGraphApi 
+function PsEntraGraphPsSdk_CreateAppRegistrationGraphApi 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -789,7 +789,7 @@ function PsM365GraphSdk_CreateAppRegistrationGraphApi
 #gavdcodeend 022
 
 #gavdcodebegin 023
-function PsM365GraphSdk_AddOwnerToAppRegistration 
+function PsEntraGraphPsSdk_AddOwnerToAppRegistration 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -825,7 +825,7 @@ function PsM365GraphSdk_AddOwnerToAppRegistration
 #gavdcodeend 023
 
 #gavdcodebegin 024
-function PsM365GraphSdk_AddDelegatedClaimsToAppRegistration 
+function PsEntraGraphPsSdk_AddDelegatedClaimsToAppRegistration 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -863,7 +863,7 @@ function PsM365GraphSdk_AddDelegatedClaimsToAppRegistration
 #gavdcodeend 024
 
 #gavdcodebegin 025
-function PsM365GraphSdk_DeleteDelegatedClaimsFromAppRegistration 
+function PsEntraGraphPsSdk_DeleteDelegatedClaimsFromAppRegistration 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -891,7 +891,7 @@ function PsM365GraphSdk_DeleteDelegatedClaimsFromAppRegistration
 #gavdcodeend 025
 
 #gavdcodebegin 026
-function PsM365GraphSdk_AddApplicationClaimsToAppRegistration 
+function PsEntraGraphPsSdk_AddApplicationClaimsToAppRegistration 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -930,7 +930,7 @@ function PsM365GraphSdk_AddApplicationClaimsToAppRegistration
 #gavdcodeend 026
 
 #gavdcodebegin 027
-function PsM365GraphSdk_DeleteApplicationClaimsFromAppRegistration 
+function PsEntraGraphPsSdk_DeleteApplicationClaimsFromAppRegistration 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -969,7 +969,7 @@ function PsM365GraphSdk_DeleteApplicationClaimsFromAppRegistration
 #gavdcodeend 027
 
 #gavdcodebegin 028
-function PsM365GraphSdk_AddSecretToAppRegistration 
+function PsEntraGraphPsSdk_AddSecretToAppRegistration 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -997,7 +997,7 @@ function PsM365GraphSdk_AddSecretToAppRegistration
 #gavdcodeend 028
 
 #gavdcodebegin 029
-function PsM365GraphSdk_DeleteSecretFromAppRegistration 
+function PsEntraGraphPsSdk_DeleteSecretFromAppRegistration 
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -1027,7 +1027,7 @@ function PsM365GraphSdk_DeleteSecretFromAppRegistration
 #gavdcodeend 029
 
 #gavdcodebegin 030
-function PsM365GraphSdk_AddCertificateToAppRegistration
+function PsEntraGraphPsSdk_AddCertificateToAppRegistration
 {
     # Requires Application.Read.All, AppRoleAssignment.ReadWrite.All,
     # Application.ReadWrite.OwnedBy and Directory.ReadWrite.All
@@ -1091,7 +1091,7 @@ function PsM365GraphSdk_AddCertificateToAppRegistration
 #gavdcodeend 030
 
 #gavdcodebegin 031
-function PsM365GraphSdk_DeleteCertificateFromAppRegistrationAndComputer
+function PsEntraGraphPsSdk_DeleteCertificateFromAppRegistrationAndComputer
 {
     # Requires Application.Read.All, AppRoleAssignment.ReadWrite.All,
     # Application.ReadWrite.OwnedBy and Directory.ReadWrite.All
@@ -1157,7 +1157,7 @@ function PsM365GraphSdk_DeleteCertificateFromAppRegistrationAndComputer
 #gavdcodeend 031
 
 #gavdcodebegin 032
-function PsM365GraphSdk_DeleteAppRegistration
+function PsEntraGraphPsSdk_DeleteAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
@@ -1181,38 +1181,38 @@ function PsM365GraphSdk_DeleteAppRegistration
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 #-- Using the Microsoft Graph REST API to manage App Registrations ----------------------
-#PsM365GraphRest_GetAllAppRegistrations
-#PsM365GraphRest_GetOneAppRegistrationByObjectId
-#PsM365GraphRest_GetOneAppRegistrationByClientId
-#PsM365GraphRest_GetOneAppRegistrationByObjectIdByProperties
-#PsM365GraphRest_CreateAppRegistrationGraphApi
-#PsM365GraphRest_AddOwnerToAppRegistration
-#PsM365GraphRest_AddDelegatedClaimsToAppRegistration
-#PsM365GraphRest_DeleteDelegatedClaimsFromAppRegistration
-#PsM365GraphRest_AddApplicationClaimsToAppRegistration
-#PsM365GraphRest_DeleteApplicationClaimsFromAppRegistration
-#PsM365GraphRest_AddSecretToAppRegistration
-#PsM365GraphRest_DeleteSecretFromAppRegistration
-#PsM365GraphRest_AddCertificateToAppRegistration
-#PsM365GraphRest_DeleteCertificateFromAppRegistrationAndComputer
-#PsM365GraphRest_DeleteAppRegistration
-#PsM365GraphRest_OtherRecipesForAppRegistration
+#PsEntraGraphRest_GetAllAppRegistrations
+#PsEntraGraphRest_GetOneAppRegistrationByObjectId
+#PsEntraGraphRest_GetOneAppRegistrationByClientId
+#PsEntraGraphRest_GetOneAppRegistrationByObjectIdByProperties
+#PsEntraGraphRest_CreateAppRegistrationGraphApi
+#PsEntraGraphRest_AddOwnerToAppRegistration
+#PsEntraGraphRest_AddDelegatedClaimsToAppRegistration
+#PsEntraGraphRest_DeleteDelegatedClaimsFromAppRegistration
+#PsEntraGraphRest_AddApplicationClaimsToAppRegistration
+#PsEntraGraphRest_DeleteApplicationClaimsFromAppRegistration
+#PsEntraGraphRest_AddSecretToAppRegistration
+#PsEntraGraphRest_DeleteSecretFromAppRegistration
+#PsEntraGraphRest_AddCertificateToAppRegistration
+#PsEntraGraphRest_DeleteCertificateFromAppRegistrationAndComputer
+#PsEntraGraphRest_DeleteAppRegistration
+#PsEntraGraphRest_OtherRecipesForAppRegistration
 
 #-- Using the Microsoft Graph PowerShell SDK to manage App Registrations ----------------
-#PsM365GraphSdk_GetAllAppRegistrations
-#PsM365GraphSdk_GetOneAppRegistrationByObjectId
-#PsM365GraphSdk_GetOneAppRegistrationByClientIdId
-#PsM365GraphSdk_GetOneAppRegistrationByObjectIdByProperties
-#PsM365GraphSdk_CreateAppRegistrationGraphApi
-#PsM365GraphSdk_AddOwnerToAppRegistration
-#PsM365GraphSdk_AddDelegatedClaimsToAppRegistration
-#PsM365GraphSdk_DeleteDelegatedClaimsFromAppRegistration
-#PsM365GraphSdk_AddApplicationClaimsToAppRegistration
-#PsM365GraphSdk_DeleteApplicationClaimsFromAppRegistration
-#PsM365GraphSdk_AddSecretToAppRegistration
-#PsM365GraphSdk_DeleteSecretFromAppRegistration
-#PsM365GraphSdk_AddCertificateToAppRegistration
-#PsM365GraphSdk_DeleteCertificateFromAppRegistrationAndComputer
-#PsM365GraphSdk_DeleteAppRegistration
+#PsEntraGraphPsSdk_GetAllAppRegistrations
+#PsEntraGraphPsSdk_GetOneAppRegistrationByObjectId
+#PsEntraGraphPsSdk_GetOneAppRegistrationByClientId
+#PsEntraGraphPsSdk_GetOneAppRegistrationByObjectIdByProperties
+#PsEntraGraphPsSdk_CreateAppRegistrationGraphApi
+#PsEntraGraphPsSdk_AddOwnerToAppRegistration
+#PsEntraGraphPsSdk_AddDelegatedClaimsToAppRegistration
+#PsEntraGraphPsSdk_DeleteDelegatedClaimsFromAppRegistration
+#PsEntraGraphPsSdk_AddApplicationClaimsToAppRegistration
+#PsEntraGraphPsSdk_DeleteApplicationClaimsFromAppRegistration
+#PsEntraGraphPsSdk_AddSecretToAppRegistration
+#PsEntraGraphPsSdk_DeleteSecretFromAppRegistration
+#PsEntraGraphPsSdk_AddCertificateToAppRegistration
+#PsEntraGraphPsSdk_DeleteCertificateFromAppRegistrationAndComputer
+#PsEntraGraphPsSdk_DeleteAppRegistration
 
 Write-Host "Done"

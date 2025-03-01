@@ -1,6 +1,6 @@
-﻿using Azure.Identity;
+﻿using Azure.Core;
+using Azure.Identity;
 using Microsoft.Graph;
-using Microsoft.Graph.Applications.Item.AddKey;
 using Microsoft.Graph.Applications.Item.AddPassword;
 using Microsoft.Graph.Applications.Item.RemovePassword;
 using Microsoft.Graph.Models;
@@ -15,12 +15,13 @@ using System.Security.Cryptography.X509Certificates;
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
+#pragma warning disable CA1416 // Validate platform compatibility
 
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
-static GraphServiceClient CsGraphSdk_LoginWithSecret()
+static GraphServiceClient CsEntraGraphCsSdk_LoginWithSecret()
 {
     string TenantIdToConn = ConfigurationManager.AppSettings["TenantName"];
     string ClientIdToConn = ConfigurationManager.AppSettings["ClientIdWithSecret"];
@@ -41,17 +42,64 @@ static GraphServiceClient CsGraphSdk_LoginWithSecret()
     return graphClient;
 }
 
+// Routines that can be used in Azure Functions with Managed Identities
+//gavdcodebegin 016
+static GraphServiceClient CsEntraGraphCsSdk_LoginWithSecret_ForAzFuncts(
+                                                       string clientId, string tenantId,
+                                                       string clientSecret)
+{
+    ClientSecretCredential authProvider = new(tenantId, clientId, clientSecret);
+
+    AccessToken myToken = authProvider.GetToken(
+            new TokenRequestContext(["https://graph.microsoft.com/.default"]));
+
+    GraphServiceClient graphClient = new(authProvider);
+
+    return graphClient;
+}
+//gavdcodeend 016
+
+//gavdcodebegin 017
+static GraphServiceClient CsEntraGraphCsSdk_LoginWithManagedIdentitySystem_ForAzFuncts()
+{
+    DefaultAzureCredential authProvider = new();
+
+    AccessToken myToken = authProvider.GetToken(
+            new TokenRequestContext(["https://graph.microsoft.com/.default"]));
+
+    GraphServiceClient graphClient = new(authProvider);
+
+    return graphClient;
+}
+//gavdcodeend 017
+
+//gavdcodebegin 018
+static GraphServiceClient CsEntraGraphCsSdk_LoginWithManagedIdentityUser_ForAzFuncts(
+                                                        string clientId)
+{
+    DefaultAzureCredential authProvider = new(
+        new DefaultAzureCredentialOptions { 
+            ManagedIdentityClientId = clientId });
+
+    AccessToken myToken = authProvider.GetToken(
+            new TokenRequestContext(["https://graph.microsoft.com/.default"]));
+
+    GraphServiceClient graphClient = new(authProvider);
+
+    return graphClient;
+}
+//gavdcodeend 018
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Example routines ***-------------------------
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static void CsGraphSdk_GetAllAppRegistrations()
+static void CsEntraGraphCsSdk_GetAllAppRegistrations()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
     ApplicationCollectionResponse allApps = myGraphClient.Applications.GetAsync().Result;
 
@@ -63,14 +111,14 @@ static void CsGraphSdk_GetAllAppRegistrations()
 //gavdcodeend 001
 
 //gavdcodebegin 002
-static void CsGraphSdk_GetOneAppRegistrationByObjectId()
+static void CsEntraGraphCsSdk_GetOneAppRegistrationByObjectId()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
     // Use the Object ID, not the Client ID
-    string myAppObjectId = "824741c8-88da-4414-808e-a2d0181cd1c4";
+    string myAppObjectId = "824741c8-xxxx-xxxx-xxxx-a2d0181cd1c4";
 
     Application oneApps = myGraphClient.Applications[myAppObjectId].GetAsync().Result;
 
@@ -79,14 +127,14 @@ static void CsGraphSdk_GetOneAppRegistrationByObjectId()
 //gavdcodeend 002
 
 //gavdcodebegin 003
-static void CsGraphSdk_GetOneAppRegistrationByClientId()
+static void CsEntraGraphCsSdk_GetOneAppRegistrationByClientId()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
     // Use the Client ID, not the Object ID
-    string myAppClientId = "5a84f9ed-d0be-4f7e-9fe8-42efb58acd2a";
+    string myAppClientId = "5a84f9ed-xxxx-xxxx-xxxx-42efb58acd2a";
 
     Application oneApp = myGraphClient.ApplicationsWithAppId(myAppClientId)
                                        .GetAsync().Result;
@@ -96,14 +144,14 @@ static void CsGraphSdk_GetOneAppRegistrationByClientId()
 //gavdcodeend 003
 
 //gavdcodebegin 004
-static void CsGraphSdk_GetOneAppRegistrationByObjectIdByProperties()
+static void CsEntraGraphCsSdk_GetOneAppRegistrationByObjectIdByProperties()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
     // Use the Object ID, not the Client ID
-    string myAppObjectId = "824741c8-88da-4414-808e-a2d0181cd1c4";
+    string myAppObjectId = "824741c8-xxxx-xxxx-xxxx-a2d0181cd1c4";
 
     Application oneApp = myGraphClient
                 .Applications[myAppObjectId].GetAsync((requestConfiguration) =>
@@ -117,11 +165,11 @@ static void CsGraphSdk_GetOneAppRegistrationByObjectIdByProperties()
 //gavdcodeend 004
 
 //gavdcodebegin 005
-static void CsGraphSdk_CreateAppRegistrationGraphApi()
+static void CsEntraGraphCsSdk_CreateAppRegistrationGraphApi()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
     Application myBody = new()
     {
@@ -134,14 +182,14 @@ static void CsGraphSdk_CreateAppRegistrationGraphApi()
 //gavdcodeend 005
 
 //gavdcodebegin 006
-static void CsGraphSdk_AddOwnerToAppRegistration()
+static void CsEntraGraphCsSdk_AddOwnerToAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033"; // Client ID
-    string myAppObjectId = "a4b7596b-27cc-4074-bdd3-0c3ff8ff551d"; // Object ID
+    string myAppClientId = "d86afffc-xxxx-xxxx-xxxx-6ddd9a347033"; // Client ID
+    string myAppObjectId = "a4b7596b-xxxx-xxxx-xxxx-0c3ff8ff551d"; // Object ID
     string myUserEmail = "user@domain.onmicrosoft.com";
 
     // Find the User ID by Email
@@ -172,13 +220,13 @@ static void CsGraphSdk_AddOwnerToAppRegistration()
 //gavdcodeend 006
 
 //gavdcodebegin 007
-static void CsGraphSdk_AddDelegatedClaimsToAppRegistration()
+static void CsEntraGraphCsSdk_AddDelegatedClaimsToAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033"; // Client ID
+    string myAppClientId = "d86afffc-xxxx-xxxx-xxxx-6ddd9a347033"; // Client ID
     string myClaimName = "User.ReadWrite.All";
 
     // Get the client service principal
@@ -217,13 +265,13 @@ static void CsGraphSdk_AddDelegatedClaimsToAppRegistration()
 //gavdcodeend 007
 
 //gavdcodebegin 008
-static void CsGraphSdk_DeleteDelegatedClaimsFromAppRegistration()
+static void CsEntraGraphCsSdk_DeleteDelegatedClaimsFromAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033"; // Client ID
+    string myAppClientId = "d86afffc-xxxx-xxxx-xxxx-6ddd9a347033"; // Client ID
     string myClaimName = "User.ReadWrite.All";
 
     // Get the client service principal
@@ -249,13 +297,13 @@ static void CsGraphSdk_DeleteDelegatedClaimsFromAppRegistration()
 //gavdcodeend 008
 
 //gavdcodebegin 009
-static void CsGraphSdk_AddApplicationClaimsToAppRegistration()
+static void CsEntraGraphCsSdk_AddApplicationClaimsToAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033"; // Client ID
+    string myAppClientId = "d86afffc-xxxx-xxxx-xxxx-6ddd9a347033"; // Client ID
     string myClaimName = "AuditLog.Read.All";
 
     // Get the client service principal
@@ -295,13 +343,13 @@ static void CsGraphSdk_AddApplicationClaimsToAppRegistration()
 //gavdcodeend 009
 
 //gavdcodebegin 010
-static void CsGraphSdk_DeleteApplicationClaimsFromAppRegistration()
+static void CsEntraGraphCsSdk_DeleteApplicationClaimsFromAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033"; // Client ID
+    string myAppClientId = "d86afffc-xxxx-xxxx-xxxx-6ddd9a347033"; // Client ID
     string myClaimName = "AuditLog.Read.All";
 
     // Get the client service principal
@@ -340,13 +388,13 @@ static void CsGraphSdk_DeleteApplicationClaimsFromAppRegistration()
 //gavdcodeend 010
 
 //gavdcodebegin 011
-static void CsGraphSdk_AddSecretToAppRegistration()
+static void CsEntraGraphCsSdk_AddSecretToAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppObjectId = "a4b7596b-27cc-4074-bdd3-0c3ff8ff551d"; // Object ID
+    string myAppObjectId = "a4b7596b-xxxx-xxxx-xxxx-0c3ff8ff551d"; // Object ID
 
     // The values for the Secret
     string mySecretName = "My AppReg Secret";
@@ -370,13 +418,13 @@ static void CsGraphSdk_AddSecretToAppRegistration()
 //gavdcodeend 011
 
 //gavdcodebegin 012
-static void CsGraphSdk_DeleteSecretFromAppRegistration()
+static void CsEntraGraphCsSdk_DeleteSecretFromAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppObjectId = "a4b7596b-27cc-4074-bdd3-0c3ff8ff551d"; // Object ID
+    string myAppObjectId = "a4b7596b-xxxx-xxxx-xxxx-0c3ff8ff551d"; // Object ID
 
     // The values for the Secret
     string mySecretName = "My AppReg Secret";
@@ -401,14 +449,14 @@ static void CsGraphSdk_DeleteSecretFromAppRegistration()
 //gavdcodeend 012
 
 //gavdcodebegin 013
-static void CsGraphSdk_AddCertificateToAppRegistration()
+static void CsEntraGraphCsSdk_AddCertificateToAppRegistration()
 {
     // Requires Application.Read.All, AppRoleAssignment.ReadWrite.All,
     // Application.ReadWrite.OwnedBy and Directory.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033"; // Client ID
+    string myAppClientId = "d86afffc-xxxx-xxxx-xxxx-6ddd9a347033"; // Client ID
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
 
     string myCertPathPublic = @"C:\Temporary\MyCertificate.cer";
@@ -509,15 +557,15 @@ static void CsGraphSdk_AddCertificateToAppRegistration()
 //gavdcodeend 013
 
 //gavdcodebegin 014
-static void CsGraphSdk_DeleteCertificateFromAppRegistrationAndComputer()
+static void CsEntraGraphCsSdk_DeleteCertificateFromAppRegistrationAndComputer()
 {
     // Requires Application.Read.All, AppRoleAssignment.ReadWrite.All,
     // Application.ReadWrite.OwnedBy and Directory.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
-    string myAppObjectId = "a4b7596b-27cc-4074-bdd3-0c3ff8ff551d"; // Object ID
-    string myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033"; // Client ID
+    string myAppObjectId = "a4b7596b-xxxx-xxxx-xxxx-0c3ff8ff551d"; // Object ID
+    string myAppClientId = "d86afffc-xxxx-xxxx-xxxx-6ddd9a347033"; // Client ID
     string myCertPathPrivate = @"C:\Temporary\MyCertificate.pfx";
     string myCertPrivatePwd = "MyPassword";
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
@@ -556,7 +604,7 @@ static void CsGraphSdk_DeleteCertificateFromAppRegistrationAndComputer()
                 { "keyid", clientServicePrincipal.Value[0].Id }
             },
         Expires = DateTime.UtcNow.AddMinutes(5),
-        SigningCredentials = new SigningCredentials(securityKey, 
+        SigningCredentials = new SigningCredentials(securityKey,
                                                     SecurityAlgorithms.RsaSha256)
     };
 
@@ -596,14 +644,14 @@ static void CsGraphSdk_DeleteCertificateFromAppRegistrationAndComputer()
 //gavdcodeend 014
 
 //gavdcodebegin 015
-static void CsGraphSdk_DeleteAppRegistration()
+static void CsEntraGraphCsSdk_DeleteAppRegistration()
 {
     // Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    GraphServiceClient myGraphClient = CsGraphSdk_LoginWithSecret();
+    GraphServiceClient myGraphClient = CsEntraGraphCsSdk_LoginWithSecret();
 
     // Use the Object ID, not the Client ID
-    string myAppObjectId = "a4b7596b-27cc-4074-bdd3-0c3ff8ff551d";
+    string myAppObjectId = "a4b7596b-xxxx-xxxx-xxxx-0c3ff8ff551d";
 
     myGraphClient.Applications[myAppObjectId].DeleteAsync().Wait();
 
@@ -611,28 +659,55 @@ static void CsGraphSdk_DeleteAppRegistration()
 }
 //gavdcodeend 015
 
+// Routine that can be used in Azure Functions with Managed Identities
+//gavdcodebegin 019
+static List<string> GetSharePointDocs_ForAzureFunctions(string siteId, string clientId,
+                                    string tenantId, string clientSecret)
+{
+    //GraphServiceClient myGraphClient =
+    //  CsEntraGraphCsSdk_LoginWithSecret_ForAzureFunctions(clientId, tenantId, clientSecret);
+    //GraphServiceClient myGraphClient = 
+    //    CsEntraGraphCsSdk_LoginWithManagedIdentitySystem_ForAzureFunctions();
+    GraphServiceClient myGraphClient = 
+        CsEntraGraphCsSdk_LoginWithManagedIdentityUser_ForAzureFunctions(clientId);
+
+    //ListCollectionResponse lists = myGraphClient.Sites[siteId].Lists.GetAsync().Result;
+
+    ListItemCollectionResponse allDocs = myGraphClient
+        .Sites[siteId]
+        .Lists["Documents"].Items
+        .GetAsync().Result;
+    List<string> myDocs = [];
+    foreach (ListItem oneDoc in allDocs.Value)
+    {
+        myDocs.Add(oneDoc.WebUrl);
+    }
+
+    return myDocs;
+}
+//gavdcodeend 019
 
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-// *** Latest Source Code Index: 015 ***
+// *** Latest Source Code Index: 019 ***
 
-//CsGraphSdk_GetAllAppRegistrations();
-//CsGraphSdk_GetOneAppRegistrationByObjectId();
-//CsGraphSdk_GetOneAppRegistrationByClientId();
-//CsGraphSdk_GetOneAppRegistrationByObjectIdByProperties();
-//CsGraphSdk_CreateAppRegistrationGraphApi();
-//CsGraphSdk_AddOwnerToAppRegistration();
-//CsGraphSdk_AddDelegatedClaimsToAppRegistration();
-//CsGraphSdk_DeleteDelegatedClaimsFromAppRegistration();
-//CsGraphSdk_AddApplicationClaimsToAppRegistration();
-//CsGraphSdk_DeleteApplicationClaimsFromAppRegistration();
-//CsGraphSdk_AddSecretToAppRegistration();
-//CsGraphSdk_DeleteSecretFromAppRegistration();
-//CsGraphSdk_AddCertificateToAppRegistration();
-//CsGraphSdk_DeleteCertificateFromAppRegistrationAndComputer();
-//CsGraphSdk_DeleteAppRegistration();
+//CsEntraGraphCsSdk_GetAllAppRegistrations();
+//CsEntraGraphCsSdk_GetOneAppRegistrationByObjectId();
+//CsEntraGraphCsSdk_GetOneAppRegistrationByClientId();
+//CsEntraGraphCsSdk_GetOneAppRegistrationByObjectIdByProperties();
+//CsEntraGraphCsSdk_CreateAppRegistrationGraphApi();
+//CsEntraGraphCsSdk_AddOwnerToAppRegistration();
+//CsEntraGraphCsSdk_AddDelegatedClaimsToAppRegistration();
+//CsEntraGraphCsSdk_DeleteDelegatedClaimsFromAppRegistration();
+//CsEntraGraphCsSdk_AddApplicationClaimsToAppRegistration();
+//CsEntraGraphCsSdk_DeleteApplicationClaimsFromAppRegistration();
+//CsEntraGraphCsSdk_AddSecretToAppRegistration();
+//CsEntraGraphCsSdk_DeleteSecretFromAppRegistration();
+//CsEntraGraphCsSdk_AddCertificateToAppRegistration();
+//CsEntraGraphCsSdk_DeleteCertificateFromAppRegistrationAndComputer();
+//CsEntraGraphCsSdk_DeleteAppRegistration();
 
 Console.WriteLine("Done");
 
@@ -644,3 +719,4 @@ Console.WriteLine("Done");
 
 #nullable enable
 #pragma warning restore CS8321 // Local function is declared but never used
+#pragma warning restore CA1416 // Validate platform compatibility
