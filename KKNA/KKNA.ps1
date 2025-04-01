@@ -10,7 +10,7 @@
 
 #*** Getting the Azure token with REST --------------------------------------------------
 #gavdcodebegin 001
-function PsRest_GetAzureTokenWithSecret
+function PsGraphRestApi_GetAzureTokenWithSecret
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -621,10 +621,10 @@ function PsSpGraphRest_DeleteFileFromSpEmbeddedContainer
 [xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
 
 # Get the token from Entra
-$myOAuth = PsRest_GetAzureTokenWithSecret `
-                -ClientID "3d16c7bc-a14e-454e-81cd-da571cf2a8e3" `
-                -ClientSecret "IIX8Q~M5q-FCotlzO7GA4bLAQBPtF9dHwr.CcbsN" `
-                -TenantName "ade56059-89c0-4594-90c3-e4772a8168ca"
+$myOAuth = PsGraphRestApi_GetAzureTokenWithSecret `
+                -ClientID "xxxxxxxx-a14e-454e-81cd-da571cf2a8e3" `
+                -ClientSecret "xxxxxxxxq-FCotlzO7GA4bLAQBPtF9dHwr.CcbsN" `
+                -TenantName "xxxxxxxx-89c0-4594-90c3-e4772a8168ca"
 
 #PsSpGraphRest_ActivateSpEmbeddedContainer
 #PsSpGraphRest_GetAllSpEmbeddedContainers

@@ -16,7 +16,7 @@
 #*** Getting the Azure token with REST ---------------------------------------------------
 
 #gavdcodebegin 007
-function PsRest_GetAzureTokenWithAccPw
+function PsGraphRestApi_GetAzureTokenWithAccPw
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -51,7 +51,7 @@ function PsRest_GetAzureTokenWithAccPw
 #gavdcodeend 007 
  
 #gavdcodebegin 001
-function PsRest_GetAzureTokenWithSecret
+function PsGraphRestApi_GetAzureTokenWithSecret
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -82,7 +82,7 @@ function PsRest_GetAzureTokenWithSecret
 #gavdcodeend 001 
 
 #gavdcodebegin 022
-function PsRest_GetAzureTokenWithCertificate
+function PsGraphRestApi_GetAzureTokenWithCertificateThumbprint
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -181,7 +181,7 @@ function PsClassicalCdm_GetTeam
 	$Url = "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037"
 
 	# Requires Delegated rights for Team.ReadBasic.All
-	$myOAuth = PsRest_GetAzureTokenWithAccPw `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
@@ -189,13 +189,13 @@ function PsClassicalCdm_GetTeam
 
 	<#
 	# Requires Application rights for Team.ReadBasic.All
-	$myOAuth = PsRest_GetAzureTokenWithSecret `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
 
 	# Requires Application rights for Team.ReadBasic.All
-	$myOAuth = PsRest_GetAzureTokenWithCertificate `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithCertificateThumbprint `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -217,20 +217,20 @@ function PsClassicalCmd_CreateChannel
 	
 
 	# Requires Delegated rights for Channel.Create
-	$myOAuth = PsRest_GetAzureTokenWithAccPw `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 									   -TenantName $configFile.appsettings.TenantName `
 									   -UserName $configFile.appsettings.UserName `
 									   -UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for Channel.Create
-	$myOAuth = PsRest_GetAzureTokenWithSecret `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
     
 	# Requires Application rights for Channel.Create
-	$myOAuth = PsRest_GetAzureTokenWithCertificate `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithCertificateThumbprint `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -256,20 +256,20 @@ function PsClassicalCmd_GetChannel
 	
 
 	# Requires Delegated rights for ChannelSettings.Read.All
-	$myOAuth = PsRest_GetAzureTokenWithAccPw `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
 					-UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for ChannelSettings.Read.All
-	$myOAuth = PsRest_GetAzureTokenWithSecret `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
 	
 	# Requires Application rights for ChannelSettings.Read.All
-	$myOAuth = PsRest_GetAzureTokenWithCertificate `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithCertificateThumbprint `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -291,20 +291,20 @@ function PsClassicalCmd_UpdateChannel
 
 
 	# Requires Delegated rights for ChannelSettings.ReadWrite.All
-	$myOAuth = PsRest_GetAzureTokenWithAccPw `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
 					-UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for ChannelSettings.ReadWrite.All
-	$myOAuth = PsRest_GetAzureTokenWithSecret `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
     
 	# Requires Application rights for ChannelSettings.ReadWrite.All
-	$myOAuth = PsRest_GetAzureTokenWithCertificate `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithCertificateThumbprint `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -330,20 +330,20 @@ function PsClassicalCmd_DeleteChannel
 	
 
 	# Requires Delegated rights for Channel.Delete.All
-	$myOAuth = PsRest_GetAzureTokenWithAccPw `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithAccPw `
 					-ClientID $configFile.appsettings.ClientIdWithAccPw `
 					-TenantName $configFile.appsettings.TenantName `
 					-UserName $configFile.appsettings.UserName `
 									   -UserPw $configFile.appsettings.UserPw
 	<#
 	# Requires Application rights for Channel.Delete.All
-	$myOAuth = PsRest_GetAzureTokenWithSecret `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithSecret `
 					-ClientID $configFile.appsettings.ClientIdWithSecret `
 					-ClientSecret $configFile.appsettings.ClientSecret `
 					-TenantName $configFile.appsettings.TenantName
 	
 	# Requires Application rights for Channel.Delete.All
-	$myOAuth = PsRest_GetAzureTokenWithCertificate `
+	$myOAuth = PsGraphRestApi_GetAzureTokenWithCertificateThumbprint `
 					-ClientID $configFile.appsettings.ClientIdWithCert `
 					-TenantName $configFile.appsettings.TenantName `
 					-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
@@ -1087,7 +1087,7 @@ function PsPnPPowerShell_GetTeamUsersWithSecret
 #gavdcodeend 046
 
 #gavdcodebegin 048
-function PsPnPPowerShell_LoginGraphWithCertificate
+function PsPnPPowerShell_LoginWithCertificateThumbprint
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -1111,7 +1111,7 @@ function PsPnPPowerShell_LoginGraphWithCertificate
 #gavdcodeend 048
 
 #gavdcodebegin 049
-function PsPnPPowerShell_LoginGraphWithCertificateFile
+function PsPnPPowerShell_LoginWithCertificateFile
 {
 	[SecureString]$secureCertPw = ConvertTo-SecureString -String `
 						$configFile.appSettings.CertificateFilePw -AsPlainText -Force
@@ -1127,7 +1127,7 @@ function PsPnPPowerShell_LoginGraphWithCertificateFile
 #gavdcodebegin 050
 function PsPnPPowerShell_GetTeamsWithCertificate
 {
-	PsPnPPowerShell_LoginGraphWithCertificate `
+	PsPnPPowerShell_LoginWithCertificateThumbprint `
 					-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
 					-TenantName $configFile.appsettings.TenantName `
 					-ClientId $configFile.appSettings.ClientIdWithCert `
@@ -1140,7 +1140,7 @@ function PsPnPPowerShell_GetTeamsWithCertificate
 #gavdcodeend 050
 
 #gavdcodebegin 073
-function PsPnPPowerShell_LoginGraphWithToken
+function PsPnPPowerShell_LoginWithToken
 {
     Param(
         [Parameter(Mandatory=$True)]
@@ -1158,7 +1158,7 @@ function PsPnPPowerShell_LoginGraphWithToken
 #gavdcodebegin 074
 function PsPnPPowerShell_GetTeamsWithToken
 {
-	PsPnPPowerShell_LoginGraphWithToken `
+	PsPnPPowerShell_LoginWithToken `
 					-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
 					-AccessToken "eyJ0eXAiOiJ...b8arb4cJw"
 
@@ -1658,8 +1658,8 @@ $mySiteBaseUrl = $configFile.appsettings.SiteBaseUrl
 #PsPnPPowerShell_LoginWithSecret $myTenantName $myClientIdWithSecret $myClientSecret
 #PsPnPPowerShell_GetTeamUsersWithSecret
 
-#PsPnPPowerShell_LoginGraphWithCertificate $mySiteBaseUrl $myClientIdWithCert $myCertificateThumbprint
-#PsPnPPowerShell_LoginGraphWithCertificateFile
+#PsPnPPowerShell_LoginWithCertificateThumbprint $mySiteBaseUrl $myClientIdWithCert $myCertificateThumbprint
+#PsPnPPowerShell_LoginWithCertificateFile
 #PsPnPPowerShell_GetTeamsWithCertificate
 
 #PsPnPPowerShell_GetTeamsWithToken
