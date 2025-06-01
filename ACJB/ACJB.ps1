@@ -12,7 +12,7 @@
 ##----------------------------------------------------------
 
 #gavdcodebegin 001
-function PsSpCsom_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
+function PsSpCsom_Login  #*** LEGACY CODE ***
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 			$configFile.appsettings.UserPw -AsPlainText -Force
@@ -129,6 +129,155 @@ function PsSpPnP_LoginWithInteraction
 					  -Credentials (Get-Credential)
 }
 #gavdcodeend 021
+
+#===============================================
+#=== PnP PowerShell Login routines to use Entra ID OAuth authentication
+#=== They are very similar to the other routines shown above
+
+function PsPnPPowerShell_LoginWithInteraction
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+
+		[Parameter(Mandatory=$True)]
+		[String]$ClientIdWithAccPw,
+
+		[Parameter(Mandatory=$True)]
+		[String]$SiteBaseUrl
+	)
+
+	Connect-PnPOnline -ClientId $ClientIdWithAccPw -Url $SiteBaseUrl -Interactive
+}
+
+function PsPnPPowerShell_LoginWithInteractionMFA
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+
+		[Parameter(Mandatory=$True)]
+		[String]$ClientIdWithAccPw,
+
+		[Parameter(Mandatory=$True)]
+		[String]$SiteBaseUrl
+	)
+
+	Connect-PnPOnline -Tenant $TenantName -ClientId $ClientIdWithAccPw `
+					  -Url $SiteBaseUrl -DeviceLogin
+}
+
+function PsPnPPowerShell_LoginWithAccPw
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$SiteBaseUrl,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientId,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$UserName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$UserPw
+	)
+
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+									$UserPw -AsPlainText -Force
+	$myCredentials = New-Object System.Management.Automation.PSCredential `
+								-argumentlist $UserName, $securePW
+
+	Connect-PnPOnline -Url $SiteBaseUrl -ClientId $ClientId -Credentials $myCredentials
+}
+
+function PsPnPPowerShell_LoginWithSecretMSAL
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$SiteBaseUrl,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientId,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientSecret	
+	)
+
+    # There is no direct way to connect to PnP using a Secret. Use the MSAL library to get the token.
+    #   It requires the MSAL library to be installed. The MSAL library is not part of the Microsoft Graph:
+    #       Install-Module -Name MSAL.PS
+	[SecureString]$secureSecret = ConvertTo-SecureString `
+								-String $ClientSecret -AsPlainText -Force
+
+	$myToken = Get-MsalToken -TenantId $TenantName -ClientId $ClientId `
+								-ClientSecret $secureSecret
+
+	Connect-PnPOnline -Url $SiteBaseUrl -AccessToken $myToken.AccessToken
+}
+
+function PsPnPPowerShell_LoginWithCertificateThumbprint
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$SiteBaseUrl,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientId,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$CertificateThumbprint
+	)
+
+	Connect-PnPOnline -Url $SiteBaseUrl -Tenant $TenantName -ClientId $ClientId `
+					  -Thumbprint $CertificateThumbprint
+}
+
+function PsPnPPowerShell_LoginWithCertificateFile
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$SiteBaseUrl,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientId,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$CertificateFilePath,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$CertificateFilePw
+	)
+
+	[SecureString]$secureCertPw = ConvertTo-SecureString -String `
+						$CertificateFilePw -AsPlainText -Force
+
+	Connect-PnPOnline -Url $SiteBaseUrl -Tenant $TenantName -ClientId $ClientId `
+				-CertificatePath $CertificateFilePath -CertificatePassword $secureCertPw 
+}
+
+function PsPnPPowerShell_LoginWithToken
+{
+    Param(
+        [Parameter(Mandatory=$True)]
+        [String]$SiteBaseUrl,
+
+        [Parameter(Mandatory=$True)]
+        [String]$AccessToken
+    )
+
+    Connect-PnPOnline -Url $SiteBaseUrl -AccessToken $AccessToken
+}
+
 
 ##----------------------------------------------------------
 ##==> CLI
@@ -476,7 +625,7 @@ function PsRest_PostExample #*** LEGACY CODE ***
 #gavdcodeend 007
 
 #gavdcodebegin 008
-function PsCsom_Example  #*** USE POWERSHELL 5.x, NOT 7.x ***
+function PsCsom_Example  #*** LEGACY CODE ***
 {
 	$spCtx = PsSpCsom_Login
 	
@@ -488,6 +637,46 @@ function PsCsom_Example  #*** USE POWERSHELL 5.x, NOT 7.x ***
 	Write-Host $rootWeb.Created  
 }
 #gavdcodeend 008
+
+#gavdcodebegin 040
+function PsCsom_ExampleUsingEntraId {
+
+	# PsPnPPowerShell_LoginWithInteractionMFA `
+	# 			-TenantName $configFile.appsettings.TenantName `
+	# 			-ClientIdWithAccPw $configFile.appsettings.ClientIdWithAccPw `
+	# 			-SiteBaseUrl $configFile.appsettings.SiteBaseUrl $cnfSiteBaseUrl
+
+	# PsPnPPowerShell_LoginWithInteraction `
+	# 			-TenantName $configFile.appsettings.TenantName `
+	# 			-ClientIdWithAccPw $configFile.appsettings.ClientIdWithAccPw `
+	# 			-SiteBaseUrl $configFile.appsettings.SiteBaseUrl
+	
+	PsPnPPowerShell_LoginWithAccPw -SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
+	 			-ClientId $configFile.appsettings.ClientIdWithAccPw `
+				-UserName $configFile.appsettings.UserName `
+	 			-UserPw $configFile.appsettings.UserPw
+
+	# PsPnPPowerShell_LoginWithSecretMSAL -TenantName $configFile.appsettings.TenantName `
+	# 			-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
+	#			-ClientId $configFile.appsettings.ClientIdWithSecret `
+	# 			-ClientSecret $configFile.appsettings.ClientSecret
+
+	# PsPnPPowerShell_LoginWithCertificateThumbprint `
+	#			-SiteBaseUrl $configFile.appsettings.SiteBaseUrl `
+	# 			-TenantName $configFile.appsettings.TenantName `
+	#			-ClientId $configFile.appsettings.ClientIdWithCert `
+	# 			-CertificateThumbprint $configFile.appsettings.CertificateThumbprint
+	
+	$spCtx = Get-PnPContext
+
+	$rootWeb = $spCtx.Web 
+	$spCtx.Load($rootWeb) 
+	$spCtx.ExecuteQuery() 
+	$spCtx.Dispose()
+	
+	Write-Host $rootWeb.Created 
+}
+#gavdcodeend 040
 
 #gavdcodebegin 009
 function PsPso_Example  #*** USE POWERSHELL 5.x, NOT 7.x ***
@@ -752,7 +941,7 @@ function PsSpRestApiMsal_GetLists
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: 039 ***
+# *** Latest Source Code Index: 040 ***
 
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 #Add-Type -Path "C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
@@ -761,6 +950,7 @@ function PsSpRestApiMsal_GetLists
 
 ##==> CSOM
 #PsCsom_Example
+#PsCsom_ExampleUsingEntraId
 
 ##==> PSO
 #PsPso_Example
