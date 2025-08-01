@@ -7,27 +7,28 @@
 ##---------------------------------------------------------------------------------------
 
 
-Function ConnectPsEwsBA  #*** LEGACY CODE ***
+function PsEws_Connect  #*** LEGACY CODE ***
 {
 	$ExService = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService
 	$ExService.Credentials = New-Object Microsoft.Exchange.WebServices.Data.WebCredentials(`
-		$configFile.appsettings.exUserName, $configFile.appsettings.exUserPw)
+		$cnfUserName, $cnfUserPw)
 	$ExService.Url = new-object Uri("https://outlook.office365.com/EWS/Exchange.asmx");
 	#$ExService.TraceEnabled = $true
 	#$ExService.TraceFlags = [Microsoft.Exchange.WebServices.Data.TraceFlags]::All
-	$ExService.AutodiscoverUrl($configFile.appsettings.exUserName, {$true})
+	$ExService.AutodiscoverUrl($cnfUserName, {$true})
 
 	return $ExService
 }
 
-Function LoginPsCLI
+function PsCliM365_LoginWithAccPw
 {
 	m365 login --authType password `
-			   --userName $configFile.appsettings.UserName `
-			   --password $configFile.appsettings.UserPw
+			   --appId $cnfClientIdWithAccPw `
+			   --userName $cnfUserName `
+			   --password $cnfUserPw
 }
 
-Function LoginGraphPnPWithAccPwAndClientId
+function PsGraphPnP_LoginWithAccPwAndClientId
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -51,7 +52,7 @@ Function LoginGraphPnPWithAccPwAndClientId
 	Connect-PnPOnline -Url $TenantUrl -ClientId $ClientId -Credentials $myCredentials
 }
 
-Function LoginGraphSDKWithAccPw
+function PsGraphPowerShellSdk_LoginWithAccPw
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -79,6 +80,27 @@ Function LoginGraphSDKWithAccPw
 	Connect-Graph -AccessToken $myToken.AccessToken
 }
 
+function PsGraphPowerShellSdk_LoginWithSecret
+{
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$TenantName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientID,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientSecret
+	)
+
+	[SecureString]$securePW = ConvertTo-SecureString -String `
+									$ClientSecret -AsPlainText -Force
+	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+							-argumentlist $ClientID, $securePW
+
+	Connect-MgGraph -TenantId $TenantName -ClientSecretCredential $myCredentials
+}
+
 ##---------------------------------------------------------------------------------------
 ##***-----------------------------------*** Example routines ***-------------------------
 ##---------------------------------------------------------------------------------------
@@ -86,7 +108,7 @@ Function LoginGraphSDKWithAccPw
 ##==> Routines for EWS
 
 #gavdcodebegin 001
-Function ExchangePsEws_CreateOneFolder($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_CreateOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $newFolder = New-Object Microsoft.Exchange.WebServices.Data.Folder($ExService)
     $newFolder.DisplayName = "My Custom Folder PowerShell"
@@ -96,7 +118,7 @@ Function ExchangePsEws_CreateOneFolder($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function ExchangePsEws_GetAllFolders($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_GetAllFolders($ExService)  #*** LEGACY CODE ***
 {
     $myView = [Microsoft.Exchange.WebServices.Data.FolderView]100
     $isHidden = `
@@ -120,7 +142,7 @@ Function ExchangePsEws_GetAllFolders($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function ExchangePsEws_FindOneFolder($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_FindOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
 			$ExService, `
@@ -144,7 +166,7 @@ Function ExchangePsEws_FindOneFolder($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function ExchangePsEws_UpdateOneFolder($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_UpdateOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
 			$ExService, `
@@ -172,7 +194,7 @@ Function ExchangePsEws_UpdateOneFolder($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function ExchangePsEws_DeleteOneFolder($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_DeleteOneFolder($ExService)  #*** LEGACY CODE ***
 {
     $rootFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind(`
 			$ExService, `
@@ -200,7 +222,7 @@ Function ExchangePsEws_DeleteOneFolder($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function ExchangePsEws_CreateAndSendEmail($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_CreateAndSendEmail($ExService)  #*** LEGACY CODE ***
 {
     $newEmail = New-Object Microsoft.Exchange.WebServices.Data.EmailMessage($ExService)
     $newEmail.Subject = "Email send by EWS PowerShell"
@@ -217,7 +239,7 @@ Function ExchangePsEws_CreateAndSendEmail($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function ExchangePsEws_GetUnreadEmails($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_GetUnreadEmails($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -237,7 +259,7 @@ Function ExchangePsEws_GetUnreadEmails($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function ExchangePsEws_ReplyToEmail($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_ReplyToEmail($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -266,7 +288,7 @@ Function ExchangePsEws_ReplyToEmail($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 008
 
 #gavdcodebegin 009
-Function ExchangePsEws_DeleteOneEmail($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_DeleteOneEmail($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -298,7 +320,7 @@ Function ExchangePsEws_DeleteOneEmail($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function ExchangePsEws_CreateOneContact($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_CreateOneContact($ExService)  #*** LEGACY CODE ***
 {
     $newContact = New-Object Microsoft.Exchange.WebServices.Data.Contact($ExService)
     $newContact.GivenName = "Somename"
@@ -352,7 +374,7 @@ Function ExchangePsEws_CreateOneContact($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function ExchangePsEws_FindAllContacts($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_FindAllContacts($ExService)  #*** LEGACY CODE ***
 {
     $myContactsfolder = [Microsoft.Exchange.WebServices.Data.ContactsFolder]::Bind(`
 		$ExService, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Contacts)
@@ -371,7 +393,7 @@ Function ExchangePsEws_FindAllContacts($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function ExchangePsEws_FindOneContactByName($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_FindOneContactByName($ExService)  #*** LEGACY CODE ***
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
 	$myFilter = `
@@ -389,7 +411,7 @@ Function ExchangePsEws_FindOneContactByName($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function ExchangePsEws_UpdateOneContact($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_UpdateOneContact($ExService)  #*** LEGACY CODE ***
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
 	$myFilter = `
@@ -436,7 +458,7 @@ Function ExchangePsEws_UpdateOneContact($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function ExchangePsEws_DeleteOneContact($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_DeleteOneContact($ExService)  #*** LEGACY CODE ***
 {
     $myView = [Microsoft.Exchange.WebServices.Data.ItemView]1
 	$myFilter = `
@@ -460,7 +482,7 @@ Function ExchangePsEws_DeleteOneContact($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function ExchangePsEws_CreateAppointment($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_CreateAppointment($ExService)  #*** LEGACY CODE ***
 {
     $myDt = (Get-Date).AddDays(+1)
     $newAppointment = New-Object `
@@ -480,7 +502,7 @@ Function ExchangePsEws_CreateAppointment($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function ExchangePsEws_FindAppointmentsByDate($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_FindAppointmentsByDate($ExService)  #*** LEGACY CODE ***
 {
 	$myView = New-Object `
 		Microsoft.Exchange.WebServices.Data.CalendarView((Get-Date), `
@@ -497,7 +519,7 @@ Function ExchangePsEws_FindAppointmentsByDate($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function ExchangePsEws_UpdateOneAppointment($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_UpdateOneAppointment($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -535,7 +557,7 @@ Function ExchangePsEws_UpdateOneAppointment($ExService)  #*** LEGACY CODE ***
 #gavdcodeend 017
 
 #gavdcodebegin 018
-Function ExchangePsEws_DeleteOneAppointment($ExService)  #*** LEGACY CODE ***
+function PsExchangeEws_DeleteOneAppointment($ExService)  #*** LEGACY CODE ***
 {
 	$mySearchFilter = New-Object `
 				Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo(`
@@ -586,9 +608,9 @@ Function ExchangePsEws_DeleteOneAppointment($ExService)  #*** LEGACY CODE ***
 ##==> Routines for CLI
 
 #gavdcodebegin 019
-Function ExchangePsCli_GetAllMessages
+function PsExchangeCli_GetAllMessages
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook message list --folderName "Inbox"
 
@@ -597,9 +619,9 @@ Function ExchangePsCli_GetAllMessages
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function ExchangePsCli_GetMessageById
+function PsExchangeCli_GetMessageById
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook message list `
             --folderName "Inbox" `
@@ -610,9 +632,9 @@ Function ExchangePsCli_GetMessageById
 #gavdcodeend 020
 
 #gavdcodebegin 034
-Function ExchangePsCli_GetOneMessageById
+function PsExchangeCli_GetOneMessageById
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook message get `
             --id "AAMkAGE0ODQ3NTc1L...MAvtBLB-F9SJ2ZDb7Xo-OrAAByF4KBAAA="
@@ -622,9 +644,9 @@ Function ExchangePsCli_GetOneMessageById
 #gavdcodeend 034
 
 #gavdcodebegin 021
-Function ExchangePsCli_MoveMessage
+function PsExchangeCli_MoveMessage
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook message move `
             --sourceFolderName "Inbox" `
@@ -636,9 +658,9 @@ Function ExchangePsCli_MoveMessage
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function ExchangePsCli_SendMessage
+function PsExchangeCli_SendMessage
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook mail send `
             --to "user@domain.OnMicrosoft.com" `
@@ -651,9 +673,9 @@ Function ExchangePsCli_SendMessage
 #gavdcodeend 022
 
 #gavdcodebegin 023
-Function ExchangePsCli_ReportActivity
+function PsExchangeCli_ReportActivity
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailactivitycounts --period D7 --output json
 
@@ -662,9 +684,9 @@ Function ExchangePsCli_ReportActivity
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function ExchangePsCli_ReportActivityUser
+function PsExchangeCli_ReportActivityUser
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailactivityusercounts --period D7 --output json
 
@@ -673,9 +695,9 @@ Function ExchangePsCli_ReportActivityUser
 #gavdcodeend 024
 
 #gavdcodebegin 025
-Function ExchangePsCli_ReportActivityUserDetails
+function PsExchangeCli_ReportActivityUserDetails
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailactivityuserdetail --period D7 --output json
 
@@ -684,9 +706,9 @@ Function ExchangePsCli_ReportActivityUserDetails
 #gavdcodeend 025
 
 #gavdcodebegin 026
-Function ExchangePsCli_ReportActivityByAppTotals
+function PsExchangeCli_ReportActivityByAppTotals
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailappusageappsusercounts --period D7 --output json
 
@@ -695,9 +717,9 @@ Function ExchangePsCli_ReportActivityByAppTotals
 #gavdcodeend 026
 
 #gavdcodebegin 027
-Function ExchangePsCli_ReportActivityByApp
+function PsExchangeCli_ReportActivityByApp
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailappusageusercounts --period D7 --output json
 
@@ -706,9 +728,9 @@ Function ExchangePsCli_ReportActivityByApp
 #gavdcodeend 027
 
 #gavdcodebegin 028
-Function ExchangePsCli_ReportActivityByAppAndUserDetails
+function PsExchangeCli_ReportActivityByAppAndUserDetails
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailappusageuserdetail --period D7 --output json
 
@@ -717,9 +739,9 @@ Function ExchangePsCli_ReportActivityByAppAndUserDetails
 #gavdcodeend 028
 
 #gavdcodebegin 029
-Function ExchangePsCli_ReportActivityByAppVersions
+function PsExchangeCli_ReportActivityByAppVersions
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailappusageversionsusercounts --period D7 --output json
 
@@ -728,9 +750,9 @@ Function ExchangePsCli_ReportActivityByAppVersions
 #gavdcodeend 029
 
 #gavdcodebegin 030
-Function ExchangePsCli_ReportUsageDetail
+function PsExchangeCli_ReportUsageDetail
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailboxusagedetail --period D7 --output json
 
@@ -739,9 +761,9 @@ Function ExchangePsCli_ReportUsageDetail
 #gavdcodeend 030
 
 #gavdcodebegin 031
-Function ExchangePsCli_ReportUsageMailboxes
+function PsExchangeCli_ReportUsageMailboxes
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailboxusagemailboxcount --period D7 --output json
 
@@ -750,9 +772,9 @@ Function ExchangePsCli_ReportUsageMailboxes
 #gavdcodeend 031
 
 #gavdcodebegin 032
-Function ExchangePsCli_ReportQuotaMailboxes
+function PsExchangeCli_ReportQuotaMailboxes
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailboxusagequotastatusmailboxcounts --period D7 --output json
 
@@ -761,9 +783,9 @@ Function ExchangePsCli_ReportQuotaMailboxes
 #gavdcodeend 032
 
 #gavdcodebegin 033
-Function ExchangePsCli_ReportStorageMailboxes
+function PsExchangeCli_ReportStorageMailboxes
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw
 	
 	m365 outlook report mailboxusagestorage --period D7 --output json
 
@@ -776,13 +798,13 @@ Function ExchangePsCli_ReportStorageMailboxes
 ##==> Routines for PnP PowerShell
 
 #gavdcodebegin 034
-Function ExchangePsPnP_SendEmailWithFrom
+function PsExchangePnP_SendEmailWithFrom
 {
-	LoginGraphPnPWithAccPwAndClientId `
-					-TenantUrl $configFile.appsettings.SiteBaseUrl `
-					-ClientId $configFile.appSettings.ClientIdWithAccPw `
-					-UserName $configFile.appSettings.UserName `
-					-UserPw $configFile.appSettings.UserPw
+	PsGraphPnP_LoginWithAccPwAndClientId `
+					-TenantUrl $cnfSiteBaseUrl `
+					-ClientId $cnfClientIdWithAccPw `
+					-UserName $cnfUserName `
+					-UserPw $cnfUserPw
 	
 	Send-PnPMail -From "user@domain.onmicrosoft.com" `
 				 -To "user@domain.com" `
@@ -794,13 +816,13 @@ Function ExchangePsPnP_SendEmailWithFrom
 #gavdcodeend 034
 
 #gavdcodebegin 035
-Function ExchangePsPnP_SendEmailWithoutFrom
+function PsExchangePnP_SendEmailWithoutFrom
 {
-	LoginGraphPnPWithAccPwAndClientId `
-					-TenantUrl $configFile.appsettings.SiteBaseUrl `
-					-ClientId $configFile.appSettings.ClientIdWithAccPw `
-					-UserName $configFile.appSettings.UserName `
-					-UserPw $configFile.appSettings.UserPw
+	PsGraphPnP_LoginWithAccPwAndClientId `
+					-TenantUrl $cnfSiteBaseUrl `
+					-ClientId $cnfClientIdWithAccPw `
+					-UserName $cnfUserName `
+					-UserPw $cnfUserPw
 	
 	Send-PnPMail -To "user@domain.com" `
 				 -Subject "Test message from MS" `
@@ -811,13 +833,13 @@ Function ExchangePsPnP_SendEmailWithoutFrom
 #gavdcodeend 035
 
 #gavdcodebegin 036
-Function ExchangePsPnP_SendEmailFromSmtpMs
+function PsExchangePnP_SendEmailFromSmtpMs
 {
-	LoginGraphPnPWithAccPwAndClientId `
-					-TenantUrl $configFile.appsettings.SiteBaseUrl `
-					-ClientId $configFile.appSettings.ClientIdWithAccPw `
-					-UserName $configFile.appSettings.UserName `
-					-UserPw $configFile.appSettings.UserPw
+	PsGraphPnP_LoginWithAccPwAndClientId `
+					-TenantUrl $cnfSiteBaseUrl `
+					-ClientId $cnfClientIdWithAccPw `
+					-UserName $cnfUserName `
+					-UserPw $cnfUserPw
 	
 	Send-PnPMail -From "user@domain.onmicrosoft.com" `
 				 -To "user@domain.onmicrosoft.com" `
@@ -830,13 +852,13 @@ Function ExchangePsPnP_SendEmailFromSmtpMs
 #gavdcodeend 036
 
 #gavdcodebegin 037
-Function ExchangePsPnP_SendEmailFromSmtpAll
+function PsExchangePnP_SendEmailFromSmtpAll
 {
-	LoginGraphPnPWithAccPwAndClientId `
-					-TenantUrl $configFile.appsettings.SiteBaseUrl `
-					-ClientId $configFile.appSettings.ClientIdWithAccPw `
-					-UserName $configFile.appSettings.UserName `
-					-UserPw $configFile.appSettings.UserPw
+	PsGraphPnP_LoginWithAccPwAndClientId `
+					-TenantUrl $cnfSiteBaseUrl `
+					-ClientId $cnfClientIdWithAccPw `
+					-UserName $cnfUserName `
+					-UserPw $cnfUserPw
 	
 	Send-PnPMail -From "user@domain.onmicrosoft.com" `
 				 -To "user@domain.onmicrosoft.com" `
@@ -857,28 +879,26 @@ Function ExchangePsPnP_SendEmailFromSmtpAll
 ##==> Routines for Graph SDK PowerShell
 
 #gavdcodebegin 038
-Function ExchangePsGraphSdk_GetMessages
+function PsExchangeGraphSdk_GetMessages
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
-
-	Get-MgUserMessage -UserId $configFile.appsettings.UserName -All
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
+	
+	Get-MgUserMessage -UserId $cnfUserName -All
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 038
 
 #gavdcodebegin 039
-Function ExchangePsGraphSdk_GetOneMessageById
+function PsExchangeGraphSdk_GetOneMessageById
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Get-MgUserMessage -UserId $configFile.appsettings.UserName `
+	Get-MgUserMessage -UserId $cnfUserName `
 					  -MessageId "AAMkAGE0OD...7Xo-OrAABoXpDqAAA="
 
 	Disconnect-MgGraph
@@ -886,14 +906,13 @@ Function ExchangePsGraphSdk_GetOneMessageById
 #gavdcodeend 039
 
 #gavdcodebegin 040
-Function ExchangePsGraphSdk_GetMessageContent
+function PsExchangeGraphSdk_GetMessageContent
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Get-MgUserMessageContent -UserId $configFile.appsettings.UserName `
+	Get-MgUserMessageContent -UserId $cnfUserName `
 							 -MessageId "AAMkAGE0OD...7Xo-OrAABoXpDqAAA=" `
 							 -OutFile "C:\Temporary\myEmail.txt"
 
@@ -902,14 +921,13 @@ Function ExchangePsGraphSdk_GetMessageContent
 #gavdcodeend 040
 
 #gavdcodebegin 041
-Function ExchangePsGraphSdk_GetOneMessageAttachments
+function PsExchangeGraphSdk_GetOneMessageAttachments
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Get-MgUserMessageAttachment -UserId $configFile.appsettings.UserName `
+	Get-MgUserMessageAttachment -UserId $cnfUserName `
 								-MessageId "AAMkAGE0OD...7Xo-OrAABoXpDqAAA="
 
 	Disconnect-MgGraph
@@ -917,14 +935,13 @@ Function ExchangePsGraphSdk_GetOneMessageAttachments
 #gavdcodeend 041
 
 #gavdcodebegin 042
-Function ExchangePsGraphSdk_GetOneMessageOneAttachment
+function PsExchangeGraphSdk_GetOneMessageOneAttachment
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Get-MgUserMessageAttachment -UserId $configFile.appsettings.UserName `
+	Get-MgUserMessageAttachment -UserId $cnfUserName `
 								-MessageId "AAMkAGE0OD...7Xo-OrAABoXpDqAAA=" `
 								-AttachmentId "slkjfs...lkjfs"
 
@@ -933,12 +950,11 @@ Function ExchangePsGraphSdk_GetOneMessageOneAttachment
 #gavdcodeend 042
 
 #gavdcodebegin 043
-Function ExchangePsGraphSdk_CreateMessageDraft
+function PsExchangeGraphSdk_CreateMessageDraft
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
 	$myParams = @{
 		Subject = "Test Email Graph SDK"
@@ -956,21 +972,20 @@ Function ExchangePsGraphSdk_CreateMessageDraft
 		)
 	}
 
-	New-MgUserMessage -UserId $configFile.appsettings.UserName @myParams
+	New-MgUserMessage -UserId $cnfUserName @myParams
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 043
 
 #gavdcodebegin 044
-Function ExchangePsGraphSdk_UpdateMessageContent
+function PsExchangeGraphSdk_UpdateMessageContent
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Set-MgUserMessageContent -UserId $configFile.appsettings.UserName `
+	Set-MgUserMessageContent -UserId $cnfUserName `
 							 -MessageId "AAMkAGE0OD...7Xo-OrAABoXpDqAAA=" `
 							 -InFile "C:\Temporary\myEmail.txt"
 
@@ -979,12 +994,11 @@ Function ExchangePsGraphSdk_UpdateMessageContent
 #gavdcodeend 044
 
 #gavdcodebegin 045
-Function ExchangePsGraphSdk_UpdateMessage
+function PsExchangeGraphSdk_UpdateMessage
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
 	$myParams = @{
 		Subject = "Test Email Graph SDK updated"
@@ -1002,7 +1016,7 @@ Function ExchangePsGraphSdk_UpdateMessage
 		)
 	}
 
-	Update-MgUserMessage -UserId $configFile.appsettings.UserName `
+	Update-MgUserMessage -UserId $cnfUserName `
 						 -MessageId "AAMkAGE0OD...7Xo-OrAABoXpDqAAA=" `
 						 @myParams
 
@@ -1011,14 +1025,13 @@ Function ExchangePsGraphSdk_UpdateMessage
 #gavdcodeend 045
 
 #gavdcodebegin 046
-Function ExchangePsGraphSdk_DeleteMessage
+function PsExchangeGraphSdk_DeleteMessage
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Remove-MgUserMessage -UserId $configFile.appsettings.UserName `
+	Remove-MgUserMessage -UserId $cnfUserName `
 						 -MessageId "AAMkAGE0OD...7Xo-OrAABoXpDqAAA="
 
 	Disconnect-MgGraph
@@ -1026,12 +1039,11 @@ Function ExchangePsGraphSdk_DeleteMessage
 #gavdcodeend 046
 
 #gavdcodebegin 047
-Function ExchangePsGraphSdk_SendMessage
+function PsExchangeGraphSdk_SendMessage
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
 	$myParams = @{
 		Message = @{
@@ -1058,7 +1070,7 @@ Function ExchangePsGraphSdk_SendMessage
 		SaveToSentItems = "false"
 	}
 
-	Send-MgUserMail -UserId $configFile.appsettings.UserName `
+	Send-MgUserMail -UserId $cnfUserName `
 					-BodyParameter $myParams
 
 	Disconnect-MgGraph
@@ -1066,28 +1078,26 @@ Function ExchangePsGraphSdk_SendMessage
 #gavdcodeend 047
 
 #gavdcodebegin 048
-Function ExchangePsGraphSdk_GetMailFolder
+function PsExchangeGraphSdk_GetMailFolder
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Get-MgUserMailFolder -UserId $configFile.appsettings.UserName
+	Get-MgUserMailFolder -UserId $cnfUserName
 
 	Disconnect-MgGraph
 }
 #gavdcodeend 048
 
 #gavdcodebegin 049
-Function ExchangePsGraphSdk_GetMailFolderProperties
+function PsExchangeGraphSdk_GetMailFolderProperties
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	$myFolders = Get-MgUserMailFolder -UserId $configFile.appsettings.UserName
+	$myFolders = Get-MgUserMailFolder -UserId $cnfUserName
 	foreach($oneFolder in $myFolders)
 	{
 		Write-Host "--Name - " $oneFolder.DisplayName "--Id - " $oneFolder.Id
@@ -1098,14 +1108,13 @@ Function ExchangePsGraphSdk_GetMailFolderProperties
 #gavdcodeend 049
 
 #gavdcodebegin 050
-Function ExchangePsGraphSdk_GetOneMailFolder
+function PsExchangeGraphSdk_GetOneMailFolder
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `  
+										 -ClientID $cnfClientIdWithSecret `  
+										 -ClientSecret $cnfClientSecret `  
 
-	Get-MgUserMailFolderMessage -UserId $configFile.appsettings.UserName `
+	Get-MgUserMailFolderMessage -UserId $cnfUserName `
 								-MailFolderId "AAMkAGE0ODQ3NTc...7Xo-OrAAAAAAEMAAA="
 
 	Disconnect-MgGraph
@@ -1113,19 +1122,18 @@ Function ExchangePsGraphSdk_GetOneMailFolder
 #gavdcodeend 050
 
 #gavdcodebegin 051
-Function ExchangePsGraphSdk_CreateOneMailFolder
+function PsExchangeGraphSdk_CreateOneMailFolder
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
 	$myParams = @{
 		displayName = "MyNewFolder"
 		isHidden = $false
 	}
 
-	New-MgUserMailFolder -UserId $configFile.appsettings.UserName `
+	New-MgUserMailFolder -UserId $cnfUserName `
 						 -BodyParameter $myParams
 
 	Disconnect-MgGraph
@@ -1133,18 +1141,17 @@ Function ExchangePsGraphSdk_CreateOneMailFolder
 #gavdcodeend 051
 
 #gavdcodebegin 052
-Function ExchangePsGraphSdk_UpdateFolder
+function PsExchangeGraphSdk_UpdateFolder
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
 	$myParams = @{
 		DisplayName = "MyNewFolderUpdated"
 	}
 
-	Update-MgUserMailFolder -UserId $configFile.appsettings.UserName `
+	Update-MgUserMailFolder -UserId $cnfUserName `
 							-MailFolderId "AAMkAGE0ODQ3NTc1LTZkM2...OrAADqDEOrAAA=" `
 							@myParams
 
@@ -1153,14 +1160,13 @@ Function ExchangePsGraphSdk_UpdateFolder
 #gavdcodeend 052
 
 #gavdcodebegin 053
-Function ExchangePsGraphSdk_DeleteFolder
+function PsExchangeGraphSdk_DeleteFolder
 {
-	LoginGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-						   -ClientID $configFile.appsettings.ClientIdWithAccPw `
-						   -UserName $configFile.appsettings.UserName `
-						   -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithSecret -TenantName $cnfTenantName `
+										 -ClientID $cnfClientIdWithSecret `
+										 -ClientSecret $cnfClientSecret `
 
-	Remove-MgUserMailFolder -UserId $configFile.appsettings.UserName `
+	Remove-MgUserMailFolder -UserId $cnfUserName `
 							-MailFolderId "AAMkAGE0ODQ3NTc1LTZkM2I...rAADqDEOrAAA="
 
 	Disconnect-MgGraph
@@ -1173,72 +1179,88 @@ Function ExchangePsGraphSdk_DeleteFolder
 
 # *** Latest Source Code Index: 053 ***
 
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
 
 ##==> EWS
 #Add-Type -Path "C:\Program Files\Microsoft\Exchange\Web Services\2.2\Microsoft.Exchange.WebServices.dll"
-#$ExService = ConnectPsEwsBA  #*** LEGACY CODE ***
+#$ExService = PsEws_Connect  #*** LEGACY CODE ***
 
-#ExchangePsEws_CreateOneFolder $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_GetAllFolders $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_FindOneFolder $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_UpdateOneFolder $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_DeleteOneFolder $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_CreateAndSendEmail $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_GetUnreadEmails $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_ReplyToEmail $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_DeleteOneEmail $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_CreateOneContact $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_FindAllContacts $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_FindOneContactByName $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_UpdateOneContact $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_DeleteOneContact $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_CreateAppointment $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_FindAppointmentsByDate $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_UpdateOneAppointment $ExService  #*** LEGACY CODE ***
-#ExchangePsEws_DeleteOneAppointment $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_CreateOneFolder $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_GetAllFolders $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_FindOneFolder $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_UpdateOneFolder $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_DeleteOneFolder $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_CreateAndSendEmail $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_GetUnreadEmails $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_ReplyToEmail $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_DeleteOneEmail $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_CreateOneContact $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_FindAllContacts $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_FindOneContactByName $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_UpdateOneContact $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_DeleteOneContact $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_CreateAppointment $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_FindAppointmentsByDate $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_UpdateOneAppointment $ExService  #*** LEGACY CODE ***
+#PsExchangeEws_DeleteOneAppointment $ExService  #*** LEGACY CODE ***
 
 ##==> CLI
-#ExchangePsCli_GetAllMessages
-#ExchangePsCli_GetMessageById
-#ExchangePsCli_GetOneMessageById
-#ExchangePsCli_MoveMessage
-#ExchangePsCli_SendMessage
-#ExchangePsCli_ReportActivity
-#ExchangePsCli_ReportActivityUser
-#ExchangePsCli_ReportActivityUserDetails
-#ExchangePsCli_ReportActivityByAppTotals
-#ExchangePsCli_ReportActivityByApp
-#ExchangePsCli_ReportActivityByAppAndUserDetails
-#ExchangePsCli_ReportActivityByAppVersions
-#ExchangePsCli_ReportUsageDetail
-#ExchangePsCli_ReportUsageMailboxes
-#ExchangePsCli_ReportQuotaMailboxes
-#ExchangePsCli_ReportStorageMailboxes
+#PsExchangeCli_GetAllMessages
+#PsExchangeCli_GetMessageById
+#PsExchangeCli_GetOneMessageById
+#PsExchangeCli_MoveMessage
+#PsExchangeCli_SendMessage
+#PsExchangeCli_ReportActivity
+#PsExchangeCli_ReportActivityUser
+#PsExchangeCli_ReportActivityUserDetails
+#PsExchangeCli_ReportActivityByAppTotals
+#PsExchangeCli_ReportActivityByApp
+#PsExchangeCli_ReportActivityByAppAndUserDetails
+#PsExchangeCli_ReportActivityByAppVersions
+#PsExchangeCli_ReportUsageDetail
+#PsExchangeCli_ReportUsageMailboxes
+#PsExchangeCli_ReportQuotaMailboxes
+#PsExchangeCli_ReportStorageMailboxes
 
 ##==> PnP PowerShell
-#ExchangePsPnP_SendEmailWithFrom
-#ExchangePsPnP_SendEmailWithoutFrom
-#ExchangePsPnP_SendEmailFromSmtpMs
-#ExchangePsPnP_SendEmailFromSmtpAll
+#PsExchangePnP_SendEmailWithFrom
+#PsExchangePnP_SendEmailWithoutFrom
+#PsExchangePnP_SendEmailFromSmtpMs
+#PsExchangePnP_SendEmailFromSmtpAll
 
 ##==> Graph SDK PowerShell
-#ExchangePsGraphSdk_GetMessages
-#ExchangePsGraphSdk_GetOneMessageById
-#ExchangePsGraphSdk_GetMessageContent
-#ExchangePsGraphSdk_GetOneMessageAttachments
-#ExchangePsGraphSdk_GetOneMessageOneAttachment
-#ExchangePsGraphSdk_CreateMessageDraft
-#ExchangePsGraphSdk_UpdateMessageContent
-#ExchangePsGraphSdk_UpdateMessage
-#ExchangePsGraphSdk_DeleteMessage
-#ExchangePsGraphSdk_SendMessage
-#ExchangePsGraphSdk_GetMailFolder
-#ExchangePsGraphSdk_GetMailFolderProperties
-#ExchangePsGraphSdk_GetOneMailFolder
-#ExchangePsGraphSdk_CreateOneMailFolder
-#ExchangePsGraphSdk_UpdateFolder
-#ExchangePsGraphSdk_DeleteFolder
+#PsExchangeGraphSdk_GetMessages
+#PsExchangeGraphSdk_GetOneMessageById
+#PsExchangeGraphSdk_GetMessageContent
+#PsExchangeGraphSdk_GetOneMessageAttachments
+#PsExchangeGraphSdk_GetOneMessageOneAttachment
+#PsExchangeGraphSdk_CreateMessageDraft
+#PsExchangeGraphSdk_UpdateMessageContent
+#PsExchangeGraphSdk_UpdateMessage
+#PsExchangeGraphSdk_DeleteMessage
+#PsExchangeGraphSdk_SendMessage
+#PsExchangeGraphSdk_GetMailFolder
+#PsExchangeGraphSdk_GetMailFolderProperties
+#PsExchangeGraphSdk_GetOneMailFolder
+#PsExchangeGraphSdk_CreateOneMailFolder
+#PsExchangeGraphSdk_UpdateFolder
+#PsExchangeGraphSdk_DeleteFolder
 
 Write-Host "Done"  
 

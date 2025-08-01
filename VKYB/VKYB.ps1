@@ -1,5 +1,12 @@
-﻿
-Function Get-AzureTokenApplication{
+﻿##---------------------------------------------------------------------------------------
+## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
+##---------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Login routines ***---------------------------
+##---------------------------------------------------------------------------------------
+
+Function PsGraphRestApi_GetAzureTokenApplication{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -27,7 +34,7 @@ Function Get-AzureTokenApplication{
 	return $myOAuth
 }
 
-Function Get-AzureTokenDelegation{
+Function PsGraphRestApi_GetAzureTokenDelegation{
 	Param(
 		[Parameter(Mandatory=$True)]
 		[String]$ClientID,
@@ -59,21 +66,24 @@ Function Get-AzureTokenDelegation{
 	return $myOAuth
 }
 
-#----------------------------------------------------------------------------------------
+
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Example routines ***-------------------------
+##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function ExchangePsGraph_GetAllMessages
+Function PsExchangeGraphRestApi_GetAllMessages
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadBasic, Mail.Read, Mail.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages"
+							$cnfUserName + "/messages"
 	
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -87,7 +97,7 @@ Function ExchangePsGraph_GetAllMessages
 #gavdcodeend 001 
 
 #gavdcodebegin 002
-Function ExchangePsGraph_GetAllMessagesMe
+Function PsExchangeGraphRestApi_GetAllMessagesMe
 {
 	# App Registration type:		Delegate
 	# App Registration permissions: Mail.ReadBasic
@@ -95,11 +105,11 @@ Function ExchangePsGraph_GetAllMessagesMe
 	$Url = "https://graph.microsoft.com/v1.0/me/messages"
 
 	# To use "me" you need to use Delegation rights	
-	$myOAuth = Get-AzureTokenDelegation `
-							-ClientID $configFile.appsettings.ClientIdWithAccPw `
-							-TenantName $configFile.appsettings.TenantName `
-							-UserName $configFile.appsettings.UserName `
-							-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegation `
+							-ClientID $cnfClientIdWithAccPw `
+							-TenantName $cnfTenantName `
+							-UserName $cnfUserName `
+							-UserPw $cnfUserPw
 
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
@@ -114,18 +124,18 @@ Function ExchangePsGraph_GetAllMessagesMe
 #gavdcodeend 002 
 
 #gavdcodebegin 003
-Function ExchangePsGraph_CreateMessage
+Function PsExchangeGraphRestApi_CreateMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages"
+							$cnfUserName + "/messages"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'subject':'Test message created by Graph Application', `
 			     'body':{ 'contentType':'Text', `
@@ -142,22 +152,22 @@ Function ExchangePsGraph_CreateMessage
 #gavdcodeend 003 
 
 #gavdcodebegin 004
-Function ExchangePsGraph_GetOneMessageById
+Function PsExchangeGraphRestApi_GetOneMessageById
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadBasic, Mail.Read
 
-	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
-				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEPAAC1vtBLB-" + `
-				 "F9SJ2ZDb7Xo-OrAADcqoD-AAA="
+	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + 
+				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEPAAC1vtBLB-F" + 
+				 "9SJ2ZDb7Xo-OrAALATnwvAAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages/" + $messageId
+							$cnfUserName + "/messages/" + $messageId
 	
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -168,7 +178,7 @@ Function ExchangePsGraph_GetOneMessageById
 #gavdcodeend 004 
 
 #gavdcodebegin 005
-Function ExchangePsGraph_GetOneMessageByText
+Function PsExchangeGraphRestApi_GetOneMessageByText
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadBasic, Mail.Read
@@ -176,13 +186,13 @@ Function ExchangePsGraph_GetOneMessageByText
 	$messageText = "This is a test mail"
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages" + `
+							$cnfUserName + "/messages" + `
 							"`?`$search=`"" + $messageText + "`""
 	
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -193,22 +203,22 @@ Function ExchangePsGraph_GetOneMessageByText
 #gavdcodeend 005 
 
 #gavdcodebegin 006
-Function ExchangePsGraph_UpdateMessage
+Function PsExchangeGraphRestApi_UpdateMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
-				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEPAAC1vtBLB-" + `
-				 "F9SJ2ZDb7Xo-OrAADcqoD-AAA="
+	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAA" + 
+				 "AAAADcxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEP" + 
+				 "AAC1vtBLB-F9SJ2ZDb7Xo-OrAALATnwvAAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages/" + $messageId
+							$cnfUserName + "/messages/" + $messageId
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'subject':'Test message updated by Graph Application' }"
 	$myContentType = "application/json"
@@ -222,22 +232,22 @@ Function ExchangePsGraph_UpdateMessage
 #gavdcodeend 006 
 
 #gavdcodebegin 007
-Function ExchangePsGraph_DeleteMessage
+Function PsExchangeGraphRestApi_DeleteMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
-				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEPAAC1vtBLB-" + `
-				 "F9SJ2ZDb7Xo-OrAADcqoD-AAA="
+	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAA" + 
+				 "AAAADcxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEP" + 
+				 "AAC1vtBLB-F9SJ2ZDb7Xo-OrAALATnwvAAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages/" + $messageId
+							$cnfUserName + "/messages/" + $messageId
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -246,18 +256,18 @@ Function ExchangePsGraph_DeleteMessage
 #gavdcodeend 007 
 
 #gavdcodebegin 008
-Function ExchangePsGraph_SendMessage
+Function PsExchangeGraphRestApi_SendMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.Send
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/sendMail"
+							$cnfUserName + "/sendMail"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'message':{ 'subject':'Test message sent by Graph Application', `
 			     'body':{ 'contentType':'Text', `
@@ -272,23 +282,23 @@ Function ExchangePsGraph_SendMessage
 #gavdcodeend 008 
 
 #gavdcodebegin 009
-Function ExchangePsGraph_CopyMessage
+Function PsExchangeGraphRestApi_CopyMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
-				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAAC1vtBLB-" + `
-				 "F9SJ2ZDb7Xo-OrAACiEhw0AAA="
+	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAA" + 
+				 "AAADcxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAA" + 
+				 "C1vtBLB-F9SJ2ZDb7Xo-OrAALATWn7AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName+ "/messages/" + `
+							$cnfUserName+ "/messages/" + `
 							$messageId + "/copy"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'destinationId': 'drafts' }"
 	$myContentType = "application/json"
@@ -300,23 +310,23 @@ Function ExchangePsGraph_CopyMessage
 #gavdcodeend 009 
 
 #gavdcodebegin 010
-Function ExchangePsGraph_MoveMessage
+Function PsExchangeGraphRestApi_MoveMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
-				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAAC1vtBLB-" + `
-				 "F9SJ2ZDb7Xo-OrAACiEhw0AAA="
+	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAA" + 
+				 "AAADcxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAA" + 
+				 "C1vtBLB-F9SJ2ZDb7Xo-OrAALATWn7AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages/" + `
+							$cnfUserName + "/messages/" + `
 							$messageId + "/move"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'destinationId': 'junkemail' }"
 	$myContentType = "application/json"
@@ -328,23 +338,23 @@ Function ExchangePsGraph_MoveMessage
 #gavdcodeend 010 
 
 #gavdcodebegin 011
-Function ExchangePsGraph_ReplyMessage
+Function PsExchangeGraphRestApi_ReplyMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.Send
 
-	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
-				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAAC1vtBLB-" + `
-				 "F9SJ2ZDb7Xo-OrAACiEhw0AAA="
+	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAA" + 
+				 "AAADcxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAA" + 
+				 "C1vtBLB-F9SJ2ZDb7Xo-OrAALATWn8AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages/" + `
+							$cnfUserName + "/messages/" + `
 							$messageId + "/reply"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'comment':'Email received' }"
 	$myContentType = "application/json"
@@ -356,23 +366,23 @@ Function ExchangePsGraph_ReplyMessage
 #gavdcodeend 011 
 
 #gavdcodebegin 012
-Function ExchangePsGraph_ForwardMessage
+Function PsExchangeGraphRestApi_ForwardMessage
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.Send
 
-	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAAAAAD" + `
-				 "cxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAAC1vtBLB-" + `
-				 "F9SJ2ZDb7Xo-OrAACiEhw0AAA="
+	$messageId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQBGAAA" + 
+				 "AAADcxoIkHT46T678SPCidFpEBwC1vtBLB-F9SJ2ZDb7Xo-OrAAAAAAEMAA" + 
+				 "C1vtBLB-F9SJ2ZDb7Xo-OrAALATWn8AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/messages/" + `
+							$cnfUserName + "/messages/" + `
 							$messageId + "/forward"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'comment': 'Please review this email', `
 				 'toRecipients': [{ `
@@ -387,19 +397,19 @@ Function ExchangePsGraph_ForwardMessage
 #gavdcodeend 012 
 
 #gavdcodebegin 013
-Function ExchangePsGraph_CreateOverride
+Function PsExchangeGraphRestApi_CreateOverride
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + `
+							$cnfUserName + `
 							"/inferenceClassification/overrides"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'classifyAs': 'other', `
 				 'senderEmailAddress': { `
@@ -414,19 +424,19 @@ Function ExchangePsGraph_CreateOverride
 #gavdcodeend 013 
 
 #gavdcodebegin 014
-Function ExchangePsGraph_GetAllOverrides
+Function PsExchangeGraphRestApi_GetAllOverrides
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.Read
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + `
+							$cnfUserName + `
 							"/inferenceClassification/overrides"
 	
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -440,7 +450,7 @@ Function ExchangePsGraph_GetAllOverrides
 #gavdcodeend 014 
 
 #gavdcodebegin 015
-Function ExchangePsGraph_UpdateOverride
+Function PsExchangeGraphRestApi_UpdateOverride
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
@@ -448,13 +458,13 @@ Function ExchangePsGraph_UpdateOverride
 	$overrideId = "70b8bfc8-a564-48cd-847a-6e84b5804235"
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + `
+							$cnfUserName + `
 							"/inferenceClassification/overrides/" + $overrideId
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'classifyAs': 'focused' }"
 	$myContentType = "application/json"
@@ -468,7 +478,7 @@ Function ExchangePsGraph_UpdateOverride
 #gavdcodeend 015 
 
 #gavdcodebegin 016
-Function ExchangePsGraph_DeleteOverride
+Function PsExchangeGraphRestApi_DeleteOverride
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
@@ -476,13 +486,13 @@ Function ExchangePsGraph_DeleteOverride
 	$overrideId = "70b8bfc8-a564-48cd-847a-6e84b5804235"
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + `
+							$cnfUserName + `
 							"/inferenceClassification/overrides/" + $overrideId
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -491,18 +501,18 @@ Function ExchangePsGraph_DeleteOverride
 #gavdcodeend 016 
 
 #gavdcodebegin 017
-Function ExchangePsGraph_GetAllFolders
+Function PsExchangeGraphRestApi_GetAllFolders
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadBasic, Mail.Read, Mail.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders"
+							$cnfUserName + "/mailFolders"
 	
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -516,20 +526,20 @@ Function ExchangePsGraph_GetAllFolders
 #gavdcodeend 017 
 
 #gavdcodebegin 018
-Function ExchangePsGraph_CreateFolder
+Function PsExchangeGraphRestApi_CreateFolder
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders"
+							$cnfUserName + "/mailFolders"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
-	$myBody = "{ 'displayName': 'MyFolder' }"
+	$myBody = "{ 'displayName': 'MyFolder01' }"
 	$myContentType = "application/json"
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -541,22 +551,22 @@ Function ExchangePsGraph_CreateFolder
 #gavdcodeend 018 
 
 #gavdcodebegin 019
-Function ExchangePsGraph_GetOneFolderById
+Function PsExchangeGraphRestApi_GetOneFolderById
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadBasic, Mail.Read
 
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId
 	
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -567,22 +577,22 @@ Function ExchangePsGraph_GetOneFolderById
 #gavdcodeend 019 
 
 #gavdcodebegin 020
-Function ExchangePsGraph_CreateChildFolder
+Function PsExchangeGraphRestApi_CreateChildFolder
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId + "/childFolders"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'displayName': 'MyChildFolder' }"
 	$myContentType = "application/json"
@@ -596,22 +606,22 @@ Function ExchangePsGraph_CreateChildFolder
 #gavdcodeend 020 
 
 #gavdcodebegin 021
-Function ExchangePsGraph_GetChildFoldersInOneFolderById
+Function PsExchangeGraphRestApi_GetChildFoldersInOneFolderById
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadBasic, Mail.Read
-
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId + "/childFolders"
 	
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -622,22 +632,22 @@ Function ExchangePsGraph_GetChildFoldersInOneFolderById
 #gavdcodeend 021 
 
 #gavdcodebegin 022
-Function ExchangePsGraph_CreateMessageInFolder
+Function PsExchangeGraphRestApi_CreateMessageInFolder
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId + "/messages"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'subject':'Test message created by Graph Application', `
 			     'body':{ 'contentType':'Text', `
@@ -654,22 +664,22 @@ Function ExchangePsGraph_CreateMessageInFolder
 #gavdcodeend 022 
 
 #gavdcodebegin 023
-Function ExchangePsGraph_UpdateFolder
+Function PsExchangeGraphRestApi_UpdateFolder
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'displayName': 'MyFolderUpdated' }"
 	$myContentType = "application/json"
@@ -683,22 +693,22 @@ Function ExchangePsGraph_UpdateFolder
 #gavdcodeend 023 
 
 #gavdcodebegin 024
-Function ExchangePsGraph_CopyFolder
+Function PsExchangeGraphRestApi_CopyFolder
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId + "/copy"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'destinationId': 'drafts' }"
 	$myContentType = "application/json"
@@ -710,22 +720,22 @@ Function ExchangePsGraph_CopyFolder
 #gavdcodeend 024 
 
 #gavdcodebegin 025
-Function ExchangePsGraph_MoveFolder
+Function PsExchangeGraphRestApi_MoveFolder
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId + "/move"
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myBody = "{ 'destinationId': 'junkemail' }"
 	$myContentType = "application/json"
@@ -737,22 +747,22 @@ Function ExchangePsGraph_MoveFolder
 #gavdcodeend 025 
 
 #gavdcodebegin 026
-Function ExchangePsGraph_DeleteFolder
+Function PsExchangeGraphRestApi_DeleteFolder
 {
 	# App Registration type:		Application
 	# App Registration permissions: Mail.ReadWrite
 
-	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAAAAD" + `
-				"cxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAADcqmldAAA="
+	$folderId = "AAMkAGE0ODQ3NTc1LTZkM2ItNDk5Ny1iZDlkLTM5ODUxNWJkYmIwZQAuAAAA" + 
+				"AADcxoIkHT46T678SPCidFpEAQC1vtBLB-F9SJ2ZDb7Xo-OrAALATT7_AAA="
 
 	$Url = "https://graph.microsoft.com/v1.0/users/" + `
-							$configFile.appsettings.UserName + "/mailFolders/" + `
+							$cnfUserName + "/mailFolders/" + `
 							$folderId
 
-	$myOAuth = Get-AzureTokenApplication `
-							-ClientID $configFile.appsettings.ClientIdWithSecret `
-							-ClientSecret $configFile.appsettings.ClientSecret `
-							-TenantName $configFile.appsettings.TenantName
+	$myOAuth = PsGraphRestApi_GetAzureTokenApplication `
+							-ClientID $cnfClientIdWithSecret `
+							-ClientSecret $cnfClientSecret `
+							-TenantName $cnfTenantName
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -760,37 +770,57 @@ Function ExchangePsGraph_DeleteFolder
 }
 #gavdcodeend 026 
 
-#----------------------------------------------------------------------------------------
 
-## Running the Functions
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+##---------------------------------------------------------------------------------------
+##***-----------------------------------*** Running the routines ***---------------------
+##---------------------------------------------------------------------------------------
 
-#ExchangePsGraph_GetAllMessages
-#ExchangePsGraph_GetAllMessagesMe
-#ExchangePsGraph_CreateMessage
-#ExchangePsGraph_GetOneMessageById
-#ExchangePsGraph_GetOneMessageByText
-#ExchangePsGraph_UpdateMessage
-#ExchangePsGraph_DeleteMessage
-#ExchangePsGraph_SendMessage
-#ExchangePsGraph_CopyMessage
-#ExchangePsGraph_MoveMessage
-#ExchangePsGraph_ReplyMessage
-#ExchangePsGraph_ForwardMessage
-#ExchangePsGraph_CreateOverride
-#ExchangePsGraph_GetAllOverrides
-#ExchangePsGraph_UpdateOverride
-#ExchangePsGraph_DeleteOverride
-#ExchangePsGraph_GetAllFolders
-#ExchangePsGraph_CreateFolder
-#ExchangePsGraph_GetOneFolderById
-#ExchangePsGraph_GetOneFolderByText
-#ExchangePsGraph_CreateChildFolder
-#ExchangePsGraph_GetChildFoldersInOneFolderById
-#ExchangePsGraph_CreateMessageInFolder
-#ExchangePsGraph_UpdateFolder
-#ExchangePsGraph_CopyFolder
-#ExchangePsGraph_MoveFolder
-#ExchangePsGraph_DeleteFolder
+# *** Latest Source Code Index: 026 ***
+
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
+
+#PsExchangeGraphRestApi_GetAllMessages
+#PsExchangeGraphRestApi_GetAllMessagesMe
+#PsExchangeGraphRestApi_CreateMessage
+#PsExchangeGraphRestApi_GetOneMessageById
+#PsExchangeGraphRestApi_GetOneMessageByText
+#PsExchangeGraphRestApi_UpdateMessage
+#PsExchangeGraphRestApi_DeleteMessage
+#PsExchangeGraphRestApi_SendMessage
+#PsExchangeGraphRestApi_CopyMessage
+#PsExchangeGraphRestApi_MoveMessage
+#PsExchangeGraphRestApi_ReplyMessage
+#PsExchangeGraphRestApi_ForwardMessage
+#PsExchangeGraphRestApi_CreateOverride
+#PsExchangeGraphRestApi_GetAllOverrides
+#PsExchangeGraphRestApi_UpdateOverride
+#PsExchangeGraphRestApi_DeleteOverride
+#PsExchangeGraphRestApi_GetAllFolders
+#PsExchangeGraphRestApi_CreateFolder
+#PsExchangeGraphRestApi_GetOneFolderById
+#PsExchangeGraphRestApi_GetOneFolderByText
+#PsExchangeGraphRestApi_CreateChildFolder
+#PsExchangeGraphRestApi_GetChildFoldersInOneFolderById
+#PsExchangeGraphRestApi_CreateMessageInFolder
+#PsExchangeGraphRestApi_UpdateFolder
+#PsExchangeGraphRestApi_CopyFolder
+#PsExchangeGraphRestApi_MoveFolder
+#PsExchangeGraphRestApi_DeleteFolder
 
 Write-Host "Done" 

@@ -7,73 +7,73 @@
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
-Function ConnectPsExo_Interactive
+function PsExo_ConnectInteractive
 {
-    Connect-ExchangeOnline -UserPrincipalName $configFile.appsettings.UserName
+    Connect-ExchangeOnline -UserPrincipalName $cnfUserName
 }
 #gavdcodeend 001
 
 #gavdcodebegin 002
-Function ConnectPsExo_Inline
+function PsExo_ConnectInline
 {
-    Connect-ExchangeOnline -UserPrincipalName $configFile.appsettings.UserName `
+    Connect-ExchangeOnline -UserPrincipalName $cnfUserName `
                            -InlineCredential
 }
 #gavdcodeend 002
 
 #gavdcodebegin 003
-Function ConnectPsExo_AccPw
+function PsExo_ConnectAccPw
 {
     [SecureString]$securePW = ConvertTo-SecureString `
-                            -String $configFile.appsettings.UserPw -AsPlainText -Force
+                            -String $cnfUserPw -AsPlainText -Force
     $myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-                            -argumentlist $configFile.appsettings.UserName, $securePW
+                            -argumentlist $cnfUserName, $securePW
     Connect-ExchangeOnline -Credential $myCredentials
 }
 #gavdcodeend 003
 
 #gavdcodebegin 004
-Function ConnectPsExo_CertificateThumbprint
+function PsExo_ConnectCertificateThumbprint
 {
     Connect-ExchangeOnline `
-                -CertificateThumbPrint $configFile.appsettings.CertificateThumbprint `
-                -AppID $configFile.appsettings.ClientIdWithCert `
-                -Organization $configFile.appsettings.TenantName
+                -CertificateThumbPrint $cnfCertificateThumbprint `
+                -AppID $cnfClientIdWithCert `
+                -Organization $cnfTenantName
 }
 #gavdcodeend 004
 
 #gavdcodebegin 005
-Function ConnectPsExo_CertificateFile
+function PsExo_ConnectCertificateFile
 {
     [SecureString]$securePW = ConvertTo-SecureString `
-                            -String $configFile.appsettings.UserPw -AsPlainText -Force
+                            -String $cnfUserPw -AsPlainText -Force
     Connect-ExchangeOnline `
-                -CertificateFilePath $configFile.appsettings.CertificateFilePath `
+                -CertificateFilePath $cnfCertificateFilePath `
                 -CertificatePassword $securePW `
-                -AppID $configFile.appsettings.ClientIdWithCert `
-                -Organization $configFile.appsettings.TenantName
+                -AppID $cnfClientIdWithCert `
+                -Organization $cnfTenantName
 }
 #gavdcodeend 005
 
 #gavdcodebegin 006
-Function ConnectPsExo_ManagedIdentitySystem
+function PsExo_ConnectManagedIdentitySystem
 {
     Connect-ExchangeOnline -ManagedIdentity `
-                    -Organization $configFile.appsettings.TenantName
+                    -Organization $cnfTenantName
 }
 #gavdcodeend 006
 
 #gavdcodebegin 007
-Function ConnectPsExo_ManagedIdentityUser
+function PsExo_ConnectManagedIdentityUser
 {
     Connect-ExchangeOnline -ManagedIdentity `
-                    -Organization $configFile.appsettings.TenantName
-                    -ManagedIdentityAccountId $configFile.appsettings.UserName
+                    -Organization $cnfTenantName
+                    -ManagedIdentityAccountId $cnfUserName
 }
 #gavdcodeend 007
 
 #gavdcodebegin 008
-Function ConnectPsExo_ReleaseConnection
+function PsExo_ConnectReleaseConnection
 {
     Disconnect-ExchangeOnline -Confirm:$false
 }
@@ -85,93 +85,93 @@ Function ConnectPsExo_ReleaseConnection
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 009
-Function ExchangePsExo_GetMailboxesByPropertySet
+function PsExchangeExo_GetMailboxesByPropertySet
 {
     Get-EXOMailbox -PropertySets Minimum,Policy
 }
 #gavdcodeend 009
 
 #gavdcodebegin 010
-Function ExchangePsExo_GetMailboxesByProperty
+function PsExchangeExo_GetMailboxesByProperty
 {
     Get-EXOMailbox -Properties UserPrincipalName,Alias
 }
 #gavdcodeend 010
 
 #gavdcodebegin 011
-Function ExchangePsExo_GetMailboxesBySetAndProperty()
+function PsExchangeExo_GetMailboxesBySetAndProperty()
 {
     Get-EXOMailbox -PropertySets Hold,Moderation -Properties UserPrincipalName,Alias
 }
 #gavdcodeend 011
 
 #gavdcodebegin 012
-Function ExchangePsExo_GetClientAccessSettings
+function PsExchangeExo_GetClientAccessSettings
 {
-    Get-EXOCASMailbox -Identity $configFile.appsettings.UserName
+    Get-EXOCASMailbox -Identity $cnfUserName
 }
 #gavdcodeend 012
 
 #gavdcodebegin 013
-Function ExchangePsExo_GetEmailboxPermissions
+function PsExchangeExo_GetEmailboxPermissions
 {
-    Get-EXOMailboxPermission -Identity $configFile.appsettings.UserName
+    Get-EXOMailboxPermission -Identity $cnfUserName
 }
 #gavdcodeend 013
 
 #gavdcodebegin 014
-Function ExchangePsExo_GetEmailboxStatistics
+function PsExchangeExo_GetEmailboxStatistics
 {
-    Get-EXOMailboxStatistics -Identity $configFile.appsettings.UserName
+    Get-EXOMailboxStatistics -Identity $cnfUserName
 }
 #gavdcodeend 014
 
 #gavdcodebegin 015
-Function ExchangePsExo_GetFolderPermissions
+function PsExchangeExo_GetFolderPermissions
 {
-    $myIdentifier = $configFile.appsettings.UserName + ":\Inbox"
+    $myIdentifier = $cnfUserName + ":\Inbox"
     Get-EXOMailboxFolderPermission -Identity $myIdentifier
 }
 #gavdcodeend 015
 
 #gavdcodebegin 016
-Function ExchangePsExo_GetFolderStatisticsAll
+function PsExchangeExo_GetFolderStatisticsAll
 {
-    Get-EXOMailboxFolderStatistics -Identity $configFile.appsettings.UserName
+    Get-EXOMailboxFolderStatistics -Identity $cnfUserName
 }
 #gavdcodeend 016
 
 #gavdcodebegin 017
-Function ExchangePsExo_GetFolderStatisticsOne
+function PsExchangeExo_GetFolderStatisticsOne
 {
-    Get-EXOMailboxFolderStatistics -Identity $configFile.appsettings.UserName `
+    Get-EXOMailboxFolderStatistics -Identity $cnfUserName `
                                                             -FolderScope Calendar
 }
 #gavdcodeend 017
 
 #gavdcodebegin 018
-Function ExchangePsExo_GetDeviceStatistics
+function PsExchangeExo_GetDeviceStatistics
 {
-    Get-EXOMobileDeviceStatistics -Mailbox $configFile.appsettings.UserName
+    Get-EXOMobileDeviceStatistics -Mailbox $cnfUserName
 }
 #gavdcodeend 018
 
 #gavdcodebegin 019
-Function ExchangePsExo_GetRecipients
+function PsExchangeExo_GetRecipients
 {
-    Get-EXORecipient -Identity $configFile.appsettings.UserName
+    Get-EXORecipient -Identity $cnfUserName
 }
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function ExchangePsExo_GetRecipientPermissions
+function PsExchangeExo_GetRecipientPermissions
 {
     Get-EXORecipientPermission -ResultSize 5
 }
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function ExchangePsExo_CreateMailbox
+function PsExchangeExo_CreateMailbox
 {
 	New-Mailbox -Alias somebody -Name Some -FirstName Some -LastName Body `
 				-DisplayName "Some Body" `
@@ -183,28 +183,28 @@ Function ExchangePsExo_CreateMailbox
 #gavdcodeend 021
 
 #gavdcodebegin 022
-Function ExchangePsExo_DeleteMailbox
+function PsExchangeExo_DeleteMailbox
 {
 	Remove-Mailbox -Identity "Some Body"
 }
 #gavdcodeend 022
 
 #gavdcodebegin 023
-Function ExchangePsExo_CreateMailcontact
+function PsExchangeExo_CreateMailcontact
 {
 	New-MailContact -Name "Some Contact" -ExternalEmailAddress scontact@domain.com
 }
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function ExchangePsExo_DeleteMailcontact
+function PsExchangeExo_DeleteMailcontact
 {
 	Remove-MailContact -Identity "Some Contact"
 }
 #gavdcodeend 024
 
 #gavdcodebegin 025
-Function ExchangePsExo_CreateMailuser
+function PsExchangeExo_CreateMailuser
 {
 	New-MailUser -Name "Some Body" -Alias somebody `
 				 -ExternalEmailAddress sbody@domain.com `
@@ -215,7 +215,7 @@ Function ExchangePsExo_CreateMailuser
 #gavdcodeend 025
 
 #gavdcodebegin 026
-Function ExchangePsExo_GetPermissions
+function PsExchangeExo_GetPermissions
 {
 	$myPerms = Get-ManagementRoleAssignment
 	foreach ($onePerm in $myPerms) {
@@ -226,14 +226,14 @@ Function ExchangePsExo_GetPermissions
 #gavdcodeend 026
 
 #gavdcodebegin 027
-Function ExchangePsExo_EnablePsAccess
+function PsExchangeExo_EnablePsAccess
 {
 	Set-User -Identity user@dominio.onmicrosoft.com -RemotePowerShellEnabled $true
 }
 #gavdcodeend 027
 
 #gavdcodebegin 028
-Function ExchangePsExo_GetEnablePsAccess
+function PsExchangeExo_GetEnablePsAccess
 {
 	# For one user
 	Get-User -Identity "Name Surname" | Format-List RemotePowerShellEnabled
@@ -245,7 +245,7 @@ Function ExchangePsExo_GetEnablePsAccess
 #gavdcodeend 028
 
 #gavdcodebegin 029
-Function ExchangePsExo_BlockIP
+function PsExchangeExo_BlockIP
 {
 	Set-OrganizationConfig -IPListBlocked @{add="111.2222.333.444"}
 }
@@ -257,38 +257,54 @@ Function ExchangePsExo_BlockIP
 
 # *** Latest Source Code Index: 029 ***
 
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
 
-#ConnectPsExo_Interactive
-#ConnectPsExo_Inline
-ConnectPsExo_AccPw
-#ConnectPsExo_CertificateThumbprint
-#ConnectPsExo_CertificateFile
-#ConnectPsExo_ManagedIdentitySystem
-#ConnectPsExo_ManagedIdentityUser
+#PsExo_ConnectInteractive
+#PsExo_ConnectInline
+PsExo_ConnectAccPw
+#PsExo_ConnectCertificateThumbprint
+#PsExo_ConnectCertificateFile
+#PsExo_ConnectManagedIdentitySystem
+#PsExo_ConnectManagedIdentityUser
 
-#ExchangePsExo_GetMailboxesByPropertySet
-#ExchangePsExo_GetMailboxesByProperty
-#ExchangePsExo_GetMailboxesBySetAndProperty
-#ExchangePsExo_GetClientAccessSettings
-#ExchangePsExo_GetEmailboxPermissions
-#ExchangePsExo_GetEmailboxStatistics
-#ExchangePsExo_GetFolderPermissions
-#ExchangePsExo_GetFolderStatisticsAll
-#ExchangePsExo_GetFolderStatisticsOne
-#ExchangePsExo_GetDeviceStatistics
-#ExchangePsExo_GetRecipients
-#ExchangePsExo_GetRecipientPermissions
-#ExchangePsExo_CreateMailbox
-#ExchangePsExo_DeleteMailbox
-#ExchangePsExo_CreateMailcontact
-#ExchangePsExo_DeleteMailcontact
-#ExchangePsExo_CreateMailuser
-#ExchangePsExo_BlockIP
-#ExchangePsExo_GetPermissions
-#ExchangePsExo_EnablePsAccess
-#ExchangePsExo_GetEnablePsAccess
-#ExchangePsExo_BlockIP
+#PsExchangeExo_GetMailboxesByPropertySet
+#PsExchangeExo_GetMailboxesByProperty
+#PsExchangeExo_GetMailboxesBySetAndProperty
+#PsExchangeExo_GetClientAccessSettings
+#PsExchangeExo_GetEmailboxPermissions
+#PsExchangeExo_GetEmailboxStatistics
+#PsExchangeExo_GetFolderPermissions
+#PsExchangeExo_GetFolderStatisticsAll
+#PsExchangeExo_GetFolderStatisticsOne
+#PsExchangeExo_GetDeviceStatistics
+#PsExchangeExo_GetRecipients
+#PsExchangeExo_GetRecipientPermissions
+#PsExchangeExo_CreateMailbox
+#PsExchangeExo_DeleteMailbox
+#PsExchangeExo_CreateMailcontact
+#PsExchangeExo_DeleteMailcontact
+#PsExchangeExo_CreateMailuser
+#PsExchangeExo_BlockIP
+#PsExchangeExo_GetPermissions
+#PsExchangeExo_EnablePsAccess
+#PsExchangeExo_GetEnablePsAccess
+#PsExchangeExo_BlockIP
 
 Disconnect-ExchangeOnline -Confirm:$false
 
