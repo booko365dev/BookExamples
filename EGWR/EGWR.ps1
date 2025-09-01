@@ -1170,6 +1170,7 @@ function PsPnPPowerShell_GetTeamsWithToken
 
 #*** Using the Microsoft Graph CLI ----------------------------------------------------------
 #gavdcodebegin 053
+# LEGACY CODE
 function PsGraphCli_LoginWithInteraction
 {
 	mgc login --tenant-id $configFile.appsettings.TenantName `
@@ -1180,6 +1181,7 @@ function PsGraphCli_LoginWithInteraction
 #gavdcodeend 053
 
 #gavdcodebegin 055
+# LEGACY CODE
 function PsGraphCli_LoginWithDeviceCode
 {
 	mgc login --tenant-id $configFile.appsettings.TenantName `
@@ -1189,6 +1191,7 @@ function PsGraphCli_LoginWithDeviceCode
 #gavdcodeend 055
 
 #gavdcodebegin 060
+# LEGACY CODE
 function PsGraphCli_LoginWithSecret
 {
 	$env:AZURE_TENANT_ID = $configFile.appsettings.TenantName
@@ -1200,6 +1203,7 @@ function PsGraphCli_LoginWithSecret
 #gavdcodeend 060
 
 #gavdcodebegin 057
+# LEGACY CODE
 function PsGraphCli_LoginWithCertificateThumbprint
 {
 	mgc login --tenant-id $configFile.appsettings.TenantName `
@@ -1210,6 +1214,7 @@ function PsGraphCli_LoginWithCertificateThumbprint
 #gavdcodeend 057
 
 #gavdcodebegin xxx
+# LEGACY CODE
 function PsGraphCli_LoginWithCertificateFile   # Does not work
 {
 	# Does not work. No parameters for the certificate pfx and password
@@ -1222,6 +1227,7 @@ function PsGraphCli_LoginWithCertificateFile   # Does not work
 #gavdcodeend xxx
 
 #gavdcodebegin xxx
+# LEGACY CODE
 function PsGraphCli_LoginWithToken   # Does not work
 {
 	# Does not work. No parameters for the access token
@@ -1233,6 +1239,7 @@ function PsGraphCli_LoginWithToken   # Does not work
 #gavdcodeend xxx
 
 #gavdcodebegin 059
+# LEGACY CODE
 function PsGraphCli_LoginWithManagedIdentity
 {
 	mgc login --tenant-id $configFile.appsettings.TenantName `
@@ -1242,6 +1249,7 @@ function PsGraphCli_LoginWithManagedIdentity
 #gavdcodeend 059
 
 #gavdcodebegin 054
+# LEGACY CODE
 function PsGraphCli_ExampleLoginWithInteraction
 {
 	PsGraphCli_LoginWithInteraction
@@ -1253,6 +1261,7 @@ function PsGraphCli_ExampleLoginWithInteraction
 #gavdcodeend 054
 
 #gavdcodebegin 056
+# LEGACY CODE
 function PsGraphCli_ExampleLoginWithDeviceCode
 {
 	PsGraphCli_LoginWithDeviceCode
@@ -1264,6 +1273,7 @@ function PsGraphCli_ExampleLoginWithDeviceCode
 #gavdcodeend 056
 
 #gavdcodebegin 061
+# LEGACY CODE
 function PsGraphCli_ExampleLoginWithSecret
 {
 	PsGraphCli_LoginWithSecret
@@ -1275,6 +1285,7 @@ function PsGraphCli_ExampleLoginWithSecret
 #gavdcodeend 061
 
 #gavdcodebegin 058
+# LEGACY CODE
 function PsGraphCli_ExampleLoginWithCertificate
 {
 	PsGraphCli_LoginWithCertificateThumbprint

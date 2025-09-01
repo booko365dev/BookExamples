@@ -27,6 +27,7 @@ function PsGraphCli_LoginWithDeviceCode
 ##---------------------------------------------------------------------------------------
 
 #gavdcodebegin 001
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllMeTeams
 {
 	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
@@ -43,6 +44,7 @@ function PsTeamsGraphCli_GetAllMeTeams
 #gavdcodeend 001
 
 #gavdcodebegin 002
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllTeamsByGroup
 {
 	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
@@ -56,6 +58,7 @@ function PsTeamsGraphCli_GetAllTeamsByGroup
 #gavdcodeend 002
 
 #gavdcodebegin 003
+# LEGACY CODE
 function PsTeamsGraphCli_GetOneTeam
 {
 	# Requires Delegated rights: Sites.Read.All, Sites.ReadWrite.All
@@ -71,6 +74,7 @@ function PsTeamsGraphCli_GetOneTeam
 #gavdcodeend 003
 
 #gavdcodebegin 004
+# LEGACY CODE
 function PsTeamsGraphCli_CreateOneTeam
 {
 	# Requires Team.Create
@@ -105,6 +109,7 @@ function PsTeamsGraphCli_CreateOneTeam
 #gavdcodeend 004
 
 #gavdcodebegin 005
+# LEGACY CODE
 function PsTeamsGraphCli_CreateOneGroup
 {
 	# Requires Group.ReadWrite.All or Group.Create
@@ -137,6 +142,7 @@ function PsTeamsGraphCli_CreateOneGroup
 #gavdcodeend 005
 
 #gavdcodebegin 006
+# LEGACY CODE
 function PsTeamsGraphCli_CreateOneTeamFromGroup
 {
 	# Requires Team.Create
@@ -158,6 +164,7 @@ function PsTeamsGraphCli_CreateOneTeamFromGroup
 #gavdcodeend 006
 
 #gavdcodebegin 007
+# LEGACY CODE
 function PsTeamsGraphCli_UpdateOneTeam
 {
 	# Requires TeamSettings.ReadWrite.All
@@ -177,6 +184,7 @@ function PsTeamsGraphCli_UpdateOneTeam
 #gavdcodeend 007
 
 #gavdcodebegin 008
+# LEGACY CODE
 function PsTeamsGraphCli_DeleteOneTeam
 {
 	# Requires Group.ReadWrite.All
@@ -191,6 +199,7 @@ function PsTeamsGraphCli_DeleteOneTeam
 #gavdcodeend 008
 
 #gavdcodebegin 009
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllChannelsInOneTeam
 {
 	# Requires Channel.ReadBasic.All or ChannelSettings.Read.Group
@@ -207,6 +216,7 @@ function PsTeamsGraphCli_GetAllChannelsInOneTeam
 #gavdcodeend 009
 
 #gavdcodebegin 010
+# LEGACY CODE
 function PsTeamsGraphCli_GetOneChannelInOneTeam
 {
 	# Requires Channel.ReadBasic.All or ChannelSettings.Read.Group
@@ -223,6 +233,7 @@ function PsTeamsGraphCli_GetOneChannelInOneTeam
 #gavdcodeend 010
 
 #gavdcodebegin 011
+# LEGACY CODE
 function PsTeamsGraphCli_CreateOneChannel
 {
 	# Requires Channel.Create or Channel.CreateGroup
@@ -245,6 +256,7 @@ function PsTeamsGraphCli_CreateOneChannel
 #gavdcodeend 011
 
 #gavdcodebegin 012
+# LEGACY CODE
 function PsTeamsGraphCli_UpdateOneChannel
 {
 	# Requires ChannelSettings.ReadWrite.All
@@ -268,6 +280,7 @@ function PsTeamsGraphCli_UpdateOneChannel
 #gavdcodeend 012
 
 #gavdcodebegin 013
+# LEGACY CODE
 function PsTeamsGraphCli_DeleteOneChannel
 {
 	# Requires Channel.Delete.All
@@ -284,6 +297,7 @@ function PsTeamsGraphCli_DeleteOneChannel
 #gavdcodeend 013
 
 #gavdcodebegin 014
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllTabsInOneChannel
 {
 	# Requires Directory.ReadWrite.All, Group.Read.All, TeamsTab.ReadWriteForTeam
@@ -302,6 +316,7 @@ function PsTeamsGraphCli_GetAllTabsInOneChannel
 #gavdcodeend 014
 
 #gavdcodebegin 015
+# LEGACY CODE
 function PsTeamsGraphCli_GetOneTabInOneChannel
 {
 	# Requires Directory.ReadWrite.All, Group.Read.All, TeamsTab.ReadWriteForTeam
@@ -322,6 +337,7 @@ function PsTeamsGraphCli_GetOneTabInOneChannel
 #gavdcodeend 015
 
 #gavdcodebegin 016
+# LEGACY CODE
 function PsTeamsGraphCli_CreateOneTabInOneChannel
 {
 	# Requires Directory.ReadWrite.All, Group.Read.All, TeamsTab.ReadWriteForTeam
@@ -357,6 +373,7 @@ function PsTeamsGraphCli_CreateOneTabInOneChannel
 #gavdcodeend 016
 
 #gavdcodebegin 017
+# LEGACY CODE
 function PsTeamsGraphCli_UpdateOneTabInOneChannel
 {
 	# Requires Directory.ReadWrite.All, Group.Read.All, TeamsTab.ReadWriteForTeam
@@ -382,6 +399,7 @@ function PsTeamsGraphCli_UpdateOneTabInOneChannel
 #gavdcodeend 017
 
 #gavdcodebegin 018
+# LEGACY CODE
 function PsTeamsGraphCli_DeleteOneTabInOneChannel
 {
 	# Requires Directory.ReadWrite.All, Group.Read.All, TeamsTab.ReadWriteForTeam
@@ -401,6 +419,7 @@ function PsTeamsGraphCli_DeleteOneTabInOneChannel
 #gavdcodeend 018
 
 #gavdcodebegin 019
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllUsersInOneTeam
 {
 	# Requires TeamMember.Read.All or TeamMember.Read.Group
@@ -416,6 +435,7 @@ function PsTeamsGraphCli_GetAllUsersInOneTeam
 #gavdcodeend 019
 
 #gavdcodebegin 020
+# LEGACY CODE
 function PsTeamsGraphCli_AddOneUserToOneTeam
 {
 	# Requires TeamMember.ReadWrite.All or TeamMember.ReadWrite.Group
@@ -440,6 +460,7 @@ function PsTeamsGraphCli_AddOneUserToOneTeam
 #gavdcodeend 020
 
 #gavdcodebegin 021
+# LEGACY CODE
 function PsTeamsGraphCli_DeleteOneUserFromOneTeam
 {
 	# Requires TeamMember.Read.All or TeamMember.Read.Group
@@ -457,6 +478,7 @@ function PsTeamsGraphCli_DeleteOneUserFromOneTeam
 #gavdcodeend 021
 
 #gavdcodebegin 022
+# LEGACY CODE
 function PsTeamsGraphCli_SendMessageToOneChannel
 {
 	# Requires ChannelMessage.Send (it works only with Delegate Authentication Provider)
@@ -483,6 +505,7 @@ function PsTeamsGraphCli_SendMessageToOneChannel
 #gavdcodeend 022
 
 #gavdcodebegin 023
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllMessagesChannel
 {
 	# Requires ChannelMessage.Read.All or ChannelMessage.Read.Group
@@ -500,6 +523,7 @@ function PsTeamsGraphCli_GetAllMessagesChannel
 #gavdcodeend 023
 
 #gavdcodebegin 024
+# LEGACY CODE
 function PsTeamsGraphCli_SendMessageReplayToOneChannel
 {
 	# Requires ChannelMessage.Send (it works only with Delegate Authentication Provider)
@@ -528,6 +552,7 @@ function PsTeamsGraphCli_SendMessageReplayToOneChannel
 #gavdcodeend 024
 
 #gavdcodebegin 025
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllReplaysToOneMessagesChannel
 {
 	# Requires ChannelMessage.Read.All or ChannelMessage.Read.Group
@@ -547,6 +572,7 @@ function PsTeamsGraphCli_GetAllReplaysToOneMessagesChannel
 #gavdcodeend 025
 
 #gavdcodebegin 026
+# LEGACY CODE
 function PsTeamsGraphCli_GetAllMeetings
 {
 	# Requires Calendars.ReadBasic, Calendars.Read, Calendars.ReadWrite
@@ -567,6 +593,7 @@ function PsTeamsGraphCli_GetAllMeetings
 #gavdcodeend 026
 
 #gavdcodebegin 027
+# LEGACY CODE
 function PsTeamsGraphCli_GetOneMeeting
 {
 	# Requires Calendars.ReadBasic, Calendars.Read, Calendars.ReadWrite
@@ -586,6 +613,7 @@ function PsTeamsGraphCli_GetOneMeeting
 #gavdcodeend 027
 
 #gavdcodebegin 028
+# LEGACY CODE
 function PsTeamsGraphCli_CreateOneMeeting
 {
 	# Requires Calendars.ReadBasic, Calendars.Read, Calendars.ReadWrite
@@ -632,6 +660,7 @@ function PsTeamsGraphCli_CreateOneMeeting
 #gavdcodeend 028
 
 #gavdcodebegin 029
+# LEGACY CODE
 function PsTeamsGraphCli_DeleteOneMeeting
 {
 	# Requires Calendars.ReadBasic, Calendars.Read, Calendars.ReadWrite

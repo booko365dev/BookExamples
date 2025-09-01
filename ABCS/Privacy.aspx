@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 007-->
+<!-- LEGACY CODE -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Privacy.aspx.cs" Inherits="Test_TeamsTabGraphToolkit.Privacy" %>
 
 <!DOCTYPE html>

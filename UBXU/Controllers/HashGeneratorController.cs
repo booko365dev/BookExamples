@@ -4,7 +4,7 @@ using System.Text;
 
 namespace UBXU.Controllers
 {
-    //gavdcodebegin 01
+    //gavdcodebegin 001
     /// <summary>  
     /// Generate Hash Class
     /// Contains methods to generate a Hash
@@ -25,21 +25,17 @@ namespace UBXU.Controllers
         /// </summary>  
         [HttpGet(Name = "GetHash")]
         public string Get([FromQuery] string RawData)
-        {
-            StringBuilder dataBuilder = new StringBuilder();
+		{
+			StringBuilder dataBuilder = new();
+			byte[] dataBytes = SHA256.HashData(Encoding.UTF8.GetBytes(RawData));
 
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] dataBytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(RawData));
+			for (int i = 0; i < dataBytes.Length; i++)
+			{
+				dataBuilder.Append(dataBytes[i].ToString("x2"));
+			}
 
-                for (int i = 0; i < dataBytes.Length; i++)
-                {
-                    dataBuilder.Append(dataBytes[i].ToString("x2"));
-                }
-            }
-
-            return dataBuilder.ToString();
-        }
-    }
-    //gavdcodeend 01
+			return dataBuilder.ToString();
+		}
+	}
+    //gavdcodeend 001
 }

@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 006-->
+<!-- LEGACY CODE -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="auth.aspx.cs" Inherits="Test_TeamsTabGraphToolkit.auth" %>
 
 <!DOCTYPE html>

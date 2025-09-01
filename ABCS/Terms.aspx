@@ -1,4 +1,5 @@
 ﻿<!--gavdcodebegin 008-->
+<!-- LEGACY CODE -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Terms.aspx.cs" Inherits="Test_TeamsTabGraphToolkit.Terms" %>
 
 <!DOCTYPE html>
