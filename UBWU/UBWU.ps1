@@ -8,36 +8,7 @@
 ##---------------------------------------------------------------------------------------
 
 
-Function Get-AzureTokenApplication
-{
-	Param(
-		[Parameter(Mandatory=$True)]
-		[String]$ClientID,
- 
-		[Parameter(Mandatory=$True)]
-		[String]$ClientSecret,
- 
-		[Parameter(Mandatory=$False)]
-		[String]$TenantName
-	)
-   
-	 $LoginUrl = "https://login.microsoftonline.com"
-	 $ScopeUrl = "https://graph.microsoft.com/.default"
-	 
-	 $myBody  = @{ Scope = $ScopeUrl; `
-					grant_type = "client_credentials"; `
-					client_id = $ClientID; `
-					client_secret = $ClientSecret }
-
-	 $myOAuth = Invoke-RestMethod `
-					-Method Post `
-					-Uri $LoginUrl/$TenantName/oauth2/v2.0/token `
-					-Body $myBody
-
-	return $myOAuth
-}
-
-Function Get-AzureTokenDelegation
+Function PsGraphRestApi_GetAzureTokenDelegationWithAccPw
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -70,27 +41,53 @@ Function Get-AzureTokenDelegation
 	return $myOAuth
 }
 
-Function LoginPsCLI
+Function PsCliM365_LoginWithAccPw
 {
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$UserName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$UserPw,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientIdWithAccPw
+	)
+
 	m365 login --authType password `
-			   --appId $configFile.appsettings.ClientIdWithAccPw `
-			   --userName $configFile.appsettings.UserName `
-			   --password $configFile.appsettings.UserPw
+			   --appId $ClientIdWithAccPw `
+			   --userName $UserName `
+			   --password $UserPw
 }
 
-Function LoginPsPnPPowerShell
+Function PsPnpPowerShell_LoginWithAccPw
 {
+	Param(
+		[Parameter(Mandatory=$True)]
+		[String]$UserName,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$UserPw,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$SiteCollUrl,
+ 
+		[Parameter(Mandatory=$True)]
+		[String]$ClientIdWithAccPw
+	)
+
+	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.UserPw -AsPlainText -Force
+			$UserPw -AsPlainText -Force
 
 	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-PnPOnline -Url $configFile.appsettings.SiteBaseUrl `
-					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+			-argumentlist $UserName, $securePW
+	Connect-PnPOnline -Url $SiteCollUrl `
+					  -ClientId $ClientIdWithAccPw `
 					  -Credentials $myCredentials
 }
 
-Function LoginPsGraphSDKWithAccPw
+function PsGraphPowerShellSdk_LoginWithCertificateThumbprint
 {
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -100,22 +97,10 @@ Function LoginPsGraphSDKWithAccPw
 		[String]$ClientID,
  
 		[Parameter(Mandatory=$True)]
-		[String]$UserName,
- 
-		[Parameter(Mandatory=$True)]
-		[String]$UserPw
+		[String]$CertificateThumbprint
 	)
 
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-									$UserPw -AsPlainText -Force
-	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-							-argumentlist $UserName, $securePW
-
-	$myToken = Get-MsalToken -TenantId $TenantName `
-							 -ClientId $ClientId `
-							 -UserCredential $myCredentials 
-
-	Connect-Graph -AccessToken $myToken.AccessToken
+	Connect-MgGraph -TenantId $TenantName -ClientId $ClientId -CertificateThumbprint $CertificateThumbprint
 }
 
 
@@ -127,7 +112,7 @@ Function LoginPsGraphSDKWithAccPw
 ##==> Graph
 
 #gavdcodebegin 001
-Function PlannerPsGraph_GetAllPlansForOneGroup
+Function PsPlannerGraphRestApi_GetAllPlansForOneGroup
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -135,11 +120,11 @@ Function PlannerPsGraph_GetAllPlansForOneGroup
 	$grpId = "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
 	$Url = "https://graph.microsoft.com/v1.0/groups/" + $grpId + "/planner/plans"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -153,7 +138,7 @@ Function PlannerPsGraph_GetAllPlansForOneGroup
 #gavdcodeend 001 
 
 #gavdcodebegin 002
-Function PlannerPsGraph_CreateOnePlan
+Function PsPlannerGraphRestApi_CreateOnePlan
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -161,11 +146,11 @@ Function PlannerPsGraph_CreateOnePlan
 	$grpId = "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
 	$Url = "https://graph.microsoft.com/v1.0/planner/plans"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'owner':'" + $grpId + "', `
 			     'title':'GraphPlan' }"
@@ -180,19 +165,19 @@ Function PlannerPsGraph_CreateOnePlan
 #gavdcodeend 002 
 
 #gavdcodebegin 003
-Function PlannerPsGraph_GetOnePlan
+Function PsPlannerGraphRestApi_GetOnePlan
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
 
-	$planId = "FNSaSwSeOkWKEkJ-l50klpgAHmCj"
+	$planId = "JwJcILO6k0aFnTR5iljJ3JgAA8no"
 	$Url = "https://graph.microsoft.com/v1.0/planner/plans/" + $planId
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -206,20 +191,21 @@ Function PlannerPsGraph_GetOnePlan
 #gavdcodeend 003 
 
 #gavdcodebegin 004
-Function PlannerPsGraph_UpdateOnePlan
+Function PsPlannerGraphRestApi_UpdateOnePlan
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
 
 	$grpId = "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
-	$planId = "FNSaSwSeOkWKEkJ-l50klpgAHmCj"
+	$planId = "JwJcILO6k0aFnTR5iljJ3JgAA8no"
 	$eTag = 'W/"JzEtUGxhbiAgQEBAQEBAQEBAQEBAQEBARCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/plans/" + $planId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $configFile.appsettings.ClientIdWithAccPw `
-										-TenantName $configFile.appsettings.TenantName `
-										-UserName $configFile.appsettings.UserName `
-										-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'title':'GraphPlanUpdated' }"
 	$myContentType = "application/json"
@@ -234,19 +220,19 @@ Function PlannerPsGraph_UpdateOnePlan
 #gavdcodeend 004 
 
 #gavdcodebegin 005
-Function PlannerPsGraph_GetOnePlanDetails
+Function PsPlannerGraphRestApi_GetOnePlanDetails
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
 
-	$planId = "FNSaSwSeOkWKEkJ-l50klpgAHmCj"
+	$planId = "JwJcILO6k0aFnTR5iljJ3JgAA8no"
 	$Url = "https://graph.microsoft.com/v1.0/planner/plans/" + $planId + "/details"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -260,7 +246,7 @@ Function PlannerPsGraph_GetOnePlanDetails
 #gavdcodeend 005 
 
 #gavdcodebegin 006
-Function PlannerPsGraph_UpdateOnePlanDetails
+Function PsPlannerGraphRestApi_UpdateOnePlanDetails
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -270,11 +256,11 @@ Function PlannerPsGraph_UpdateOnePlanDetails
 	$eTag = 'W/"JzEtUGxhbkRldGFpbHMgQEBAQEBAQEBAQEBAQEBARCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/plans/" + $planId + "/details"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'sharedWith': { 'bd6fe5cc-462a-4a60-b9c1-2246d8b7b9fb':true, `
 								 '3ce80572-cd16-4ddd-8e35-30782cf0db9d':true}, `
@@ -292,19 +278,19 @@ Function PlannerPsGraph_UpdateOnePlanDetails
 #gavdcodeend 006 
 
 #gavdcodebegin 007
-Function PlannerPsGraph_GetAllBucketsInOnePlan
+Function PsPlannerGraphRestApi_GetAllBucketsInOnePlan
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
 
-	$planId = "FNSaSwSeOkWKEkJ-l50klpgAHmCj"
+	$planId = "JwJcILO6k0aFnTR5iljJ3JgAA8no"
 	$Url = "https://graph.microsoft.com/v1.0/planner/plans/" + $planId + "/buckets"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -318,19 +304,19 @@ Function PlannerPsGraph_GetAllBucketsInOnePlan
 #gavdcodeend 007 
 
 #gavdcodebegin 008
-Function PlannerPsGraph_GetOneBucket
+Function PsPlannerGraphRestApi_GetOneBucket
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
 
-	$bucketId = "0e70kPhvY0ueVmVlf50hbZgAOOxj"
+	$bucketId = "_Mk8LLnUEkOVStBwuAdZtZgAFUFU"
 	$Url = "https://graph.microsoft.com/v1.0/planner/buckets/" + $bucketId
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -344,19 +330,19 @@ Function PlannerPsGraph_GetOneBucket
 #gavdcodeend 008 
 
 #gavdcodebegin 009
-Function PlannerPsGraph_CreateOneBucket
+Function PsPlannerGraphRestApi_CreateOneBucket
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
 
-	$planId = "FNSaSwSeOkWKEkJ-l50klpgAHmCj"
+	$planId = "JwJcILO6k0aFnTR5iljJ3JgAA8no"
 	$Url = "https://graph.microsoft.com/v1.0/planner/buckets"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'planId':'" + $planId + "', `
 			     'name':'BucketOne', ` 
@@ -372,7 +358,7 @@ Function PlannerPsGraph_CreateOneBucket
 #gavdcodeend 009 
 
 #gavdcodebegin 010
-Function PlannerPsGraph_UpdateOneBucket
+Function PsPlannerGraphRestApi_UpdateOneBucket
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -381,11 +367,11 @@ Function PlannerPsGraph_UpdateOneBucket
 	$eTag = 'W/"JzEtQnVja2V0QEBAQEBAQEBAQEBAQEBARCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/buckets/" + $bucketId
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'name':'BucketOneUpdated' }"
 	$myContentType = "application/json"
@@ -400,7 +386,7 @@ Function PlannerPsGraph_UpdateOneBucket
 #gavdcodeend 010 
 
 #gavdcodebegin 011
-Function PlannerPsGraph_DeleteOneBucket
+Function PsPlannerGraphRestApi_DeleteOneBucket
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -409,11 +395,11 @@ Function PlannerPsGraph_DeleteOneBucket
 	$eTag = 'W/"JzEtQnVja2V0QEBAQEBAQEBAQEBAQEBARCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/buckets/" + $bucketId
 
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)"; `
 				   'If-Match' = "$($eTag)" }
@@ -423,7 +409,7 @@ Function PlannerPsGraph_DeleteOneBucket
 #gavdcodeend 011 
 
 #gavdcodebegin 012
-Function PlannerPsGraph_DeleteOnePlan
+Function PsPlannerGraphRestApi_DeleteOnePlan
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -432,10 +418,11 @@ Function PlannerPsGraph_DeleteOnePlan
 	$eTag = 'W/"JzEtUGxhbiAgQEBAQEBAQEBAQEBAQEBAUCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/plans/" + $planId
 
-	$myOAuth = Get-AzureTokenDelegation -ClientID $configFile.appsettings.ClientIdWithAccPw `
-										-TenantName $configFile.appsettings.TenantName `
-										-UserName $configFile.appsettings.UserName `
-										-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)"; `
 				   'If-Match' = "$($eTag)" }
@@ -445,19 +432,19 @@ Function PlannerPsGraph_DeleteOnePlan
 #gavdcodeend 012 
 
 #gavdcodebegin 013
-Function PlannerPsGraph_GetAllTasksInOneBucket
+Function PsPlannerGraphRestApi_GetAllTasksInOneBucket
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
 
-	$bucketId = "D3hsxxsWiUuk0As8CVdpk5gAAugr"
+	$bucketId = "iRlt3u8lc0C0rUHO-q35JpgAOw_F"
 	$Url = "https://graph.microsoft.com/v1.0/planner/buckets/" + $bucketId + "/tasks"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -471,7 +458,7 @@ Function PlannerPsGraph_GetAllTasksInOneBucket
 #gavdcodeend 013 
 
 #gavdcodebegin 014
-Function PlannerPsGraph_GetOneTask
+Function PsPlannerGraphRestApi_GetOneTask
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -479,11 +466,11 @@ Function PlannerPsGraph_GetOneTask
 	$taskId = "dp3JAX9my0uDbpoV0_26gpgALTDm"
 	$Url = "https://graph.microsoft.com/v1.0/planner/tasks/" + $taskId
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -497,20 +484,20 @@ Function PlannerPsGraph_GetOneTask
 #gavdcodeend 014 
 
 #gavdcodebegin 015
-Function PlannerPsGraph_CreateOneTask
+Function PsPlannerGraphRestApi_CreateOneTask
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
 
-	$planId = "FNSaSwSeOkWKEkJ-l50klpgAHmCj"
-	$bucketId = "D3hsxxsWiUuk0As8CVdpk5gAAugr"
+	$planId = "JwJcILO6k0aFnTR5iljJ3JgAA8no"
+	$bucketId = "iRlt3u8lc0C0rUHO-q35JpgAOw_F"
 	$Url = "https://graph.microsoft.com/v1.0/planner/tasks"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'planId':'" + $planId + "', `
 			     'bucketId':'" + $bucketId + "', ` 
@@ -530,7 +517,7 @@ Function PlannerPsGraph_CreateOneTask
 #gavdcodeend 015 
 
 #gavdcodebegin 016
-Function PlannerPsGraph_UpdateOneTask
+Function PsPlannerGraphRestApi_UpdateOneTask
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -539,10 +526,11 @@ Function PlannerPsGraph_UpdateOneTask
 	$eTag = 'W/"JzEtVGFzayAgQEBAQEBAQEBAQEBAQEBARCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/tasks/" + $taskId
 	
-	$myOAuth = Get-AzureTokenDelegation -ClientID $configFile.appsettings.ClientIdWithAccPw `
-										-TenantName $configFile.appsettings.TenantName `
-										-UserName $configFile.appsettings.UserName `
-										-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'percentComplete':1 }"
 	$myContentType = "application/json"
@@ -557,7 +545,7 @@ Function PlannerPsGraph_UpdateOneTask
 #gavdcodeend 016 
 
 #gavdcodebegin 017
-Function PlannerPsGraph_DeleteOneTask
+Function PsPlannerGraphRestApi_DeleteOneTask
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -566,11 +554,11 @@ Function PlannerPsGraph_DeleteOneTask
 	$eTag = 'W/"JzEtVGFzayAgQEBAQEBAQEBAQEBAQEBARCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/tasks/" + $taskId
 
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)"; `
 				   'If-Match' = "$($eTag)" }
@@ -580,7 +568,7 @@ Function PlannerPsGraph_DeleteOneTask
 #gavdcodeend 017 
 
 #gavdcodebegin 053
-Function PlannerPsGraph_GetOneTaskDetails
+Function PsPlannerGraphRestApi_GetOneTaskDetails
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.Read.All, Group.ReadWrite.All
@@ -588,11 +576,11 @@ Function PlannerPsGraph_GetOneTaskDetails
 	$taskId = "tJqIvX1FwE6ixDnExZnYCpgAHErb"
 	$Url = "https://graph.microsoft.com/v1.0/planner/tasks/" + $taskId + "/details"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -606,7 +594,7 @@ Function PlannerPsGraph_GetOneTaskDetails
 #gavdcodeend 053 
 
 #gavdcodebegin 054
-Function PlannerPsGraph_UpdateOneTaskDetails
+Function PsPlannerGraphRestApi_UpdateOneTaskDetails
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
@@ -615,11 +603,11 @@ Function PlannerPsGraph_UpdateOneTaskDetails
 	$eTag = 'W/"JzEtVGFza0RldGFpbHMgQEBAQEBAQEBAQEBAQEBARCc="'
 	$Url = "https://graph.microsoft.com/v1.0/planner/tasks/" + $taskId + "/details"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myBody = "{ 'checklist': {'12345678-1234-1234-1234-1234567890ab': { `
 								'@odata.type': 'microsoft.graph.plannerChecklistItem', `
@@ -639,18 +627,18 @@ Function PlannerPsGraph_UpdateOneTaskDetails
 #gavdcodeend 054 
 
 #gavdcodebegin 055
-Function PlannerPsGraph_GetTasksOneUser
+Function PsPlannerGraphRestApi_GetTasksOneUser
 {
 	# App Registration type:		Delegation
 	# App Registration permissions: Group.ReadWrite.All
 
 	$Url = "https://graph.microsoft.com/v1.0/me/planner/tasks"
 	
-	$myOAuth = Get-AzureTokenDelegation `
-									-ClientID $configFile.appsettings.ClientIdWithAccPw `
-									-TenantName $configFile.appsettings.TenantName `
-									-UserName $configFile.appsettings.UserName `
-									-UserPw $configFile.appsettings.UserPw
+	$myOAuth = PsGraphRestApi_GetAzureTokenDelegationWithAccPw `
+									-ClientID $cnfClientIdWithAccPw `
+									-TenantName $cnfTenantName `
+									-UserName $cnfUserName `
+									-UserPw $cnfUserPw
 	
 	$myHeader = @{ 'Authorization' = "$($myOAuth.token_type) $($myOAuth.access_token)" }
 	
@@ -668,9 +656,9 @@ Function PlannerPsGraph_GetTasksOneUser
 ##==> CLI
 
 #gavdcodebegin 018
-Function PlannerPsCli_GetAllPlans
+Function PsPlannerCliM365_GetAllPlans
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner plan list --ownerGroupId "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
 	Write-Host ("-------")
@@ -681,9 +669,9 @@ Function PlannerPsCli_GetAllPlans
 #gavdcodeend 018
 
 #gavdcodebegin 019
-Function PlannerPsCli_GetPlansByQuery
+Function PsPlannerCliM365_GetPlansByQuery
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner plan list --ownerGroupId "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4" `
 						   --output json `
@@ -694,9 +682,9 @@ Function PlannerPsCli_GetPlansByQuery
 #gavdcodeend 019
 
 #gavdcodebegin 020
-Function PlannerPsCli_GetOnePlan
+Function PsPlannerCliM365_GetOnePlan
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner plan get --id "QP5LN-ygA0GnuHHDLKjY-JgACTnA"
 
@@ -705,9 +693,9 @@ Function PlannerPsCli_GetOnePlan
 #gavdcodeend 020
 
 #gavdcodebegin 021
-Function PlannerPsCli_CreateOnePlan
+Function PsPlannerCliM365_CreateOnePlan
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner plan add --title "PlanCreatedWithCLI" `
 						  --ownerGroupId "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
@@ -717,9 +705,9 @@ Function PlannerPsCli_CreateOnePlan
 #gavdcodeend 021
 
 #gavdcodebegin 056
-Function PlannerPsCli_UpdateOnePlan
+Function PsPlannerCliM365_UpdateOnePlan
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner plan set --id "whr8psBnkkuZ6QPl4EfBc5gABQpF" `
 						  --newTitle "PlanUpdatedWithCLI" `
@@ -731,9 +719,9 @@ Function PlannerPsCli_UpdateOnePlan
 #gavdcodeend 056
 
 #gavdcodebegin 057
-Function PlannerPsCli_DeletePlan
+Function PsPlannerCliM365_DeletePlan
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner plan remove --id "whr8psBnkkuZ6QPl4EfBc5gABQpF"
 
@@ -746,11 +734,11 @@ Function PlannerPsCli_DeletePlan
 #gavdcodeend 057
 
 #gavdcodebegin 022
-Function PlannerPsCli_GetAllBuckets
+Function PsPlannerCliM365_GetAllBuckets
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
-	m365 planner bucket list --planId "whr8psBnkkuZ6QPl4EfBc5gABQpF"
+	m365 planner bucket list --planId "JwJcILO6k0aFnTR5iljJ3JgAA8no"
 	Write-Host ("-------")
 	m365 planner bucket list --planTitle "PlanUpdatedWithCLI" `
 							 --ownerGroupName "Chapter18"
@@ -760,9 +748,9 @@ Function PlannerPsCli_GetAllBuckets
 #gavdcodeend 022
 
 #gavdcodebegin 023
-Function PlannerPsCli_GetBucketsByQuery
+Function PsPlannerCliM365_GetBucketsByQuery
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner bucket list --planId "whr8psBnkkuZ6QPl4EfBc5gABQpF" `
 						     --output json `
@@ -773,9 +761,9 @@ Function PlannerPsCli_GetBucketsByQuery
 #gavdcodeend 023
 
 #gavdcodebegin 024
-Function PlannerPsCli_CreateOneBucket
+Function PsPlannerCliM365_CreateOneBucket
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner bucket add --name "BucketCreatedWithCLI" `
 						    --planId "whr8psBnkkuZ6QPl4EfBc5gABQpF" `
@@ -786,9 +774,9 @@ Function PlannerPsCli_CreateOneBucket
 #gavdcodeend 024
 
 #gavdcodebegin 058
-Function PlannerPsCli_GetOneBucket
+Function PsPlannerCliM365_GetOneBucket
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner bucket get --id "r5bnTWCfnUGasiYREdqWPpgAOrFy"
 	Write-Host ("-------")
@@ -804,9 +792,9 @@ Function PlannerPsCli_GetOneBucket
 #gavdcodeend 058
 
 #gavdcodebegin 059
-Function PlannerPsCli_UpdateOneBucket
+Function PsPlannerCliM365_UpdateOneBucket
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner bucket set --id "r5bnTWCfnUGasiYREdqWPpgAOrFy" `
 							--newName "BucketUpdatedWithCLI"
@@ -816,9 +804,9 @@ Function PlannerPsCli_UpdateOneBucket
 #gavdcodeend 059
 
 #gavdcodebegin 060
-Function PlannerPsCli_DeleteBucket
+Function PsPlannerCliM365_DeleteBucket
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner bucket remove --id "r5bnTWCfnUGasiYREdqWPpgAOrFy"
 
@@ -834,9 +822,9 @@ Function PlannerPsCli_DeleteBucket
 #gavdcodeend 060
 
 #gavdcodebegin 025
-Function PlannerPsCli_GetAllTasks
+Function PsPlannerCliM365_GetAllTasks
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task list --planId "whr8psBnkkuZ6QPl4EfBc5gABQpF" `
 						   --bucketId "r5bnTWCfnUGasiYREdqWPpgAOrFy"
@@ -850,9 +838,9 @@ Function PlannerPsCli_GetAllTasks
 #gavdcodeend 025
 
 #gavdcodebegin 026
-Function PlannerPsCli_GetTasksByQuery
+Function PsPlannerCliM365_GetTasksByQuery
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task list --planId "whr8psBnkkuZ6QPl4EfBc5gABQpF" `
 						   --output json `
@@ -863,9 +851,9 @@ Function PlannerPsCli_GetTasksByQuery
 #gavdcodeend 026
 
 #gavdcodebegin 061
-Function PlannerPsCli_CreateOneTask
+Function PsPlannerCliM365_CreateOneTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task add --title "TaskCreatedWithCLI" `
 						  --ownerGroupName "Chapter18" `
@@ -880,9 +868,9 @@ Function PlannerPsCli_CreateOneTask
 #gavdcodeend 061
 
 #gavdcodebegin 062
-Function PlannerPsCli_GetOneTask
+Function PsPlannerCliM365_GetOneTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task get --id "9lrWLlboRkyy3A3cBdQ-9ZgADGQY"
 	Write-Host ("-------")
@@ -896,9 +884,9 @@ Function PlannerPsCli_GetOneTask
 #gavdcodeend 062
 
 #gavdcodebegin 063
-Function PlannerPsCli_UpdateOneTask
+Function PsPlannerCliM365_UpdateOneTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task set --id "9lrWLlboRkyy3A3cBdQ-9ZgADGQY" `
 						  --title "TaskUpdatedWithCLI" `
@@ -911,9 +899,9 @@ Function PlannerPsCli_UpdateOneTask
 #gavdcodeend 063
 
 #gavdcodebegin 064
-Function PlannerPsCli_GetAllCheckListInTask
+Function PsPlannerCliM365_GetAllCheckListInTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task checklistitem list --taskId "9lrWLlboRkyy3A3cBdQ-9ZgADGQY"
 
@@ -922,9 +910,9 @@ Function PlannerPsCli_GetAllCheckListInTask
 #gavdcodeend 064
 
 #gavdcodebegin 065
-Function PlannerPsCli_AddOneCheckListToTask
+Function PsPlannerCliM365_AddOneCheckListToTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task checklistitem add --taskId "9lrWLlboRkyy3A3cBdQ-9ZgADGQY" `
 										--title "Checklist Item CLI" `
@@ -935,9 +923,9 @@ Function PlannerPsCli_AddOneCheckListToTask
 #gavdcodeend 065
 
 #gavdcodebegin 066
-Function PlannerPsCli_DeleteOneCheckListFromTask
+Function PsPlannerCliM365_DeleteOneCheckListFromTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task checklistitem remove --taskId "9lrWLlboRkyy3A3cBdQ-9ZgADGQY" `
 										   --id "8fe00b42-68b5-459e-9a71-8ff56bc96bee" `
@@ -948,9 +936,9 @@ Function PlannerPsCli_DeleteOneCheckListFromTask
 #gavdcodeend 066
 
 #gavdcodebegin 067
-Function PlannerPsCli_GetAllAttachmentsInTask
+Function PsPlannerCliM365_GetAllAttachmentsInTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task reference list --taskId "9lrWLlboRkyy3A3cBdQ-9ZgADGQY"
 
@@ -959,9 +947,9 @@ Function PlannerPsCli_GetAllAttachmentsInTask
 #gavdcodeend 067
 
 #gavdcodebegin 068
-Function PlannerPsCli_AddOneAttachmentToTask
+Function PsPlannerCliM365_AddOneAttachmentToTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task reference add --taskId "9lrWLlboRkyy3A3cBdQ-9ZgADGQY" `
 									--url "https://guitaca.com" `
@@ -973,9 +961,9 @@ Function PlannerPsCli_AddOneAttachmentToTask
 #gavdcodeend 068
 
 #gavdcodebegin 069
-Function PlannerPsCli_DeleteOneAttachmentFromTask
+Function PsPlannerCliM365_DeleteOneAttachmentFromTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task reference remove --taskId "9lrWLlboRkyy3A3cBdQ-9ZgADGQY" `
 									   --alias "Guitaca Publishers" `
@@ -989,9 +977,9 @@ Function PlannerPsCli_DeleteOneAttachmentFromTask
 #gavdcodeend 069
 
 #gavdcodebegin 070
-Function PlannerPsCli_DeleteOneTask
+Function PsPlannerCliM365_DeleteOneTask
 {
-	LoginPsCLI
+	PsCliM365_LoginWithAccPw $cnfUserName $cnfUserPw $cnfClientIdWithAccPw
 	
 	m365 planner task remove --id "9lrWLlboRkyy3A3cBdQ-9ZgADGQY"
 
@@ -1009,44 +997,48 @@ Function PlannerPsCli_DeleteOneTask
 ##==> PnP
 
 #gavdcodebegin 027
-Function PlannerPsPnP_GetPlansByGroup
+Function PsPlannerPnP_GetPlansByGroup
 {
 	# App Registration permissions: Group.Read.All
 
-	LoginPsPnPPowerShell
-	
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
+
 	Get-PnPPlannerPlan -Group "Chapter18"
 }
 #gavdcodeend 027
 
 #gavdcodebegin 028
-Function PlannerPsPnP_GetPlansByGroupAndPlan
+Function PsPlannerPnP_GetPlansByGroupAndPlan
 {
 	# App Registration permissions: Group.Read.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerPlan -Group "Chapter18" -Identity "Plan01"
 }
 #gavdcodeend 028
 
 #gavdcodebegin 029
-Function PlannerPsPnP_CreatePlan
+Function PsPlannerPnP_CreatePlan
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	New-PnPPlannerPlan -Group "Chapter18" -Title "PlanCreatedWithPnP"
 }
 #gavdcodeend 029
 
 #gavdcodebegin 030
-Function PlannerPsPnP_UpdatePlanByPlan
+Function PsPlannerPnP_UpdatePlanByPlan
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Set-PnPPlannerPlan -Group "Chapter18" `
 					   -Plan "PlanCreatedWithPnP" `
@@ -1055,11 +1047,12 @@ Function PlannerPsPnP_UpdatePlanByPlan
 #gavdcodeend 030
 
 #gavdcodebegin 031
-Function PlannerPsPnP_UpdatePlanById
+Function PsPlannerPnP_UpdatePlanById
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Set-PnPPlannerPlan -PlanId "O3tqA06E_kaVBs0lVOAgbZgAAsQq" `
 					   -Title "PlanUpdatedWithPnPById"
@@ -1067,11 +1060,12 @@ Function PlannerPsPnP_UpdatePlanById
 #gavdcodeend 031
 
 #gavdcodebegin 032
-Function PlannerPsPnP_DeletePlan
+Function PsPlannerPnP_DeletePlan
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Remove-PnPPlannerPlan -Group "Chapter18" `
 						  -Identity "O3tqA06E_kaVBs0lVOAgbZgAAsQq"
@@ -1079,33 +1073,36 @@ Function PlannerPsPnP_DeletePlan
 #gavdcodeend 032
 
 #gavdcodebegin 033
-Function PlannerPsPnP_GetBucketsByGroupAndPlan
+Function PsPlannerPnP_GetBucketsByGroupAndPlan
 {
 	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerBucket -Group "Chapter18" -Plan "AnotherPlanCreatedWithPnP"
 }
 #gavdcodeend 033
 
 #gavdcodebegin 034
-Function PlannerPsPnP_GetBucketsById
+Function PsPlannerPnP_GetBucketsById
 {
 	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerBucket -PlanId "lgyRpYpGEUmmXr0fzohpCZgAB_GF"
 }
 #gavdcodeend 034
 
 #gavdcodebegin 035
-Function PlannerPsPnP_CreateBucketById
+Function PsPlannerPnP_CreateBucketById
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Add-PnPPlannerBucket -PlanId "lgyRpYpGEUmmXr0fzohpCZgAB_GF" `
 						 -Name "BucketCreatedWithPnP"
@@ -1113,11 +1110,12 @@ Function PlannerPsPnP_CreateBucketById
 #gavdcodeend 035
 
 #gavdcodebegin 036
-Function PlannerPsPnP_CreateBucketByGroupAndPlan
+Function PsPlannerPnP_CreateBucketByGroupAndPlan
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Add-PnPPlannerBucket -Group "Chapter18" `
 						 -Plan "AnotherPlanCreatedWithPnP" `
@@ -1126,11 +1124,12 @@ Function PlannerPsPnP_CreateBucketByGroupAndPlan
 #gavdcodeend 036
 
 #gavdcodebegin 037
-Function PlannerPsPnP_UpdateBucketById
+Function PsPlannerPnP_UpdateBucketById
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Set-PnPPlannerBucket -PlanId "lgyRpYpGEUmmXr0fzohpCZgAB_GF" `
 						 -Bucket "BucketCreatedWithPnP" `
@@ -1139,11 +1138,12 @@ Function PlannerPsPnP_UpdateBucketById
 #gavdcodeend 037
 
 #gavdcodebegin 038
-Function PlannerPsPnP_UpdateBucketByGroupAndPlan
+Function PsPlannerPnP_UpdateBucketByGroupAndPlan
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Set-PnPPlannerBucket -Group "Chapter18" `
 						 -Plan "AnotherPlanCreatedWithPnP" `
@@ -1155,11 +1155,12 @@ Function PlannerPsPnP_UpdateBucketByGroupAndPlan
 #039 removed from the source code (update 2023-03)
 
 #gavdcodebegin 040
-Function PlannerPsPnP_DeleteBucketByGroupAndPlan
+Function PsPlannerPnP_DeleteBucketByGroupAndPlan
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Remove-PnPPlannerBucket -Group "Chapter18" `
 							-Plan "AnotherPlanCreatedWithPnP" `
@@ -1168,33 +1169,36 @@ Function PlannerPsPnP_DeleteBucketByGroupAndPlan
 #gavdcodeend 040
 
 #gavdcodebegin 041
-Function PlannerPsPnP_GetTasksByPlanId
+Function PsPlannerPnP_GetTasksByPlanId
 {
 	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerTask -PlanId "lgyRpYpGEUmmXr0fzohpCZgAB_GF"
 }
 #gavdcodeend 041
 
 #gavdcodebegin 042
-Function PlannerPsPnP_GetTasksByBucketId
+Function PsPlannerPnP_GetTasksByBucketId
 {
 	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerTask -Bucket "BsZfkoF2iEmWB23IdPDxEJgAKDhP"
 }
 #gavdcodeend 042
 
 #gavdcodebegin 043
-Function PlannerPsPnP_GetTasksByTaskId
+Function PsPlannerPnP_GetTasksByTaskId
 {
 	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerTask -TaskId "tVlliyvnL0GqamF0wkzGeZgAD7vF" `
 					   -IncludeDetails `
@@ -1203,11 +1207,12 @@ Function PlannerPsPnP_GetTasksByTaskId
 #gavdcodeend 043
 
 #gavdcodebegin 044
-Function PlannerPsPnP_GetTasksByGroupAndPlan
+Function PsPlannerPnP_GetTasksByGroupAndPlan
 {
 	# App Registration permissions: Group.Read.All or Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerTask -Group "Chapter18" `
 					   -Plan "AnotherPlanCreatedWithPnP"
@@ -1215,11 +1220,12 @@ Function PlannerPsPnP_GetTasksByGroupAndPlan
 #gavdcodeend 044
 
 #gavdcodebegin 045
-Function PlannerPsPnP_CreateTaskByGroupAndPlan
+Function PsPlannerPnP_CreateTaskByGroupAndPlan
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Add-PnPPlannerTask -Group "Chapter18" `
 					   -Plan "AnotherPlanCreatedWithPnP" `
@@ -1230,11 +1236,12 @@ Function PlannerPsPnP_CreateTaskByGroupAndPlan
 #gavdcodeend 045
 
 #gavdcodebegin 046
-Function PlannerPsPnP_CreateTaskById
+Function PsPlannerPnP_CreateTaskById
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Add-PnPPlannerTask -PlanId "lgyRpYpGEUmmXr0fzohpCZgAB_GF" `
 					   -Bucket "BucketUpdatedWithPnP" `
@@ -1243,11 +1250,12 @@ Function PlannerPsPnP_CreateTaskById
 #gavdcodeend 046
 
 #gavdcodebegin 047
-Function PlannerPsPnP_UpdateTaskById
+Function PsPlannerPnP_UpdateTaskById
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Set-PnPPlannerTask -TaskId "tVlliyvnL0GqamF0wkzGeZgAD7vF" `
 					   -Title "TaskUpdatedWithPnP" `
@@ -1256,29 +1264,32 @@ Function PlannerPsPnP_UpdateTaskById
 #gavdcodeend 047
 
 #gavdcodebegin 048
-Function PlannerPsPnP_DeleteTaskById
+Function PsPlannerPnP_DeleteTaskById
 {
 	# App Registration permissions: Group.ReadWrite.All
 
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Remove-PnPPlannerTask -Task "tVlliyvnL0GqamF0wkzGeZgAD7vF"
 }
 #gavdcodeend 048
 
 #gavdcodebegin 049
-Function PlannerPsPnP_GetUserPolicy
+Function PsPlannerPnP_GetUserPolicy
 {
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerUserPolicy -Identity "user@domain.onmicrosoft.com"
 }
 #gavdcodeend 049
 
 #gavdcodebegin 050
-Function PlannerPsPnP_SetUserPolicy
+Function PsPlannerPnP_SetUserPolicy
 {
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Set-PnPPlannerUserPolicy -Identity "user@domain.onmicrosoft.com" `
 							 -BlockDeleteTasksNotCreatedBySelf $true
@@ -1286,18 +1297,20 @@ Function PlannerPsPnP_SetUserPolicy
 #gavdcodeend 050
 
 #gavdcodebegin 051
-Function PlannerPsPnP_GetConfiguration
+Function PsPlannerPnP_GetConfiguration
 {
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Get-PnPPlannerConfiguration
 }
 #gavdcodeend 051
 
 #gavdcodebegin 052
-Function PlannerPsPnP_SetConfiguration
+Function PsPlannerPnP_SetConfiguration
 {
-	LoginPsPnPPowerShell
+	PsPnpPowerShell_LoginWithAccPw `
+				$cnfUserName $cnfUserPw $cnfSiteCollUrl $cnfClientIdWithAccPw
 	
 	Set-PnPPlannerConfiguration -AllowCalendarSharing $false
 }
@@ -1308,12 +1321,12 @@ Function PlannerPsPnP_SetConfiguration
 ##==> Graph SDK
 
 #gavdcodebegin 071
-Function PlannerPsGraphSdk_GetAllPlansInGroup
+Function PsPlannerGraphSdk_GetAllPlansInGroup
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgGroupPlannerPlan -GroupId "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
 
@@ -1322,12 +1335,12 @@ Function PlannerPsGraphSdk_GetAllPlansInGroup
 #gavdcodeend 071
 
 #gavdcodebegin 072
-Function PlannerPsGraphSdk_GetOnePlan
+Function PsPlannerGraphSdk_GetOnePlan
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgGroupPlannerPlan -GroupId "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4" `
 						   -PlannerPlanId "QP5LN-ygA0GnuHHDLKjY-JgACTnA"
@@ -1339,12 +1352,12 @@ Function PlannerPsGraphSdk_GetOnePlan
 #gavdcodeend 072
 
 #gavdcodebegin 073
-Function PlannerPsGraphSdk_CreatePlanWithBodyParameters
+Function PsPlannerGraphSdk_CreatePlanWithBodyParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$PlanParameters = @{
 		Owner = "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
@@ -1357,12 +1370,11 @@ Function PlannerPsGraphSdk_CreatePlanWithBodyParameters
 #gavdcodeend 073
 
 #gavdcodebegin 074
-Function PlannerPsGraphSdk_CreatePlanWithParameters
+Function PsPlannerGraphSdk_CreatePlanWithParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	New-MgPlannerPlan -Owner "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4" `
 					  -Title "PlanCreatedWithGraphSDKParams"
@@ -1372,12 +1384,12 @@ Function PlannerPsGraphSdk_CreatePlanWithParameters
 #gavdcodeend 074
 
 #gavdcodebegin 075
-Function PlannerPsGraphSdk_UpdatePlanWithBodyParameters
+Function PsPlannerGraphSdk_UpdatePlanWithBodyParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$PlanParameters = @{
 		Title = "PlanUpdatedWithGraphSDKParams"
@@ -1390,12 +1402,12 @@ Function PlannerPsGraphSdk_UpdatePlanWithBodyParameters
 #gavdcodeend 075
 
 #gavdcodebegin 076
-Function PlannerPsGraphSdk_DeletePlan
+Function PsPlannerGraphSdk_DeletePlan
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$planId = "465_rAMzX0eeXcvMIR8945gADbIY"
 	$myPlan = Get-MgPlannerPlan -PlannerPlanId $planId
@@ -1408,12 +1420,12 @@ Function PlannerPsGraphSdk_DeletePlan
 #gavdcodeend 076
 
 #gavdcodebegin 077
-Function PlannerPsGraphSdk_GetAllBucketsInPlan
+Function PsPlannerGraphSdk_GetAllBucketsInPlan
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgPlannerPlanBucket -PlannerPlanId "kCJFZHc0jEqn5wBDnPRQv5gAH1_n"
 
@@ -1422,12 +1434,12 @@ Function PlannerPsGraphSdk_GetAllBucketsInPlan
 #gavdcodeend 077
 
 #gavdcodebegin 078
-Function PlannerPsGraphSdk_GetOneBucket
+Function PsPlannerGraphSdk_GetOneBucket
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgPlannerBucket -PlannerBucketId "sJQ8XSFfRUqvL6k_0OG1xpgAGUgE"
 
@@ -1436,12 +1448,12 @@ Function PlannerPsGraphSdk_GetOneBucket
 #gavdcodeend 078
 
 #gavdcodebegin 079
-Function PlannerPsGraphSdk_CreateBucketWithBodyParameters
+Function PsPlannerGraphSdk_CreateBucketWithBodyParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$bucketParameters = @{
 		Name = "BucketCreatedWithGraphSDKBodyParams"
@@ -1455,12 +1467,12 @@ Function PlannerPsGraphSdk_CreateBucketWithBodyParameters
 #gavdcodeend 079
 
 #gavdcodebegin 080
-Function PlannerPsGraphSdk_CreateBucketWithParameters
+Function PsPlannerGraphSdk_CreateBucketWithParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	New-MgPlannerBucket -PlanId "kCJFZHc0jEqn5wBDnPRQv5gAH1_n" `
 						-Name "BucketCreatedWithGraphSDKParamsAA"
@@ -1470,12 +1482,12 @@ Function PlannerPsGraphSdk_CreateBucketWithParameters
 #gavdcodeend 080
 
 #gavdcodebegin 081
-Function PlannerPsGraphSdk_UpdateBucketWithBodyParameters
+Function PsPlannerGraphSdk_UpdateBucketWithBodyParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$bucketParameters = @{
 		Name = "BucketUpdatedWithGraphSDKBodyParams"
@@ -1488,12 +1500,12 @@ Function PlannerPsGraphSdk_UpdateBucketWithBodyParameters
 #gavdcodeend 081
 
 #gavdcodebegin 082
-Function PlannerPsGraphSdk_DeleteBucket
+Function PsPlannerGraphSdk_DeleteBucket
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$bucketId = "RqSFxZYBF06Y8TslksbV9ZgAP9-6"
 	$myBucket = Get-MgPlannerBucket -PlannerBucketId $bucketId
@@ -1506,12 +1518,12 @@ Function PlannerPsGraphSdk_DeleteBucket
 #gavdcodeend 082
 
 #gavdcodebegin 083
-Function PlannerPsGraphSdk_GetAllTasksInPlan
+Function PsPlannerGraphSdk_GetAllTasksInPlan
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgPlannerPlanTask -PlannerPlanId "kCJFZHc0jEqn5wBDnPRQv5gAH1_n"
 
@@ -1520,12 +1532,12 @@ Function PlannerPsGraphSdk_GetAllTasksInPlan
 #gavdcodeend 083
 
 #gavdcodebegin 084
-Function PlannerPsGraphSdk_GetAllTasksInBucket
+Function PsPlannerGraphSdk_GetAllTasksInBucket
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgPlannerBucketTask -PlannerBucketId "1JSb34_9e0y71BgN-Z7jeJgAGdI5"
 
@@ -1534,12 +1546,12 @@ Function PlannerPsGraphSdk_GetAllTasksInBucket
 #gavdcodeend 084
 
 #gavdcodebegin 085
-Function PlannerPsGraphSdk_GetOneTask
+Function PsPlannerGraphSdk_GetOneTask
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgPlannerTask -PlannerTaskId "h-WwrIBusEW906Q9asal8ZgALG8c"
 
@@ -1548,12 +1560,12 @@ Function PlannerPsGraphSdk_GetOneTask
 #gavdcodeend 085
 
 #gavdcodebegin 086
-Function PlannerPsGraphSdk_GetOneTaskDetail
+Function PsPlannerGraphSdk_GetOneTaskDetail
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgPlannerTaskDetail -PlannerTaskId "h-WwrIBusEW906Q9asal8ZgALG8c"
 
@@ -1562,12 +1574,12 @@ Function PlannerPsGraphSdk_GetOneTaskDetail
 #gavdcodeend 086
 
 #gavdcodebegin 087
-Function PlannerPsGraphSdk_CreateTaskWithBodyParameters
+Function PsPlannerGraphSdk_CreateTaskWithBodyParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$bucketParameters = @{
 		PlanId = "kCJFZHc0jEqn5wBDnPRQv5gAH1_n"
@@ -1581,12 +1593,12 @@ Function PlannerPsGraphSdk_CreateTaskWithBodyParameters
 #gavdcodeend 087
 
 #gavdcodebegin 088
-Function PlannerPsGraphSdk_CreateTaskWithParameters
+Function PsPlannerGraphSdk_CreateTaskWithParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	New-MgPlannerTask -PlanId "kCJFZHc0jEqn5wBDnPRQv5gAH1_n" `
 					  -BucketId "1JSb34_9e0y71BgN-Z7jeJgAGdI5" `
@@ -1597,12 +1609,12 @@ Function PlannerPsGraphSdk_CreateTaskWithParameters
 #gavdcodeend 088
 
 #gavdcodebegin 089
-Function PlannerPsGraphSdk_UpdateTaskWithBodyParameters
+Function PsPlannerGraphSdk_UpdateTaskWithBodyParameters
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$bucketParameters = @{
 		Title = "BucketUpdatedWithGraphSDKBodyParams"
@@ -1619,12 +1631,12 @@ Function PlannerPsGraphSdk_UpdateTaskWithBodyParameters
 #gavdcodeend 089
 
 #gavdcodebegin 090
-Function PlannerPsGraphSdk_DeleteTask
+Function PsPlannerGraphSdk_DeleteTask
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	$taskId = "cs8qYcpUSEKaIjuzePRtQJgAKt0x"
 	$myTask = Get-MgPlannerTask -PlannerTaskId $TaskId
@@ -1637,12 +1649,12 @@ Function PlannerPsGraphSdk_DeleteTask
 #gavdcodeend 090
 
 #gavdcodebegin 091
-Function PlannerPsGraphSdk_GetPlannerForUser
+Function PsPlannerGraphSdk_GetPlannerForUser
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgUserPlanner -UserId "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
 	Get-MgUserPlanner -UserId "user@domain.onmicrosoft.com"
@@ -1652,12 +1664,12 @@ Function PlannerPsGraphSdk_GetPlannerForUser
 #gavdcodeend 091
 
 #gavdcodebegin 092
-Function PlannerPsGraphSdk_GetPlansForUser
+Function PsPlannerGraphSdk_GetPlansForUser
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgUserPlannerPlan -UserId "5f41785a-87f6-4c70-9e5f-20da7e0e7ba4"
 	Get-MgUserPlannerPlan -UserId "user@domain.onmicrosoft.com"
@@ -1667,12 +1679,12 @@ Function PlannerPsGraphSdk_GetPlansForUser
 #gavdcodeend 092
 
 #gavdcodebegin 093
-Function PlannerPsGraphSdk_GetTasksForUser
+Function PsPlannerGraphSdk_GetTasksForUser
 {
-	LoginPsGraphSDKWithAccPw -TenantName $configFile.appsettings.TenantName `
-							 -ClientID $configFile.appsettings.ClientIdWithAccPw `
-							 -UserName $configFile.appsettings.UserName `
-							 -UserPw $configFile.appsettings.UserPw
+	PsGraphPowerShellSdk_LoginWithCertificateThumbprint `
+							 -TenantName $cnfTenantName `
+							 -ClientID $cnfClientIdWithCert `
+							 -CertificateThumbprint $cnfCertificateThumbprint
 
 	Get-MgUserPlannerTask -UserId "acc28fcb-5261-47f8-960b-715d2f98a431"
 	Get-MgUserPlannerTask -UserId "user@domain.onmicrosoft.com"
@@ -1686,114 +1698,130 @@ Function PlannerPsGraphSdk_GetTasksForUser
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
 
 # *** Latest Source Code Index: 093 ***
 
 #------------------------ Using Microsoft Graph PowerShell
 
-#PlannerPsGraph_GetAllPlansForOneGroup
-#PlannerPsGraph_CreateOnePlan
-#PlannerPsGraph_GetOnePlan
-#PlannerPsGraph_UpdateOnePlan
-#PlannerPsGraph_GetOnePlanDetails
-#PlannerPsGraph_UpdateOnePlanDetails
-#PlannerPsGraph_GetAllBucketsInOnePlan
-#PlannerPsGraph_GetOneBucket
-#PlannerPsGraph_CreateOneBucket
-#PlannerPsGraph_UpdateOneBucket
-#PlannerPsGraph_DeleteOneBucket
-#PlannerPsGraph_GetAllTasksInOneBucket
-#PlannerPsGraph_GetOneTask
-#PlannerPsGraph_GetOneTaskDetails
-#PlannerPsGraph_UpdateOneTaskDetails
-#PlannerPsGraph_GetTasksOneUser
-#PlannerPsGraph_CreateOneTask
-#PlannerPsGraph_UpdateOneTask
-#PlannerPsGraph_DeleteOneTask
-#PlannerPsGraph_DeleteOnePlan
+#PsPlannerGraphRestApi_GetAllPlansForOneGroup
+#PsPlannerGraphRestApi_CreateOnePlan
+#PsPlannerGraphRestApi_GetOnePlan
+#PsPlannerGraphRestApi_UpdateOnePlan
+#PsPlannerGraphRestApi_GetOnePlanDetails
+#PsPlannerGraphRestApi_UpdateOnePlanDetails
+#PsPlannerGraphRestApi_GetAllBucketsInOnePlan
+#PsPlannerGraphRestApi_GetOneBucket
+#PsPlannerGraphRestApi_CreateOneBucket
+#PsPlannerGraphRestApi_UpdateOneBucket
+#PsPlannerGraphRestApi_DeleteOneBucket
+#PsPlannerGraphRestApi_GetAllTasksInOneBucket
+#PsPlannerGraphRestApi_GetOneTask
+#PsPlannerGraphRestApi_GetOneTaskDetails
+#PsPlannerGraphRestApi_UpdateOneTaskDetails
+#PsPlannerGraphRestApi_GetTasksOneUser
+#PsPlannerGraphRestApi_CreateOneTask
+#PsPlannerGraphRestApi_UpdateOneTask
+#PsPlannerGraphRestApi_DeleteOneTask
+#PsPlannerGraphRestApi_DeleteOnePlan
 
 #------------------------ Using PnP CLI
 
-#PlannerPsCli_GetAllPlans
-#PlannerPsCli_GetPlansByQuery
-#PlannerPsCli_GetOnePlan
-#PlannerPsCli_CreateOnePlan
-#PlannerPsCli_UpdateOnePlan
-#PlannerPsCli_DeletePlan
-#PlannerPsCli_GetAllBuckets
-#PlannerPsCli_GetBucketsByQuery
-#PlannerPsCli_CreateOneBucket
-#PlannerPsCli_GetOneBucket
-#PlannerPsCli_UpdateOneBucket
-#PlannerPsCli_DeleteBucket
-#PlannerPsCli_GetAllTasks
-#PlannerPsCli_GetTasksByQuery
-#PlannerPsCli_CreateOneTask
-#PlannerPsCli_GetOneTask
-#PlannerPsCli_UpdateOneTask
-#PlannerPsCli_GetAllCheckListInTask
-#PlannerPsCli_AddOneCheckListToTask
-#PlannerPsCli_DeleteOneCheckListFromTask
-#PlannerPsCli_GetAllAttachmentsInTask
-#PlannerPsCli_AddOneAttachmentToTask
-#PlannerPsCli_DeleteOneAttachmentFromTask
-#PlannerPsCli_DeleteOneTask
+#PsPlannerCliM365_GetAllPlans
+#PsPlannerCliM365_GetPlansByQuery
+#PsPlannerCliM365_GetOnePlan
+#PsPlannerCliM365_CreateOnePlan
+#PsPlannerCliM365_UpdateOnePlan
+#PsPlannerCliM365_DeletePlan
+#PsPlannerCliM365_GetAllBuckets
+#PsPlannerCliM365_GetBucketsByQuery
+#PsPlannerCliM365_CreateOneBucket
+#PsPlannerCliM365_GetOneBucket
+#PsPlannerCliM365_UpdateOneBucket
+#PsPlannerCliM365_DeleteBucket
+#PsPlannerCliM365_GetAllTasks
+#PsPlannerCliM365_GetTasksByQuery
+#PsPlannerCliM365_CreateOneTask
+#PsPlannerCliM365_GetOneTask
+#PsPlannerCliM365_UpdateOneTask
+#PsPlannerCliM365_GetAllCheckListInTask
+#PsPlannerCliM365_AddOneCheckListToTask
+#PsPlannerCliM365_DeleteOneCheckListFromTask
+#PsPlannerCliM365_GetAllAttachmentsInTask
+#PsPlannerCliM365_AddOneAttachmentToTask
+#PsPlannerCliM365_DeleteOneAttachmentFromTask
+#PsPlannerCliM365_DeleteOneTask
 
 #------------------------ Using PowerShell PnP
 
-#PlannerPsPnP_GetPlansByGroup
-#PlannerPsPnP_GetPlansByGroupAndPlan
-#PlannerPsPnP_CreatePlan
-#PlannerPsPnP_UpdatePlanByPlan
-#PlannerPsPnP_UpdatePlanById
-#PlannerPsPnP_DeletePlan
-#PlannerPsPnP_GetBucketsByGroupAndPlan
-#PlannerPsPnP_GetBucketsById
-#PlannerPsPnP_CreateBucketById
-#PlannerPsPnP_CreateBucketByGroupAndPlan
-#PlannerPsPnP_UpdateBucketById
-#PlannerPsPnP_UpdateBucketByGroupAndPlan
-#PlannerPsPnP_DeleteBucketByGroupAndPlan
-#PlannerPsPnP_GetTasksByPlanId
-#PlannerPsPnP_GetTasksByBucketId
-#PlannerPsPnP_GetTasksByTaskId
-#PlannerPsPnP_GetTasksByGroupAndPlan
-#PlannerPsPnP_CreateTaskByGroupAndPlan
-#PlannerPsPnP_CreateTaskById
-#PlannerPsPnP_UpdateTaskById
-#PlannerPsPnP_DeleteTaskById
-#PlannerPsPnP_GetUserPolicy
-#PlannerPsPnP_SetUserPolicy
-#PlannerPsPnP_GetConfiguration
-#PlannerPsPnP_SetConfiguration
-#PlannerPsPnP_CreatePlannerRoster
+#PsPlannerPnP_GetPlansByGroup
+#PsPlannerPnP_GetPlansByGroupAndPlan
+#PsPlannerPnP_CreatePlan
+#PsPlannerPnP_UpdatePlanByPlan
+#PsPlannerPnP_UpdatePlanById
+#PsPlannerPnP_DeletePlan
+#PsPlannerPnP_GetBucketsByGroupAndPlan
+#PsPlannerPnP_GetBucketsById
+#PsPlannerPnP_CreateBucketById
+#PsPlannerPnP_CreateBucketByGroupAndPlan
+#PsPlannerPnP_UpdateBucketById
+#PsPlannerPnP_UpdateBucketByGroupAndPlan
+#PsPlannerPnP_DeleteBucketByGroupAndPlan
+#PsPlannerPnP_GetTasksByPlanId
+#PsPlannerPnP_GetTasksByBucketId
+#PsPlannerPnP_GetTasksByTaskId
+#PsPlannerPnP_GetTasksByGroupAndPlan
+#PsPlannerPnP_CreateTaskByGroupAndPlan
+#PsPlannerPnP_CreateTaskById
+#PsPlannerPnP_UpdateTaskById
+#PsPlannerPnP_DeleteTaskById
+#PsPlannerPnP_GetUserPolicy
+#PsPlannerPnP_SetUserPolicy
+#PsPlannerPnP_GetConfiguration
+#PsPlannerPnP_SetConfiguration
+#PsPlannerPnP_CreatePlannerRoster
 
 #------------------------ Using Microsoft Graph PowerShell SDK
 
-#PlannerPsGraphSdk_GetAllPlansInGroup
-#PlannerPsGraphSdk_GetOnePlan
-#PlannerPsGraphSdk_CreatePlanWithBodyParameters
-#PlannerPsGraphSdk_CreatePlanWithParameters
-#PlannerPsGraphSdk_UpdatePlanWithBodyParameters
-#PlannerPsGraphSdk_DeletePlan
-#PlannerPsGraphSdk_GetAllBucketsInPlan
-#PlannerPsGraphSdk_GetOneBucket
-#PlannerPsGraphSdk_CreateBucketWithBodyParameters
-#PlannerPsGraphSdk_CreateBucketWithParameters
-#PlannerPsGraphSdk_UpdateBucketWithBodyParameters
-#PlannerPsGraphSdk_DeleteBucket
-#PlannerPsGraphSdk_GetAllTasksInPlan
-#PlannerPsGraphSdk_GetAllTasksInBucket
-#PlannerPsGraphSdk_GetOneTask
-#PlannerPsGraphSdk_GetOneTaskDetail
-#PlannerPsGraphSdk_CreateTaskWithBodyParameters
-#PlannerPsGraphSdk_CreateTaskWithParameters
-#PlannerPsGraphSdk_UpdateTaskWithBodyParameters
-#PlannerPsGraphSdk_DeleteTask
-#PlannerPsGraphSdk_GetPlannerForUser
-#PlannerPsGraphSdk_GetPlansForUser
-#PlannerPsGraphSdk_GetTasksForUser
+#PsPlannerGraphSdk_GetAllPlansInGroup
+#PsPlannerGraphSdk_GetOnePlan
+#PsPlannerGraphSdk_CreatePlanWithBodyParameters
+#PsPlannerGraphSdk_CreatePlanWithParameters
+#PsPlannerGraphSdk_UpdatePlanWithBodyParameters
+#PsPlannerGraphSdk_DeletePlan
+#PsPlannerGraphSdk_GetAllBucketsInPlan
+#PsPlannerGraphSdk_GetOneBucket
+#PsPlannerGraphSdk_CreateBucketWithBodyParameters
+#PsPlannerGraphSdk_CreateBucketWithParameters
+#PsPlannerGraphSdk_UpdateBucketWithBodyParameters
+#PsPlannerGraphSdk_DeleteBucket
+#PsPlannerGraphSdk_GetAllTasksInPlan
+#PsPlannerGraphSdk_GetAllTasksInBucket
+#PsPlannerGraphSdk_GetOneTask
+#PsPlannerGraphSdk_GetOneTaskDetail
+#PsPlannerGraphSdk_CreateTaskWithBodyParameters
+#PsPlannerGraphSdk_CreateTaskWithParameters
+#PsPlannerGraphSdk_UpdateTaskWithBodyParameters
+#PsPlannerGraphSdk_DeleteTask
+#PsPlannerGraphSdk_GetPlannerForUser
+#PsPlannerGraphSdk_GetPlansForUser
+#PsPlannerGraphSdk_GetTasksForUser
 
 Write-Host "Done" 
 
