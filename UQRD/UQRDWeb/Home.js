@@ -1,4 +1,5 @@
-﻿//gavdcodebegin 02
+﻿//gavdcodebegin 002
+// Solution Deprecated by Microsoft
 (function () {
     "use strict"
 
@@ -47,4 +48,4 @@
         }
     }
 })()
-//gavdcodeend 02
+//gavdcodeend 002
