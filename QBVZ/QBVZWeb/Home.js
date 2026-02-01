@@ -2,16 +2,18 @@
 (function () {
     "use strict"
 
-//gavdcodebegin 02
+//gavdcodebegin 002
+// Solution Deprecated by Microsoft
     Office.initialize = function (reason) {
         $(document).ready(function () {
             $('#btnGetCity').text("Get City")
             $('#btnGetCity').click(GetCity)
         })
     }
-//gavdcodeend 02
+//gavdcodeend 002
 
-//gavdcodebegin 03
+//gavdcodebegin 003
+    // Solution Deprecated by Microsoft
     function GetCity() {
         var ServiceUrl = "http://ziptasticapi.com/"
 
@@ -39,14 +41,15 @@
             }
         )
     }
-//gavdcodeend 03
+//gavdcodeend 003
 
-//gavdcodebegin 04
+//gavdcodebegin 004
+    // Solution Deprecated by Microsoft
     async function CallGetAsync(urlToCall) {
         var urlResponse = await fetch(urlToCall)
         var responseData = await urlResponse.json()
         return responseData
     }
-//gavdcodeend 04
+//gavdcodeend 004
 
 })()
