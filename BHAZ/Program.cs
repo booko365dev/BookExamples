@@ -6,7 +6,7 @@ using P = DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Drawing;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 6.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 10.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
 
@@ -24,30 +24,30 @@ static void PowerPointOpenXml_CreatePresentation()
     PresentationPart myPresentationPart = myPowerPointDoc.AddPresentationPart();
     myPresentationPart.Presentation = new Presentation();
 
-    SlideMasterIdList mySlideMasterIdList = new SlideMasterIdList(
+    SlideMasterIdList mySlideMasterIdList = new(
                     new SlideMasterId()
                     {
                         Id = (UInt32Value)2147483648U,
                         RelationshipId = "rId1"
                     });
-    SlideIdList mySlideIdList = new SlideIdList(
+    SlideIdList mySlideIdList = new(
                     new SlideId()
                     {
                         Id = (UInt32Value)256U,
                         RelationshipId = "rId2"
                     });
-    SlideSize mySlideSize = new SlideSize()
+    SlideSize mySlideSize = new()
     {
         Cx = 9144000,
         Cy = 6858000,
         Type = SlideSizeValues.Screen4x3
     };
-    NotesSize myNotesSize = new NotesSize()
+    NotesSize myNotesSize = new()
     {
         Cx = 6858000,
         Cy = 9144000
     };
-    DefaultTextStyle myDefaultTextStyle = new DefaultTextStyle();
+    DefaultTextStyle myDefaultTextStyle = new();
 
     myPresentationPart.Presentation.Append(mySlideMasterIdList,
                                     mySlideIdList, mySlideSize,
@@ -124,7 +124,7 @@ static SlidePart PPCreateSlidePart(PresentationPart PPPresentationPart)
 static SlideLayoutPart PPCreateSlideLayoutPart(SlidePart PPSlidePart)
 {
     SlideLayoutPart mySlideLayoutPart = PPSlidePart.AddNewPart<SlideLayoutPart>("rId1");
-    SlideLayout mySlideLayout = new SlideLayout(
+    SlideLayout mySlideLayout = new(
     new CommonSlideData(new ShapeTree(
         new P.NonVisualGroupShapeProperties(
         new P.NonVisualDrawingProperties()
@@ -164,7 +164,7 @@ static SlideMasterPart PPCreateSlideMasterPart(SlideLayoutPart PPSlideLayoutPart
 {
     SlideMasterPart mySlideMasterPart =
                         PPSlideLayoutPart.AddNewPart<SlideMasterPart>("rId1");
-    SlideMaster mySlideMaster = new SlideMaster(
+    SlideMaster mySlideMaster = new(
     new CommonSlideData(new ShapeTree(
         new P.NonVisualGroupShapeProperties(
         new P.NonVisualDrawingProperties()
@@ -226,12 +226,12 @@ static SlideMasterPart PPCreateSlideMasterPart(SlideLayoutPart PPSlideLayoutPart
 static ThemePart PPCreateTheme(SlideMasterPart PPSlideMasterPart)
 {
     ThemePart myThemePart = PPSlideMasterPart.AddNewPart<ThemePart>("rId5");
-    D.Theme myTheme = new D.Theme()
+    D.Theme myTheme = new()
     {
         Name = "My Theme"
     };
 
-    D.ThemeElements myThemeElements = new D.ThemeElements(
+    D.ThemeElements myThemeElements = new(
     new D.ColorScheme(
         new D.Dark1Color(new D.SystemColor()
         {
@@ -490,7 +490,7 @@ static void PowerPointOpenXml_FindAllSlideTitles()
 
         if (myPresentation.SlideIdList != null)
         {
-            List<string> titlesList = new List<string>();
+            List<string> titlesList = [];
 
             foreach (SlideId oneSlideId in myPresentation.SlideIdList.
                                                         Elements<SlideId>())
@@ -570,8 +570,7 @@ static void PowerPointOpenXml_CopyTheme()
                                                         myRelationshipId);
     myPresentationPart.AddPart(newSlideMasterPart.ThemePart);
 
-    Dictionary<string, SlideLayoutPart> newSlideLayouts =
-                                new Dictionary<string, SlideLayoutPart>();
+    Dictionary<string, SlideLayoutPart> newSlideLayouts = [];
     string layoutType = null;
 
     foreach (SlideLayoutPart oneSlideLayoutPart in newSlideMasterPart.SlideLayoutParts)
@@ -618,7 +617,7 @@ static void PowerPointOpenXml_InsertNewSlide()
 
     PresentationPart presentationPart = myPowerPointDoc.PresentationPart;
 
-    Slide newSlide = new Slide(new CommonSlideData(new ShapeTree()));
+    Slide newSlide = new(new CommonSlideData(new ShapeTree()));
     uint drawingObjectId = 1;
 
     P.NonVisualGroupShapeProperties myNonVisualProperties =
@@ -692,7 +691,7 @@ static void PowerPointOpenXml_InsertNewSlide()
     uint maxSlideId = 1;
     SlideId prevSlideId = null;
 
-    foreach (SlideId oneSlideId in mySlideIdList.ChildElements)
+    foreach (SlideId oneSlideId in mySlideIdList.ChildElements.Cast<SlideId>())
     {
         if (oneSlideId.Id > maxSlideId)
         {
@@ -819,10 +818,9 @@ static void PowerPointOpenXml_DeleteOneSlide()
         {
             if (oneCustomShow.SlideList != null)
             {
-                LinkedList<SlideListEntry> allSlideListEntries =
-                                    new LinkedList<SlideListEntry>();
+                LinkedList<SlideListEntry> allSlideListEntries = new();
                 foreach (SlideListEntry oneSlideListEntry in
-                                    oneCustomShow.SlideList.Elements())
+                                    oneCustomShow.SlideList.Elements().Cast<SlideListEntry>())
                 {
                     if (oneSlideListEntry.Id != null &&
                         oneSlideListEntry.Id == mySlideRelationshipId)
@@ -919,7 +917,7 @@ static void PowerPointOpenXml_AddCommentToSlide()
     }
 
     SlideCommentsPart mySlideCommentsPart;
-    if (mySlidePart.GetPartsOfType<SlideCommentsPart>().Count() == 0)
+    if (!mySlidePart.GetPartsOfType<SlideCommentsPart>().Any())
     {
         mySlideCommentsPart = mySlidePart.AddNewPart<SlideCommentsPart>();
     }
@@ -991,7 +989,7 @@ static void PowerPointOpenXml_RemoveAllCommentsAuthor()
                     mySlideCommentsPart.CommentList.
                             Elements<Comment>().
                             Where(cm => cm.AuthorId == oneAuthorId.Value);
-                List<Comment> allComments = new List<Comment>();
+                List<Comment> allComments = [];
                 allComments = allCommentList.ToList<Comment>();
 
                 foreach (Comment oneComment in allComments)
@@ -1029,7 +1027,7 @@ static void PowerPointOpenXml_AddNotesToSlide()
     {
         myNotesSlidePart = mySlidePart.AddNewPart<NotesSlidePart>(myRelationshipId);
     }
-    NotesSlide myNotesSlide = new NotesSlide(
+    NotesSlide myNotesSlide = new(
            new CommonSlideData(new ShapeTree(
              new P.NonVisualGroupShapeProperties(
                new P.NonVisualDrawingProperties()
@@ -1150,9 +1148,10 @@ static void PowerPointOpenXml_AddImageToSlide()
 
     ShapeTree myShapeTree = mySlidePart.Slide.Descendants<P.ShapeTree>().First();
 
-    P.Picture myPicture = new P.Picture();
-
-    myPicture.NonVisualPictureProperties = new P.NonVisualPictureProperties();
+    P.Picture myPicture = new()
+    {
+        NonVisualPictureProperties = new P.NonVisualPictureProperties()
+    };
     myPicture.NonVisualPictureProperties.Append(
                 new P.NonVisualDrawingProperties
                 {
@@ -1160,8 +1159,7 @@ static void PowerPointOpenXml_AddImageToSlide()
                     Id = (UInt32)myShapeTree.ChildElements.Count - 1
                 });
 
-    P.NonVisualPictureDrawingProperties myNonVisualPictureDrawingProp =
-                                new P.NonVisualPictureDrawingProperties();
+    P.NonVisualPictureDrawingProperties myNonVisualPictureDrawingProp = new();
     myNonVisualPictureDrawingProp.Append(new D.PictureLocks()
     {
         NoChangeAspect = true
@@ -1170,13 +1168,13 @@ static void PowerPointOpenXml_AddImageToSlide()
     myPicture.NonVisualPictureProperties.Append(
                             new P.ApplicationNonVisualDrawingProperties());
 
-    P.BlipFill myBlipFill = new P.BlipFill();
-    D.Blip myBlip = new D.Blip()
+    P.BlipFill myBlipFill = new();
+    D.Blip myBlip = new()
     {
         Embed = mySlidePart.GetIdOfPart(myImagePart)
     };
-    D.BlipExtensionList myBlipExtensionList = new D.BlipExtensionList();
-    D.BlipExtension myBlipExtension = new D.BlipExtension()
+    D.BlipExtensionList myBlipExtensionList = new();
+    D.BlipExtension myBlipExtension = new()
     {
         Uri = "{12345678-ABCD-9876-EFAB-123456789ABC}"
     };
@@ -1189,14 +1187,16 @@ static void PowerPointOpenXml_AddImageToSlide()
     myBlipExtension.Append(myUseLocalDpi);
     myBlipExtensionList.Append(myBlipExtension);
     myBlip.Append(myBlipExtensionList);
-    D.Stretch myStretch = new D.Stretch();
+    D.Stretch myStretch = new();
     myStretch.Append(new D.FillRectangle());
     myBlipFill.Append(myBlip);
     myBlipFill.Append(myStretch);
     myPicture.Append(myBlipFill);
 
-    myPicture.ShapeProperties = new P.ShapeProperties();
-    myPicture.ShapeProperties.Transform2D = new D.Transform2D();
+    myPicture.ShapeProperties = new P.ShapeProperties
+    {
+        Transform2D = new D.Transform2D()
+    };
     myPicture.ShapeProperties.Transform2D.Append(new D.Offset
     {
         X = 100,
@@ -1228,8 +1228,10 @@ static void PowerPointOpenXml_AddShapeToSlide()
     ShapeTree myShapeTree = myPresentation.PresentationPart.SlideParts.
                 ElementAt(0).Slide.Descendants<P.ShapeTree>().First();
 
-    P.Shape myShape = new P.Shape();
-    myShape.NonVisualShapeProperties = new P.NonVisualShapeProperties();
+    P.Shape myShape = new()
+    {
+        NonVisualShapeProperties = new P.NonVisualShapeProperties()
+    };
     myShape.NonVisualShapeProperties.Append(new P.NonVisualDrawingProperties
     {
         Name = "My Shape",
@@ -1240,8 +1242,10 @@ static void PowerPointOpenXml_AddShapeToSlide()
     myShape.NonVisualShapeProperties.Append(
                 new P.ApplicationNonVisualDrawingProperties());
 
-    myShape.ShapeProperties = new P.ShapeProperties();
-    myShape.ShapeProperties.Transform2D = new D.Transform2D();
+    myShape.ShapeProperties = new P.ShapeProperties
+    {
+        Transform2D = new D.Transform2D()
+    };
     myShape.ShapeProperties.Transform2D.Append(new D.Offset
     {
         X = 0,
