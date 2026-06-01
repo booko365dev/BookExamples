@@ -1,4 +1,5 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using Microsoft.Identity.Client;
+using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
 using System.Collections.Concurrent;
 using System.Configuration;
@@ -9,7 +10,7 @@ using System.Text.Json;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 10.0 Console Application ****---------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -55,7 +56,7 @@ static void CsSpCsom_UpdateValuePropertyTenant(ClientContext spCtx)
 {
     Tenant myTenant = new(spCtx)
     {
-        BlockAccessOnUnmanagedDevices = true
+        BlockAccessOnUnmanagedDevices = false
     };
     myTenant.Update();
     spCtx.ExecuteQuery();
@@ -74,11 +75,11 @@ foreach (char oneChar in ConfigurationManager.AppSettings["UserPw"])
     usrPw.AppendChar(oneChar);
 
 using (AuthenticationManager authenticationManager = new())
-using (ClientContext spCtx = authenticationManager.GetContext(
+using (ClientContext spCtx = AuthenticationManager.GetContext(
             new Uri(ConfigurationManager.AppSettings["SiteAdminUrl"]),
             ConfigurationManager.AppSettings["UserName"],
-            usrPw,
-            ConfigurationManager.AppSettings["ClientIdWithAccPw"]))
+            ConfigurationManager.AppSettings["ClientIdWithAccPw"],
+            ConfigurationManager.AppSettings["TenantName"]))
 {
     //CsSpCsom_GetPropertiesTenant(spCtx);
     //CsSpCsom_GetValuePropertyTenant(spCtx);
@@ -95,11 +96,10 @@ using (ClientContext spCtx = authenticationManager.GetContext(
 public class AuthenticationManager : IDisposable
 {
     private static readonly HttpClient httpClient = new();
-    private const string tokenEndpoint =
-                            "https://login.microsoftonline.com/common/oauth2/token";
+    private const string tokenEndpoint = "https://login.microsoftonline.com/";
 
     private static readonly SemaphoreSlim semaphoreSlimTokens = new(1);
-    private AutoResetEvent tokenResetEvent = null;
+    private readonly AutoResetEvent tokenResetEvent = null;
     private readonly ConcurrentDictionary<string, string> tokenCache = new();
     private bool disposedValue;
 
@@ -108,8 +108,8 @@ public class AuthenticationManager : IDisposable
         public RegisteredWaitHandle Handle = null;
     }
 
-    public ClientContext GetContext(Uri web, string userPrincipalName,
-                                            SecureString userPassword, string clientId)
+    public static ClientContext GetContext(Uri web, string userPrincipalName,
+                                    string clientId, string tenantId)
     {
         var context = new ClientContext(web);
 
@@ -118,8 +118,8 @@ public class AuthenticationManager : IDisposable
             string accessToken = EnsureAccessTokenAsync(
                new Uri($"{web.Scheme}://{web.DnsSafeHost}"),
                userPrincipalName,
-               new System.Net.NetworkCredential(string.Empty, userPassword).Password,
-               clientId).GetAwaiter().GetResult();
+               clientId,
+               tenantId).GetAwaiter().GetResult();
 
             if (accessToken.Contains("TokenErrorException") == true)
             {
@@ -133,72 +133,115 @@ public class AuthenticationManager : IDisposable
         return context;
     }
 
-    public async Task<string> EnsureAccessTokenAsync(Uri resourceUri,
-                        string userPrincipalName, string userPassword, string clientId)
+    public static async Task<string> EnsureAccessTokenAsync(Uri resource, 
+                                                     string userPrincipalName, 
+                                                     string clientId, 
+                                                     string tenantId)
     {
-        string accessTokenFromCache = TokenFromCache(resourceUri, tokenCache);
-        if (accessTokenFromCache == null)
+        string authority = $"https://login.microsoftonline.com/{tenantId}";
+        string[] scopes = [$"{resource}/.default"];
+
+        IPublicClientApplication app = PublicClientApplicationBuilder
+            .Create(clientId)
+            .WithAuthority(authority)
+            .WithRedirectUri("http://localhost")
+            .Build();
+
+        try
         {
-            await semaphoreSlimTokens.WaitAsync().ConfigureAwait(false);
-            try
-            {
-                string accessToken = await AcquireTokenAsync(resourceUri,
-                    userPrincipalName, userPassword, clientId).ConfigureAwait(false);
-
-                if (accessToken.Contains("TokenErrorException") == true)
-                { return accessToken; } // An error has been raised by Azure AD
-
-                AddTokenToCache(resourceUri, tokenCache, accessToken);
-
-                tokenResetEvent = new(false);
-                TokenWaitInfo wi = new();
-                wi.Handle = ThreadPool.RegisterWaitForSingleObject(
-                    tokenResetEvent,
-                    async (state, timedOut) =>
-                    {
-                        if (!timedOut)
-                        {
-                            TokenWaitInfo wi1 = (TokenWaitInfo)state;
-                            if (wi1.Handle != null)
-                            {
-                                wi1.Handle.Unregister(null);
-                            }
-                        }
-                        else
-                        {
-                            try
-                            {
-                                await semaphoreSlimTokens.WaitAsync().
-                                                            ConfigureAwait(false);
-                                RemoveTokenFromCache(resourceUri, tokenCache);
-                            }
-                            catch (Exception)
-                            {
-                                RemoveTokenFromCache(resourceUri, tokenCache);
-                            }
-                            finally
-                            {
-                                semaphoreSlimTokens.Release();
-                            }
-                        }
-                    },
-                    wi,
-                    (uint)CalculateThreadSleep(accessToken).TotalMilliseconds,
-                    true
-                );
-
-                return accessToken;
-            }
-            finally
-            {
-                semaphoreSlimTokens.Release();
-            }
+            AuthenticationResult result = await app.AcquireTokenInteractive(scopes)
+                .WithLoginHint(userPrincipalName)
+                .ExecuteAsync();
+            return result.AccessToken;
         }
-        else
+        catch (MsalUiRequiredException)
         {
-            return accessTokenFromCache;
+            // Fallback to device code flow if interactive is not possible
+            AuthenticationResult result = await app.AcquireTokenWithDeviceCode(scopes, deviceCodeResult =>
+            {
+                Console.WriteLine(deviceCodeResult.Message);
+                return Task.CompletedTask;
+            }).ExecuteAsync();
+            return result.AccessToken;
+        }
+        catch (Exception ex)
+        {
+            return $"TokenErrorException - {ex.Message}";
         }
     }
+
+    // ATTENTION: The following method is an example of how to implement a custom token cache
+    //      and should be used for demonstration purposes only. In production scenarios,
+    //      consider using the built-in token cache provided by MSAL.NET or a more robust
+    //      caching mechanism.
+    //      This routine is replaced by the one above that is using MSAL.NET and EntraID,
+    //      but it is left here for demonstration purposes only.
+    //public async Task<string> EnsureAccessTokenAsync(Uri resourceUri,
+    //                    string userPrincipalName, string userPassword, string clientId)
+    //{
+    //    string accessTokenFromCache = TokenFromCache(resourceUri, tokenCache);
+    //    if (accessTokenFromCache == null)
+    //    {
+    //        await semaphoreSlimTokens.WaitAsync().ConfigureAwait(false);
+    //        try
+    //        {
+    //            string accessToken = await AcquireTokenAsync(resourceUri,
+    //                userPrincipalName, userPassword, clientId).ConfigureAwait(false);
+
+    //            if (accessToken.Contains("TokenErrorException") == true)
+    //            { return accessToken; } // An error has been raised by Azure AD
+
+    //            AddTokenToCache(resourceUri, tokenCache, accessToken);
+
+    //            tokenResetEvent = new(false);
+    //            TokenWaitInfo wi = new();
+    //            wi.Handle = ThreadPool.RegisterWaitForSingleObject(
+    //                tokenResetEvent,
+    //                async (state, timedOut) =>
+    //                {
+    //                    if (!timedOut)
+    //                    {
+    //                        TokenWaitInfo wi1 = (TokenWaitInfo)state;
+    //                        if (wi1.Handle != null)
+    //                        {
+    //                            wi1.Handle.Unregister(null);
+    //                        }
+    //                    }
+    //                    else
+    //                    {
+    //                        try
+    //                        {
+    //                            await semaphoreSlimTokens.WaitAsync().
+    //                                                        ConfigureAwait(false);
+    //                            RemoveTokenFromCache(resourceUri, tokenCache);
+    //                        }
+    //                        catch (Exception)
+    //                        {
+    //                            RemoveTokenFromCache(resourceUri, tokenCache);
+    //                        }
+    //                        finally
+    //                        {
+    //                            semaphoreSlimTokens.Release();
+    //                        }
+    //                    }
+    //                },
+    //                wi,
+    //                (uint)CalculateThreadSleep(accessToken).TotalMilliseconds,
+    //                true
+    //            );
+
+    //            return accessToken;
+    //        }
+    //        finally
+    //        {
+    //            semaphoreSlimTokens.Release();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        return accessTokenFromCache;
+    //    }
+    //}
 
     private static async Task<string> AcquireTokenAsync(Uri resourceUri,
                                         string username, string password, string clientId)

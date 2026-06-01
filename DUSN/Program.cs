@@ -9,7 +9,7 @@ using System.Configuration;
 using System.Security;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet Core 10.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -18,6 +18,46 @@ using System.Security;
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
 
+static PnPContext CsSpPnPCoreSdk_GetContextWithDeviceCode(string tenantId, string clientId, 
+                                    string siteUrl, LogLevel showLogs)
+{
+    IHost myHost = Host.CreateDefaultBuilder()
+        .ConfigureServices((context, services) =>
+        {
+            services.AddPnPCore(options =>
+            {
+                options.DefaultAuthenticationProvider = new DeviceCodeAuthenticationProvider(
+                    clientId,
+                    tenantId,
+                    new Uri("http://localhost"),
+                    (deviceCodeNotification) =>
+                    {
+                        Console.WriteLine(deviceCodeNotification.Message);
+                    });
+            });
+        })
+        .ConfigureLogging((hostingContext, logging) =>
+        {
+            logging.SetMinimumLevel(showLogs);
+        })
+        .UseConsoleLifetime()
+        .Build();
+
+    myHost.Start();
+
+    IServiceScope myScope = myHost.Services.CreateScope();
+    IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider.GetRequiredService<IPnPContextFactory>();
+    PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(siteUrl)).Result;
+
+    myHost.Dispose();
+
+    return myContext;
+}
+
+// This method is not recommended for production use, but can be used for testing purposes.
+//  It requires the user account to have Multi-Factor Authentication (MFA) disabled, which
+//  is not a best practice for security. Consider using CsSpPnPCoreSdk_GetContextWithDeviceCode
+//  that support MFA for production applications.
 static PnPContext CsSpPnPCoreSdk_GetContextWithAccPw(string TenantId, string ClientId,
                   string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
 {
@@ -69,8 +109,8 @@ static void CsSpPnPCoreSdk_GetAdminUrls()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId,
+                    myClientId, mySiteCollUrl, LogLevel.None);
 
     Uri myPortalUrl = myContext.GetSharePointAdmin().GetTenantPortalUri();
     Uri myAdminCenterUrl = myContext.GetSharePointAdmin().GetTenantAdminCenterUri();
@@ -89,8 +129,8 @@ static void CsSpPnPCoreSdk_GetTenantProperties()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId,
+                    myClientId, mySiteCollUrl, LogLevel.None);
 
     ITenantProperties myTenantProps = myContext.GetSharePointAdmin()
                                                                .GetTenantProperties();
@@ -117,8 +157,8 @@ static void CsSpPnPCoreSdk_UpdateTenantProperty()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId,
+                    myClientId, mySiteCollUrl, LogLevel.None);
 
     ITenantProperties myTenantProps = myContext.GetSharePointAdmin()
                                                                .GetTenantProperties();
@@ -140,8 +180,8 @@ static void CsSpPnPCoreSdk_GetTenantUsers()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId, 
+                    myClientId, mySiteCollUrl, LogLevel.None);
 
     List<ISharePointUser> myTenantAdmins =
                                     myContext.GetSharePointAdmin().GetTenantAdmins();
@@ -162,8 +202,8 @@ static void CsSpPnPCoreSdk_UserIsTenantAdmin()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId, 
+                myClientId, mySiteCollUrl, LogLevel.None);
  
     bool myUserIsAdmin = myContext.GetSharePointAdmin().IsCurrentUserTenantAdmin();
 
@@ -180,8 +220,8 @@ static void CsSpPnPCoreSdk_HasTenantAppCatalog()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId, 
+                    myClientId, mySiteCollUrl, LogLevel.None);
  
     bool myTenantHasAppCat = myContext.GetTenantAppManager().EnsureTenantAppCatalog();
 
@@ -198,8 +238,8 @@ static void CsSpPnPCoreSdk_AppCatalogUrl()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId,
+                    myClientId, mySiteCollUrl, LogLevel.None);
 
     Uri myTenantAppCatUrl = myContext.GetTenantAppManager().GetTenantAppCatalogUri();
 
@@ -216,8 +256,8 @@ static void CsSpPnPCoreSdk_GetAppCatalogs()
     string myUserName = ConfigurationManager.AppSettings["UserName"];
     string myUserPw = ConfigurationManager.AppSettings["UserPw"];
 
-    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithAccPw(myTenantId, 
-                    myClientId, myUserName, myUserPw, mySiteCollUrl, LogLevel.None);
+    using PnPContext myContext = CsSpPnPCoreSdk_GetContextWithDeviceCode(myTenantId, 
+                    myClientId, mySiteCollUrl, LogLevel.None);
  
     IList<IAppCatalogSite> myTenantAppCatUrl =
                        myContext.GetTenantAppManager().GetSiteCollectionAppCatalogs();

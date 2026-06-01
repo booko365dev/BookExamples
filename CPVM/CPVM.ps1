@@ -40,9 +40,9 @@ function PsSpGraphSdk_GetTenantConfiguration
 	# App Registration type: Graph 
 	# App Registration permissions: SharePointTenantSettings.ReadWrite.All
 	
-	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
-								 -ClientID $configFile.appsettings.ClientIdWithSecret `
-								 -ClientSecret $configFile.appsettings.ClientSecret
+	PsGraphSdk_LoginWithSecret -TenantName $cnfTenantName `
+							   -ClientID $cnfClientIdWithSecret `
+							   -ClientSecret $cnfClientSecret
 
 	$myConfigs = Get-MgAdminSharepointSetting
 	Write-Host "Loop Is Enabled - " $myConfigs.IsLoopEnabled
@@ -57,9 +57,9 @@ function PsSpGraphSdk_UpdateTenantConfiguration
 	# App Registration type: Graph 
 	# App Registration permissions: SharePointTenantSettings.ReadWrite.All
 	
-	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
-								 -ClientID $configFile.appsettings.ClientIdWithSecret `
-								 -ClientSecret $configFile.appsettings.ClientSecret
+	PsGraphSdk_LoginWithSecret -TenantName $cnfTenantName `
+							   -ClientID $cnfClientIdWithSecret `
+							   -ClientSecret $cnfClientSecret
 
 	$myConfigs = @{
 		IsLoopEnabled = $false
@@ -76,9 +76,9 @@ function PsSpGraphSdk_GetAppsInCatalog
 	# App Registration type: Graph 
 	# App Registration permissions: AppCatalog.ReadWrite.All
 	
-	PsGraphSdk_LoginWithSecret -TenantName $configFile.appsettings.TenantName `
-								 -ClientID $configFile.appsettings.ClientIdWithSecret `
-								 -ClientSecret $configFile.appsettings.ClientSecret
+	PsGraphSdk_LoginWithSecret -TenantName $cnfTenantName `
+							   -ClientID $cnfClientIdWithSecret `
+							   -ClientSecret $cnfClientSecret
 
 	Get-MgAppCatalogTeamApp
 
@@ -90,9 +90,25 @@ function PsSpGraphSdk_GetAppsInCatalog
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-# *** Latest Source Code Index: xxx ***
+# *** Latest Source Code Index: 003 ***
 
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
 
 #PsSpGraphSdk_GetTenantConfiguration
 #PsSpGraphSdk_UpdateTenantConfiguration

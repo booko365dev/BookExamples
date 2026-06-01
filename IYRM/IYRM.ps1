@@ -31,12 +31,23 @@ function PsSpCsom_LoginAdmin  #*** USE POWERSHELL 5.x, NOT 7.x ***
 
 function PsSpSpo_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
 {
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.UserPw -AsPlainText -Force
+	#[SecureString]$securePW = ConvertTo-SecureString -String `
+	#		$configFile.appsettings.UserPw -AsPlainText -Force
 
-	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
+	#$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+	#		-argumentlist $configFile.appsettings.UserName, $securePW
+
+	# To connect using Basic Authentication, use the following line. However, Microsoft is 
+	#	deprecating Basic Authentication, and it is recommended to use Modern Authentication 
+	#	instead (see next line).
+	#Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
+
+	# To connect using Modern Authentication, use the following line. However, it is required to
+	# have the latest version of the SPO PowerShell module installed, and to have the tenant
+	# configured to allow Modern Authentication (which is the default configuration for new tenants).
+	# The cmdlet will prompt for credentials in a pop-up window, and it will use Modern 
+	# Authentication to connect to the tenant (Account and Pw are not necessary anymore).
+	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl
 }
 
 #----------------------------------------------------------------------------------------

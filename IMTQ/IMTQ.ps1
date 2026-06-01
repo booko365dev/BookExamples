@@ -9,15 +9,25 @@
 
 Function PsSpPnP_LoginWithAccPw()
 {
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.UserPw -AsPlainText -Force
+	#[SecureString]$securePW = ConvertTo-SecureString -String `
+	#		$configFile.appsettings.UserPw -AsPlainText -Force
 
-	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.UserName, $securePW
+	#$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+	#		-argumentlist $configFile.appsettings.UserName, $securePW
 
-	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
-					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
-					  -Credentials $myCredentials
+	# Connect-PnPOnline with credentials is not working with the used app registration 
+	# (App-Only with Acc/Pw) and the used PnP PowerShell module version (v3.28.2012.0)
+	# Connect without credentials, which is working fine with the used app registration 
+	# and PnP PowerShell module version.
+	#Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
+	#				  -ClientId $configFile.appsettings.ClientIdWithAccPw `
+	#				  -Credentials $myCredentials
+
+	# Connect without credentials to use Multifactor Authentication (MFA) with the used 
+	# app registration and PnP PowerShell module version. Account and Pw are not necessary anymore.
+	Connect-PnPOnline -Url $cnfSiteCollUrl `
+					  -ClientId $cnfClientIdWithAccPw
+
 }
 
 
@@ -274,7 +284,23 @@ function SpPsPnPSharePoint_DeleteCDNOrigen
 ##***-----------------------------------*** Running the routines ***---------------------
 ##---------------------------------------------------------------------------------------
 
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
 
 #------- Using the PnP PowerShell module --------
 # Connect to Office 365
