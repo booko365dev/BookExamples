@@ -1,5 +1,4 @@
-﻿
-##---------------------------------------------------------------------------------------
+﻿##---------------------------------------------------------------------------------------
 ## ------**** ATTENTION **** This is a PowerShell solution ****--------------------------
 ##---------------------------------------------------------------------------------------
 
@@ -31,15 +30,20 @@ function PsSpCsom_Login  #*** LEGACY CODE ***
 ##==> PSO
 ##----------------------------------------------------------
 
+#function PsSpPso_Login  #*** USE POWERSHELL 5.x, NOT 7.x *** LEGACY CODE. Cannot use MFA
+#{
+#	[SecureString]$securePW = ConvertTo-SecureString -String `
+#			$configFile.appsettings.UserPw -AsPlainText -Force
+#	
+#	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
+#			-argumentlist $configFile.appsettings.UserName, $securePW
+#	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
+#}
 #gavdcodebegin 002
-function PsSpPso_Login  #*** USE POWERSHELL 5.x, NOT 7.x ***
+# USING MFA. Will pop up the login window for the user to authenticate with MFA.
+function PsSpPso_Login  #*** USE POWERSHELL 5.x, NOT 7.x *** 
 {
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.UserPw -AsPlainText -Force
-
-	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.UserName, $securePW
-	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl -Credential $myCredentials
+	Connect-SPOService -Url $configFile.appsettings.SiteAdminUrl
 }
 #gavdcodeend 002
 
@@ -67,42 +71,31 @@ function PsSpPnP_Login #*** LEGACY CODE ***
 #gavdcodebegin 016
 function PsSpPnP_LoginWithAccPw
 {
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.UserPw -AsPlainText -Force
-
-	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.UserName, $securePW
-
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
 					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
-					  -Credentials $myCredentials
+					  -Interactive
 }
 #gavdcodeend 016
 
 function PsSpPnP_LoginWithAccPwDefault
 {
-	# Using the "PnP Management Shell" Azure AD PnP App Registration (Delegated)
-	[SecureString]$securePW = ConvertTo-SecureString -String `
-			$configFile.appsettings.UserPw -AsPlainText -Force
-
-	$myCredentials = New-Object -TypeName System.Management.Automation.PSCredential `
-			-argumentlist $configFile.appsettings.UserName, $securePW
-
+	# Username/Password flow blocked by MFA policy.
+	# Using Interactive login which supports Multi-Factor Authentication (Delegated).
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
 					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
-					  -Credentials $myCredentials
+					  -Interactive
 }
 
 #gavdcodebegin 018
 function PsSpPnP_LoginWithCertificate
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			"myStrongPassword" -AsPlainText -Force
+			$configFile.appsettings.CertificateFilePw -AsPlainText -Force
 
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
 					  -ClientId $configFile.appsettings.ClientIdWithCert `
-					  -Tenant "[Domain].onmicrosoft.com" `
-					  -CertificatePath "[PathForThePfxCertificateFile]" `
+					  -Tenant $configFile.appsettings.TenantName `
+					  -CertificatePath $configFile.appsettings.CertificateFilePath `
 					  -CertificatePassword $securePW
 }
 #gavdcodeend 018
@@ -111,12 +104,12 @@ function PsSpPnP_LoginWithCertificate
 function PsSpPnP_LoginWithCertificateBase64
 {
 	[SecureString]$securePW = ConvertTo-SecureString -String `
-			"myStrongPassword" -AsPlainText -Force
+			$configFile.appsettings.CertificateFilePw -AsPlainText -Force
 
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
 					  -ClientId $configFile.appsettings.ClientIdWithCert `
-					  -Tenant "[Domain].onmicrosoft.com" `
-					  -CertificateBase64Encoded "[Base64EncodedValue]" `
+					  -Tenant $configFile.appsettings.TenantName `
+					  -CertificateBase64Encoded $configFile.appsettings.CertificateThumbprint `
 					  -CertificatePassword $securePW
 }
 #gavdcodeend 020
@@ -125,8 +118,7 @@ function PsSpPnP_LoginWithCertificateBase64
 function PsSpPnP_LoginWithInteraction
 {
 	Connect-PnPOnline -Url $configFile.appsettings.SiteCollUrl `
-					  -ClientId $configFile.appsettings.ClientIdWithAccPw `
-					  -Credentials (Get-Credential)
+					  -ClientId $configFile.appsettings.ClientIdWithAccPw
 }
 #gavdcodeend 021
 
@@ -338,22 +330,16 @@ function PsSpRestApiMsal_LoginWithAccPw
 {
     $clientId = $configFile.appsettings.ClientIdWithAccPw
     $tenantId = $configFile.appsettings.TenantName
-	$userName = $configFile.appsettings.UserName
-	$userPw = $configFile.appsettings.UserPw
-	$siteBaseUrl = $configFile.appsettings.SiteBaseUrl
+    $siteBaseUrl = $configFile.appsettings.SiteBaseUrl
     $myAuthority = "https://login.microsoftonline.com/$tenantId"
     $myScopes = @("$siteBaseUrl/.default")
 
     $myApp = New-MsalClientApplication -ClientId $clientId `
                                      -Authority $myAuthority
 
-    $securePassword = ConvertTo-SecureString $userPw -AsPlainText -Force
-    $userCredential = New-Object -TypeName System.Management.Automation.PSCredential `
-                                 -ArgumentList $userName, $securePassword  
-
     $myToken = Get-MsalToken -PublicClientApplication $myApp `
-						   -Scopes $myScopes `
-						   -UserCredential $userCredential
+                             -Scopes $myScopes `
+                             -Interactive
 
     return $myToken.AccessToken
 }
@@ -644,7 +630,7 @@ function PsCsom_ExampleUsingEntraId {
 	# PsPnPPowerShell_LoginWithInteractionMFA `
 	# 			-TenantName $configFile.appsettings.TenantName `
 	# 			-ClientIdWithAccPw $configFile.appsettings.ClientIdWithAccPw `
-	# 			-SiteBaseUrl $configFile.appsettings.SiteBaseUrl $cnfSiteBaseUrl
+	# 			-SiteBaseUrl $configFile.appsettings.SiteBaseUrl
 
 	# PsPnPPowerShell_LoginWithInteraction `
 	# 			-TenantName $configFile.appsettings.TenantName `
@@ -744,7 +730,8 @@ function PsPnpPowerShell_InteractiveExample
 function PsPnpRest_GetWebExample
 {
 	PsSpPnP_LoginWithAccPwDefault
-	$myOAuth = Get-PnPAppAuthAccessToken
+	#$myOAuth = Get-PnPAppAuthAccessToken => Changed name to Get-PnPAccessToken in v1.13.0
+	$myOAuth = Get-PnPAccessToken
 	
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + "/_api/web"
 	$myHeader = @{ 'Authorization' = "Bearer $($myOAuth)"; `
@@ -763,7 +750,8 @@ function PsPnpRest_GetWebExample
 function PsPnpRest_GetItemsExample
 {
 	PsSpPnP_LoginWithAccPwDefault
-	$myOAuth = Get-PnPAppAuthAccessToken
+	#$myOAuth = Get-PnPAppAuthAccessToken => Changed name to Get-PnPAccessToken in v1.13.0
+	$myOAuth = Get-PnPAccessToken
 	
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + 
 						"/_api/web/lists/GetByTitle('TestList')/items" + 
@@ -784,7 +772,8 @@ function PsPnpRest_GetItemsExample
 function PsPnpRest_PostExample
 {
 	PsSpPnP_LoginWithAccPwDefault
-	$myOAuth = Get-PnPAppAuthAccessToken
+	#$myOAuth = Get-PnPAppAuthAccessToken => Changed name to Get-PnPAccessToken in v1.13.0
+	$myOAuth = Get-PnPAccessToken
 	
 	$endpointUrl = $configFile.appsettings.SiteCollUrl + 
 						"/_api/web/lists/GetByTitle('TestList')/items"
@@ -970,7 +959,7 @@ function PsSpRestApiMsal_GetLists
 #PsRest_PostExample      ## Full POST query with data in the body
 
 #==> REST PnP PowerShell cmdlets
-#PsPnpRest_GetWebExample
+PsPnpRest_GetWebExample
 #PsPnpRest_GetItemsExample
 #PsPnpRest_PostExample
 

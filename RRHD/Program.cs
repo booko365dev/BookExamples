@@ -4,7 +4,7 @@ using System.Security;
 using PnP.Framework;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet 10.0 Console Application ****--------------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -20,7 +20,7 @@ static ClientContext CsSpPnPFramework_GetContextWithAccPw()
     foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
     { mySecurePw.AppendChar(oneChr); }
 
-    AuthenticationManager myAuthManager = new (
+    AuthenticationManager myAuthManager = AuthenticationManager.CreateWithCredentials(
                             ConfigurationManager.AppSettings["ClientIdWithAccPw"],
                             ConfigurationManager.AppSettings["UserName"],
                             mySecurePw);
@@ -35,7 +35,7 @@ static ClientContext CsSpPnPFramework_GetContextWithAccPw()
 //gavdcodebegin 002
 static ClientContext CsSpPnPFramework_GetContextWithCertificate()
 {
-    AuthenticationManager myAuthManager = new (
+    AuthenticationManager myAuthManager = AuthenticationManager.CreateWithCertificate(
                             ConfigurationManager.AppSettings["ClientIdWithCert"],
                             ConfigurationManager.AppSettings["CertificateFilePath"],
                             ConfigurationManager.AppSettings["CertificateFilePw"],
@@ -55,7 +55,8 @@ static ClientContext CsSpPnPFramework_GetContextWithManagShell()  //*** LEGACY C
     foreach (char oneChr in ConfigurationManager.AppSettings["UserPw"])
     { mySecurePw.AppendChar(oneChr); }
 
-    AuthenticationManager myAuthManager = new (
+    AuthenticationManager myAuthManager = AuthenticationManager.CreateWithCredentials(
+                            AuthenticationManager.CLIENTID_SPOMANAGEMENTSHELL,
                             ConfigurationManager.AppSettings["UserName"],
                             mySecurePw);
 
@@ -86,7 +87,7 @@ static ClientContext CsSpPnPFramework_GetContextWithSecret()  //*** LEGACY CODE 
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 005
-static void CsSpPnPFramework_ExampleWithAccPw()
+static void CsSpPnPFramework_ExampleWithAccPw()  //*** LEGACY CODE ***
 {
     // Requires Delegated permissions for SharePoint - Sites.FullControl.All
 
@@ -170,10 +171,10 @@ static void CsSpPnPFramework_ExampleWithSecret()  //*** LEGACY CODE ***
 
 //# *** Latest Source Code Index: 008 ***
 
-//CsSpPnPFramework_ExampleWithAccPw();             //==> PnP Framework Delegate permissions
+//CsSpPnPFramework_ExampleWithAccPw();             //==> PnP Framework Delegate permissions    //*** LEGACY CODE ***
 //CsSpPnPFramework_ExampleWithCertificate();       //==> PnP Framework Application permissions
 //CsSpPnPFramework_ExampleWithManagementShell();   //==> PnP Framework Management Shell  //*** LEGACY CODE ***
-//CsSpPnPFramework_ExampleWithSecret();            //==> PnP Framework using Secret
+//CsSpPnPFramework_ExampleWithSecret();            //==> PnP Framework using Secret    //*** LEGACY CODE ***
 
 //LoginPnPFramework_UrlAppIdAppSecret();
 

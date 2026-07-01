@@ -9,7 +9,7 @@ using System.Web;
 using System.Xml;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a .Net 10 Console Application ****------------------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -19,8 +19,14 @@ using System.Xml;
 //---------------------------------------------------------------------------------------
 
 //gavdcodebegin 001
-static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw_Rest()
+//Legacy method, not working with MFA enabled accounts
+static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw_Rest() 
 {
+    //This routine gets the error AADSTS50076 indicates that Azure AD now requires
+    //multi-factor authentication. The current code makes a direct HTTP request to the
+    //token endpoint, which cannot handle MFA prompts. You need to use MSAL.NET
+    //(Microsoft Authentication Library) instead, which supports interactive
+    //authentication flows including MFA.
     Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
 
     string myEndpoint = "https://login.microsoftonline.com/" +
@@ -84,14 +90,20 @@ static Tuple<string, string> CsSpSharePointRest_GetTokenWithAccPw_Msal()
     IPublicClientApplication myApp = PublicClientApplicationBuilder
         .Create(clientId)
         .WithAuthority(new Uri(myAuthority))
+        .WithRedirectUri("http://localhost")
         .Build();
 
     string[] myScopes = [$"{siteBaseUrl}/.default"];
 
     try
     {
+        // It does not work with username and password, because the account is MFA enabled.
+        // The method AcquireTokenInteractive works, but it requires user interaction
+        //AuthenticationResult myResult = myApp
+        //    .AcquireTokenByUsernamePassword(myScopes, userName, userPw)
+        //    .ExecuteAsync().Result;
         AuthenticationResult myResult = myApp
-            .AcquireTokenByUsernamePassword(myScopes, userName, userPw)
+            .AcquireTokenInteractive(myScopes)
             .ExecuteAsync().Result;
         tplReturn = new Tuple<string, string>("OK", myResult.AccessToken);
     }
@@ -289,9 +301,20 @@ static string CsSpSharePointRest_GetRequestDigest(Tuple<string, string> AuthToke
 //gavdcodebegin 003
 static void CsSpSharePointRest_TestSpRestGet()
 {
-    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    // Legacy method, not working with MFA enabled accounts
     //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
-    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
+
+    // OK with MFA enabled accounts, but requires user interaction
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Rest();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Msal();
+
+    // OK with MFA enabled accounts, does not require user interaction
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
     if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
@@ -344,9 +367,20 @@ static void CsSpSharePointRest_TestSpRestGet()
 //gavdcodebegin 004
 static void CsSpSharePointRest_TestSpRestPost()
 {
-    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    // Legacy method, not working with MFA enabled accounts
     //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
-    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
+
+    // OK with MFA enabled accounts, but requires user interaction
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Rest();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Msal();
+
+    // OK with MFA enabled accounts, does not require user interaction
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
     if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
@@ -405,9 +439,20 @@ static void CsSpSharePointRest_TestSpRestPost()
 //gavdcodebegin 005
 static void CsSpSharePointRest_TestSpRestUpdate()
 {
-    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    // Legacy method, not working with MFA enabled accounts
     //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
-    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
+
+    // OK with MFA enabled accounts, but requires user interaction
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Rest();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Msal();
+
+    // OK with MFA enabled accounts, does not require user interaction
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
     if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
@@ -464,9 +509,20 @@ static void CsSpSharePointRest_TestSpRestUpdate()
 //gavdcodebegin 006
 static void CsSpSharePointRest_TestSpRestDelete()
 {
-    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+    // Legacy method, not working with MFA enabled accounts
     //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Rest();
-    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
+
+    // OK with MFA enabled accounts, but requires user interaction
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithAccPw_Msal();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Rest();
+
+    // Legacy method. Unsupported app only token.
+    //Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithSecret_Msal();
+
+    // OK with MFA enabled accounts, does not require user interaction
+    Tuple<string, string> myToken = CsSpSharePointRest_GetTokenWithCert_Msal();
 
     if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
