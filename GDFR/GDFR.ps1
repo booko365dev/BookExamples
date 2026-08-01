@@ -9,11 +9,11 @@
 
 #*** Getting the Azure token with REST --------------------------------------------------
 #gavdcodebegin 001
-function PsGraphRestApi_GetAzureTokenWithSecret
+function PsGraphRestApi_GetEntraIdTokenWithSecret
 {
-    $ClientID = $configFile.appsettings.ClientIdWithSecret
-    $ClientSecret = $configFile.appsettings.ClientSecret
-    $TenantName = $configFile.appsettings.TenantName
+    $ClientID = $cnfClientIdWithSecret
+    $ClientSecret = $cnfClientSecret
+    $TenantName = $cnfTenantName
    
     $LoginUrl = "https://login.microsoftonline.com"
     $ScopeUrl = "https://graph.microsoft.com/.default"
@@ -33,9 +33,9 @@ function PsGraphRestApi_GetAzureTokenWithSecret
 
 function PsGraphSdk_LoginWithSecret
 {
-    $ClientID = $configFile.appsettings.ClientIdWithSecret
-    $ClientSecret = $configFile.appsettings.ClientSecret
-    $TenantName = $configFile.appsettings.TenantName
+    $ClientID = $cnfClientIdWithSecret
+    $ClientSecret = $cnfClientSecret
+    $TenantName = $cnfTenantName
 
 	[SecureString]$securePW = ConvertTo-SecureString -String `
 									$ClientSecret -AsPlainText -Force
@@ -59,7 +59,7 @@ function PsEntraGraphRest_GetAllAppRegistrations
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
     $graphApiUrl = "https://graph.microsoft.com/v1.0"
 
     $myUri = "$($graphApiUrl)/applications"
@@ -83,10 +83,10 @@ function PsEntraGraphRest_GetOneAppRegistrationByObjectId
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 
-	$myAppObjectId = "824741c8-88da-4414-808e-a2d0181cd1c4" # Object ID, not Client ID
+	$myAppObjectId = "0c331212-08d4-4b4e-b223-xxx" # Object ID, not Client ID
 
 	$myUri = "$($graphApiUrl)/applications/$($myAppObjectId)"
 	$myHeaders = @{
@@ -109,10 +109,10 @@ function PsEntraGraphRest_GetOneAppRegistrationByClientId
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 
-	$myAppClientId = "5a84f9ed-d0be-4f7e-9fe8-42efb58acd2a" # Client ID, not Object ID
+	$myAppClientId = "737d0192-b6bc-4621-92cf-xxx" # Client ID, not Object ID
 
 	$myUri = "$($graphApiUrl)/applications(appId='$($myAppClientId)')"
 	$myHeaders = @{
@@ -135,10 +135,10 @@ function PsEntraGraphRest_GetOneAppRegistrationByObjectIdByProperties
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 
-	$myAppObjectId = "5279baca-6361-4b17-a885-2a00cd2fd73a" # Object ID, not Client ID
+	$myAppObjectId = "0c331212-08d4-4b4e-b223-xxx" # Object ID, not Client ID
 
 	# It can be used also by Client ID and for all App Registrations
 	$myUri = "$($graphApiUrl)/applications/$($myAppObjectId)" + `
@@ -163,7 +163,7 @@ function PsEntraGraphRest_CreateAppRegistrationGraphApi
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
 	$myUri = "$($graphApiUrl)/applications"
@@ -200,11 +200,11 @@ function PsEntraGraphRest_AddOwnerToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppClientId = "cec8b03d-f21d-48c2-ac87-c6afd4bc4dbc" # Client ID
-	$myAppObjectId = "d11874ad-129e-4f65-a53f-91e5e3e75bf2" # Object ID
+	$myAppClientId = "cec8b03d-f21d-48c2-ac87-xxx" # Client ID
+	$myAppObjectId = "d11874ad-129e-4f65-a53f-xxx" # Object ID
 	$myUserEmail = "user@domain.onmicrosoft.com"
 
 	$myHeaders = @{
@@ -256,7 +256,7 @@ function PsEntraGraphRest_AddDelegatedClaimsToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 
 	$myAppClientId = "cec8b03d-f21d-48c2-ac87-c6afd4bc4dbc" # Client ID
@@ -310,10 +310,10 @@ function PsEntraGraphRest_DeleteDelegatedClaimsFromAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppClientId = "cec8b03d-f21d-48c2-ac87-c6afd4bc4dbc" # Client ID
+	$myAppClientId = "cec8b03d-f21d-48c2-ac87-xxx" # Client ID
 	$myClaimName = "User.ReadWrite.All"
 
 	$myHeaders = @{
@@ -352,10 +352,10 @@ function PsEntraGraphRest_AddApplicationClaimsToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppClientId = "cec8b03d-f21d-48c2-ac87-c6afd4bc4dbc" # Client ID
+	$myAppClientId = "cec8b03d-f21d-48c2-ac87-xxx" # Client ID
 	$myClaimName = "AuditLog.Read.All"
 
 	$myHeaders = @{
@@ -405,10 +405,10 @@ function PsEntraGraphRest_DeleteApplicationClaimsFromAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppClientId = "cec8b03d-f21d-48c2-ac87-c6afd4bc4dbc" # Client ID
+	$myAppClientId = "cec8b03d-f21d-48c2-ac87-xxx" # Client ID
 	$myClaimName = "AuditLog.Read.All"
 
 	$myHeaders = @{
@@ -456,10 +456,10 @@ function PsEntraGraphRest_AddSecretToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppObjectId = "d11874ad-129e-4f65-a53f-91e5e3e75bf2" # Object ID
+	$myAppObjectId = "d11874ad-129e-4f65-a53f-xxx" # Object ID
 
 	# The values for the Secret
 	$mySecretName = "My AppReg Secret"
@@ -495,10 +495,10 @@ function PsEntraGraphRest_DeleteSecretFromAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppObjectId = "d11874ad-129e-4f65-a53f-91e5e3e75bf2" # Object ID
+	$myAppObjectId = "d11874ad-129e-4f65-a53f-xxx" # Object ID
 
 	# The values for the Secret
 	$mySecretName = "My AppReg Secret"
@@ -540,11 +540,11 @@ function PsEntraGraphRest_AddCertificateToAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppObjectId = "d11874ad-129e-4f65-a53f-91e5e3e75bf2" # Object ID
-	$myTenantId = $configFile.appsettings.TenantName
+	$myAppObjectId = "d11874ad-129e-4f65-a53f-xxx" # Object ID
+	$myTenantId = $cnfTenantName
 
 	# Create a Self-Signed Certificate
 	$myCertPathPublic = "C:\Temporary\MyCertificate.cer"
@@ -613,13 +613,13 @@ function PsEntraGraphRest_DeleteCertificateFromAppRegistrationAndComputer
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppObjectId = "d11874ad-129e-4f65-a53f-91e5e3e75bf2" # Object ID
+	$myAppObjectId = "d11874ad-129e-4f65-a53f-xxx" # Object ID
 
 	# The values for the Certificate
-	$myCertThumbp = "2E01C7B224FEF0B7118EAF9D2C49ECD83104F135" # Thumbprint
+	$myCertThumbp = "2E01C7B224FEF0B7118EAF9D2C49ECDxxx" # Thumbprint
 
 	$myHeaders = @{
 		"Authorization" = "Bearer $($myAccessToken)"
@@ -672,10 +672,10 @@ function PsEntraGraphRest_DeleteAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 	
-	$myAppObjectId = "d11874ad-129e-4f65-a53f-91e5e3e75bf2" # Object ID, not Client ID
+	$myAppObjectId = "d11874ad-129e-4f65-a53f-xxx" # Object ID, not Client ID
 
 	$myUri = "$($graphApiUrl)/applications/$($myAppObjectId)"
 	$myHeaders = @{
@@ -696,7 +696,7 @@ function PsEntraGraphRest_OtherRecipesForAppRegistration
 {
     # Requires Application.Read.All and AppRoleAssignment.ReadWrite.All
 
-    $myAccessToken = (PsGraphRestApi_GetAzureTokenWithSecret).access_token
+    $myAccessToken = (PsGraphRestApi_GetEntraIdTokenWithSecret).access_token
 	$graphApiUrl = "https://graph.microsoft.com/v1.0"
 
 	$myHeaders = @{
@@ -739,7 +739,7 @@ function PsEntraGraphPsSdk_GetOneAppRegistrationByObjectId
 
 	PsGraphSdk_LoginWithSecret
 
-	$myAppObjectId = "824741c8-88da-4414-808e-a2d0181cd1c4" # Object ID, not Client ID
+	$myAppObjectId = "824741c8-88da-4414-808e-xxx" # Object ID, not Client ID
 
 	Get-MgApplication -ApplicationId $myAppObjectId
 }
@@ -752,7 +752,7 @@ function PsEntraGraphPsSdk_GetOneAppRegistrationByClientId
 
 	PsGraphSdk_LoginWithSecret
 
-	$myAppClientId = "5a84f9ed-d0be-4f7e-9fe8-42efb58acd2a" # Client ID
+	$myAppClientId = "5a84f9ed-d0be-4f7e-9fe8-xxx" # Client ID
 
 	Get-MgApplication -Filter "AppId eq '$($myAppClientId)'"
 }
@@ -765,7 +765,7 @@ function PsEntraGraphPsSdk_GetOneAppRegistrationByObjectIdByProperties
 
 	PsGraphSdk_LoginWithSecret
 
-	$myAppObjectId = "824741c8-88da-4414-808e-a2d0181cd1c4" # Object ID, not Client ID
+	$myAppObjectId = "824741c8-88da-4414-808e-xxx" # Object ID, not Client ID
 
 	Get-MgApplication -ApplicationId $myAppObjectId | Select-Object id, DisplayName
 }
@@ -795,8 +795,8 @@ function PsEntraGraphPsSdk_AddOwnerToAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppClientId = "6f42c95c-0afd-453a-b356-2d6def30a2d5" # Client ID
-    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-1e540dd13383" # Object ID
+    $myAppClientId = "6f42c95c-0afd-453a-b356-xxx" # Client ID
+    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-xxx" # Object ID
     $myUserEmail = "user@domain.onmicrosoft.com"
 
     # Find the User ID by Email
@@ -831,7 +831,7 @@ function PsEntraGraphPsSdk_AddDelegatedClaimsToAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppClientId = "6f42c95c-0afd-453a-b356-2d6def30a2d5" # Client ID
+    $myAppClientId = "6f42c95c-0afd-453a-b356-xxx" # Client ID
     $myClaimName = "User.ReadWrite.All"
 
     # Get the client service principal
@@ -869,7 +869,7 @@ function PsEntraGraphPsSdk_DeleteDelegatedClaimsFromAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppClientId = "6f42c95c-0afd-453a-b356-2d6def30a2d5" # Client ID
+    $myAppClientId = "6f42c95c-0afd-453a-b356-xxx" # Client ID
     $myClaimName = "User.ReadWrite.All"
 
     # Get the client service principal
@@ -897,7 +897,7 @@ function PsEntraGraphPsSdk_AddApplicationClaimsToAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppClientId = "6f42c95c-0afd-453a-b356-2d6def30a2d5" # Client ID
+    $myAppClientId = "6f42c95c-0afd-453a-b356-xxx" # Client ID
     $myClaimName = "AuditLog.Read.All"
 
     # Get the client service principal
@@ -936,7 +936,7 @@ function PsEntraGraphPsSdk_DeleteApplicationClaimsFromAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppClientId = "6f42c95c-0afd-453a-b356-2d6def30a2d5" # Client ID
+    $myAppClientId = "6f42c95c-0afd-453a-b356-xxx" # Client ID
     $myClaimName = "AuditLog.Read.All"
 
     # Get the client service principal
@@ -975,7 +975,7 @@ function PsEntraGraphPsSdk_AddSecretToAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-1e540dd13383" # Object ID
+    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-xxx" # Object ID
 
     # The values for the Secret
     $mySecretName = "My AppReg Secret"
@@ -1003,7 +1003,7 @@ function PsEntraGraphPsSdk_DeleteSecretFromAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-1e540dd13383" # Object ID
+    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-xxx" # Object ID
 
     # The values for the Secret
     $mySecretName = "My AppReg Secret"
@@ -1034,8 +1034,8 @@ function PsEntraGraphPsSdk_AddCertificateToAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-1e540dd13383" # Object ID
-	$myTenantId = $configFile.appsettings.TenantName
+    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-xxx" # Object ID
+	$myTenantId = $cnfTenantName
 
 	# Create a Self-Signed Certificate
 	$myCertPathPublic = "C:\Temporary\MyCertificate.cer"
@@ -1098,12 +1098,12 @@ function PsEntraGraphPsSdk_DeleteCertificateFromAppRegistrationAndComputer
 
 	PsGraphSdk_LoginWithSecret
 
-    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-1e540dd13383" # Object ID
-    $myAppClientId = "d86afffc-eb8d-4ac5-856f-6ddd9a347033" # Client ID
-	$myTenantId = $configFile.appsettings.TenantName
+    $myAppObjectId = "4f57cf4e-75dd-4895-a38d-xxx" # Object ID
+    $myAppClientId = "d86afffc-eb8d-4ac5-856f-xxx" # Client ID
+	$myTenantId = $cnfTenantName
 	$myCertPathPrivate = "C:\Temporary\MyCertificate.pfx"
 	$myCertPrivatePwd = "MyPassword"
-	$myTenantId = $configFile.appsettings.TenantName
+	$myTenantId = $cnfTenantName
 
     # The values for the Certificate Thumbprint
 	$privCertificate = New-Object `
@@ -1163,7 +1163,7 @@ function PsEntraGraphPsSdk_DeleteAppRegistration
 
 	PsGraphSdk_LoginWithSecret
 
-	$myAppObjectId = "824741c8-88da-4414-808e-a2d0181cd1c4" # Object ID, not Client ID
+	$myAppObjectId = "824741c8-88da-4414-808e-xxx" # Object ID, not Client ID
 	
 	Remove-MgApplication -ApplicationId $myAppObjectId
 
@@ -1178,7 +1178,23 @@ function PsEntraGraphPsSdk_DeleteAppRegistration
 
 # *** Latest Source Code Index: 032 *** 
 
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPs.config"
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
 
 #-- Using the Microsoft Graph REST API to manage App Registrations ----------------------
 #PsEntraGraphRest_GetAllAppRegistrations

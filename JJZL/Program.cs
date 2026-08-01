@@ -12,7 +12,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet 10.0 Console Application ****--------------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -23,19 +23,19 @@ using System.Text;
 
 //gavdcodebegin 001
 static GraphServiceClient CsGraphMsal_GetGraphClientWithAccPw(
-                                string TenantIdToConn, string ClientIdToConn,
-                                string UserToConn, string PasswordToConn)
+                                string TenantIdToConn, string ClientIdToConn)
 {
     string[] myScopes = ["https://graph.microsoft.com/.default"];
 
-    UsernamePasswordCredentialOptions clientOptionsCredential = new()
+    InteractiveBrowserCredentialOptions clientOptionsCredential = new()
     {
+        TenantId = TenantIdToConn,
+        ClientId = ClientIdToConn,
         AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
     };
-    UsernamePasswordCredential accPwCred = new(UserToConn, PasswordToConn,
-                            TenantIdToConn, ClientIdToConn, clientOptionsCredential);
-    
-    GraphServiceClient graphClient = new(accPwCred, myScopes);
+    InteractiveBrowserCredential interactiveCred = new(clientOptionsCredential);
+
+    GraphServiceClient graphClient = new(interactiveCred, myScopes);
 
     return graphClient;
 }
@@ -43,29 +43,33 @@ static GraphServiceClient CsGraphMsal_GetGraphClientWithAccPw(
 
 //gavdcodebegin 002
 static Tuple<string, string> CsGraphMsal_GetTokenWithAccPw(
-                                string TenantIdToConn, string ClientIdToConn,
-                                string UserToConn, string PasswordToConn)
+                                string TenantIdToConn, string ClientIdToConn)
 {
     Tuple<string, string> tplReturn = new(string.Empty, string.Empty);
 
-    string[] myScopes = ["https://graph.microsoft.com/.default"];
-    string myAuthority = $"https://login.microsoft.com/{TenantIdToConn}";
-
-    IPublicClientApplication myApp = PublicClientApplicationBuilder
-        .Create(ClientIdToConn)
-        .WithAuthority(new Uri(myAuthority))
-        .Build();
-
     try
     {
-        AuthenticationResult myResult = myApp.AcquireTokenByUsernamePassword(myScopes, 
-                    UserToConn, PasswordToConn).ExecuteAsync().Result;
-        tplReturn = new Tuple<string, string>("OK", myResult.AccessToken);
+        InteractiveBrowserCredentialOptions myOptions = new ()
+        {
+            TenantId = TenantIdToConn,
+            ClientId = ClientIdToConn
+        };
+        InteractiveBrowserCredential myCredential = new(myOptions);
+        string[] myScopes = ["https://graph.microsoft.com/.default"];
+
+        Azure.Core.AccessToken token = myCredential.GetTokenAsync(
+            new Azure.Core.TokenRequestContext(myScopes), CancellationToken.None).Result;
+        tplReturn = new Tuple<string, string>("OK", token.Token);
     }
-    catch (MsalServiceException ex)
+    catch (Azure.Identity.AuthenticationFailedException ex)
     {
-        string strError = "TokenErrorException - " + ex.ErrorCode + " - " + ex.Message;
-        tplReturn = new Tuple<string, string>(ex.ErrorCode, strError);
+        string strError = "TokenErrorException - " + ex.Message;
+        tplReturn = new Tuple<string, string>("AuthenticationFailed", strError);
+    }
+    catch (Exception ex)
+    {
+        string strError = "TokenErrorException - " + ex.Message;
+        tplReturn = new Tuple<string, string>("UnknownError", strError);
     }
 
     return tplReturn;
@@ -261,12 +265,12 @@ static void CsGraphRestApi_GetUsers_UsingGraphToken()
     string myClientIdWithSecret = ConfigurationManager.AppSettings["ClientIdWithSecret"];
     string myClientSecret = ConfigurationManager.AppSettings["ClientSecret"];
     string myClientIdWithCer = ConfigurationManager.AppSettings["ClientIdWithCert"];
-    string myCerFilePath = ConfigurationManager.AppSettings["CertificateFilePath"]; ;
-    string myCerFilePw = ConfigurationManager.AppSettings["CertificateFilePw"]; ;
-    string myCerThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"]; ;
+    string myCerFilePath = ConfigurationManager.AppSettings["CertificateFilePath"];
+    string myCerFilePw = ConfigurationManager.AppSettings["CertificateFilePw"];
+    string myCerThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"];
 
-    Tuple<string, string> myToken = CsGraphMsal_GetTokenWithAccPw(
-                            myTenantId, myClientIdWithAccPw, myUserName, myUserPw);
+    Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithAccPw(
+                            myTenantId, myClientIdWithAccPw);
     //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithSecret(
     //                    myTenantId, myClientIdWithSecret, myClientSecret);
     //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithCertificateFile(
@@ -274,13 +278,13 @@ static void CsGraphRestApi_GetUsers_UsingGraphToken()
     //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithCertificateThumbprint(
     //                    myTenantId, myClientIdWithCer, myCerThumbprint);
 
-    if (myToken.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
+    if (myTokenJSON.Item1.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
     {
         string myEndpoint = "https://graph.microsoft.com/v1.0/users";
 
         HttpClient myHttpClient = new();
         myHttpClient.DefaultRequestHeaders.Add(
-                                "Authorization", "Bearer " + myToken.Item2);
+                                "Authorization", "Bearer " + myTokenJSON.Item2);
         myHttpClient.DefaultRequestHeaders.Add(
                                 "Accept", "application/json"); // Output as JSON
 
@@ -301,7 +305,7 @@ static void CsGraphRestApi_GetUsers_UsingGraphToken()
     }
     else
     {
-        Console.WriteLine(myToken.Item2);  // Error retrieving the token
+        Console.WriteLine(myTokenJSON.Item2);  // Error retrieving the token
     }
 
 }
@@ -322,7 +326,7 @@ static void CsGraphSdk_GetUsers_UsingGraphClient()
     string myCerThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"]; ;
 
     GraphServiceClient myGraphClient = CsGraphMsal_GetGraphClientWithAccPw(
-                            myTenantId, myClientIdWithAccPw, myUserName, myUserPw);
+                            myTenantId, myClientIdWithAccPw);
     //GraphServiceClient myGraphClient = CsGraphMsal_GetGraphClientWithSecret(
     //                        myTenantId, myClientIdWithSecret, myClientSecret);
     //GraphServiceClient myGraphClient = CsGraphMsal_GetGraphClientWithCertificateFile(
@@ -354,7 +358,7 @@ static void CsGraphSdk_GetUsers_UsingGraphToken()
     string myCerThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint"]; ;
 
     Tuple<string, string> myToken = CsGraphMsal_GetTokenWithAccPw(
-                        myTenantId, myClientIdWithAccPw, myUserName, myUserPw);
+                        myTenantId, myClientIdWithAccPw);
     //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithSecret(
     //                    myTenantId, myClientIdWithSecret, myClientSecret);
     //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithCertificateFile(
@@ -616,7 +620,7 @@ string myCerThumbprint = ConfigurationManager.AppSettings["CertificateThumbprint
 
 // Test the token retrieval
 //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithAccPw(
-//                        myTenantId, myClientIdWithAccPw, myUserName, myUserPw);
+//                        myTenantId, myClientIdWithAccPw);
 //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithSecret(
 //                    myTenantId, myClientIdWithSecret, myClientSecret);
 //Tuple<string, string> myTokenJSON = CsGraphMsal_GetTokenWithCertificateFile(

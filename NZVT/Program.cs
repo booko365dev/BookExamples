@@ -7,7 +7,7 @@ using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet 10.0 Console Application ****--------------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -67,7 +67,7 @@ static GraphServiceClient CsGraphSdk_LoginWithDeviceCode(
 //gavdcodebegin 006
 static GraphServiceClient CsGraphSdk_LoginWithAccPw(
                                 string TenantIdToConn, string ClientIdToConn,
-                                string UserToConn, string PasswordToConn)
+                                string UserToConn, string PasswordToConn) // Legacy
 {
     string[] myScopes = ["https://graph.microsoft.com/.default"];
 
@@ -236,15 +236,15 @@ static string CsGraphSdk_GetTokenWithDeviceCode(string TenantId, string ClientId
                         .ExecuteAsync()
                         .Result;
 
-    //Console.WriteLine("Token for   - " + myToken.Account.Username);
-    //Console.WriteLine("Token value - " + myToken.AccessToken);
+    Console.WriteLine("Token for   - " + myToken.Account.Username);
+    Console.WriteLine("Token value - " + myToken.AccessToken);
     return myToken.AccessToken;
 }
 //gavdcodeend 016
 
 //gavdcodebegin 010
 static string CsGraphSdk_GetTokenWithAccPw(
-                      string TenantId, string ClientId, string Account, string Password)
+        string TenantId, string ClientId, string Account, string Password)  // Legacy
 {
     string authorityEndpoint = "https://login.microsoftonline.com/" + TenantId;
 
@@ -430,7 +430,7 @@ static void CsGraphSdk_GetQueryWithDeviceCode()
 //gavdcodeend 015
 
 //gavdcodebegin 002
-static void CsGraphSdk_GetQueryWithAccPw()
+static void CsGraphSdk_GetQueryWithAccPw() // Legacy
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];

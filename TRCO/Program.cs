@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet 10.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -21,6 +21,7 @@ using System.Security.Cryptography.X509Certificates;
 //---------------------------------------------------------------------------------------
 //***-----------------------------------*** Login routines ***---------------------------
 //---------------------------------------------------------------------------------------
+//gavdcodebegin 020
 static GraphServiceClient CsEntraGraphCsSdk_LoginWithSecret()
 {
     string TenantIdToConn = ConfigurationManager.AppSettings["TenantName"];
@@ -41,6 +42,7 @@ static GraphServiceClient CsEntraGraphCsSdk_LoginWithSecret()
 
     return graphClient;
 }
+//gavdcodeend 020
 
 // Routines that can be used in Azure Functions with Managed Identities
 //gavdcodebegin 016
@@ -668,8 +670,8 @@ static List<string> GetSharePointDocs_ForAzureFunctions(string siteId, string cl
     //  CsEntraGraphCsSdk_LoginWithSecret_ForAzureFunctions(clientId, tenantId, clientSecret);
     //GraphServiceClient myGraphClient = 
     //    CsEntraGraphCsSdk_LoginWithManagedIdentitySystem_ForAzureFunctions();
-    GraphServiceClient myGraphClient = 
-        CsEntraGraphCsSdk_LoginWithManagedIdentityUser_ForAzureFunctions(clientId);
+    GraphServiceClient myGraphClient =
+        CsEntraGraphCsSdk_LoginWithManagedIdentityUser_ForAzFuncts(clientId);
 
     //ListCollectionResponse lists = myGraphClient.Sites[siteId].Lists.GetAsync().Result;
 
@@ -691,7 +693,7 @@ static List<string> GetSharePointDocs_ForAzureFunctions(string siteId, string cl
 //***-----------------------------------*** Running the routines ***---------------------
 //---------------------------------------------------------------------------------------
 
-// *** Latest Source Code Index: 019 ***
+// *** Latest Source Code Index: 020 ***
 
 //CsEntraGraphCsSdk_GetAllAppRegistrations();
 //CsEntraGraphCsSdk_GetOneAppRegistrationByObjectId();

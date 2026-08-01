@@ -722,7 +722,23 @@ function PsTeamsPs_ManagedIdentyExample # Deprecated
 
 # *** Latest Source Code Index: 019 ***
 
-[xml]$configFile = get-content "C:\Projects\ConfigValuesPS.config"
+#region ConfigValuesCS.config
+[xml]$config = Get-Content -Path "C:\Projects\ConfigValuesCS.config"
+$cnfUserName               = $config.SelectSingleNode("//add[@key='UserName']").value
+$cnfUserPw                 = $config.SelectSingleNode("//add[@key='UserPw']").value
+$cnfTenantUrl              = $config.SelectSingleNode("//add[@key='TenantUrl']").value     # https://domain.onmicrosoft.com
+$cnfSiteBaseUrl            = $config.SelectSingleNode("//add[@key='SiteBaseUrl']").value   # https://domain.sharepoint.com
+$cnfSiteAdminUrl           = $config.SelectSingleNode("//add[@key='SiteAdminUrl']").value  # https://domain-admin.sharepoint.com
+$cnfSiteCollUrl            = $config.SelectSingleNode("//add[@key='SiteCollUrl']").value   # https://domain.sharepoint.com/sites/TestSite
+$cnfTenantName             = $config.SelectSingleNode("//add[@key='TenantName']").value
+$cnfClientIdWithAccPw      = $config.SelectSingleNode("//add[@key='ClientIdWithAccPw']").value
+$cnfClientIdWithSecret     = $config.SelectSingleNode("//add[@key='ClientIdWithSecret']").value
+$cnfClientSecret           = $config.SelectSingleNode("//add[@key='ClientSecret']").value
+$cnfClientIdWithCert       = $config.SelectSingleNode("//add[@key='ClientIdWithCert']").value
+$cnfCertificateThumbprint  = $config.SelectSingleNode("//add[@key='CertificateThumbprint']").value
+$cnfCertificateFilePath    = $config.SelectSingleNode("//add[@key='CertificateFilePath']").value
+$cnfCertificateFilePw      = $config.SelectSingleNode("//add[@key='CertificateFilePw']").value
+#endregion ConfigValuesCS.config
 
 #PsAzManagedIdenty_CreateManagedIdentity_UserAssigned -resourceGroupName "Chapter06" `
 #             -location "westeurope" -identityName "ManagedIdentityUserAssigned_01"
@@ -730,26 +746,26 @@ function PsTeamsPs_ManagedIdentyExample # Deprecated
 #PsAzManagedIdenty_DeleteManagedIdentity_UserAssigned -resourceGroupName "Chapter06" `
 #									 -identityName "ManagedIdentityUserAssigned_01"
 
-#PsGraphPsSdkManagedIdenty_SetClaims -azureUser $configFile.appsettings.UserName `
-#									-azureUserPw $configFile.appsettings.UserPw `
+#PsGraphPsSdkManagedIdenty_SetClaims -azureUser $cnfUserName `
+#									-azureUserPw $cnfUserPw `
 #									-azureTenantId "ade56059-89c0-4594-90c3-e4772a8168ca" `
 #									-appId "ff852e59-f3a9-4445-b27f-4d15b2659fc1" `
 #									-appRole "Sites.FullControl.All"
 
-#PsGraphPsSdkManagedIdenty_RemoveClaims -azureUser $configFile.appsettings.UserName `
-#									-azureUserPw $configFile.appsettings.UserPw `
+#PsGraphPsSdkManagedIdenty_RemoveClaims -azureUser $cnfUserName `
+#									-azureUserPw $cnfUserPw `
 #									-azureTenantId "ade56059-89c0-4594-90c3-e4772a8168ca" `
 #									-appId "ff852e59-f3a9-4445-b27f-4d15b2659fc1" `
 #									-appRole "Sites.FullControl.All"
 
-#PsPnPManagedIdenty_SetClaims -azureUser $configFile.appsettings.UserName `
-#									-azureUserPw $configFile.appsettings.UserPw `
+#PsPnPManagedIdenty_SetClaims -azureUser $cnfUserName `
+#									-azureUserPw $cnfUserPw `
 #									-azureTenantId "ade56059-89c0-4594-90c3-e4772a8168ca" `
 #									-appId "ff852e59-f3a9-4445-b27f-4d15b2659fc1" `
 #									-appRole "Sites.FullControl.All"
 
-#PsPnPManagedIdenty_RemoveClaims -azureUser $configFile.appsettings.UserName `
-#									-azureUserPw $configFile.appsettings.UserPw `
+#PsPnPManagedIdenty_RemoveClaims -azureUser $cnfUserName `
+#									-azureUserPw $cnfUserPw `
 #									-azureTenantId "ade56059-89c0-4594-90c3-e4772a8168ca" `
 #									-appId "ff852e59-f3a9-4445-b27f-4d15b2659fc1" `
 #									-appRole "Sites.FullControl.All"

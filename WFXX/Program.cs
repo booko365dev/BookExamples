@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Azure.Identity;
+using Newtonsoft.Json;
 using System.Configuration;
 using System.Net;
 using System.Text;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet 8.0 Console Application ***-----------
+// ------**** ATTENTION **** This is a DotNet 10.0 Console Application ***-----------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -18,7 +19,7 @@ using System.Web;
 static void CsDotNet_GetTeamApp()
 {
     string graphQuery =
-    "https://graph.microsoft.com/v1.0/teams/dd1223a2-28a7-47d4-afc2-f42eae94f037";
+    "https://graph.microsoft.com/v1.0/teams/beb93fe1-44a6-42b4-8559-7c62d11c42f9";
 
     RestGraphClient myClient = new()
     {
@@ -30,7 +31,7 @@ static void CsDotNet_GetTeamApp()
         Registration = TypeRegistration.Application
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -41,20 +42,18 @@ static void CsDotNet_GetTeamApp()
 static void CsDotNet_GetTeamDel()
 {
     string graphQuery =
-    "https://graph.microsoft.com/v1.0/teams/bd71e9c8-edd3-4c61-8b1d-c4567769db5c";
+    "https://graph.microsoft.com/v1.0/teams/beb93fe1-44a6-42b4-8559-7c62d11c42f9";
 
     RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
-        UserName = ConfigurationManager.AppSettings["UserName"],
-        UserPw = ConfigurationManager.AppSettings["UserPw"],
         EndPoint = graphQuery,
         Method = HttpVerb.GET,
         Registration = TypeRegistration.Delegation
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -65,7 +64,7 @@ static void CsDotNet_GetTeamDel()
 static void CsDotNet_CreateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-                                "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels";
+                                "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels";
 
     string myBody = "{ " +
                         "\"displayName\": \"Graph Channel 01 Application\"," +
@@ -84,7 +83,7 @@ static void CsDotNet_CreateChannelApp()
         Registration = TypeRegistration.Application
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -95,7 +94,7 @@ static void CsDotNet_CreateChannelApp()
 static void CsDotNet_CreateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-                                "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels";
+                                "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels";
 
     string myBody = "{ " +
                         "\"displayName\": \"Graph Channel 02 Delegation\"," +
@@ -106,8 +105,6 @@ static void CsDotNet_CreateChannelDel()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
-        UserName = ConfigurationManager.AppSettings["UserName"],
-        UserPw = ConfigurationManager.AppSettings["UserPw"],
         EndPoint = graphQuery,
         Method = HttpVerb.POST,
         ContentType = "application/json",
@@ -115,7 +112,7 @@ static void CsDotNet_CreateChannelDel()
         Registration = TypeRegistration.Delegation
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -125,7 +122,7 @@ static void CsDotNet_CreateChannelDel()
 static void CsDotNet_GetChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-        "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
+        "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels/" +
         "19:eb21860817fb4fe1a774bef08091635d@thread.tacv2";
 
     RestGraphClient myClient = new()
@@ -138,7 +135,7 @@ static void CsDotNet_GetChannelApp()
         Registration = TypeRegistration.Application
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -147,21 +144,19 @@ static void CsDotNet_GetChannelApp()
 static void CsDotNet_GetChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-        "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
+        "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels/" +
         "19:0da30c7628cb4b33923a49eb9f66141d@thread.tacv2";
 
     RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
-        UserName = ConfigurationManager.AppSettings["UserName"],
-        UserPw = ConfigurationManager.AppSettings["UserPw"],
         EndPoint = graphQuery,
         Method = HttpVerb.GET,
         Registration = TypeRegistration.Delegation
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -171,7 +166,7 @@ static void CsDotNet_GetChannelDel()
 static void CsDotNet_UpdateChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-        "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
+        "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels/" +
         "19:eb21860817fb4fe1a774bef08091635d@thread.tacv2";
 
     string myBody = "{ \"description\": \"Channel Description Updated\" }";
@@ -197,7 +192,7 @@ static void CsDotNet_UpdateChannelApp()
         Registration = TypeRegistration.Application
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -208,7 +203,7 @@ static void CsDotNet_UpdateChannelApp()
 static void CsDotNet_UpdateChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-        "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
+        "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels/" +
         "19:0da30c7628cb4b33923a49eb9f66141d@thread.tacv2";
 
     string myBody = "{ \"description\": \"Channel Description Updated\" }";
@@ -225,8 +220,6 @@ static void CsDotNet_UpdateChannelDel()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
-        UserName = ConfigurationManager.AppSettings["UserName"],
-        UserPw = ConfigurationManager.AppSettings["UserPw"],
         EndPoint = graphQuery,
         Method = HttpVerb.PATCH,
         ContentType = "application/json",
@@ -235,7 +228,7 @@ static void CsDotNet_UpdateChannelDel()
         Registration = TypeRegistration.Delegation
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -246,7 +239,7 @@ static void CsDotNet_UpdateChannelDel()
 static void CsDotNet_DeleteChannelApp()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-        "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
+        "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels/" +
         "19:eb21860817fb4fe1a774bef08091635d@thread.tacv2";
 
     RestGraphClient myClient = new()
@@ -259,7 +252,7 @@ static void CsDotNet_DeleteChannelApp()
         Registration = TypeRegistration.Application
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -270,21 +263,19 @@ static void CsDotNet_DeleteChannelApp()
 static void CsDotNet_DeleteChannelDel()
 {
     string graphQuery = "https://graph.microsoft.com/v1.0/teams/" +
-        "bd71e9c8-edd3-4c61-8b1d-c4567769db5c/channels/" +
+        "beb93fe1-44a6-42b4-8559-7c62d11c42f9/channels/" +
         "19:0da30c7628cb4b33923a49eb9f66141d@thread.tacv2";
 
     RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
         TenantName = ConfigurationManager.AppSettings["TenantName"],
-        UserName = ConfigurationManager.AppSettings["UserName"],
-        UserPw = ConfigurationManager.AppSettings["UserPw"],
         EndPoint = graphQuery,
         Method = HttpVerb.DELETE,
         Registration = TypeRegistration.Delegation
     };
 
-    Tuple<string, string> resultText = myClient.SendGraphRequest();
+    Tuple<string, string> resultText = myClient.SendGraphRequest().Result;
 
     Console.WriteLine(resultText.Item1);
     Console.WriteLine(resultText.Item2);
@@ -313,12 +304,10 @@ static AdAppToken CsDotNet_GetADTokenDelegation()
     RestGraphClient myClient = new()
     {
         ClientID = ConfigurationManager.AppSettings["ClientIdWithAccPw"],
-        TenantName = ConfigurationManager.AppSettings["TenantName"],
-        UserName = ConfigurationManager.AppSettings["UserName"],
-        UserPw = ConfigurationManager.AppSettings["UserPw"]
+        TenantName = ConfigurationManager.AppSettings["TenantName"]
     };
 
-    AdAppToken resultToken = myClient.GetAzureTokenDelegation();
+    AdAppToken resultToken = myClient.GetAzureTokenDelegation().Result;
 
     return resultToken;
 }
@@ -340,8 +329,8 @@ static AdAppToken CsDotNet_GetADTokenDelegation()
 //CsDotNet_UpdateChannelDel();
 //CsDotNet_DeleteChannelApp();
 //CsDotNet_DeleteChannelDel();
-//CSDotNet_AdAppToken myTokenApp = GetADTokenApplication(); Console.WriteLine(myTokenApp.access_token);
-//CSDotNet_AdAppToken myTokenDel = GetADTokenDelegation(); Console.WriteLine(myTokenDel.access_token);
+//AdAppToken myTokenApp = CsDotNet_GetADTokenApplication(); Console.WriteLine(myTokenApp.access_token);
+//AdAppToken myTokenDel = CsDotNet_GetADTokenDelegation(); Console.WriteLine(myTokenDel.access_token);
 
 Console.WriteLine("Done");
 
@@ -360,21 +349,19 @@ public class RestGraphClient
     public TypeRegistration Registration { get; set; }
     public string ContentType { get; set; }
     public string PostData { get; set; }
-    public string UserName { get; set; }
-    public string UserPw { get; set; }
     public List<HeaderConfig> Headers { get; set; }
 
     public RestGraphClient()
     {
     }
 
-    public Tuple<string, string> SendGraphRequest()
+    public async Task<Tuple<string, string>> SendGraphRequest()
     {
         AdAppToken adToken = new();
         if (Registration == TypeRegistration.Application)
             adToken = GetAzureTokenApplication();
         else if (Registration == TypeRegistration.Delegation)
-            adToken = GetAzureTokenDelegation();
+            adToken = await GetAzureTokenDelegation();
 
         if (adToken != null)
         {
@@ -453,8 +440,8 @@ public class RestGraphClient
         string myUri = LoginUrl + "/" + TenantName + "/oauth2/v2.0/token";
         string myBody = "Scope=" + HttpUtility.UrlEncode(ScopeUrl) + "&" +
             "grant_type=client_credentials&" +
-            "client_id=" + ClientID + "&" +
-            "client_secret=" + ClientSecret + "";
+            "client_id=" + HttpUtility.UrlEncode(ClientID) + "&" +
+            "client_secret=" + HttpUtility.UrlEncode(ClientSecret);
 
         RestGraphClient myClient = new()
         {
@@ -475,35 +462,31 @@ public class RestGraphClient
         return null;
     }
 
-    public AdAppToken GetAzureTokenDelegation()
+    public async Task<AdAppToken> GetAzureTokenDelegation()
     {
-        string LoginUrl = "https://login.microsoftonline.com";
-        string ScopeUrl = "https://graph.microsoft.com/.default";
-
-        string myUri = LoginUrl + "/" + TenantName + "/oauth2/v2.0/token";
-        string myBody = "Scope=" + HttpUtility.UrlEncode(ScopeUrl) + "&" +
-                        "grant_type=Password&" +
-                        "client_id=" + ClientID + "&" +
-                        "Username=" + UserName + "&" +
-                        "Password=" + UserPw + "";
-
-        RestGraphClient myClient = new()
+        try
         {
-            EndPoint = myUri,
-            Method = HttpVerb.POST,
-            ContentType = "application/x-www-form-urlencoded",
-            PostData = myBody
-        };
+            InteractiveBrowserCredential credential = new ();
+            Azure.Core.AccessToken token = await credential.GetTokenAsync(
+                new Azure.Core.TokenRequestContext(new[] { "https://graph.microsoft.com/.default" })
+            );
 
-        Tuple<string, string> tokenJSON = myClient.SendGraphRequestInternal();
-        if (tokenJSON.Item1.Contains("Error") == false)
-        {
-            AdAppToken tokenObj =
-                        JsonConvert.DeserializeObject<AdAppToken>(tokenJSON.Item2);
+            string graphAccessToken = token.Token;
+
+            AdAppToken tokenObj = new()
+            {
+                access_token = graphAccessToken,
+                token_type = "Bearer",
+                expires_in = token.ExpiresOn.UtcDateTime.ToString()
+            };
+
             return tokenObj;
         }
-
-        return null;
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error acquiring token: {ex.Message}");
+            return null;
+        }
     }
 }
 //gavdcodeend 001

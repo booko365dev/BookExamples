@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Configuration;
@@ -7,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Web;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet 10.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -32,8 +33,8 @@ static AdAppToken CsRestSharp_GetAzureTokenApplicationSecret(string TenantName,
 
     string myBody = "Scope=" + HttpUtility.UrlEncode(ScopeUrl) + "&" +
                     "grant_type=client_credentials&" +
-                    "client_id=" + ClientId + "&" +
-                    "client_secret=" + ClientSecret + "";
+                    "client_id=" + HttpUtility.UrlEncode(ClientId) + "&" +
+                    "client_secret=" + HttpUtility.UrlEncode(ClientSecret) + "";
     myRequest.AddParameter("", myBody, ParameterType.RequestBody);
 
     string tokenJSON = myClient.ExecuteAsync(myRequest).Result.Content;
@@ -164,28 +165,37 @@ static string GenerateClientAssertionWithThumbprint(string TenantName, string Cl
 //gavdcodeend 013
 
 //gavdcodebegin 007
-static AdAppToken CsRestSharp_GetAzureTokenDelegation(string TenantName,
-                                        string ClientId, string UserName, string UserPw)
+static AdAppToken CsRestSharp_GetAzureTokenDelegation(string TenantName, string ClientId)
 {
-    string LoginUrl = "https://login.microsoftonline.com";
-    string ScopeUrl = "https://graph.microsoft.com/.default";
+    var authority = $"https://login.microsoftonline.com/{TenantName}";
+    var scopes = new[] { "https://graph.microsoft.com/.default" };
 
-    string myUri = LoginUrl + "/" + TenantName + "/oauth2/v2.0/token";
+    var app = PublicClientApplicationBuilder
+        .Create(ClientId)
+        .WithAuthority(authority)
+        .WithRedirectUri("http://localhost")
+        .Build();
 
-    RestClient myClient = new();
+    AuthenticationResult result = null;
+    try
+    {
+        // Try interactive authentication with browser
+        result = app.AcquireTokenInteractive(scopes)
+            .ExecuteAsync()
+            .Result;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Interactive authentication failed: {ex.Message}");
+        throw;
+    }
 
-    RestRequest myRequest = new(myUri, Method.Post);
-    myRequest.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    string myBody = "Scope=" + HttpUtility.UrlEncode(ScopeUrl) + "&" +
-                    "grant_type=Password&" +
-                    "client_id=" + ClientId + "&" +
-                    "Username=" + UserName + "&" +
-                    "Password=" + UserPw + "";
-    myRequest.AddParameter("", myBody, ParameterType.RequestBody);
-
-    string tokenJSON = myClient.ExecuteAsync(myRequest).Result.Content;
-    AdAppToken tokenObj = JsonConvert.DeserializeObject<AdAppToken>(tokenJSON);
+    var tokenObj = new AdAppToken
+    {
+        token_type = result.TokenType,
+        access_token = result.AccessToken,
+        expires_in = result.ExpiresOn.ToString()
+    };
 
     return tokenObj;
 }
@@ -329,9 +339,7 @@ static void CsRestSharp_GetTeamDel()
 
     AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
-                                ConfigurationManager.AppSettings["ClientIdWithAccPw"],
-                                ConfigurationManager.AppSettings["UserName"],
-                                ConfigurationManager.AppSettings["UserPw"]);
+                                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
 
     RestClient myClient = new();
 
@@ -352,9 +360,7 @@ static void CsRestSharp_CreateChannelDel()
 
     AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
-                                ConfigurationManager.AppSettings["ClientIdWithAccPw"],
-                                ConfigurationManager.AppSettings["UserName"],
-                                ConfigurationManager.AppSettings["UserPw"]);
+                                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
 
     string myBody = "{ " +
                         "\"displayName\": \"Graph Channel 20\"," +
@@ -383,9 +389,7 @@ static void CsRestSharp_GetChannelDel()
 
     AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
-                                ConfigurationManager.AppSettings["ClientIdWithAccPw"],
-                                ConfigurationManager.AppSettings["UserName"],
-                                ConfigurationManager.AppSettings["UserPw"]);
+                                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
 
     RestClient myClient = new();
 
@@ -407,9 +411,7 @@ static void CsRestSharp_UpdateChannelDel()
 
     AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
-                                ConfigurationManager.AppSettings["ClientIdWithAccPw"],
-                                ConfigurationManager.AppSettings["UserName"],
-                                ConfigurationManager.AppSettings["UserPw"]);
+                                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
 
     string myBody = "{ \"description\": \"Channel Description Updated\" }";
 
@@ -436,9 +438,7 @@ static void CsRestSharp_DeleteChannelDel()
 
     AdAppToken adToken = CsRestSharp_GetAzureTokenDelegation(
                                 ConfigurationManager.AppSettings["TenantName"],
-                                ConfigurationManager.AppSettings["ClientIdWithAccPw"],
-                                ConfigurationManager.AppSettings["UserName"],
-                                ConfigurationManager.AppSettings["UserPw"]);
+                                ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
 
     RestClient myClient = new();
 
@@ -463,11 +463,12 @@ static void CsRestSharp_DeleteChannelDel()
 //CsRestSharp_GetChannelApp(); 
 //CsRestSharp_UpdateChannelApp();
 //CsRestSharp_DeleteChannelApp();
+
 //AdAppToken myToken = CsRestSharp_GetAzureTokenApplicationSecret(
 //    ConfigurationManager.AppSettings["TenantName"],
 //    ConfigurationManager.AppSettings["ClientIdWithSecret"],
 //    ConfigurationManager.AppSettings["ClientSecret"]);
-//    Console.WriteLine(myToken.access_token);
+//Console.WriteLine(myToken.access_token);
 
 //AdAppToken myToken = CsRestSharp_GetAzureTokenApplicationCertificate(
 //    ConfigurationManager.AppSettings["TenantName"],
@@ -482,12 +483,11 @@ static void CsRestSharp_DeleteChannelDel()
 //CsRestSharp_GetChannelDel(); 
 //CsRestSharp_UpdateChannelDel();
 //CsRestSharp_DeleteChannelDel();
+
 //AdAppToken myToken = CsRestSharp_GetAzureTokenDelegation(
 //    ConfigurationManager.AppSettings["TenantName"],
-//    ConfigurationManager.AppSettings["ClientIdWithAccPw"],
-//    ConfigurationManager.AppSettings["UserName"],
-//    ConfigurationManager.AppSettings["UserPw"]);
-//    Console.WriteLine(myToken.access_token);
+//    ConfigurationManager.AppSettings["ClientIdWithAccPw"]);
+//Console.WriteLine(myToken.access_token);
 
 Console.WriteLine("Done");
 

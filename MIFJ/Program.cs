@@ -11,7 +11,7 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
 //---------------------------------------------------------------------------------------
-// ------**** ATTENTION **** This is a DotNet Core 8.0 Console Application ****----------
+// ------**** ATTENTION **** This is a DotNet 10.0 Console Application ****----------
 //---------------------------------------------------------------------------------------
 #nullable disable
 #pragma warning disable CS8321 // Local function is declared but never used
@@ -46,11 +46,9 @@ static PnPContext CsPnPCoreSdk_GetContextWithInteraction(string TenantId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                              .GetRequiredService<IPnPContextFactory>();
+                                               .GetRequiredService<IPnPContextFactory>();
     Uri mySiteCollUri = new(SiteCollUrl);
     PnPContext myContext = myPnpContextFactory.CreateAsync(mySiteCollUri).Result;
-
-    myHost.Dispose();
 
     return myContext;
 }
@@ -58,7 +56,7 @@ static PnPContext CsPnPCoreSdk_GetContextWithInteraction(string TenantId,
 
 //gavdcodebegin 003
 static PnPContext CsPnPCoreSdk_GetContextWithAccPw(string TenantId, string ClientId,
-                string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)
+     string UserAcc, string UserPw, string SiteCollUrl, LogLevel ShowLogs)  // Legacy
 {
     IHost myHost = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
@@ -86,10 +84,8 @@ static PnPContext CsPnPCoreSdk_GetContextWithAccPw(string TenantId, string Clien
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                              .GetRequiredService<IPnPContextFactory>();
+                                               .GetRequiredService<IPnPContextFactory>();
     PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
-
-    myHost.Dispose();
 
     return myContext;
 }
@@ -123,10 +119,8 @@ static PnPContext CsPnPCoreSdk_GetContextWithCertThumbprint(string TenantId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                              .GetRequiredService<IPnPContextFactory>();
+                                               .GetRequiredService<IPnPContextFactory>();
     PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
-
-    myHost.Dispose();
 
     return myContext;
 }
@@ -165,10 +159,8 @@ static PnPContext CsPnPCoreSdk_GetContextWithCertificateFile(string TenantId,
 
     IServiceScope myScope = myHost.Services.CreateScope();
     IPnPContextFactory myPnpContextFactory = myScope.ServiceProvider
-                                              .GetRequiredService<IPnPContextFactory>();
+                                               .GetRequiredService<IPnPContextFactory>();
     PnPContext myContext = myPnpContextFactory.CreateAsync(new Uri(SiteCollUrl)).Result;
-
-    myHost.Dispose();
 
     return myContext;
 }
@@ -193,7 +185,7 @@ static void CsPnPCoreSdk_GetWebWithInteraction()
 //gavdcodeend 002
 
 //gavdcodebegin 004
-static void CsPnPCoreSdk_GetListsWithAccPw()
+static void CsPnPCoreSdk_GetListsWithAccPw()  // Legacy
 {
     string myTenantId = ConfigurationManager.AppSettings["TenantName"];
     string myClientId = ConfigurationManager.AppSettings["ClientIdWithAccPw"];
@@ -265,7 +257,7 @@ static void CsPnPCoreSdk_GetItemsWithCertFile()
 // *** Latest Source Code Index: 008 ***
 
 //CsPnPCoreSdk_GetWebWithInteraction();
-//CsPnPCoreSdk_GetListsWithAccPw();
+//CsPnPCoreSdk_GetListsWithAccPw();  // Legacy
 //CsPnPCoreSdk_GetItemsWithCertThumbprint();
 //CsPnPCoreSdk_GetItemsWithCertFile();
 
