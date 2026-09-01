@@ -278,10 +278,9 @@ function PsPnPPowerShell_LoginWithToken
 #gavdcodebegin 014
 function PsCliM365_LoginWithAccPw
 {
-	m365 login --authType password `
-			   --appId $configFile.appsettings.ClientIdWithAccPw `
-			   --userName $configFile.appsettings.UserName `
-			   --password $configFile.appsettings.UserPw
+	m365 login --authType browser `
+			   --tenant $configFile.appsettings.TenantName `
+			   --appId $configFile.appsettings.ClientIdWithAccPw
 }
 #gavdcodeend 014
 
@@ -959,7 +958,7 @@ function PsSpRestApiMsal_GetLists
 #PsRest_PostExample      ## Full POST query with data in the body
 
 #==> REST PnP PowerShell cmdlets
-PsPnpRest_GetWebExample
+#PsPnpRest_GetWebExample
 #PsPnpRest_GetItemsExample
 #PsPnpRest_PostExample
 
